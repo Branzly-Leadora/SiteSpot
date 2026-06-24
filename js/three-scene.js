@@ -1,12 +1,9 @@
 /**
- * SiteSpot — Three.js Background Scene  v2
- * Awwwards-level treatment:
- *   • 3 000 GPU particles with custom GLSL vertex/fragment shaders
- *   • Scroll-driven morph: sphere → DNA helix → dispersed grid
- *   • Volumetric additive-blend glow rings
- *   • Per-particle sin-wave breathing animation
- *   • Mouse-reactive camera with smooth lerp
- *   • AdditiveBlending throughout — zero overdraw cost
+ * SiteSpot — Three.js Scene v3
+ * - Složitější 3D objekt: icosahedron wire cage + orbiting rings + 2500 particles
+ * - Scroll-driven morph: kompaktní koule → rozvinutý toroid → disperzní mrak
+ * - Canvas je FIXED — vždy viditelný přes celý scroll
+ * - Mouse parallax na kameře
  */
 
 (function () {
@@ -15,273 +12,256 @@
   const canvas = document.getElementById('bg-canvas');
   if (!canvas || typeof THREE === 'undefined') return;
 
-  // ─────────────────────────────────────────────────────────────
-  //  RENDERER
-  // ─────────────────────────────────────────────────────────────
-  const renderer = new THREE.WebGLRenderer({
-    canvas,
-    antialias: false,          // off – particles look fine, perf gain
-    alpha: true,
-    powerPreference: 'high-performance',
-  });
+  // ── Renderer ─────────────────────────────────────────────────
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: true, powerPreference: 'high-performance' });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setClearColor(0x000000, 0);
 
   const scene  = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 200);
-  camera.position.set(0, 0, 6);
+  const camera = new THREE.PerspectiveCamera(52, window.innerWidth / window.innerHeight, 0.1, 200);
+  camera.position.set(0, 0, 7);
 
-  // ─────────────────────────────────────────────────────────────
-  //  STATE
-  // ─────────────────────────────────────────────────────────────
-  let time         = 0;
-  let scrollRaw    = 0;   // target scroll  0-1
-  let scrollSmooth = 0;   // lerped scroll  0-1
+  // ── State ─────────────────────────────────────────────────────
+  let time = 0;
+  let scrollRaw = 0, scrollSmooth = 0;
   let mouseX = 0, mouseY = 0;
   let camX = 0, camY = 0;
 
-  // ─────────────────────────────────────────────────────────────
-  //  PARTICLE SYSTEM  (custom shaders)
-  // ─────────────────────────────────────────────────────────────
-  const COUNT = 3000;
+  // ── Root group — sits right-centre of screen ──────────────────
+  const root = new THREE.Group();
+  root.position.set(2.4, 0.2, 0);
+  scene.add(root);
 
-  // Pre-bake three position sets: sphere / helix / grid
-  const posSphere = new Float32Array(COUNT * 3);
-  const posHelix  = new Float32Array(COUNT * 3);
-  const posGrid   = new Float32Array(COUNT * 3);
-  const randoms   = new Float32Array(COUNT * 3); // r0 phase, r1 size, r2 brightness
-  const colorsArr = new Float32Array(COUNT * 3); // per-particle base colour
+  // ═════════════════════════════════════════════════════════════
+  //  1. PARTICLE SYSTEM — 2500 particles, 4 morph targets
+  // ═════════════════════════════════════════════════════════════
+  const N = 2500;
 
-  const _cA = new THREE.Color(0xc8ff3e); // lime
-  const _cB = new THREE.Color(0x88dd00); // green
-  const _cC = new THREE.Color(0xffffff); // white core
+  const posSphere  = new Float32Array(N * 3);
+  const posToroid  = new Float32Array(N * 3);
+  const posCloud   = new Float32Array(N * 3);
+  const posRings   = new Float32Array(N * 3);
+  const aRandom    = new Float32Array(N * 3); // phase, size, bright
+  const aColorArr  = new Float32Array(N * 3);
 
-  for (let i = 0; i < COUNT; i++) {
+  const C0 = new THREE.Color(0xc8ff3e);  // lime
+  const C1 = new THREE.Color(0x88cc00);  // green
+  const C2 = new THREE.Color(0xffffff);  // white cores
+
+  for (let i = 0; i < N; i++) {
     const i3 = i * 3;
 
-    // — SPHERE positions (Fibonacci lattice for even distribution)
-    const goldenAngle = Math.PI * (3 - Math.sqrt(5));
-    const theta = goldenAngle * i;
-    const y     = 1 - (i / (COUNT - 1)) * 2;
-    const rSin  = Math.sqrt(1 - y * y);
-    const R     = 1.6 + (Math.random() - 0.5) * 0.35;
-    posSphere[i3]     = Math.cos(theta) * rSin * R;
-    posSphere[i3 + 1] = y * R;
-    posSphere[i3 + 2] = Math.sin(theta) * rSin * R;
+    // SPHERE (fibonacci lattice, layered radii)
+    const ga = Math.PI * (3 - Math.sqrt(5));
+    const fy = 1 - (i / (N - 1)) * 2;
+    const fr = Math.sqrt(Math.max(0, 1 - fy * fy));
+    const ft = ga * i;
+    const R = 1.5 + (Math.random() - 0.5) * 0.5;
+    posSphere[i3]     = Math.cos(ft) * fr * R;
+    posSphere[i3 + 1] = fy * R;
+    posSphere[i3 + 2] = Math.sin(ft) * fr * R;
 
-    // — HELIX (double helix)
-    const t      = (i / COUNT) * Math.PI * 14;
-    const strand = i % 2 === 0 ? 1 : -1;
-    const hR     = 0.9;
-    const hSpread = 0.08;
-    posHelix[i3]     = (Math.cos(t) * hR + (Math.random() - 0.5) * hSpread) * strand * Math.cos(strand * 0.8);
-    posHelix[i3 + 1] = (t / (Math.PI * 14)) * 4.5 - 2.25 + (Math.random() - 0.5) * hSpread;
-    posHelix[i3 + 2] = Math.sin(t) * hR * strand + (Math.random() - 0.5) * hSpread;
+    // TOROID (torus surface with noise)
+    const tu = (i / N) * Math.PI * 2;
+    const tv = Math.random() * Math.PI * 2;
+    const tR = 1.6, tr = 0.55;
+    posToroid[i3]     = (tR + tr * Math.cos(tv)) * Math.cos(tu) + (Math.random()-0.5)*0.12;
+    posToroid[i3 + 1] = tr * Math.sin(tv) + (Math.random()-0.5)*0.12;
+    posToroid[i3 + 2] = (tR + tr * Math.cos(tv)) * Math.sin(tu) + (Math.random()-0.5)*0.12;
 
-    // — GRID (spread outward)
-    const gx = ((i % 20) - 9.5) * 0.32;
-    const gy = (Math.floor(i / 20) % 20 - 9.5) * 0.32;
-    const gz = (Math.floor(i / 400) - 1.5) * 1.2;
-    posGrid[i3]     = gx + (Math.random() - 0.5) * 0.08;
-    posGrid[i3 + 1] = gy + (Math.random() - 0.5) * 0.08;
-    posGrid[i3 + 2] = gz + (Math.random() - 0.5) * 0.08;
+    // CONCENTRIC RINGS (3 rings at different tilts)
+    const ri = i % 3;
+    const ra = (i / N) * Math.PI * 2 * (1 + ri * 0.33);
+    const rR = [1.1, 1.65, 2.1][ri];
+    const tilt = [0.0, 0.9, -0.5][ri];
+    posRings[i3]     = Math.cos(ra) * rR + (Math.random()-0.5)*0.09;
+    posRings[i3 + 1] = Math.sin(ra) * rR * Math.cos(tilt) + (Math.random()-0.5)*0.09;
+    posRings[i3 + 2] = Math.sin(ra) * rR * Math.sin(tilt) + (Math.random()-0.5)*0.09;
 
-    // — Randoms
-    randoms[i3]     = Math.random() * Math.PI * 2; // phase
-    randoms[i3 + 1] = 0.4 + Math.random() * 0.6;  // size factor
-    randoms[i3 + 2] = 0.6 + Math.random() * 0.4;  // brightness
+    // CLOUD (dispersed)
+    const cr = 2.8 + Math.random() * 1.2;
+    const ca = Math.random() * Math.PI * 2;
+    const cb = Math.acos(2 * Math.random() - 1);
+    posCloud[i3]     = Math.sin(cb) * Math.cos(ca) * cr;
+    posCloud[i3 + 1] = Math.sin(cb) * Math.sin(ca) * cr;
+    posCloud[i3 + 2] = Math.cos(cb) * cr;
 
-    // — Per-particle colour: blend cyan→teal by y-position on sphere
-    const mixF  = Math.max(0, Math.min(1, (posSphere[i3 + 1] / R + 1) * 0.5));
-    const pCol  = new THREE.Color().lerpColors(_cA, _cB, mixF);
-    // brightest 5% → white
-    if (randoms[i3 + 2] > 0.95) pCol.set(_cC);
-    colorsArr[i3]     = pCol.r;
-    colorsArr[i3 + 1] = pCol.g;
-    colorsArr[i3 + 2] = pCol.b;
+    // Randoms
+    aRandom[i3]     = Math.random() * Math.PI * 2;
+    aRandom[i3 + 1] = 0.35 + Math.random() * 0.65;
+    aRandom[i3 + 2] = 0.55 + Math.random() * 0.45;
+
+    // Colors: lime → green gradient, brightest white
+    const mix = (posSphere[i3 + 1] / R + 1) * 0.5;
+    const pc = new THREE.Color().lerpColors(C1, C0, Math.max(0, Math.min(1, mix)));
+    if (aRandom[i3 + 2] > 0.96) pc.set(C2);
+    aColorArr[i3] = pc.r; aColorArr[i3+1] = pc.g; aColorArr[i3+2] = pc.b;
   }
 
   const geo = new THREE.BufferGeometry();
-  geo.setAttribute('position',   new THREE.BufferAttribute(posSphere.slice(), 3));
-  geo.setAttribute('aSphere',    new THREE.BufferAttribute(posSphere, 3));
-  geo.setAttribute('aHelix',     new THREE.BufferAttribute(posHelix,  3));
-  geo.setAttribute('aGrid',      new THREE.BufferAttribute(posGrid,   3));
-  geo.setAttribute('aRandom',    new THREE.BufferAttribute(randoms,   3));
-  geo.setAttribute('aColor',     new THREE.BufferAttribute(colorsArr, 3));
+  geo.setAttribute('position',  new THREE.BufferAttribute(posSphere.slice(), 3));
+  geo.setAttribute('aSphere',   new THREE.BufferAttribute(posSphere, 3));
+  geo.setAttribute('aToroid',   new THREE.BufferAttribute(posToroid, 3));
+  geo.setAttribute('aRings',    new THREE.BufferAttribute(posRings,  3));
+  geo.setAttribute('aCloud',    new THREE.BufferAttribute(posCloud,  3));
+  geo.setAttribute('aRandom',   new THREE.BufferAttribute(aRandom,   3));
+  geo.setAttribute('aColor',    new THREE.BufferAttribute(aColorArr, 3));
 
-  // ── VERTEX SHADER ───────────────────────────────────────────
-  const vertexShader = /* glsl */`
+  const vertShader = /* glsl */`
     attribute vec3 aSphere;
-    attribute vec3 aHelix;
-    attribute vec3 aGrid;
-    attribute vec3 aRandom;   // x=phase, y=sizeFactor, z=brightness
+    attribute vec3 aToroid;
+    attribute vec3 aRings;
+    attribute vec3 aCloud;
+    attribute vec3 aRandom;
     attribute vec3 aColor;
 
     uniform float uTime;
-    uniform float uScroll;    // 0-1
-    uniform float uMorphA;    // sphere→helix blend  0-1
-    uniform float uMorphB;    // helix→grid blend    0-1
-    uniform float uGlobalSize;
+    uniform float uMA; // sphere→toroid
+    uniform float uMB; // toroid→rings
+    uniform float uMC; // rings→cloud
+    uniform float uSize;
 
     varying vec3  vColor;
     varying float vAlpha;
 
-    // smooth step that avoids clamp artefacts
-    float remap(float v, float lo, float hi) {
-      return clamp((v - lo) / (hi - lo), 0.0, 1.0);
-    }
-
     void main() {
-      // Morph between the three shapes
-      vec3 pos = mix(aSphere, aHelix, uMorphA);
-      pos       = mix(pos,    aGrid,  uMorphB);
+      vec3 p = aSphere;
+      p = mix(p, aToroid, uMA);
+      p = mix(p, aRings,  uMB);
+      p = mix(p, aCloud,  uMC);
 
-      // Per-particle breathing wave
-      float wave = sin(uTime * 1.4 + aRandom.x) * 0.045;
-      pos += normalize(pos) * wave;
+      // breathing
+      float wave = sin(uTime * 1.2 + aRandom.x) * 0.04;
+      p += normalize(p + vec3(0.001)) * wave;
 
       vColor = aColor;
       vAlpha = aRandom.z;
 
-      vec4 mvPos = modelViewMatrix * vec4(pos, 1.0);
-      gl_Position  = projectionMatrix * mvPos;
-
-      // Perspective-correct size — closer = bigger
-      float dist = length(mvPos.xyz);
-      gl_PointSize = uGlobalSize * aRandom.y * (6.0 / dist);
+      vec4 mv = modelViewMatrix * vec4(p, 1.0);
+      gl_Position  = projectionMatrix * mv;
+      float dist   = length(mv.xyz);
+      gl_PointSize = uSize * aRandom.y * (5.5 / dist);
     }
   `;
 
-  // ── FRAGMENT SHADER ─────────────────────────────────────────
-  const fragmentShader = /* glsl */`
+  const fragShader = /* glsl */`
     varying vec3  vColor;
     varying float vAlpha;
-
     void main() {
-      // Soft disc — distance from centre of point sprite
-      vec2  uv   = gl_PointCoord - 0.5;
-      float dist = length(uv);
-      if (dist > 0.5) discard;
-
-      // Soft glow falloff
-      float strength = 1.0 - smoothstep(0.0, 0.5, dist);
-      strength = pow(strength, 1.6);
-
-      gl_FragColor = vec4(vColor * strength, strength * vAlpha);
+      vec2  uv = gl_PointCoord - 0.5;
+      float d  = length(uv);
+      if (d > 0.5) discard;
+      float s = pow(1.0 - smoothstep(0.0, 0.5, d), 1.8);
+      gl_FragColor = vec4(vColor * s, s * vAlpha);
     }
   `;
 
-  const mat = new THREE.ShaderMaterial({
-    vertexShader,
-    fragmentShader,
+  const pMat = new THREE.ShaderMaterial({
+    vertexShader: vertShader,
+    fragmentShader: fragShader,
     uniforms: {
-      uTime:       { value: 0 },
-      uScroll:     { value: 0 },
-      uMorphA:     { value: 0 },
-      uMorphB:     { value: 0 },
-      uGlobalSize: { value: 3.5 },
+      uTime:  { value: 0 },
+      uMA:    { value: 0 },
+      uMB:    { value: 0 },
+      uMC:    { value: 0 },
+      uSize:  { value: 3.8 },
     },
-    transparent:    true,
-    depthWrite:     false,
-    blending:       THREE.AdditiveBlending,
-    vertexColors:   true,
+    transparent: true,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending,
+    vertexColors: true,
   });
 
-  const points = new THREE.Points(geo, mat);
-  scene.add(points);
+  root.add(new THREE.Points(geo, pMat));
 
-  // ─────────────────────────────────────────────────────────────
-  //  VOLUMETRIC GLOW RINGS  (additive, no shader needed)
-  // ─────────────────────────────────────────────────────────────
-  const ringGroup = new THREE.Group();
-  scene.add(ringGroup);
+  // ═════════════════════════════════════════════════════════════
+  //  2. ICOSAHEDRON WIRE CAGE — the "brain" of the object
+  // ═════════════════════════════════════════════════════════════
+  const cageGroup = new THREE.Group();
+  root.add(cageGroup);
 
-  function makeGlowRing(radius, tube, tiltDeg, color, opacity) {
-    const geo = new THREE.TorusGeometry(radius, tube, 6, 160);
-    const mat = new THREE.MeshBasicMaterial({
+  function makeWireIco(radius, detail, opacity, color) {
+    const g = new THREE.IcosahedronGeometry(radius, detail);
+    const m = new THREE.MeshBasicMaterial({
+      color,
+      wireframe: true,
+      transparent: true,
+      opacity,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+    });
+    return new THREE.Mesh(g, m);
+  }
+
+  const cage0 = makeWireIco(0.72, 1, 0.22, 0xc8ff3e);
+  const cage1 = makeWireIco(0.50, 0, 0.30, 0xffffff);
+  const cage2 = makeWireIco(0.95, 2, 0.10, 0x88cc00);
+  cageGroup.add(cage0, cage1, cage2);
+
+  // Inner glowing core sphere
+  const coreSphere = new THREE.Mesh(
+    new THREE.SphereGeometry(0.18, 32, 32),
+    new THREE.MeshBasicMaterial({
+      color: 0xffffff,
+      transparent: true,
+      opacity: 0.85,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+    })
+  );
+  cageGroup.add(coreSphere);
+
+  // ═════════════════════════════════════════════════════════════
+  //  3. ORBIT RINGS — 3 torus rings at different tilts
+  // ═════════════════════════════════════════════════════════════
+  const ringsGroup = new THREE.Group();
+  root.add(ringsGroup);
+
+  function makeTorus(R, tube, tiltX, tiltZ, color, opacity) {
+    const g = new THREE.TorusGeometry(R, tube, 5, 180);
+    const m = new THREE.MeshBasicMaterial({
       color,
       transparent: true,
       opacity,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
     });
-    const mesh = new THREE.Mesh(geo, mat);
-    mesh.rotation.x = (tiltDeg * Math.PI) / 180;
-    ringGroup.add(mesh);
+    const mesh = new THREE.Mesh(g, m);
+    mesh.rotation.x = tiltX;
+    mesh.rotation.z = tiltZ;
     return mesh;
   }
 
-  const glowRings = [
-    makeGlowRing(1.82, 0.012, 0,   0xc8ff3e, 0.45),
-    makeGlowRing(1.65, 0.009, 58,  0x88dd00, 0.35),
-    makeGlowRing(1.52, 0.009, -42, 0xc8ff3e, 0.28),
-    makeGlowRing(1.30, 0.007, 90,  0x88dd00, 0.22),
-    makeGlowRing(1.10, 0.007, 28,  0xc8ff3e, 0.18),
-    makeGlowRing(0.88, 0.005, -68, 0x88dd00, 0.15),
-  ];
+  const ring0 = makeTorus(1.75, 0.012, 0,    0,    0xc8ff3e, 0.55);
+  const ring1 = makeTorus(1.55, 0.009, 1.05, 0.4,  0x88cc00, 0.42);
+  const ring2 = makeTorus(1.35, 0.008, -0.6, 1.1,  0xc8ff3e, 0.32);
+  const ring3 = makeTorus(1.10, 0.007, 0.3,  -0.8, 0xffffff, 0.20);
+  ringsGroup.add(ring0, ring1, ring2, ring3);
 
-  // ── Outer halo — very large, barely visible ──────────────────
-  const haloMat = new THREE.MeshBasicMaterial({
-    color: 0x1a2500,
-    transparent: true,
-    opacity: 0.12,
-    blending: THREE.AdditiveBlending,
-    depthWrite: false,
-    side: THREE.BackSide,
-  });
-  const halo = new THREE.Mesh(new THREE.SphereGeometry(2.2, 32, 32), haloMat);
-  ringGroup.add(halo);
-
-  // ─────────────────────────────────────────────────────────────
-  //  CORE  (icosphere wireframe + inner bright sphere)
-  // ─────────────────────────────────────────────────────────────
-  const coreGroup = new THREE.Group();
-  ringGroup.add(coreGroup);
-
-  const wfMesh = new THREE.Mesh(
-    new THREE.IcosahedronGeometry(0.30, 2),
+  // ═════════════════════════════════════════════════════════════
+  //  4. OUTER HALO
+  // ═════════════════════════════════════════════════════════════
+  const haloMesh = new THREE.Mesh(
+    new THREE.SphereGeometry(2.3, 24, 24),
     new THREE.MeshBasicMaterial({
-      color: 0x00c8ff,
-      wireframe: true,
+      color: 0x2a4400,
       transparent: true,
-      opacity: 0.35,
+      opacity: 0.10,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
+      side: THREE.BackSide,
     })
   );
-  coreGroup.add(wfMesh);
+  root.add(haloMesh);
 
-  const innerCore = new THREE.Mesh(
-    new THREE.SphereGeometry(0.14, 24, 24),
-    new THREE.MeshBasicMaterial({
-      color: 0xffffff,
-      transparent: true,
-      opacity: 0.92,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false,
-    })
-  );
-  coreGroup.add(innerCore);
-
-  // ─────────────────────────────────────────────────────────────
-  //  POSITION GROUP  (right side, hero)
-  // ─────────────────────────────────────────────────────────────
-  const root = new THREE.Group();
-  root.add(points);
-  root.add(ringGroup);
-  root.position.set(3.2, 0, 0);
-  scene.add(root);
-
-  // ─────────────────────────────────────────────────────────────
-  //  EVENTS
-  // ─────────────────────────────────────────────────────────────
+  // ── Events ───────────────────────────────────────────────────
   window.addEventListener('scroll', () => {
     const total = document.documentElement.scrollHeight - window.innerHeight;
     scrollRaw = total > 0 ? window.scrollY / total : 0;
   }, { passive: true });
 
-  window.addEventListener('mousemove', (e) => {
+  window.addEventListener('mousemove', e => {
     mouseX = (e.clientX / window.innerWidth  - 0.5) * 2;
     mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
   }, { passive: true });
@@ -292,77 +272,84 @@
     renderer.setSize(window.innerWidth, window.innerHeight);
   });
 
-  // ─────────────────────────────────────────────────────────────
-  //  ANIMATION LOOP
-  // ─────────────────────────────────────────────────────────────
+  // ── Helpers ───────────────────────────────────────────────────
   function lerp(a, b, t) { return a + (b - a) * t; }
-  function smoothstep(lo, hi, x) {
+  function smooth(lo, hi, x) {
     const t = Math.max(0, Math.min(1, (x - lo) / (hi - lo)));
     return t * t * (3 - 2 * t);
   }
 
+  // ── Animation loop ────────────────────────────────────────────
   function animate() {
     requestAnimationFrame(animate);
     time += 0.01;
 
-    // Smooth scroll
-    scrollSmooth = lerp(scrollSmooth, scrollRaw, 0.06);
+    scrollSmooth = lerp(scrollSmooth, scrollRaw, 0.055);
     const s = scrollSmooth;
 
-    // ── Morph phases ──────────────────────────────────────────
-    // 0→0.35  sphere stays, rings expand
-    // 0.35→0.65  morph to helix
-    // 0.65→1.0   morph to grid / disperse
-    const morphA = smoothstep(0.30, 0.60, s); // sphere → helix
-    const morphB = smoothstep(0.62, 0.90, s); // helix  → grid
+    // Morph phases driven by scroll 0→1
+    // 0.00–0.30  sphere (tight)
+    // 0.25–0.55  → toroid
+    // 0.50–0.75  → rings
+    // 0.72–1.00  → cloud
+    const mA = smooth(0.20, 0.48, s);
+    const mB = smooth(0.45, 0.68, s);
+    const mC = smooth(0.65, 0.92, s);
 
-    mat.uniforms.uTime.value    = time;
-    mat.uniforms.uScroll.value  = s;
-    mat.uniforms.uMorphA.value  = morphA;
-    mat.uniforms.uMorphB.value  = morphB;
+    pMat.uniforms.uTime.value = time;
+    pMat.uniforms.uMA.value   = mA;
+    pMat.uniforms.uMB.value   = mB;
+    pMat.uniforms.uMC.value   = mC;
+    pMat.uniforms.uSize.value = 3.8 - mC * 1.0;
 
-    // Particle size: shrink slightly at grid phase
-    mat.uniforms.uGlobalSize.value = 3.5 - morphB * 1.2;
+    // Root: drift from right to centre as page scrolls
+    const targetX = lerp(2.4, lerp(0.6, 0.0, mB), mA);
+    const targetY = Math.sin(time * 0.35) * 0.08 + s * 0.3;
+    const targetScale = 1.0 + mA * 0.28 + mB * 0.32;
+    root.position.x = lerp(root.position.x, targetX, 0.03);
+    root.position.y = lerp(root.position.y, targetY, 0.03);
+    root.scale.setScalar(lerp(root.scale.x, targetScale, 0.04));
 
-    // ── Root position ─────────────────────────────────────────
-    // Hero (s<0.35): sit on right side
-    // Mid (helix):   drift toward centre-left
-    // End (grid):    fill whole screen, centred
-    const targetX = lerp(3.2, lerp(-1.5, 0, morphB), morphA);
-    const targetY = Math.sin(time * 0.4) * 0.06 + s * 0.4;
-    root.position.x = lerp(root.position.x, targetX, 0.04);
-    root.position.y = lerp(root.position.y, targetY, 0.04);
+    // Rotation — speeds up during morph
+    root.rotation.y += 0.003 + mA * 0.010 + mB * 0.006;
+    root.rotation.x  = lerp(root.rotation.x, mouseY * 0.10 + s * 0.18, 0.035);
 
-    // ── Scale ─────────────────────────────────────────────────
-    const targetScale = 1 + morphA * 0.35 + morphB * 0.55;
-    root.scale.setScalar(lerp(root.scale.x, targetScale, 0.05));
+    // Cage: rotate each sub-mesh independently
+    cage0.rotation.y += 0.008;
+    cage0.rotation.z += 0.005;
+    cage1.rotation.x += 0.010;
+    cage1.rotation.y -= 0.007;
+    cage2.rotation.z -= 0.004;
+    cage2.rotation.y += 0.006;
 
-    // ── Rotation ─────────────────────────────────────────────
-    const rotSpeed = 0.003 + morphA * 0.012 + morphB * 0.004;
-    root.rotation.y += rotSpeed;
-    root.rotation.x  = lerp(root.rotation.x, mouseY * 0.12 + s * 0.25, 0.04);
+    // Cage scale — shrinks into particles as morph progresses
+    const cageScale = Math.max(0.0, 1.0 - mA * 0.7);
+    cageGroup.scale.setScalar(cageScale);
+    cage0.material.opacity = 0.22 * cageScale;
+    cage1.material.opacity = 0.30 * cageScale;
+    cage2.material.opacity = 0.10 * cageScale;
 
-    // ── Ring animation ────────────────────────────────────────
-    glowRings.forEach((ring, i) => {
-      ring.rotation.z += 0.003 * (i % 2 === 0 ? 1 : -1) * (1 + morphA * 1.8);
-      const baseOpacity = [0.55, 0.45, 0.38, 0.30, 0.25, 0.20][i];
-      // Rings fade into particles during morph
-      ring.material.opacity = baseOpacity * (1 - morphA * 0.6) * (1 - morphB * 0.8);
-      ring.scale.setScalar(1 + morphA * 0.4);
-    });
-    haloMat.opacity = 0.12 * (1 - morphA * 0.7);
+    const pulse = 1 + Math.sin(time * 3.0) * 0.08;
+    coreSphere.scale.setScalar(pulse);
+    coreSphere.material.opacity = 0.85 * cageScale;
 
-    // ── Core ─────────────────────────────────────────────────
-    const pulse = 1 + Math.sin(time * 2.8) * 0.07;
-    coreGroup.scale.setScalar(pulse);
-    wfMesh.rotation.x += 0.010;
-    wfMesh.rotation.y += 0.007;
-    wfMesh.material.opacity = 0.35 * (1 - morphA * 0.5);
-    innerCore.material.opacity = 0.92 - morphA * 0.5;
+    // Orbit rings: spin at varying speeds, fade as cloud takes over
+    const rOpacity = Math.max(0, 1.0 - mC * 1.4);
+    ring0.rotation.z += 0.004;
+    ring1.rotation.z -= 0.005;
+    ring2.rotation.x += 0.006;
+    ring3.rotation.y += 0.007;
+    ring0.material.opacity = 0.55 * (1 - mA * 0.5) * rOpacity;
+    ring1.material.opacity = 0.42 * (1 - mA * 0.4) * rOpacity;
+    ring2.material.opacity = 0.32 * rOpacity;
+    ring3.material.opacity = 0.20 * rOpacity;
+    ringsGroup.scale.setScalar(1 + mA * 0.35 + mB * 0.3);
 
-    // ── Camera parallax ───────────────────────────────────────
-    camX = lerp(camX, mouseX * 0.25, 0.04);
-    camY = lerp(camY, -mouseY * 0.18, 0.04);
+    haloMesh.material.opacity = 0.10 * (1 - mA * 0.6);
+
+    // Camera parallax
+    camX = lerp(camX, mouseX * 0.22, 0.035);
+    camY = lerp(camY, -mouseY * 0.16, 0.035);
     camera.position.x = camX;
     camera.position.y = camY;
     camera.lookAt(0, 0, 0);

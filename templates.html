@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Šablony — SiteSpot</title>
+  <meta name="description" content="Profesionální šablony webů od SiteSpot. Rychlý start pro váš projekt." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/templates.css" />
+</head>
+<body>
+
+  <div class="bg-layer" aria-hidden="true"></div>
+
+  <!-- NAV — always scrolled on subpage -->
+  <nav id="nav" class="scrolled">
+    <a href="index.html" class="nav-logo">Site<span>Spot</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html#work">Work</a></li>
+      <li><a href="index.html#services">Services</a></li>
+      <li><a href="templates.html" class="nav-active">Šablony</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+    <a href="index.html#contact" class="nav-cta">Start a project</a>
+  </nav>
+
+  <!-- HERO -->
+  <div class="tpl-hero">
+    <div class="tpl-hero__inner">
+      <span class="eyebrow">Šablony stránek</span>
+      <h1 class="tpl-hero__title">
+        Hotový základ<br/>
+        pro váš <em>web.</em>
+      </h1>
+      <p class="tpl-hero__sub">
+        Vyberte si z profesionálních šablon, přidejte svůj obsah a jste online.
+        Každá šablona je plně responzivní a SEO-ready.
+      </p>
+    </div>
+    <div class="tpl-hero__meta">
+      <div class="tpl-meta-item">
+        <span class="tpl-meta-num">6</span>
+        <span class="tpl-meta-label">Šablon</span>
+      </div>
+      <div class="tpl-meta-item">
+        <span class="tpl-meta-num">100%</span>
+        <span class="tpl-meta-label">Responzivní</span>
+      </div>
+      <div class="tpl-meta-item">
+        <span class="tpl-meta-num">SEO</span>
+        <span class="tpl-meta-label">Ready</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FILTER BAR -->
+  <div class="tpl-filters">
+    <button class="tpl-filter active" data-filter="all">Vše</button>
+    <button class="tpl-filter" data-filter="saas">SaaS</button>
+    <button class="tpl-filter" data-filter="ecommerce">E-commerce</button>
+    <button class="tpl-filter" data-filter="portfolio">Portfolio</button>
+    <button class="tpl-filter" data-filter="services">Služby</button>
+    <button class="tpl-filter" data-filter="other">Ostatní</button>
+  </div>
+
+  <!-- TEMPLATES GRID -->
+  <div class="tpl-grid">
+
+    <article class="tpl-card reveal" data-cat="saas">
+      <div class="tpl-card__preview">
+        <div class="tpl-card__preview-bg style-a">
+          <div class="mockup">
+            <div class="mockup__nav">
+              <div class="mockup__dot"></div>
+              <div class="mockup__line w-16"></div>
+              <div class="mockup__line w-8 ml-auto"></div>
+            </div>
+            <div class="mockup__hero">
+              <div class="mockup__line w-80 h-3 accent mb-1"></div>
+              <div class="mockup__line w-60 h-3 mb-1"></div>
+              <div class="mockup__line w-40 h-2 muted mb-3"></div>
+              <div class="mockup__btn accent-bg"></div>
+            </div>
+            <div class="mockup__features">
+              <div class="mockup__feat-card"></div>
+              <div class="mockup__feat-card"></div>
+              <div class="mockup__feat-card"></div>
+            </div>
+          </div>
+        </div>
+        <div class="tpl-card__overlay">
+          <span class="tpl-card__preview-label">Náhled šablony</span>
+        </div>
+      </div>
+      <div class="tpl-card__body">
+        <div class="tpl-card__meta">
+          <span class="tpl-card__cat">SaaS · B2B</span>
+          <span class="tpl-card__badge soon">Brzy</span>
+        </div>
+        <h3 class="tpl-card__name">Landing Page — SaaS</h3>
+        <p class="tpl-card__desc">Konverzní landing page pro softwarové produkty a B2B služby s hero sekcí, features gridem a CTA.</p>
+        <div class="tpl-card__footer">
+          <div class="tpl-card__tags">
+            <span>React</span><span>Next.js</span><span>Tailwind</span>
+          </div>
+          <button class="tpl-card__btn" disabled>Brzy dostupné</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="tpl-card reveal" data-cat="ecommerce">
+      <div class="tpl-card__preview">
+        <div class="tpl-card__preview-bg style-b">
+          <div class="mockup">
+            <div class="mockup__nav">
+              <div class="mockup__dot"></div>
+              <div class="mockup__line w-16"></div>
+              <div class="mockup__line w-8 ml-auto"></div>
+            </div>
+            <div class="mockup__hero tall">
+              <div class="mockup__line w-40 h-3 accent mb-1"></div>
+              <div class="mockup__line w-60 h-3 mb-1"></div>
+              <div class="mockup__line w-24 h-2 muted"></div>
+            </div>
+            <div class="mockup__products">
+              <div class="mockup__prod-card"></div>
+              <div class="mockup__prod-card"></div>
+              <div class="mockup__prod-card"></div>
+              <div class="mockup__prod-card"></div>
+            </div>
+          </div>
+        </div>
+        <div class="tpl-card__overlay">
+          <span class="tpl-card__preview-label">Náhled šablony</span>
+        </div>
+      </div>
+      <div class="tpl-card__body">
+        <div class="tpl-card__meta">
+          <span class="tpl-card__cat">E-commerce · Fashion</span>
+          <span class="tpl-card__badge soon">Brzy</span>
+        </div>
+        <h3 class="tpl-card__name">E-shop — Módní značka</h3>
+        <p class="tpl-card__desc">Elegantní e-shop pro módní značky a lifestyle produkty. Produktový grid, filtrování a košík.</p>
+        <div class="tpl-card__footer">
+          <div class="tpl-card__tags">
+            <span>Shopify</span><span>Liquid</span>
+          </div>
+          <button class="tpl-card__btn" disabled>Brzy dostupné</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="tpl-card reveal" data-cat="portfolio">
+      <div class="tpl-card__preview">
+        <div class="tpl-card__preview-bg style-c">
+          <div class="mockup">
+            <div class="mockup__nav">
+              <div class="mockup__dot"></div>
+              <div class="mockup__line w-16"></div>
+              <div class="mockup__line w-8 ml-auto"></div>
+            </div>
+            <div class="mockup__hero">
+              <div class="mockup__big-text"></div>
+              <div class="mockup__big-text w-half"></div>
+            </div>
+            <div class="mockup__work-list">
+              <div class="mockup__work-row"></div>
+              <div class="mockup__work-row"></div>
+              <div class="mockup__work-row"></div>
+            </div>
+          </div>
+        </div>
+        <div class="tpl-card__overlay">
+          <span class="tpl-card__preview-label">Náhled šablony</span>
+        </div>
+      </div>
+      <div class="tpl-card__body">
+        <div class="tpl-card__meta">
+          <span class="tpl-card__cat">Portfolio · Studio</span>
+          <span class="tpl-card__badge soon">Brzy</span>
+        </div>
+        <h3 class="tpl-card__name">Portfolio — Studio</h3>
+        <p class="tpl-card__desc">Minimalistické portfolio pro kreativní studia a freelancery. Velká typografie, list projektů.</p>
+        <div class="tpl-card__footer">
+          <div class="tpl-card__tags">
+            <span>HTML</span><span>CSS</span><span>GSAP</span>
+          </div>
+          <button class="tpl-card__btn" disabled>Brzy dostupné</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="tpl-card reveal" data-cat="services">
+      <div class="tpl-card__preview">
+        <div class="tpl-card__preview-bg style-d">
+          <div class="mockup">
+            <div class="mockup__nav">
+              <div class="mockup__dot"></div>
+              <div class="mockup__line w-16"></div>
+              <div class="mockup__line w-8 ml-auto"></div>
+            </div>
+            <div class="mockup__hero">
+              <div class="mockup__line w-80 h-3 accent mb-1"></div>
+              <div class="mockup__line w-50 h-2 muted mb-3"></div>
+              <div class="mockup__btn accent-bg"></div>
+            </div>
+            <div class="mockup__services-list">
+              <div class="mockup__svc-row"></div>
+              <div class="mockup__svc-row"></div>
+              <div class="mockup__svc-row"></div>
+            </div>
+          </div>
+        </div>
+        <div class="tpl-card__overlay">
+          <span class="tpl-card__preview-label">Náhled šablony</span>
+        </div>
+      </div>
+      <div class="tpl-card__body">
+        <div class="tpl-card__meta">
+          <span class="tpl-card__cat">Služby · Lokální firma</span>
+          <span class="tpl-card__badge soon">Brzy</span>
+        </div>
+        <h3 class="tpl-card__name">Firemní web — Služby</h3>
+        <p class="tpl-card__desc">Solidní prezentační web pro řemeslné firmy, opravny a lokální poskytovatele služeb.</p>
+        <div class="tpl-card__footer">
+          <div class="tpl-card__tags">
+            <span>WordPress</span><span>Custom</span>
+          </div>
+          <button class="tpl-card__btn" disabled>Brzy dostupné</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="tpl-card reveal" data-cat="other">
+      <div class="tpl-card__preview">
+        <div class="tpl-card__preview-bg style-e">
+          <div class="mockup">
+            <div class="mockup__nav">
+              <div class="mockup__dot"></div>
+              <div class="mockup__line w-16"></div>
+              <div class="mockup__line w-8 ml-auto"></div>
+            </div>
+            <div class="mockup__hero">
+              <div class="mockup__line w-60 h-3 mb-1"></div>
+              <div class="mockup__line w-80 h-3 accent mb-1"></div>
+              <div class="mockup__line w-40 h-2 muted"></div>
+            </div>
+            <div class="mockup__blog-grid">
+              <div class="mockup__blog-card wide"></div>
+              <div class="mockup__blog-col">
+                <div class="mockup__blog-card sm"></div>
+                <div class="mockup__blog-card sm"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tpl-card__overlay">
+          <span class="tpl-card__preview-label">Náhled šablony</span>
+        </div>
+      </div>
+      <div class="tpl-card__body">
+        <div class="tpl-card__meta">
+          <span class="tpl-card__cat">Blog · Obsah</span>
+          <span class="tpl-card__badge soon">Brzy</span>
+        </div>
+        <h3 class="tpl-card__name">Blog — Osobní brand</h3>
+        <p class="tpl-card__desc">Čistý blog s editoriálním typem pro osobní značky, influencery a zpravodajské weby.</p>
+        <div class="tpl-card__footer">
+          <div class="tpl-card__tags">
+            <span>Next.js</span><span>MDX</span>
+          </div>
+          <button class="tpl-card__btn" disabled>Brzy dostupné</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="tpl-card reveal" data-cat="other">
+      <div class="tpl-card__preview">
+        <div class="tpl-card__preview-bg style-f">
+          <div class="mockup">
+            <div class="mockup__nav">
+              <div class="mockup__dot"></div>
+              <div class="mockup__line w-16"></div>
+              <div class="mockup__line w-8 ml-auto"></div>
+            </div>
+            <div class="mockup__hero tall">
+              <div class="mockup__line w-50 h-3 accent mb-1"></div>
+              <div class="mockup__line w-70 h-2 muted mb-3"></div>
+              <div class="mockup__btn"></div>
+            </div>
+            <div class="mockup__menu-grid">
+              <div class="mockup__menu-item"></div>
+              <div class="mockup__menu-item"></div>
+              <div class="mockup__menu-item"></div>
+              <div class="mockup__menu-item"></div>
+              <div class="mockup__menu-item"></div>
+              <div class="mockup__menu-item"></div>
+            </div>
+          </div>
+        </div>
+        <div class="tpl-card__overlay">
+          <span class="tpl-card__preview-label">Náhled šablony</span>
+        </div>
+      </div>
+      <div class="tpl-card__body">
+        <div class="tpl-card__meta">
+          <span class="tpl-card__cat">Gastronomie · Pohostinství</span>
+          <span class="tpl-card__badge soon">Brzy</span>
+        </div>
+        <h3 class="tpl-card__name">Restaurant — Menu & Rezervace</h3>
+        <p class="tpl-card__desc">Moderní web pro restaurace a kavárny. Online menu, rezervační systém a galerie.</p>
+        <div class="tpl-card__footer">
+          <div class="tpl-card__tags">
+            <span>React</span><span>CMS</span>
+          </div>
+          <button class="tpl-card__btn" disabled>Brzy dostupné</button>
+        </div>
+      </div>
+    </article>
+
+  </div>
+
+  <!-- CTA BAND -->
+  <div class="cta-band reveal">
+    <h2 class="cta-title">
+      Nic vám<br/>
+      nevyhovuje? <em>Uděláme</em><br/>
+      <em>na míru.</em>
+    </h2>
+    <div class="cta-actions">
+      <a href="index.html#contact" class="btn-primary">
+        Nezávazná konzultace
+        <svg width="14" height="14" fill="none" viewBox="0 0 14 14">
+          <path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </a>
+      <a href="index.html#work" class="btn-outline">Naše projekty</a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand">SiteSpot</div>
+        <div class="footer-tag">Award-Winning Digital Agency</div>
+      </div>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="index.html#work">Work</a>
+        <a href="index.html#services">Services</a>
+        <a href="templates.html">Šablony</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+      <div class="footer-socials">
+        <a href="#">LinkedIn</a>
+        <a href="#">Instagram</a>
+        <a href="#">Behance</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 SiteSpot. Všechna práva vyhrazena.</span>
+      <span>Navrženo & vyvinuto v Plzni.</span>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script src="js/templates.js"></script>
+  <script src="js/animations.js"></script>
+</body>
+</html>
