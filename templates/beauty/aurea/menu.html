@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ošetření & ceník — Klinika Aurea</title>
+<meta name="description" content="Ošetření kliniky Aurea — injekční ošetření, lasery, pleťová ošetření a péče o tělo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="menu">
+
+<div class="util">
+  <div class="util__inner">
+    <div class="util__l"><span>Estetická dermatologie pod dohledem lékařů</span></div>
+    <div class="util__r"><a href="tel:+420224118000">+420 224 118 000</a><a href="mailto:recepce@klinika-aurea.cz">recepce@klinika-aurea.cz</a></div>
+  </div>
+</div>
+
+<nav class="nav">
+  <a href="index.html" class="nav__logo">Aurea</a>
+  <ul class="nav__links">
+    <li><a href="index.html">Úvod</a></li>
+    <li><a href="menu.html" class="active">Ošetření</a></li>
+    <li><a href="o-nas.html">O klinice</a></li>
+    <li><a href="galerie.html">Výsledky</a></li>
+    <li><a href="kontakt.html">Kontakt</a></li>
+    <li><a href="kontakt.html" class="nav__cta">Bezplatná konzultace</a></li>
+  </ul>
+  <button class="nav__burger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<header class="pagehead">
+  <h1>Ošetření & <em>ceník</em></h1>
+  <p>Přehled nejčastějších ošetření. Přesný plán a cenu vždy potvrdíme po konzultaci s lékařem.</p>
+</header>
+
+<section style="padding-top:0">
+  <div class="s-head">
+    <p class="eyebrow eyebrow--center">Přehled ošetření</p>
+    <h2 class="s-title">Vyberte <em>oblast</em></h2>
+  </div>
+  <div style="text-align:center"><div class="menu__tabs">
+    <button class="menu__tab active" data-tab="injekce">Injekce</button>
+    <button class="menu__tab" data-tab="lasery">Lasery</button>
+    <button class="menu__tab" data-tab="plet">Pleť</button>
+    <button class="menu__tab" data-tab="telo">Tělo</button>
+  </div></div>
+
+  <div class="menu__grid">
+    <div class="menu__panel" data-panel="injekce">
+      <div class="mitem"><div class="mitem__l"><span class="mitem__name">Botulotoxin — 1 oblast</span><span class="mitem__desc">vrásky čela / okolí očí</span></div><span class="mitem__price">od 3 500 Kč</span></div>
+      <div class="mitem"><div class="mitem__l"><span class="mitem__name">Výplň rtů</span><span class="mitem__desc">kyselina hyaluronová</span></div><span class="mitem__price">od 5 900 Kč</span></div>
+      <div class="mitem"><div class="mitem__l"><span class="mitem__name">Výplň vrásek<span class="mitem__tag">oblíbené</span></span><span class="mitem__desc">nasolabální rýhy</span></div><span class="mitem__price">od 5 500 Kč</span></div>
+      <div class="mitem"><div class="mitem__l"><span class="mitem__name">Mezoterapie</span><span class="mitem__desc">revitalizace pleti</span></div><span class="mitem__price">od 2 900 Kč</span></div>
+    </div>
+
+    <div class="menu__panel" data-panel="lasery" style="display:none">
+      <div class="mitem"><div class="mitem__l"><span class="mitem__name">Odstranění pigmentací</span><span class="mitem__desc">obličej / dekolt</span></div><span class="mitem__price">od 2 500 Kč</span></div>
+      <div class="mitem"><div class="mitem__l"><span class="mitem__name">Cévky & zarudnutí</span><span class="mitem__desc">laser na žilky</span></div><span class="mitem__price">od 2 900 Kč</span></div>
+      <div class="mitem"><div class="mitem__l"><span class="mitem__name">Fotorejuvenace<span class="mitem__tag">omlazení</span></span><span class="mitem__desc">IPL ošetření</span></div><span class="mitem__price">od 3 200 Kč</span></div>
+      <div class="mitem"><div class="mitem__l"><span class="mitem__name">Laserová epilace</span><span class="mitem__desc">dle oblasti</span></div><span class="mitem__price">od 990 Kč</span></div>
+    </div>
+
+    <div class="menu__panel" data-panel="plet" style="display:none">
+      <div class="mitem"><div class="mitem__l"><span class="mitem__name">Chemický peeling</span><span class="mitem__desc">rozjasnění a akné</span></div><span class="mitem__price">od 1 900 Kč</span></div>
+      <div class="mitem"><div class="mitem__l"><span class="mitem__name">Hydrafacial</span><span class="mitem__desc">čištění a hydratace</span></div><span class="mitem__price">od 2 400 Kč</span></div>
+      <div class="mitem"><div class="mitem__l"><span class="mitem__name">Mikrojehličkování</span><span class="mitem__desc">jizvy a textura</span></div><span class="mitem__price">od 2 900 Kč</span></div>
+    </div>
+
+    <div class="menu__panel" data-panel="telo" style="display:none">
+      <div class="mitem"><div class="mitem__l"><span class="mitem__name">Lipolýza</span><span class="mitem__desc">lokální tukové polštářky</span></div><span class="mitem__price">od 3 500 Kč</span></div>
+      <div class="mitem"><div class="mitem__l"><span class="mitem__name">Radiofrekvence</span><span class="mitem__desc">zpevnění pokožky</span></div><span class="mitem__price">od 2 200 Kč</span></div>
+      <div class="mitem"><div class="mitem__l"><span class="mitem__name">Ošetření strií</span><span class="mitem__desc">laser / mikrojehly</span></div><span class="mitem__price">od 2 500 Kč</span></div>
+    </div>
+  </div>
+  <p class="menu__note">Ceny jsou orientační a závisí na rozsahu. Konečnou kalkulaci dostanete po bezplatné konzultaci.</p>
+</section>
+
+<section class="ctaband">
+  <h2 class="s-title">Nevíte, co je <em>pro vás?</em></h2>
+  <p>Lékař vám poradí na bezplatné konzultaci. Bez závazku.</p>
+  <div class="ctaband__acts"><a href="kontakt.html" class="btn btn--white">Objednat konzultaci</a></div>
+</section>
+
+<footer class="footer">
+  <div class="footer__top">
+    <div><div class="footer__brand">Aurea</div><p>Klinika estetické dermatologie · pod dohledem atestovaných lékařů.</p></div>
+    <div class="footer__col"><h5>Ošetření</h5><a href="menu.html">Injekce</a><a href="menu.html">Lasery</a><a href="menu.html">Pleť</a></div>
+    <div class="footer__col"><h5>Klinika</h5><a href="o-nas.html">O nás</a><a href="galerie.html">Výsledky</a><a href="kontakt.html">Kontakt</a></div>
+    <div class="footer__col"><h5>Kontakt</h5><a href="tel:+420224118000">+420 224 118 000</a><a href="mailto:recepce@klinika-aurea.cz">recepce@klinika-aurea.cz</a><p>Národní 8, Praha 1</p></div>
+  </div>
+  <div class="footer__bottom"><span>© 2026 Klinika Aurea · IČO 234 56 789</span><span>Ukázkový web · demo · SiteSpot</span></div>
+</footer>
+
+<a href="kontakt.html" class="floatcta">Bezplatná konzultace</a>
+<script src="js/main.js"></script>
+</body>
+</html>

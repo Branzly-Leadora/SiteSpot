@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Menu — FORMA</title>
+<meta name="description" content="Menu FORMA — brunch, bowls, výběrová káva a sladké.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="menu">
+
+<nav class="nav">
+  <a href="index.html" class="nav__logo">FORMA <small>/2020</small></a>
+  <ul class="nav__links">
+    <li><a href="index.html">Úvod</a></li>
+    <li><a href="menu.html" class="active">Menu</a></li>
+    <li><a href="o-nas.html">Příběh</a></li>
+    <li><a href="galerie.html">Galerie</a></li>
+    <li><a href="kontakt.html">Kontakt</a></li>
+    <li><a href="kontakt.html" class="nav__cta">Najít nás</a></li>
+  </ul>
+  <button class="nav__burger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<header class="pagehead">
+  <p class="secnum">Krátký lístek, dlouhá péče</p>
+  <h1>Menu</h1>
+  <p>Vaříme celý den. Co je na lístku, je sezónní — a když něco dojde, je to proto, že to bylo dobré.</p>
+</header>
+
+<section>
+  <div class="menu__tabs">
+    <button class="menu__tab active" data-tab="brunch">01 / Brunch</button>
+    <button class="menu__tab" data-tab="bowls">02 / Bowls</button>
+    <button class="menu__tab" data-tab="kava">03 / Káva</button>
+    <button class="menu__tab" data-tab="sladke">04 / Sladké</button>
+  </div>
+
+  <div class="menu__grid">
+    <div class="menu__panel" data-panel="brunch">
+      <div class="mitem"><span class="mitem__idx">01</span><div><div class="mitem__name">Avokádo toast<span class="mitem__tag">stálice</span></div><p class="mitem__desc">Kváskový chléb, avokádo, pošírované vejce, chilli, limetka.</p></div><span class="mitem__price">189 Kč</span></div>
+      <div class="mitem"><span class="mitem__idx">02</span><div><div class="mitem__name">Vejce Benedict</div><p class="mitem__desc">Anglický muffin, šunka, pošírovaná vejce, holandská omáčka.</p></div><span class="mitem__price">215 Kč</span></div>
+      <div class="mitem"><span class="mitem__idx">03</span><div><div class="mitem__name">Šakšuka<span class="mitem__tag">pikantní</span></div><p class="mitem__desc">Vejce dušená v pikantní rajčatové omáčce, feta, chléb.</p></div><span class="mitem__price">195 Kč</span></div>
+      <div class="mitem"><span class="mitem__idx">04</span><div><div class="mitem__name">Plný talíř</div><p class="mitem__desc">Vejce, klobása, fazole, grilované rajče, žampiony, toust.</p></div><span class="mitem__price">245 Kč</span></div>
+      <div class="mitem"><span class="mitem__idx">05</span><div><div class="mitem__name">Halloumi wrap</div><p class="mitem__desc">Grilovaný halloumi, hummus, zelenina, tortilla.</p></div><span class="mitem__price">179 Kč</span></div>
+      <div class="mitem"><span class="mitem__idx">06</span><div><div class="mitem__name">Croque madame</div><p class="mitem__desc">Toust se šunkou a sýrem, bešamel, sázené vejce.</p></div><span class="mitem__price">199 Kč</span></div>
+    </div>
+
+    <div class="menu__panel" data-panel="bowls" style="display:none">
+      <div class="mitem"><span class="mitem__idx">01</span><div><div class="mitem__name">Granola bowl<span class="mitem__tag">oblíbené</span></div><p class="mitem__desc">Domácí granola, jogurt, sezónní ovoce, arašídové máslo.</p></div><span class="mitem__price">155 Kč</span></div>
+      <div class="mitem"><span class="mitem__idx">02</span><div><div class="mitem__name">Açaí bowl</div><p class="mitem__desc">Açaí, banán, lesní ovoce, kokos, chia. Energie do dne.</p></div><span class="mitem__price">185 Kč</span></div>
+      <div class="mitem"><span class="mitem__idx">03</span><div><div class="mitem__name">Poke bowl<span class="mitem__tag">po 11:00</span></div><p class="mitem__desc">Rýže, losos, avokádo, edamame, sezam, wakame.</p></div><span class="mitem__price">225 Kč</span></div>
+      <div class="mitem"><span class="mitem__idx">04</span><div><div class="mitem__name">Protein bowl</div><p class="mitem__desc">Quinoa, grilované kuře, vejce, cizrna, pesto.</p></div><span class="mitem__price">215 Kč</span></div>
+    </div>
+
+    <div class="menu__panel" data-panel="kava" style="display:none">
+      <div class="mitem"><span class="mitem__idx">01</span><div><div class="mitem__name">Filtr dne<span class="mitem__tag">denně jiná</span></div><p class="mitem__desc">Rotující výběr z pražíren, které sledujeme jménem.</p></div><span class="mitem__price">75 Kč</span></div>
+      <div class="mitem"><span class="mitem__idx">02</span><div><div class="mitem__name">Flat white</div><p class="mitem__desc">Dvojité espresso, hedvábné mléko. Náš nejprodávanější.</p></div><span class="mitem__price">79 Kč</span></div>
+      <div class="mitem"><span class="mitem__idx">03</span><div><div class="mitem__name">Espresso / Cortado</div><p class="mitem__desc">House blend i sezónní single origin.</p></div><span class="mitem__price">od 59 Kč</span></div>
+      <div class="mitem"><span class="mitem__idx">04</span><div><div class="mitem__name">Matcha latte</div><p class="mitem__desc">Ceremoniální matcha, mléko dle výběru.</p></div><span class="mitem__price">95 Kč</span></div>
+      <div class="mitem"><span class="mitem__idx">05</span><div><div class="mitem__name">Cold brew</div><p class="mitem__desc">16 hodin za studena. Přirozeně sladký, bez hořkosti.</p></div><span class="mitem__price">89 Kč</span></div>
+    </div>
+
+    <div class="menu__panel" data-panel="sladke" style="display:none">
+      <div class="mitem"><span class="mitem__idx">01</span><div><div class="mitem__name">Banana bread<span class="mitem__tag">signature</span></div><p class="mitem__desc">Vláčný, s vlašskými ořechy, nahřátý na másle.</p></div><span class="mitem__price">95 Kč</span></div>
+      <div class="mitem"><span class="mitem__idx">02</span><div><div class="mitem__name">Cinnamon roll</div><p class="mitem__desc">Skořicový šnek z kynutého těsta, polevy se nebojíme.</p></div><span class="mitem__price">85 Kč</span></div>
+      <div class="mitem"><span class="mitem__idx">03</span><div><div class="mitem__name">Lívance</div><p class="mitem__desc">Nadýchané americké lívance, javorový sirup, máslo, ovoce.</p></div><span class="mitem__price">165 Kč</span></div>
+      <div class="mitem"><span class="mitem__idx">04</span><div><div class="mitem__name">Cookie dne</div><p class="mitem__desc">Pečeme každé ráno. Než dojde.</p></div><span class="mitem__price">55 Kč</span></div>
+    </div>
+  </div>
+
+  <p class="menu__note">// Alergeny rádi sdělíme u pultu. Bezlepkové a rostlinné varianty na vyžádání.</p>
+</section>
+
+<section class="ed-cta">
+  <p class="secnum secnum--center">Máš hlad?</p>
+  <h2 class="s-title">Tak <em>přijď</em></h2>
+  <div class="ed-cta__links">
+    <a href="kontakt.html" class="btn btn--solid"><span>Najít nás</span></a>
+    <a href="tel:+420776220020" class="btn"><span>Zavolat</span></a>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer__top">
+    <div><div class="footer__brand">FORMA</div><p>Brunch & coffee · Žižkov</p></div>
+    <nav class="footer__nav"><a href="index.html">Úvod</a><a href="menu.html">Menu</a><a href="o-nas.html">Příběh</a><a href="galerie.html">Galerie</a><a href="kontakt.html">Kontakt</a></nav>
+  </div>
+  <div class="footer__bottom"><span>Bořivojova 35, Praha 3 · +420 776 220 020</span><span>© 2026 FORMA · demo · SiteSpot</span></div>
+</footer>
+
+<a href="kontakt.html" class="floatcta">Najít nás</a>
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Služby & ceník — VOLT</title>
+<meta name="description" content="Služby VOLT — elektroinstalace, opravy a havárie, revize, chytrá domácnost.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="menu">
+
+<nav class="nav">
+  <a href="index.html" class="nav__logo">VOLT <small>/2012</small></a>
+  <ul class="nav__links">
+    <li><a href="index.html">Úvod</a></li>
+    <li><a href="menu.html" class="active">Služby</a></li>
+    <li><a href="o-nas.html">O nás</a></li>
+    <li><a href="galerie.html">Realizace</a></li>
+    <li><a href="kontakt.html">Kontakt</a></li>
+    <li><a href="kontakt.html" class="nav__cta">Poptávka</a></li>
+  </ul>
+  <button class="nav__burger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<header class="pagehead">
+  <p class="secnum">Co umíme</p>
+  <h1>Služby</h1>
+  <p>Ceny jsou orientační — přesnou cenu řekneme po zaměření. Revize a doklady vždy v ceně.</p>
+</header>
+
+<section>
+  <div class="menu__tabs">
+    <button class="menu__tab active" data-tab="instalace">01 / Instalace</button>
+    <button class="menu__tab" data-tab="opravy">02 / Opravy</button>
+    <button class="menu__tab" data-tab="revize">03 / Revize</button>
+    <button class="menu__tab" data-tab="smart">04 / Smart home</button>
+  </div>
+
+  <div class="menu__grid">
+    <div class="menu__panel" data-panel="instalace">
+      <div class="mitem"><span class="mitem__idx">01</span><div><div class="mitem__name">Kompletní rozvody<span class="mitem__tag">nej</span></div><p class="mitem__desc">Nová elektroinstalace bytu nebo domu.</p></div><span class="mitem__price">dle projektu</span></div>
+      <div class="mitem"><span class="mitem__idx">02</span><div><div class="mitem__name">Nové zásuvky & vypínače</div><p class="mitem__desc">Doplnění a přesun zásuvkových okruhů.</p></div><span class="mitem__price">od 700 Kč</span></div>
+      <div class="mitem"><span class="mitem__idx">03</span><div><div class="mitem__name">Rozvaděč</div><p class="mitem__desc">Nový rozvaděč, jištění, přepěťová ochrana.</p></div><span class="mitem__price">od 4 000 Kč</span></div>
+      <div class="mitem"><span class="mitem__idx">04</span><div><div class="mitem__name">Hromosvod</div><p class="mitem__desc">Montáž a revize hromosvodu.</p></div><span class="mitem__price">dle projektu</span></div>
+    </div>
+
+    <div class="menu__panel" data-panel="opravy" style="display:none">
+      <div class="mitem"><span class="mitem__idx">01</span><div><div class="mitem__name">Havárie 24/7<span class="mitem__tag">expres</span></div><p class="mitem__desc">Výpadky, zkraty, jiskření. Dojezd do 2 h.</p></div><span class="mitem__price">od 1 500 Kč</span></div>
+      <div class="mitem"><span class="mitem__idx">02</span><div><div class="mitem__name">Oprava zásuvky / okruhu</div><p class="mitem__desc">Diagnostika a oprava na místě.</p></div><span class="mitem__price">od 700 Kč</span></div>
+      <div class="mitem"><span class="mitem__idx">03</span><div><div class="mitem__name">Výměna jističů</div><p class="mitem__desc">Náhrada vadných nebo poddimenzovaných.</p></div><span class="mitem__price">od 500 Kč</span></div>
+    </div>
+
+    <div class="menu__panel" data-panel="revize" style="display:none">
+      <div class="mitem"><span class="mitem__idx">01</span><div><div class="mitem__name">Revize bytu</div><p class="mitem__desc">Revizní zpráva pro byt.</p></div><span class="mitem__price">od 1 500 Kč</span></div>
+      <div class="mitem"><span class="mitem__idx">02</span><div><div class="mitem__name">Revize domu</div><p class="mitem__desc">Kompletní revize rodinného domu.</p></div><span class="mitem__price">od 2 900 Kč</span></div>
+      <div class="mitem"><span class="mitem__idx">03</span><div><div class="mitem__name">Revize firmy / provozu</div><p class="mitem__desc">Pravidelné revize dle rozsahu.</p></div><span class="mitem__price">dle rozsahu</span></div>
+    </div>
+
+    <div class="menu__panel" data-panel="smart" style="display:none">
+      <div class="mitem"><span class="mitem__idx">01</span><div><div class="mitem__name">Chytré osvětlení</div><p class="mitem__desc">Ovládání světel mobilem i hlasem.</p></div><span class="mitem__price">dle projektu</span></div>
+      <div class="mitem"><span class="mitem__idx">02</span><div><div class="mitem__name">Chytré zásuvky & spínání</div><p class="mitem__desc">Automatizace a scénáře.</p></div><span class="mitem__price">dle projektu</span></div>
+      <div class="mitem"><span class="mitem__idx">03</span><div><div class="mitem__name">Wallbox pro elektromobil</div><p class="mitem__desc">Montáž domácí nabíječky.</p></div><span class="mitem__price">od 12 000 Kč</span></div>
+    </div>
+  </div>
+
+  <p class="menu__note">// Revize a protokoly v ceně. Záruka na práci. Havárie 24/7.</p>
+</section>
+
+<section class="ed-cta">
+  <p class="secnum secnum--center">Potřebujete elektrikáře?</p>
+  <h2 class="s-title">Tak <em>napište</em></h2>
+  <div class="ed-cta__links">
+    <a href="kontakt.html" class="btn btn--solid"><span>Nezávazná poptávka</span></a>
+    <a href="tel:+420724330440" class="btn"><span>Havárie 24/7</span></a>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer__top">
+    <div><div class="footer__brand">VOLT</div><p>Elektroinstalace · Praha · havárie 24/7</p></div>
+    <nav class="footer__nav"><a href="index.html">Úvod</a><a href="menu.html">Služby</a><a href="o-nas.html">O nás</a><a href="galerie.html">Realizace</a><a href="kontakt.html">Kontakt</a></nav>
+  </div>
+  <div class="footer__bottom"><span>Elektrárenská 9, Praha 7 · +420 724 330 440</span><span>© 2026 VOLT · demo · SiteSpot</span></div>
+</footer>
+
+<a href="kontakt.html" class="floatcta">Poptávka</a>
+<script src="js/main.js"></script>
+</body>
+</html>

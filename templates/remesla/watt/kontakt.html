@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kontakt & kalkulace — WATT</title>
+<meta name="description" content="Nezávazná kalkulace úspory od WATT — adresa, kontakt a formulář.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="kontakt">
+
+<nav class="nav">
+  <a href="index.html" class="nav__logo"><span>⚡</span> WATT</a>
+  <ul class="nav__links">
+    <li><a href="index.html">Úvod</a></li>
+    <li><a href="menu.html">Řešení</a></li>
+    <li><a href="o-nas.html">O nás</a></li>
+    <li><a href="galerie.html">Realizace</a></li>
+    <li><a href="kontakt.html" class="active">Kontakt</a></li>
+    <li><a href="#kalkulace" class="nav__cta">Spočítat úsporu</a></li>
+  </ul>
+  <button class="nav__burger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<header class="pagehead">
+  <div class="glow glow--p"></div>
+  <div class="pagehead__in">
+    <h1>Spočítáme <span class="grad-text">vaši úsporu</span></h1>
+    <p>Nezávazně a zdarma. Napište nám pár údajů a ozveme se s kalkulací.</p>
+  </div>
+</header>
+
+<section>
+  <div class="contact__inner">
+    <div class="reveal-l">
+      <div class="infocard">
+        <span class="eyebrow">Kancelář · Praha 9</span>
+        <h2 class="s-title" style="font-size:clamp(1.5rem,3vw,2rem)">Kdy nás <span class="grad-text">zastihnete</span></h2>
+        <div class="hours">
+          <div class="hours__row" data-days="0,1,2,3,4"><span class="hours__day">Pondělí – Pátek</span><span class="hours__time">8:00 – 18:00</span></div>
+          <div class="hours__row" data-days="5"><span class="hours__day">Sobota</span><span class="hours__time">9:00 – 13:00</span></div>
+          <div class="hours__row" data-days="6"><span class="hours__day">Neděle</span><span class="hours__time">zavřeno</span></div>
+        </div>
+        <div class="details">
+          <div class="detail"><div class="ic">📍</div><div class="txt"><strong>Adresa</strong>Solární 7, 190 00 Praha 9 – Vysočany</div></div>
+          <div class="detail"><div class="ic">📞</div><div class="txt"><strong>Telefon</strong><a href="tel:+420770440880">+420 770 440 880</a></div></div>
+          <div class="detail"><div class="ic">✉️</div><div class="txt"><strong>E-mail</strong><a href="mailto:ahoj@watt-energie.cz">ahoj@watt-energie.cz</a></div></div>
+          <div class="detail"><div class="ic">🌍</div><div class="txt"><strong>Působnost</strong>Celá ČR</div></div>
+        </div>
+        <div class="mapbox">
+          <svg viewBox="0 0 600 340" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <rect width="600" height="340" fill="#110F1C"/>
+            <g stroke="#221F30" stroke-width="6" fill="none"><path d="M-20 90 H620"/><path d="M-20 190 H620"/><path d="M-20 280 H620"/><path d="M120 -20 V360"/><path d="M300 -20 V360"/><path d="M460 -20 V360"/></g>
+            <g stroke="#1A1727" stroke-width="3" fill="none"><path d="M-20 140 H620"/><path d="M-20 235 H620"/><path d="M210 -20 V360"/><path d="M385 -20 V360"/></g>
+            <rect x="150" y="105" width="120" height="60" rx="4" fill="#1C1930"/><rect x="330" y="200" width="100" height="55" rx="4" fill="#1C1930"/>
+            <circle cx="300" cy="190" r="13" fill="#20D17E"/><circle cx="300" cy="190" r="26" fill="none" stroke="#16C2D6" stroke-width="2" opacity="0.6"/><path d="M300 190 L300 158" stroke="#20D17E" stroke-width="3"/>
+          </svg>
+          <a href="https://maps.google.com/?q=Vysočany+Praha" target="_blank" rel="noopener" class="mapbox__btn">Otevřít v Mapách</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal-r" id="kalkulace">
+      <form class="rform">
+        <span class="eyebrow">Nezávazná kalkulace</span>
+        <h2 class="s-title" style="font-size:clamp(1.5rem,3vw,2rem);margin:.6rem 0 1.2rem">Spočítat <span class="grad-text">úsporu</span></h2>
+        <div class="rform__row">
+          <div class="field"><label for="jmeno">Jméno</label><input type="text" id="jmeno" placeholder="Jan Novák" required></div>
+          <div class="field"><label for="tel">Telefon</label><input type="tel" id="tel" placeholder="+420 …" required></div>
+        </div>
+        <div class="rform__row">
+          <div class="field"><label for="zajem">Zájem o</label><select id="zajem"><option>Fotovoltaika</option><option>Baterie</option><option>Wallbox</option><option>Tepelné čerpadlo</option><option>Nevím, poradíte</option></select></div>
+          <div class="field"><label for="spotreba">Roční spotřeba (přibližně)</label><select id="spotreba"><option>do 3 MWh</option><option>3–5 MWh</option><option>5–8 MWh</option><option>8+ MWh</option><option>nevím</option></select></div>
+        </div>
+        <div class="field"><label for="email">E-mail</label><input type="email" id="email" placeholder="jan@email.cz"></div>
+        <div class="field"><label for="pozn">Poznámka</label><textarea id="pozn" rows="3" placeholder="Typ střechy, lokalita, dotazy…"></textarea></div>
+        <button type="submit" class="btn btn--grad" style="width:100%;justify-content:center">Chci kalkulaci</button>
+        <div class="rform__done">✓ Díky! Máme to — ozveme se s nezávaznou kalkulací úspory. <em>(Ukázkový formulář — neodesílá se.)</em></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer__top">
+    <div><div class="footer__brand">⚡ WATT</div><p>Fotovoltaika, baterie a chytré domácnosti na klíč. Dotace vyřídíme za vás.</p></div>
+    <div class="footer__col"><h5>Řešení</h5><a href="menu.html">Fotovoltaika</a><a href="menu.html">Baterie</a><a href="menu.html">Wallbox</a></div>
+    <div class="footer__col"><h5>WATT</h5><a href="o-nas.html">O nás</a><a href="galerie.html">Realizace</a><a href="kontakt.html">Kontakt</a></div>
+    <div class="footer__col"><h5>Kontakt</h5><a href="tel:+420770440880">+420 770 440 880</a><a href="mailto:ahoj@watt-energie.cz">ahoj@watt-energie.cz</a><p>Solární 7, Praha 9</p></div>
+  </div>
+  <div class="footer__bottom"><span>© 2026 WATT</span><span>Ukázkový web · demo · SiteSpot</span></div>
+</footer>
+
+<a href="#kalkulace" class="floatcta">Spočítat úsporu ⚡</a>
+<script src="js/main.js"></script>
+</body>
+</html>

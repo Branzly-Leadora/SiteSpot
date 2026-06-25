@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jízdy & ceník — RIDE</title>
+<meta name="description" content="Jízdy a ceník RIDE — RIDE 45, RHYTHM, POWER, BEATS & BURN, kredity a první jízda pro nováčky.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="menu">
+
+<nav class="nav">
+  <a href="index.html" class="nav__logo"><span>🚴</span> RIDE</a>
+  <ul class="nav__links">
+    <li><a href="index.html">Úvod</a></li>
+    <li><a href="menu.html" class="active">Jízdy</a></li>
+    <li><a href="o-nas.html">Příběh</a></li>
+    <li><a href="galerie.html">Galerie</a></li>
+    <li><a href="kontakt.html">Kontakt</a></li>
+    <li><a href="kontakt.html" class="nav__cta">Rezervovat jízdu</a></li>
+  </ul>
+  <button class="nav__burger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<header class="pagehead">
+  <div class="glow glow--p"></div>
+  <div class="pagehead__in">
+    <h1>Naše <span class="grad-text">jízdy</span></h1>
+    <p>Vyber jízdu, klikni na „+" a rezervuj si kolo. Cyklo-boty i ručník půjčíme na místě.</p>
+  </div>
+</header>
+
+<section style="padding-top:0">
+  <div style="text-align:center"><div class="menu__tabs">
+    <button class="menu__tab active" data-tab="jizdy">Jízdy</button>
+    <button class="menu__tab" data-tab="kredity">Kredity</button>
+    <button class="menu__tab" data-tab="novacci">Pro nováčky</button>
+    <button class="menu__tab" data-tab="merch">Merch</button>
+  </div></div>
+
+  <div class="menu__grid">
+    <div class="menu__panel" data-panel="jizdy">
+      <div class="mitem"><div class="mitem__img"><div class="ph ph-2"></div><span class="badge">TOP</span></div><div class="mitem__b"><div class="mitem__name">RIDE 45</div><p class="mitem__desc">Naše klasika. Beaty, kopce i sprinty. Pro všechny úrovně. 45 min.</p><div class="mitem__row"><span class="mitem__price grad-text">290 Kč</span><button class="mitem__add" aria-label="Rezervovat">+</button></div></div></div>
+      <div class="mitem"><div class="mitem__img"><div class="ph ph-4"></div></div><div class="mitem__b"><div class="mitem__name">RHYTHM RIDE</div><p class="mitem__desc">Choreografie v sedle do rytmu hudby. Spíš párty než dřina.</p><div class="mitem__row"><span class="mitem__price grad-text">290 Kč</span><button class="mitem__add" aria-label="Rezervovat">+</button></div></div></div>
+      <div class="mitem"><div class="mitem__img"><div class="ph ph-3"></div><span class="badge">DŘINA</span></div><div class="mitem__b"><div class="mitem__name">POWER</div><p class="mitem__desc">Vyšší odpor, intervaly, watty na maximum. Pro výkon. 45 min.</p><div class="mitem__row"><span class="mitem__price grad-text">320 Kč</span><button class="mitem__add" aria-label="Rezervovat">+</button></div></div></div>
+      <div class="mitem"><div class="mitem__img"><div class="ph ph-8"></div><span class="badge">NOVÉ</span></div><div class="mitem__b"><div class="mitem__name">BEATS &amp; BURN</div><p class="mitem__desc">Cardio v sedle + činky na horní půlku. Kompletní nálož. 50 min.</p><div class="mitem__row"><span class="mitem__price grad-text">330 Kč</span><button class="mitem__add" aria-label="Rezervovat">+</button></div></div></div>
+      <div class="mitem"><div class="mitem__img"><div class="ph ph-6"></div></div><div class="mitem__b"><div class="mitem__name">EARLY RIDE</div><p class="mitem__desc">Ranní jízda před prací. Naskoč v 6:30 a rozjeď den.</p><div class="mitem__row"><span class="mitem__price grad-text">270 Kč</span><button class="mitem__add" aria-label="Rezervovat">+</button></div></div></div>
+      <div class="mitem"><div class="mitem__img"><div class="ph ph-7"></div></div><div class="mitem__b"><div class="mitem__name">RIDE &amp; STRETCH</div><p class="mitem__desc">Kratší jízda + protažení na závěr. Pro tělo i regeneraci.</p><div class="mitem__row"><span class="mitem__price grad-text">290 Kč</span><button class="mitem__add" aria-label="Rezervovat">+</button></div></div></div>
+    </div>
+
+    <div class="menu__panel" data-panel="kredity" style="display:none">
+      <div class="mitem"><div class="mitem__img"><div class="ph ph-4"></div><span class="badge">HIT</span></div><div class="mitem__b"><div class="mitem__name">10 kreditů</div><p class="mitem__desc">Deset jízd, platnost 4 měsíce. Jedna jízda za 249 Kč.</p><div class="mitem__row"><span class="mitem__price grad-text">2 490 Kč</span><button class="mitem__add" aria-label="Koupit">+</button></div></div></div>
+      <div class="mitem"><div class="mitem__img"><div class="ph ph-2"></div></div><div class="mitem__b"><div class="mitem__name">5 kreditů</div><p class="mitem__desc">Pět jízd, platnost 2 měsíce. Na rozjezd ideál.</p><div class="mitem__row"><span class="mitem__price grad-text">1 350 Kč</span><button class="mitem__add" aria-label="Koupit">+</button></div></div></div>
+      <div class="mitem"><div class="mitem__img"><div class="ph ph-8"></div></div><div class="mitem__b"><div class="mitem__name">Měsíc neomezeně</div><p class="mitem__desc">Jezdi, kolikrát chceš. Pro pravidelné jezdce nejvýhodnější.</p><div class="mitem__row"><span class="mitem__price grad-text">2 990 Kč</span><button class="mitem__add" aria-label="Koupit">+</button></div></div></div>
+      <div class="mitem"><div class="mitem__img"><div class="ph ph-3"></div></div><div class="mitem__b"><div class="mitem__name">Dárkový voucher</div><p class="mitem__desc">Daruj jízdy. Voucher na libovolný počet kreditů.</p><div class="mitem__row"><span class="mitem__price grad-text">od 290 Kč</span><button class="mitem__add" aria-label="Koupit">+</button></div></div></div>
+    </div>
+
+    <div class="menu__panel" data-panel="novacci" style="display:none">
+      <div class="mitem"><div class="mitem__img"><div class="ph ph-2"></div><span class="badge">START</span></div><div class="mitem__b"><div class="mitem__name">První jízda</div><p class="mitem__desc">Zvýhodněná cena pro nováčky. Zapůjčení bot i ručníku v ceně.</p><div class="mitem__row"><span class="mitem__price grad-text">149 Kč</span><button class="mitem__add" aria-label="Rezervovat">+</button></div></div></div>
+      <div class="mitem"><div class="mitem__img"><div class="ph ph-4"></div></div><div class="mitem__b"><div class="mitem__name">Starter pack 3×</div><p class="mitem__desc">Tři jízdy na vyzkoušení za skvělou cenu. Platnost měsíc.</p><div class="mitem__row"><span class="mitem__price grad-text">590 Kč</span><button class="mitem__add" aria-label="Koupit">+</button></div></div></div>
+      <div class="mitem"><div class="mitem__img"><div class="ph ph-6"></div></div><div class="mitem__b"><div class="mitem__name">Úvodní zácvik</div><p class="mitem__desc">Krátké seznámení s kolem a nastavením před první jízdou. Zdarma.</p><div class="mitem__row"><span class="mitem__price grad-text">0 Kč</span><button class="mitem__add" aria-label="Rezervovat">+</button></div></div></div>
+    </div>
+
+    <div class="menu__panel" data-panel="merch" style="display:none">
+      <div class="mitem"><div class="mitem__img"><div class="ph ph-7"></div></div><div class="mitem__b"><div class="mitem__name">RIDE láhev</div><p class="mitem__desc">Nerez termoláhev s logem. Udrží studenou vodu celou jízdu.</p><div class="mitem__row"><span class="mitem__price grad-text">390 Kč</span><button class="mitem__add" aria-label="Koupit">+</button></div></div></div>
+      <div class="mitem"><div class="mitem__img"><div class="ph ph-8"></div></div><div class="mitem__b"><div class="mitem__name">Tílko / triko</div><p class="mitem__desc">Funkční materiál, neon logo. Ať tě v sále poznají.</p><div class="mitem__row"><span class="mitem__price grad-text">490 Kč</span><button class="mitem__add" aria-label="Koupit">+</button></div></div></div>
+      <div class="mitem"><div class="mitem__img"><div class="ph ph-3"></div></div><div class="mitem__b"><div class="mitem__name">Ponožky na kolo</div><p class="mitem__desc">Protiskluzové, do cyklo-bot. Balení dvou párů.</p><div class="mitem__row"><span class="mitem__price grad-text">190 Kč</span><button class="mitem__add" aria-label="Koupit">+</button></div></div></div>
+    </div>
+  </div>
+  <p class="menu__note">Rezervaci kola spravuješ v naší appce. Storno zdarma do 12 hodin před jízdou. Veggie smoothie po jízdě na baru.</p>
+</section>
+
+<section class="ctaband">
+  <div class="glow glow--o"></div>
+  <div class="ctaband__inner">
+    <h2 class="s-title">Vyber jízdu a <span class="grad-text">nasedni</span></h2>
+    <p style="color:var(--muted);max-width:460px;margin:1rem auto 0">Rezervuj kolo online — místo je pak jen tvoje.</p>
+    <div class="ctaband__acts"><a href="kontakt.html" class="btn btn--grad">Rezervovat jízdu</a></div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer__top">
+    <div><div class="footer__brand">🚴 RIDE</div><p>Indoor cycling studio v Praze. Tma, beaty a tvůj výkon. Rezervuj kolo online.</p></div>
+    <div class="footer__col"><h5>Jízdy</h5><a href="menu.html">RIDE 45</a><a href="menu.html">RHYTHM</a><a href="menu.html">POWER</a></div>
+    <div class="footer__col"><h5>RIDE</h5><a href="o-nas.html">Příběh</a><a href="galerie.html">Galerie</a><a href="kontakt.html">Studio</a></div>
+    <div class="footer__col"><h5>Kontakt</h5><a href="tel:+420770155045">+420 770 155 045</a><a href="mailto:ahoj@ride-studio.cz">ahoj@ride-studio.cz</a><p>Komunardů 30, Praha 7</p></div>
+  </div>
+  <div class="footer__bottom"><span>© 2026 RIDE</span><span>Ukázkový web · demo · SiteSpot</span></div>
+</footer>
+
+<a href="kontakt.html" class="floatcta">Rezervovat jízdu 🚴</a>
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kontakt & rezervace — Bar Klíč</title>
+<meta name="description" content="Rezervujte si místo v Bar Klíč — adresa, otevírací doba, telefon a online rezervace.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="kontakt">
+
+<nav class="nav">
+  <a href="index.html" class="nav__logo">Klíč <small>BAR · 2017</small></a>
+  <ul class="nav__links">
+    <li><a href="index.html">Úvod</a></li>
+    <li><a href="menu.html">Nápoje</a></li>
+    <li><a href="o-nas.html">Příběh</a></li>
+    <li><a href="galerie.html">Galerie</a></li>
+    <li><a href="kontakt.html" class="active">Kontakt</a></li>
+    <li><a href="#rezervace" class="nav__cta">Rezervovat</a></li>
+  </ul>
+  <button class="nav__burger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<header class="pagehead">
+  <p class="eyebrow">Plánujte návštěvu</p>
+  <h1>Najdete nás <em>po setmění</em></h1>
+  <p>Míst je málo a večery bývají plné — rezervaci vřele doporučujeme.</p>
+</header>
+
+<section>
+  <div class="wrap contact__inner">
+    <div class="reveal-l">
+      <p class="eyebrow">Otevírací doba</p>
+      <h2 class="s-title" style="font-size:clamp(1.8rem,3.5vw,2.6rem)">Kdy je <em>otevřeno</em></h2>
+      <div class="hours">
+        <div class="hours__row" data-days="0"><span class="hours__day">Pondělí</span><span class="hours__dots"></span><span class="hours__time">Zavřeno</span></div>
+        <div class="hours__row" data-days="1,2,3"><span class="hours__day">Úterý – Čtvrtek</span><span class="hours__dots"></span><span class="hours__time">18:00 – 01:00</span></div>
+        <div class="hours__row" data-days="4,5"><span class="hours__day">Pátek – Sobota</span><span class="hours__dots"></span><span class="hours__time">18:00 – 02:00</span></div>
+        <div class="hours__row" data-days="6"><span class="hours__day">Neděle</span><span class="hours__dots"></span><span class="hours__time">Zavřeno</span></div>
+      </div>
+      <div class="details">
+        <div class="detail"><span class="k">Adresa</span><span class="v">Dušní 9, 110 00 Praha 1 – Staré Město</span></div>
+        <div class="detail"><span class="k">Telefon</span><span class="v"><a href="tel:+420608112233">+420 608 112 233</a></span></div>
+        <div class="detail"><span class="k">E-mail</span><span class="v"><a href="mailto:ahoj@bar-klic.cz">ahoj@bar-klic.cz</a></span></div>
+        <div class="detail"><span class="k">Vchod</span><span class="v">Bez cedule — hledejte mosazný klíč na tmavých dveřích</span></div>
+      </div>
+      <div class="mappin" style="margin-top:2.4rem">Jsme v Dušní ulici kousek od Staroměstského náměstí. Žádná výloha, žádný neon — tmavé dveře a na nich mosazný klíč. Zazvoňte, otevřeme.</div>
+    </div>
+
+    <div class="reveal-r">
+      <div class="mapbox">
+        <svg viewBox="0 0 600 420" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <rect width="600" height="420" fill="#080604"/>
+          <g stroke="#241B10" stroke-width="6" fill="none"><path d="M-20 100 H620"/><path d="M-20 230 H620"/><path d="M-20 340 H620"/><path d="M120 -20 V440"/><path d="M300 -20 V440"/><path d="M460 -20 V440"/></g>
+          <g stroke="#1A130A" stroke-width="3" fill="none"><path d="M-20 160 H620"/><path d="M-20 290 H620"/><path d="M210 -20 V440"/><path d="M385 -20 V440"/></g>
+          <path d="M0 360 Q150 330 300 372 T600 350 V440 H0 Z" fill="#15110A" opacity="0.8"/>
+          <rect x="150" y="120" width="120" height="80" fill="#1C160D"/><rect x="330" y="240" width="100" height="70" fill="#1C160D"/><rect x="60" y="250" width="50" height="60" fill="#1C160D"/>
+          <circle cx="300" cy="225" r="13" fill="#C8A24A"/><circle cx="300" cy="225" r="26" fill="none" stroke="#C8A24A" stroke-width="2" opacity="0.5"/><path d="M300 225 L300 192" stroke="#C8A24A" stroke-width="3"/>
+        </svg>
+        <a href="https://maps.google.com/?q=Dušní+9+Praha" target="_blank" rel="noopener" class="mapbox__btn">Otevřít v Mapách</a>
+      </div>
+
+      <form class="rform" id="rezervace">
+        <p class="eyebrow" style="margin-top:.5rem">Online rezervace</p>
+        <div class="rform__row">
+          <div class="field"><label for="jmeno">Jméno a příjmení</label><input type="text" id="jmeno" placeholder="Jan Novák" required></div>
+          <div class="field"><label for="tel">Telefon</label><input type="tel" id="tel" placeholder="+420 …" required></div>
+        </div>
+        <div class="rform__row">
+          <div class="field"><label for="datum">Datum</label><input type="date" id="datum" required></div>
+          <div class="field"><label for="cas">Čas</label><select id="cas"><option>18:00</option><option>19:00</option><option>20:00</option><option>21:00</option><option>22:00</option><option>23:00</option></select></div>
+        </div>
+        <div class="rform__row">
+          <div class="field"><label for="osob">Počet osob</label><select id="osob"><option>2 osoby</option><option>3 osoby</option><option>4 osoby</option><option>5 osob</option><option>6 osob</option><option>7+ osob</option></select></div>
+          <div class="field"><label for="email">E-mail</label><input type="email" id="email" placeholder="jan@email.cz"></div>
+        </div>
+        <div class="field"><label for="pozn">Poznámka (nepovinné)</label><textarea id="pozn" rows="2" placeholder="Oslava, místo u baru, preference…"></textarea></div>
+        <button type="submit" class="btn btn--solid" style="width:100%"><span>Odeslat rezervaci</span></button>
+        <div class="rform__done">✓ Děkujeme! Vaši rezervaci jsme přijali — ozveme se s potvrzením. <em>(Ukázkový formulář — neodesílá se.)</em></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer__top">
+    <div class="footer__brand">Klíč</div>
+    <p>Autorské koktejly a přírodní vína · Dušní 9, Praha 1 · otevřeno po setmění</p>
+    <nav class="footer__nav">
+      <a href="index.html">Úvod</a><a href="menu.html">Nápoje</a><a href="o-nas.html">Příběh</a><a href="galerie.html">Galerie</a><a href="kontakt.html">Kontakt</a>
+    </nav>
+  </div>
+  <div class="footer__bottom">
+    <span>© 2026 Bar Klíč</span>
+    <span>Ukázkový web · demo · SiteSpot</span>
+  </div>
+</footer>
+
+<a href="#rezervace" class="floatcta resbar">
+  <span class="resbar__note">Bar Klíč · <b>dnes otevřeno do 02:00</b></span>
+  <span class="resbar__act">Rezervovat místo</span>
+</a>
+<script src="js/main.js"></script>
+</body>
+</html>

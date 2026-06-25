@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nabídka & balíčky — Hodovna</title>
+<meta name="description" content="Cateringové balíčky Hodovna — raut, menu o 3 chodech, degustace. Ukázkové menu a ceny na osobu.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="menu">
+
+<div class="util">
+  <div class="util__inner">
+    <div class="util__l"><span>Catering pro firmy i soukromé akce</span></div>
+    <div class="util__r"><a href="tel:+420226200300">+420 226 200 300</a><a href="mailto:poptavka@hodovna.cz">poptavka@hodovna.cz</a></div>
+  </div>
+</div>
+
+<nav class="nav">
+  <a href="index.html" class="nav__logo">Hodovna</a>
+  <ul class="nav__links">
+    <li><a href="index.html">Úvod</a></li>
+    <li><a href="menu.html" class="active">Nabídka</a></li>
+    <li><a href="o-nas.html">O nás</a></li>
+    <li><a href="galerie.html">Reference</a></li>
+    <li><a href="kontakt.html">Kontakt</a></li>
+    <li><a href="kontakt.html" class="nav__cta">Nezávazná poptávka</a></li>
+  </ul>
+  <button class="nav__burger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<header class="pagehead">
+  <h1>Nabídka & <em>balíčky</em></h1>
+  <p>Tři osvědčené formáty — a ke všem menu na míru. Ceny jsou orientační, na osobu.</p>
+</header>
+
+<!-- PACKAGES -->
+<section>
+  <div class="pkgs">
+    <div class="pkg reveal"><div class="pkg__tag">Pro menší akce</div><h3>Raut</h3><div class="pkg__price">280 Kč <span>/ os.</span></div><ul class="feat"><li>8 druhů finger food</li><li>Nealko nápoje</li><li>Inventář a doprava</li><li>Příprava na místě</li></ul><a href="kontakt.html" class="btn btn--ghost">Poptat raut</a></div>
+    <div class="pkg pkg--featured reveal"><div class="pkg__badge">Nejoblíbenější</div><div class="pkg__tag">Klasika</div><h3>Menu 3 chody</h3><div class="pkg__price">490 Kč <span>/ os.</span></div><ul class="feat"><li>Předkrm, hlavní, dezert</li><li>Nápojový balíček</li><li>Obsluha na místě</li><li>Degustace předem</li><li>Dekorace stolů</li></ul><a href="kontakt.html" class="btn btn--white">Poptat menu</a></div>
+    <div class="pkg reveal"><div class="pkg__tag">Prémiové</div><h3>Degustace</h3><div class="pkg__price">890 Kč <span>/ os.</span></div><ul class="feat"><li>5chodové degustační menu</li><li>Párování vín se someliérem</li><li>Šéfkuchař na místě</li><li>Kompletní servis na klíč</li></ul><a href="kontakt.html" class="btn btn--ghost">Poptat degustaci</a></div>
+  </div>
+</section>
+
+<!-- SAMPLE MENU -->
+<section style="padding-top:0">
+  <div class="s-head">
+    <p class="eyebrow eyebrow--center">Ukázkové menu</p>
+    <h2 class="s-title">Z čeho <em>vybíráme</em></h2>
+    <p>Sezónní lístek upravíme dle vašich preferencí, alergií i rozpočtu.</p>
+  </div>
+  <div style="text-align:center"><div class="menu__tabs">
+    <button class="menu__tab active" data-tab="predkrmy">Předkrmy</button>
+    <button class="menu__tab" data-tab="hlavni">Hlavní</button>
+    <button class="menu__tab" data-tab="dezerty">Dezerty</button>
+    <button class="menu__tab" data-tab="napoje">Nápoje</button>
+  </div></div>
+
+  <div class="menu__grid">
+    <div class="menu__panel" data-panel="predkrmy">
+      <div class="mitem"><div class="mitem__l"><span class="mitem__name">Hovězí tatarák</span><span class="mitem__desc">kapary, žloutek, krutony</span></div><span class="mitem__price">v ceně</span></div>
+      <div class="mitem"><div class="mitem__l"><span class="mitem__name">Pečený camembert</span><span class="mitem__desc">brusinky, vlašské ořechy</span></div><span class="mitem__price">v ceně</span></div>
+      <div class="mitem"><div class="mitem__l"><span class="mitem__name">Caprese skewers<span class="mitem__tag">vege</span></span><span class="mitem__desc">mozzarella, rajče, bazalka</span></div><span class="mitem__price">v ceně</span></div>
+      <div class="mitem"><div class="mitem__l"><span class="mitem__name">Losos gravlax</span><span class="mitem__desc">kopr, hořčičná omáčka</span></div><span class="mitem__price">v ceně</span></div>
+      <div class="mitem"><div class="mitem__l"><span class="mitem__name">Bruschetta trio</span><span class="mitem__desc">rajče, žampion, tapenáda</span></div><span class="mitem__price">v ceně</span></div>
+      <div class="mitem"><div class="mitem__l"><span class="mitem__name">Hummus & krekry<span class="mitem__tag">vegan</span></span><span class="mitem__desc">pečená paprika, dukkah</span></div><span class="mitem__price">v ceně</span></div>
+    </div>
+
+    <div class="menu__panel" data-panel="hlavni" style="display:none">
+      <div class="mitem"><div class="mitem__l"><span class="mitem__name">Konfitované kachní stehno</span><span class="mitem__desc">bramborový knedlík, zelí</span></div><span class="mitem__price">v ceně</span></div>
+      <div class="mitem"><div class="mitem__l"><span class="mitem__name">Hovězí líčka</span><span class="mitem__desc">na červeném víně, pyré</span></div><span class="mitem__price">v ceně</span></div>
+      <div class="mitem"><div class="mitem__l"><span class="mitem__name">Pečený candát</span><span class="mitem__desc">máslová omáčka, chřest</span></div><span class="mitem__price">v ceně</span></div>
+      <div class="mitem"><div class="mitem__l"><span class="mitem__name">Rizoto s dýní<span class="mitem__tag">vege</span></span><span class="mitem__desc">parmazán, šalvěj</span></div><span class="mitem__price">v ceně</span></div>
+      <div class="mitem"><div class="mitem__l"><span class="mitem__name">Kuřecí supreme</span><span class="mitem__desc">grilovaná zelenina, jus</span></div><span class="mitem__price">v ceně</span></div>
+      <div class="mitem"><div class="mitem__l"><span class="mitem__name">Trhané jackfruit tacos<span class="mitem__tag">vegan</span></span><span class="mitem__desc">slaw, limetka</span></div><span class="mitem__price">v ceně</span></div>
+    </div>
+
+    <div class="menu__panel" data-panel="dezerty" style="display:none">
+      <div class="mitem"><div class="mitem__l"><span class="mitem__name">Čokoládový fondant</span><span class="mitem__desc">zmrzlina, lesní ovoce</span></div><span class="mitem__price">v ceně</span></div>
+      <div class="mitem"><div class="mitem__l"><span class="mitem__name">Citronové tartaletky</span><span class="mitem__desc">italský sníh</span></div><span class="mitem__price">v ceně</span></div>
+      <div class="mitem"><div class="mitem__l"><span class="mitem__name">Mini cheesecake</span><span class="mitem__desc">karamel, sušenková drobenka</span></div><span class="mitem__price">v ceně</span></div>
+      <div class="mitem"><div class="mitem__l"><span class="mitem__name">Ovocné špízy<span class="mitem__tag">vegan</span></span><span class="mitem__desc">sezónní ovoce, máta</span></div><span class="mitem__price">v ceně</span></div>
+    </div>
+
+    <div class="menu__panel" data-panel="napoje" style="display:none">
+      <div class="mitem"><div class="mitem__l"><span class="mitem__name">Nealko balíček</span><span class="mitem__desc">limonády, voda, džusy, káva</span></div><span class="mitem__price">v ceně</span></div>
+      <div class="mitem"><div class="mitem__l"><span class="mitem__name">Vínový balíček</span><span class="mitem__desc">výběr bílých a červených</span></div><span class="mitem__price">+150 Kč</span></div>
+      <div class="mitem"><div class="mitem__l"><span class="mitem__name">Prosecco na přivítanou</span><span class="mitem__desc">welcome drink</span></div><span class="mitem__price">+90 Kč</span></div>
+      <div class="mitem"><div class="mitem__l"><span class="mitem__name">Barový servis</span><span class="mitem__desc">koktejly, barman na místě</span></div><span class="mitem__price">dle rozsahu</span></div>
+    </div>
+  </div>
+  <p class="menu__note">Kompletní sezónní nabídku a varianty pro alergiky pošleme v rámci cenové nabídky.</p>
+</section>
+
+<section class="ctaband">
+  <h2 class="s-title">Sestavíme menu <em>přesně pro vás</em></h2>
+  <p>Řekněte nám počet hostů a termín — připravíme nabídku na míru.</p>
+  <div class="ctaband__acts"><a href="kontakt.html" class="btn btn--white">Nezávazná poptávka</a></div>
+</section>
+
+<footer class="footer">
+  <div class="footer__top">
+    <div><div class="footer__brand">Hodovna</div><p>Profesionální catering pro firmy i soukromé akce v Praze a okolí.</p></div>
+    <div class="footer__col"><h5>Služby</h5><a href="menu.html">Firemní akce</a><a href="menu.html">Svatby & oslavy</a><a href="menu.html">Rauty & recepce</a></div>
+    <div class="footer__col"><h5>Firma</h5><a href="o-nas.html">O nás</a><a href="galerie.html">Reference</a><a href="kontakt.html">Kontakt</a></div>
+    <div class="footer__col"><h5>Kontakt</h5><a href="tel:+420226200300">+420 226 200 300</a><a href="mailto:poptavka@hodovna.cz">poptavka@hodovna.cz</a><p>Bubenská 8, Praha 7</p></div>
+  </div>
+  <div class="footer__bottom"><span>© 2026 Hodovna · IČO 123 45 678</span><span>Ukázkový web · demo · SiteSpot</span></div>
+</footer>
+
+<a href="kontakt.html" class="floatcta">Nezávazná poptávka</a>
+<script src="js/main.js"></script>
+</body>
+</html>

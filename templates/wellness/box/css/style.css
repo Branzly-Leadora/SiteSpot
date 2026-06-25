@@ -1,0 +1,287 @@
+/* ============================================================
+   FORMA — Editorial Mono / BRUTALIST GRID
+   Layout: obří typografie · viditelné rámečky · číslované sekce ·
+   menu jako orámované řádky · asymetrická galerie
+   ============================================================ */
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:    #FFFFFF;
+  --bg2:   #F2F1EC;
+  --ink:   #121210;
+  --ink2:  #38382F;
+  --acc:   #C9A100;
+  --muted: #6E6E64;
+  --line:  #121210;          /* tvrdé černé linky */
+  --hair:  #DCDBD2;
+  --ease:  cubic-bezier(0.7, 0, 0.2, 1);
+  --maxw:  1320px;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: 'DM Sans', system-ui, sans-serif; font-weight: 400; line-height: 1.6;
+  overflow-x: hidden; -webkit-font-smoothing: antialiased;
+}
+img { display: block; max-width: 100%; }
+a { color: inherit; }
+.wrap { max-width: var(--maxw); margin: 0 auto; }
+.mono { font-family: 'Space Mono', monospace; }
+
+/* placeholders (B&W) */
+.ph { position: relative; overflow: hidden; background: #1a1a18; }
+.ph::after { content:''; position:absolute; inset:0; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.5'/%3E%3C/svg%3E"); opacity:.2; mix-blend-mode:overlay; }
+.ph-1 { background: linear-gradient(150deg, #3a3a37, #0e0e0c 80%); }
+.ph-2 { background: radial-gradient(120% 120% at 30% 25%, #4a4a45, #121210 72%); }
+.ph-3 { background: linear-gradient(160deg, #6a6a63, #1a1a17 85%); }
+.ph-4 { background: linear-gradient(150deg, #c9a100, #2a2405 95%); }
+.ph-5 { background: radial-gradient(120% 120% at 65% 35%, #555550, #0e0e0c 74%); }
+.ph-6 { background: linear-gradient(140deg, #2a2a27, #7a7a72 160%); }
+.ph-7 { background: linear-gradient(160deg, #1a1a17, #c9a100 175%); }
+.ph-8 { background: radial-gradient(120% 120% at 50% 50%, #4a4a45, #0c0c0a 72%); }
+
+/* ============================================================
+   NAV — tvrdá linka dole, mono odkazy
+   ============================================================ */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.1rem clamp(1.4rem, 5vw, 3rem);
+  border-bottom: 1px solid transparent;
+  transition: padding .4s var(--ease), background .4s var(--ease), border-color .4s var(--ease);
+}
+.nav.scrolled { background: var(--bg); border-bottom: 1px solid var(--line); }
+.nav__logo { font-family: 'Archivo', sans-serif; font-size: 1.4rem; font-weight: 900; letter-spacing: -.04em; text-transform: uppercase; text-decoration: none; color: var(--ink); display: flex; align-items: baseline; gap: .4rem; }
+.nav__logo small { font-family: 'Space Mono', monospace; font-size: .56rem; letter-spacing: .02em; color: var(--acc); font-weight: 400; }
+.nav__links { display: flex; gap: 1.8rem; list-style: none; align-items: center; }
+.nav__links a { text-decoration: none; font-family: 'Space Mono', monospace; font-size: .68rem; letter-spacing: .04em; text-transform: uppercase; color: var(--ink2); position: relative; transition: color .25s; white-space: nowrap; }
+.nav__links a::after { content:''; position:absolute; bottom:-3px; left:0; right:0; height:2px; background:var(--acc); transform:scaleX(0); transform-origin:right; transition:transform .3s var(--ease); }
+.nav__links a:hover, .nav__links a.active { color: var(--ink); } .nav__links a:hover::after, .nav__links a.active::after { transform: scaleX(1); transform-origin: left; }
+.nav__cta { color: var(--bg) !important; background: var(--ink); padding: .55rem 1.2rem; font-size: .62rem !important; transition: background .25s !important; }
+.nav__cta::after { display: none !important; } .nav__cta:hover { background: var(--acc) !important; }
+.nav__burger { display: none; background: none; border: none; cursor: pointer; width: 28px; height: 20px; position: relative; }
+.nav__burger span { position: absolute; left: 0; width: 100%; height: 2px; background: var(--ink); transition: transform .35s var(--ease), opacity .25s; }
+.nav__burger span:nth-child(1){top:0}.nav__burger span:nth-child(2){top:50%;transform:translateY(-50%)}.nav__burger span:nth-child(3){bottom:0}
+body.menu-open .nav__burger span:nth-child(1){top:50%;transform:translateY(-50%) rotate(45deg)}
+body.menu-open .nav__burger span:nth-child(2){opacity:0}
+body.menu-open .nav__burger span:nth-child(3){bottom:50%;transform:translateY(50%) rotate(-45deg)}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn { display: inline-block; text-decoration: none; cursor: pointer; font-family: 'Space Mono', monospace; font-weight: 700; font-size: .68rem; letter-spacing: .04em; text-transform: uppercase; padding: 1rem 2.2rem; border: 1px solid var(--ink); background: transparent; color: var(--ink); position: relative; overflow: hidden; transition: color .35s; }
+.btn::before { content:''; position:absolute; inset:0; background: var(--acc); transform: translateY(101%); transition: transform .4s var(--ease); z-index:0; }
+.btn span { position: relative; z-index: 1; } .btn:hover { color: var(--bg); border-color: var(--acc); } .btn:hover::before { transform: translateY(0); }
+.btn--solid { background: var(--ink); color: var(--bg); } .btn--solid::before { background: var(--acc); } .btn--solid:hover { color: var(--bg); }
+.link { text-decoration: none; font-family: 'Space Mono', monospace; font-weight: 700; font-size: .68rem; letter-spacing: .04em; text-transform: uppercase; color: var(--ink); display: inline-flex; align-items: center; gap: .5rem; transition: gap .3s, color .3s; }
+.link::after { content: '→'; transition: transform .3s; } .link:hover { gap: .9rem; color: var(--acc); }
+
+/* ============================================================
+   SECTION numbering + shared
+   ============================================================ */
+section { padding: clamp(3.5rem, 7vw, 6.5rem) clamp(1.4rem, 5vw, 3rem); }
+.secnum { font-family: 'Space Mono', monospace; font-size: .68rem; letter-spacing: .04em; text-transform: uppercase; color: var(--acc); display: flex; align-items: center; gap: .8rem; margin-bottom: 1.6rem; }
+.secnum::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+.secnum--center { justify-content: center; } .secnum--center::after { display: none; }
+.secnum--center::before { content: ''; width: 40px; height: 1px; background: var(--acc); }
+.s-title { font-family: 'Archivo', sans-serif; font-weight: 800; font-size: clamp(2rem, 5vw, 3.8rem); line-height: .98; letter-spacing: -.03em; text-transform: uppercase; }
+.s-title em { font-style: normal; color: var(--acc); }
+.s-title .out { -webkit-text-stroke: 1.5px var(--ink); color: transparent; }
+
+/* ============================================================
+   BRUTALIST HERO — obří typografie + orámovaná info-mřížka
+   ============================================================ */
+.br-hero { padding: clamp(8rem,13vw,11rem) clamp(1.4rem,5vw,3rem) 0; border-bottom: 1px solid var(--line); }
+.br-hero__top { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 1rem; font-family: 'Space Mono', monospace; font-size: .68rem; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); padding-bottom: 1.4rem; }
+.br-hero__title { font-family: 'Archivo', sans-serif; font-weight: 900; font-size: clamp(3.4rem, 15vw, 12rem); line-height: .84; letter-spacing: -.05em; text-transform: uppercase; margin: 1rem 0; }
+.br-hero__title em { font-style: normal; color: var(--acc); }
+.br-hero__title .out { -webkit-text-stroke: 2px var(--ink); color: transparent; }
+.br-hero__row { display: grid; grid-template-columns: 2fr 1fr; gap: 0; border-top: 1px solid var(--line); align-items: stretch; }
+.br-hero__lead { padding: 1.8rem 2rem 1.8rem 0; font-size: 1.05rem; line-height: 1.7; color: var(--ink2); }
+.br-hero__lead .acts { display: flex; gap: 1.2rem; margin-top: 1.6rem; flex-wrap: wrap; }
+.br-hero__media { border-left: 1px solid var(--line); position: relative; min-height: 200px; }
+.br-hero__media .ph { position: absolute; inset: 0; filter: grayscale(1) contrast(1.1); }
+
+/* orámovaný stat strip */
+.statstrip { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--line); }
+.statstrip .s { padding: 1.8rem clamp(1.4rem,5vw,3rem); border-right: 1px solid var(--line); }
+.statstrip .s:last-child { border-right: none; }
+.statstrip .v { font-family: 'Archivo', sans-serif; font-weight: 900; font-size: clamp(1.6rem,3vw,2.4rem); letter-spacing: -.03em; }
+.statstrip .l { font-family: 'Space Mono', monospace; font-size: .62rem; text-transform: uppercase; color: var(--muted); margin-top: .4rem; }
+
+/* marquee */
+.marquee { background: var(--ink); padding: .85rem 0; overflow: hidden; }
+.marquee__track { display: flex; gap: 3rem; width: max-content; animation: marq 20s linear infinite; }
+.marquee:hover .marquee__track { animation-play-state: paused; }
+.marquee__item { font-family: 'Archivo', sans-serif; font-weight: 800; font-size: .95rem; text-transform: uppercase; color: var(--bg); display: flex; align-items: center; gap: 1.3rem; }
+.marquee__item::after { content: '✳'; color: var(--acc); font-size: .7rem; }
+@keyframes marq { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ============================================================
+   SIGNATURE / MENU — velké orámované řádky
+   ============================================================ */
+.rows { border-top: 1px solid var(--line); }
+.row { display: grid; grid-template-columns: 64px 1fr auto; gap: 1.4rem; align-items: center; padding: 1.6rem clamp(0rem,2vw,1rem); border-bottom: 1px solid var(--line); transition: background .2s, color .2s; }
+.row:hover { background: var(--ink); color: var(--bg); }
+.row__num { font-family: 'Space Mono', monospace; font-size: .82rem; color: var(--acc); }
+.row:hover .row__num { color: var(--bg); }
+.row__name { font-family: 'Archivo', sans-serif; font-weight: 800; font-size: clamp(1.2rem, 2.6vw, 1.9rem); text-transform: uppercase; letter-spacing: -.02em; }
+.row__desc { font-size: .84rem; color: var(--muted); margin-top: .3rem; max-width: 60ch; }
+.row:hover .row__desc { color: rgba(255,255,255,.6); }
+.row__price { font-family: 'Space Mono', monospace; font-weight: 700; font-size: 1rem; color: var(--acc); white-space: nowrap; }
+.row:hover .row__price { color: var(--bg); }
+.row__tag { font-family: 'Space Mono', monospace; font-size: .56rem; letter-spacing: .06em; text-transform: uppercase; color: var(--bg); background: var(--acc); padding: .15rem .5rem; margin-left: .6rem; vertical-align: middle; }
+
+/* menu tabs — tvrdá orámovaná lišta */
+.menu__tabs { display: flex; border: 1px solid var(--line); margin-bottom: 0; flex-wrap: wrap; }
+.menu__tab { flex: 1; min-width: 120px; padding: 1rem; font-family: 'Space Mono', monospace; font-size: .7rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; border: none; border-right: 1px solid var(--line); cursor: pointer; background: var(--bg); color: var(--ink2); transition: all .2s; }
+.menu__tab:last-child { border-right: none; }
+.menu__tab.active, .menu__tab:hover { background: var(--ink); color: var(--bg); }
+.menu__grid { display: block; }
+.menu__panel { display: contents; }
+.mitem { display: grid; grid-template-columns: 64px 1fr auto; gap: 1.4rem; align-items: center; padding: 1.5rem clamp(0rem,2vw,1rem); border-bottom: 1px solid var(--line); transition: background .2s, color .2s; }
+.mitem:first-child { border-top: 1px solid var(--line); }
+.mitem:hover { background: var(--ink); color: var(--bg); }
+.mitem__idx { font-family: 'Space Mono', monospace; font-size: .8rem; color: var(--acc); }
+.mitem:hover .mitem__idx { color: var(--bg); }
+.mitem__name { font-family: 'Archivo', sans-serif; font-weight: 800; font-size: clamp(1.1rem, 2.4vw, 1.7rem); text-transform: uppercase; letter-spacing: -.02em; }
+.mitem__desc { font-size: .82rem; color: var(--muted); margin-top: .3rem; max-width: 60ch; }
+.mitem:hover .mitem__desc { color: rgba(255,255,255,.6); }
+.mitem__price { font-family: 'Space Mono', monospace; font-weight: 700; font-size: .95rem; color: var(--acc); white-space: nowrap; }
+.mitem:hover .mitem__price { color: var(--bg); }
+.mitem__tag { font-family: 'Space Mono', monospace; font-size: .54rem; letter-spacing: .06em; text-transform: uppercase; color: var(--bg); background: var(--acc); padding: .15rem .5rem; margin-left: .5rem; vertical-align: middle; }
+.menu__note { margin-top: 1.4rem; font-family: 'Space Mono', monospace; font-size: .68rem; color: var(--muted); }
+
+/* ============================================================
+   FEATURE split (text | obraz) s tvrdým rámem
+   ============================================================ */
+.split { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--line); }
+.split__text { padding: clamp(2rem,5vw,3.5rem); display: flex; flex-direction: column; justify-content: center; }
+.split__text p { font-size: 1rem; line-height: 1.8; color: var(--ink2); margin-top: 1.2rem; }
+.split__media { border-left: 1px solid var(--line); position: relative; min-height: 360px; }
+.split__media .ph { position: absolute; inset: 0; filter: grayscale(1) contrast(1.08); }
+
+/* ============================================================
+   REVIEWS — orámované boxy
+   ============================================================ */
+.reviews__grid { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--line); }
+.review { padding: clamp(2rem,3vw,2.6rem); border-right: 1px solid var(--line); }
+.review:last-child { border-right: none; }
+.review .stars { color: var(--acc); letter-spacing: 3px; font-size: .82rem; margin-bottom: 1.2rem; }
+.review p { font-family: 'Archivo', sans-serif; font-weight: 500; font-size: 1.05rem; line-height: 1.45; }
+.review .who { font-family: 'Space Mono', monospace; font-size: .6rem; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); margin-top: 1.4rem; }
+
+/* ============================================================
+   GALLERY — asymetrická orámovaná mřížka + lightbox
+   ============================================================ */
+.gal { display: grid; grid-template-columns: repeat(6, 1fr); border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+.gal__item { position: relative; overflow: hidden; cursor: pointer; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.gal__item .ph { position: absolute; inset: 0; transition: transform .6s var(--ease), filter .5s; filter: grayscale(1) contrast(1.08); }
+.gal__item:hover .ph { transform: scale(1.05); filter: grayscale(0) contrast(1); }
+.gal__item::before { content: attr(data-idx); position: absolute; top: .7rem; left: .8rem; z-index: 3; font-family: 'Space Mono', monospace; font-size: .58rem; color: var(--bg); mix-blend-mode: difference; }
+.gal__cap { position: absolute; bottom: .9rem; left: .9rem; z-index: 2; font-family: 'Space Mono', monospace; font-size: .56rem; letter-spacing: .04em; text-transform: uppercase; color: var(--bg); opacity: 0; transition: .35s; }
+.gal__item:hover .gal__cap { opacity: 1; }
+.gal__item.s-big { grid-column: span 4; aspect-ratio: 16/9; }
+.gal__item.s-tall { grid-column: span 2; aspect-ratio: 3/4; }
+.gal__item.s-wide { grid-column: span 3; aspect-ratio: 3/2; }
+.gal__item.s-sm { grid-column: span 2; aspect-ratio: 1/1; }
+
+.lightbox { position: fixed; inset: 0; z-index: 9000; background: rgba(12,12,10,.96); display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity .35s, visibility .35s; }
+.lightbox.open { opacity: 1; visibility: visible; }
+.lightbox__inner { width: min(70vw, 760px); max-height: 80vh; aspect-ratio: 4/3; border: 1px solid rgba(255,255,255,.25); position: relative; }
+.lightbox__inner .ph { position: absolute; inset: 0; }
+.lightbox__cap { position: absolute; bottom: -2.2rem; left: 0; font-family: 'Space Mono', monospace; font-size: .62rem; letter-spacing: .04em; text-transform: uppercase; color: rgba(255,255,255,.6); }
+.lightbox__close { position: absolute; top: 1.4rem; right: 1.8rem; background: none; border: none; color: var(--bg); font-size: 2rem; cursor: pointer; line-height: 1; }
+.lightbox__nav { position: absolute; top: 50%; transform: translateY(-50%); background: none; border: 1px solid rgba(255,255,255,.3); color: var(--bg); width: 46px; height: 46px; cursor: pointer; font-size: 1.2rem; transition: all .25s; }
+.lightbox__nav:hover { background: var(--acc); border-color: var(--acc); }
+.lightbox__nav.prev { left: 3vw; } .lightbox__nav.next { right: 3vw; }
+
+/* ============================================================
+   CONTACT — orámované buňky
+   ============================================================ */
+.contact__inner { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--line); }
+.contact__col { padding: clamp(2rem,4vw,3rem); }
+.contact__col + .contact__col { border-left: 1px solid var(--line); }
+.hours { margin-top: 1.6rem; border-top: 1px solid var(--line); }
+.hours__row { display: flex; justify-content: space-between; align-items: center; padding: .95rem 0; border-bottom: 1px solid var(--hair); }
+.hours__day { font-family: 'Space Mono', monospace; font-size: .78rem; text-transform: uppercase; color: var(--ink2); }
+.hours__time { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 1rem; }
+.hours__row.today { background: var(--ink); margin: 0 -.8rem; padding-left: .8rem; padding-right: .8rem; border-bottom-color: var(--ink); }
+.hours__row.today .hours__day { color: var(--acc); } .hours__row.today .hours__time { color: var(--bg); }
+.details { margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem; }
+.detail { display: flex; gap: 1rem; align-items: baseline; }
+.detail .k { font-family: 'Space Mono', monospace; font-size: .6rem; letter-spacing: .04em; text-transform: uppercase; color: var(--acc); width: 84px; flex-shrink: 0; }
+.detail .v { font-size: .9rem; }
+.detail a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--acc); } .detail a:hover { color: var(--acc); }
+.mapbox { position: relative; aspect-ratio: 16/10; border: 1px solid var(--line); overflow: hidden; background: var(--bg2); margin-top: 1.6rem; }
+.mapbox svg { width: 100%; height: 100%; display: block; }
+.mapbox__btn { position: absolute; bottom: 1rem; right: 1rem; background: var(--ink); color: var(--bg); text-decoration: none; padding: .7rem 1.2rem; font-family: 'Space Mono', monospace; font-size: .6rem; text-transform: uppercase; transition: background .25s; }
+.mapbox__btn:hover { background: var(--acc); }
+.mappin { margin-top: 1.4rem; padding-left: 1rem; border-left: 3px solid var(--acc); font-size: .86rem; color: var(--ink2); line-height: 1.6; }
+
+.rform { margin-top: .5rem; }
+.rform__row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.field { margin-bottom: 1rem; }
+.field label { display: block; font-family: 'Space Mono', monospace; font-size: .6rem; letter-spacing: .04em; text-transform: uppercase; color: var(--ink); margin-bottom: .45rem; }
+.field input, .field select, .field textarea { width: 100%; border: 1px solid var(--line); background: var(--bg); padding: .8rem 1rem; font-family: 'DM Sans'; font-size: .92rem; color: var(--ink); outline: none; transition: box-shadow .2s; }
+.field input:focus, .field select:focus, .field textarea:focus { box-shadow: inset 0 -3px 0 var(--acc); }
+.rform__done { display: none; margin-top: 1rem; padding: 1rem 1.2rem; background: var(--ink); color: var(--bg); border-left: 4px solid var(--acc); font-size: .9rem; }
+.rform__done.show { display: block; }
+
+/* ============================================================
+   CTA + FOOTER
+   ============================================================ */
+.ed-cta { text-align: center; background: var(--acc); color: var(--bg); }
+.ed-cta .secnum { color: var(--bg); justify-content: center; } .ed-cta .secnum::before { background: var(--bg); }
+.ed-cta .s-title { color: var(--bg); } .ed-cta .s-title em { color: var(--ink); }
+.ed-cta__links { display: flex; gap: 1.6rem; justify-content: center; align-items: center; flex-wrap: wrap; margin-top: 2rem; }
+.ed-cta .btn { border-color: var(--bg); color: var(--bg); } .ed-cta .btn::before { background: var(--ink); } .ed-cta .btn:hover { border-color: var(--ink); }
+.ed-cta .btn--solid { background: var(--ink); border-color: var(--ink); } .ed-cta .btn--solid::before { background: var(--bg); } .ed-cta .btn--solid:hover { color: var(--ink); }
+
+.footer { background: var(--ink); color: var(--bg); padding: clamp(3rem,6vw,4.5rem) clamp(1.4rem,5vw,3rem) 2rem; }
+.footer__top { max-width: var(--maxw); margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-end; gap: 2rem; flex-wrap: wrap; padding-bottom: 2.4rem; border-bottom: 1px solid rgba(255,255,255,.18); }
+.footer__brand { font-family: 'Archivo', sans-serif; font-weight: 900; font-size: clamp(2.5rem,6vw,4.5rem); letter-spacing: -.04em; text-transform: uppercase; line-height: .9; }
+.footer__brand + p { font-family: 'Space Mono', monospace; font-size: .68rem; color: rgba(255,255,255,.6); margin-top: .8rem; text-transform: uppercase; }
+.footer__nav { display: flex; gap: 1.4rem; flex-wrap: wrap; }
+.footer__nav a { font-family: 'Space Mono', monospace; font-size: .64rem; text-transform: uppercase; color: rgba(255,255,255,.65); text-decoration: none; } .footer__nav a:hover { color: var(--acc); }
+.footer__bottom { max-width: var(--maxw); margin: 1.4rem auto 0; display: flex; justify-content: space-between; gap: .6rem; flex-wrap: wrap; font-family: 'Space Mono', monospace; font-size: .6rem; text-transform: uppercase; color: rgba(255,255,255,.4); }
+
+.floatcta { position: fixed; bottom: 1.4rem; right: 1.4rem; z-index: 400; background: var(--acc); color: var(--bg); text-decoration: none; padding: .9rem 1.6rem; font-family: 'Space Mono', monospace; font-size: .62rem; font-weight: 700; text-transform: uppercase; border: 1px solid var(--acc); opacity: 0; transform: translateY(20px); transition: all .35s var(--ease); }
+.floatcta.show { opacity: 1; transform: translateY(0); }
+.floatcta:hover { background: var(--ink); border-color: var(--ink); }
+
+/* page header */
+.pagehead { padding: clamp(8rem,13vw,11rem) clamp(1.4rem,5vw,3rem) clamp(2rem,4vw,3rem); border-bottom: 1px solid var(--line); }
+.pagehead h1 { font-family: 'Archivo', sans-serif; font-weight: 900; font-size: clamp(2.8rem,11vw,8rem); line-height: .85; letter-spacing: -.05em; text-transform: uppercase; margin-top: .6rem; }
+.pagehead h1 em { font-style: normal; color: var(--acc); }
+.pagehead p { max-width: 540px; margin-top: 1.4rem; color: var(--muted); font-size: .98rem; }
+
+/* reveal */
+.reveal { opacity: 0; transform: translateY(36px); transition: opacity .8s var(--ease), transform .8s var(--ease); }
+.reveal.vis { opacity: 1; transform: none; }
+.reveal-l { opacity: 0; transform: translateX(-40px); transition: opacity .8s var(--ease), transform .8s var(--ease); } .reveal-l.vis { opacity: 1; transform: none; }
+.reveal-r { opacity: 0; transform: translateX(40px); transition: opacity .8s var(--ease), transform .8s var(--ease); } .reveal-r.vis { opacity: 1; transform: none; }
+.d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}.d4{transition-delay:.32s}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 900px) {
+  .nav__burger { display: block; z-index: 490; }
+  .nav__links { position: fixed; inset: 0 0 0 auto; width: min(80vw,320px); background: var(--bg); flex-direction: column; align-items: flex-start; justify-content: center; gap: 1.5rem; padding: 3rem; transform: translateX(100%); transition: transform .5s var(--ease); border-left: 1px solid var(--line); z-index: 480; }
+  body.menu-open .nav__links { transform: translateX(0); } .nav__links a { font-size: .9rem; }
+  .br-hero__row { grid-template-columns: 1fr; } .br-hero__media { border-left: none; border-top: 1px solid var(--line); min-height: 260px; }
+  .br-hero__lead { padding-right: 0; }
+  .statstrip { grid-template-columns: 1fr 1fr; } .statstrip .s:nth-child(2) { border-right: none; } .statstrip .s:nth-child(1), .statstrip .s:nth-child(2) { border-bottom: 1px solid var(--line); }
+  .split, .contact__inner { grid-template-columns: 1fr; } .split__media { border-left: none; border-top: 1px solid var(--line); min-height: 280px; }
+  .contact__col + .contact__col { border-left: none; border-top: 1px solid var(--line); }
+  .reviews__grid { grid-template-columns: 1fr; } .review { border-right: none; border-bottom: 1px solid var(--line); } .review:last-child { border-bottom: none; }
+  .row, .mitem { grid-template-columns: 40px 1fr; } .row__price, .mitem__price { grid-column: 2; }
+  .gal { grid-template-columns: repeat(2, 1fr); } .gal__item.s-big, .gal__item.s-tall, .gal__item.s-wide, .gal__item.s-sm { grid-column: span 1; aspect-ratio: 1/1; }
+  .rform__row { grid-template-columns: 1fr; }
+  .lightbox__inner { width: 88vw; } .lightbox__nav.prev{left:1rem}.lightbox__nav.next{right:1rem}
+  .footer__top { flex-direction: column; align-items: flex-start; }
+}
+@media (prefers-reduced-motion: reduce) { .reveal,.reveal-l,.reveal-r{opacity:1!important;transform:none!important} .marquee__track{animation:none!important} }

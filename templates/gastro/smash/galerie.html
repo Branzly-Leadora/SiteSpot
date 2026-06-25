@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galerie — SMASH</title>
+<meta name="description" content="Galerie SMASH — burgery, fries, pobočky a atmosféra.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="galerie">
+
+<nav class="nav">
+  <a href="index.html" class="nav__logo"><span>🍔</span> SMASH</a>
+  <ul class="nav__links">
+    <li><a href="index.html">Úvod</a></li>
+    <li><a href="menu.html">Menu</a></li>
+    <li><a href="o-nas.html">Příběh</a></li>
+    <li><a href="galerie.html" class="active">Galerie</a></li>
+    <li><a href="kontakt.html">Kontakt</a></li>
+    <li><a href="kontakt.html" class="nav__cta">Objednat online</a></li>
+  </ul>
+  <button class="nav__burger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<header class="pagehead">
+  <div class="glow glow--p"></div>
+  <div class="pagehead__in">
+    <h1><span class="grad-text">Galerie</span></h1>
+    <p>Varování: nedoporučujeme prohlížet s prázdným žaludkem. Klikni pro zvětšení.</p>
+  </div>
+</header>
+
+<section style="padding-top:0">
+  <div class="gal">
+    <div class="gal__item" data-cap="SMASH Double"><div class="ph ph-2"></div><span class="gal__cap">Double</span></div>
+    <div class="gal__item" data-cap="Bacon Beast"><div class="ph ph-4"></div><span class="gal__cap">Bacon Beast</span></div>
+    <div class="gal__item" data-cap="Loaded Fries"><div class="ph ph-6"></div><span class="gal__cap">Loaded Fries</span></div>
+    <div class="gal__item" data-cap="Inferno burger"><div class="ph ph-3"></div><span class="gal__cap">Inferno</span></div>
+    <div class="gal__item" data-cap="Naše pobočka"><div class="ph ph-1"></div><span class="gal__cap">Pobočka</span></div>
+    <div class="gal__item" data-cap="Milkshake"><div class="ph ph-8"></div><span class="gal__cap">Shake</span></div>
+    <div class="gal__item" data-cap="Na grilu"><div class="ph ph-7"></div><span class="gal__cap">Smash</span></div>
+    <div class="gal__item" data-cap="Náš tým"><div class="ph ph-5"></div><span class="gal__cap">Crew</span></div>
+  </div>
+</section>
+
+<section class="ctaband">
+  <div class="glow glow--o"></div>
+  <div class="ctaband__inner">
+    <h2 class="s-title">Naživo to <span class="grad-text">chutná líp</span></h2>
+    <div class="ctaband__acts"><a href="menu.html" class="btn btn--grad">Objednat online</a><a href="kontakt.html" class="btn btn--ghost">Najít pobočku</a></div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer__top">
+    <div><div class="footer__brand">🍔 SMASH</div><p>Smash burgery a street food v Praze. Objednej online, vyzvedni za 15 minut.</p></div>
+    <div class="footer__col"><h5>Menu</h5><a href="menu.html">Burgery</a><a href="menu.html">Sides</a><a href="menu.html">Nápoje</a></div>
+    <div class="footer__col"><h5>SMASH</h5><a href="o-nas.html">Příběh</a><a href="galerie.html">Galerie</a><a href="kontakt.html">Pobočky</a></div>
+    <div class="footer__col"><h5>Kontakt</h5><a href="tel:+420777666555">+420 777 666 555</a><a href="mailto:ahoj@smash-burger.cz">ahoj@smash-burger.cz</a><p>Krakovská 12, Praha 1</p></div>
+  </div>
+  <div class="footer__bottom"><span>© 2026 SMASH</span><span>Ukázkový web · demo · SiteSpot</span></div>
+</footer>
+
+<div class="lightbox" aria-hidden="true">
+  <button class="lightbox__close" aria-label="Zavřít">×</button>
+  <button class="lightbox__nav prev" aria-label="Předchozí">‹</button>
+  <div class="lightbox__inner"><div class="ph ph-2"></div><span class="lightbox__cap"></span></div>
+  <button class="lightbox__nav next" aria-label="Další">›</button>
+</div>
+
+<a href="menu.html" class="floatcta">Objednat online 🍔</a>
+<script src="js/main.js"></script>
+</body>
+</html>

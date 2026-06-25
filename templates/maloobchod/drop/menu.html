@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kolekce — DROP</title>
+<meta name="description" content="Kolekce DROP — tenisky, mikiny, trička, bundy, doplňky a limitované dropy.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="menu">
+
+<nav class="nav">
+  <a href="index.html" class="nav__logo">DROP <small>/2018</small></a>
+  <ul class="nav__links">
+    <li><a href="index.html">Úvod</a></li>
+    <li><a href="menu.html" class="active">Kolekce</a></li>
+    <li><a href="o-nas.html">Příběh</a></li>
+    <li><a href="galerie.html">Galerie</a></li>
+    <li><a href="kontakt.html">Kontakt</a></li>
+    <li><a href="kontakt.html" class="nav__cta">Najít nás</a></li>
+  </ul>
+  <button class="nav__burger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<header class="pagehead">
+  <p class="secnum">Kurátorský výběr, žádné padělky</p>
+  <h1>Kolekce</h1>
+  <p>Co je na regále, projde rukama. Velikosti docházejí — když pár zmizí, většinou se nevrací.</p>
+</header>
+
+<section>
+  <div class="menu__tabs">
+    <button class="menu__tab active" data-tab="tenisky">01 / Tenisky</button>
+    <button class="menu__tab" data-tab="mikiny">02 / Mikiny &amp; trika</button>
+    <button class="menu__tab" data-tab="bundy">03 / Bundy &amp; doplňky</button>
+    <button class="menu__tab" data-tab="dropy">04 / Limitované dropy</button>
+  </div>
+
+  <div class="menu__grid">
+    <div class="menu__panel" data-panel="tenisky">
+      <div class="mitem"><span class="mitem__idx">01</span><div><div class="mitem__name">Air Max retro<span class="mitem__tag">stálice</span></div><p class="mitem__desc">Ikonický runner, viditelná vzduchová bublina. Denní nošení.</p></div><span class="mitem__price">3 290 Kč</span></div>
+      <div class="mitem"><span class="mitem__idx">02</span><div><div class="mitem__name">Low-top skate</div><p class="mitem__desc">Plochá podrážka, vulkanizovaný svršek. Na board i na ulici.</p></div><span class="mitem__price">2 290 Kč</span></div>
+      <div class="mitem"><span class="mitem__idx">03</span><div><div class="mitem__name">High-top basket<span class="mitem__tag">classic</span></div><p class="mitem__desc">Kotníková silueta, kožený svršek. Nikdy nevyšla z módy.</p></div><span class="mitem__price">2 990 Kč</span></div>
+      <div class="mitem"><span class="mitem__idx">04</span><div><div class="mitem__name">Chunky runner</div><p class="mitem__desc">Vrstvená podrážka, technický mesh. Statement pod nohama.</p></div><span class="mitem__price">3 490 Kč</span></div>
+      <div class="mitem"><span class="mitem__idx">05</span><div><div class="mitem__name">Canvas low</div><p class="mitem__desc">Plátěná klasika. Lehká, levná, padne ke všemu.</p></div><span class="mitem__price">1 690 Kč</span></div>
+      <div class="mitem"><span class="mitem__idx">06</span><div><div class="mitem__name">Trailové siluety</div><p class="mitem__desc">Outdoorová DNA na ulici. Hrubý vzorek, odolný materiál.</p></div><span class="mitem__price">3 190 Kč</span></div>
+    </div>
+
+    <div class="menu__panel" data-panel="mikiny" style="display:none">
+      <div class="mitem"><span class="mitem__idx">01</span><div><div class="mitem__name">Heavyweight hoodie<span class="mitem__tag">oblíbené</span></div><p class="mitem__desc">450g bavlna, boxy střih, dvojitá kapuce. Drží tvar.</p></div><span class="mitem__price">1 690 Kč</span></div>
+      <div class="mitem"><span class="mitem__idx">02</span><div><div class="mitem__name">Crewneck mikina</div><p class="mitem__desc">Bez kapuce, čistý střih. Vrstvení pod bundu.</p></div><span class="mitem__price">1 390 Kč</span></div>
+      <div class="mitem"><span class="mitem__idx">03</span><div><div class="mitem__name">Tričko heavy<span class="mitem__tag">basic+</span></div><p class="mitem__desc">Silnější gramáž, oversized fit. Žádný plast.</p></div><span class="mitem__price">790 Kč</span></div>
+      <div class="mitem"><span class="mitem__idx">04</span><div><div class="mitem__name">Grafické tričko</div><p class="mitem__desc">Lokální print, limitovaný náklad. Pár kusů od velikosti.</p></div><span class="mitem__price">990 Kč</span></div>
+      <div class="mitem"><span class="mitem__idx">05</span><div><div class="mitem__name">Longsleeve</div><p class="mitem__desc">Dlouhý rukáv, ribbed manžety. Přechodové počasí.</p></div><span class="mitem__price">1 090 Kč</span></div>
+    </div>
+
+    <div class="menu__panel" data-panel="bundy" style="display:none">
+      <div class="mitem"><span class="mitem__idx">01</span><div><div class="mitem__name">Coach jacket<span class="mitem__tag">denně jiná</span></div><p class="mitem__desc">Lehká nylonová bunda, cvočky, podšívka. Jaro/podzim.</p></div><span class="mitem__price">2 190 Kč</span></div>
+      <div class="mitem"><span class="mitem__idx">02</span><div><div class="mitem__name">Puffer vesta</div><p class="mitem__desc">Prošívaná, balíkovatelná. Vrstvení bez objemu.</p></div><span class="mitem__price">2 690 Kč</span></div>
+      <div class="mitem"><span class="mitem__idx">03</span><div><div class="mitem__name">Čepice &amp; beanie</div><p class="mitem__desc">Pletené i 5-panel kšiltovky. Tečka přes outfit.</p></div><span class="mitem__price">od 490 Kč</span></div>
+      <div class="mitem"><span class="mitem__idx">04</span><div><div class="mitem__name">Crossbody &amp; ledvinky</div><p class="mitem__desc">Technický nylon, hodně kapes. Na drop fronty ideál.</p></div><span class="mitem__price">990 Kč</span></div>
+      <div class="mitem"><span class="mitem__idx">05</span><div><div class="mitem__name">Ponožky &amp; doplňky</div><p class="mitem__desc">Froté kotníkovky, šňůrky, péče o boty. Detaily.</p></div><span class="mitem__price">od 190 Kč</span></div>
+    </div>
+
+    <div class="menu__panel" data-panel="dropy" style="display:none">
+      <div class="mitem"><span class="mitem__idx">01</span><div><div class="mitem__name">Pátkový drop<span class="mitem__tag">signature</span></div><p class="mitem__desc">Každý pátek pár kusů. Jednou. Restock se neslibuje.</p></div><span class="mitem__price">od 3 490 Kč</span></div>
+      <div class="mitem"><span class="mitem__idx">02</span><div><div class="mitem__name">Kolaborace<span class="mitem__tag">limited</span></div><p class="mitem__desc">Spolupráce se značkou nebo umělcem. Číslované kusy.</p></div><span class="mitem__price">od 4 990 Kč</span></div>
+      <div class="mitem"><span class="mitem__idx">03</span><div><div class="mitem__name">Hlídání páru</div><p class="mitem__desc">Řekni velikost a model, ozveme se, jak naskladníme.</p></div><span class="mitem__price">zdarma</span></div>
+      <div class="mitem"><span class="mitem__idx">04</span><div><div class="mitem__name">Archivní kusy</div><p class="mitem__desc">Deadstock a starší kolekce. Co se najde, se najde.</p></div><span class="mitem__price">dle kusu</span></div>
+    </div>
+  </div>
+
+  <p class="menu__note">// Velikosti a dostupnost rádi ověříme u pultu. Hlídání dropu i rezervace páru přes kontaktní formulář.</p>
+</section>
+
+<section class="ed-cta">
+  <p class="secnum secnum--center">Něco padlo do oka?</p>
+  <h2 class="s-title">Tak <em>přijď</em></h2>
+  <div class="ed-cta__links">
+    <a href="kontakt.html" class="btn btn--solid"><span>Najít nás</span></a>
+    <a href="kontakt.html" class="btn"><span>Hlídat drop</span></a>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer__top">
+    <div><div class="footer__brand">DROP</div><p>Tenisky & streetwear · Karlín</p></div>
+    <nav class="footer__nav"><a href="index.html">Úvod</a><a href="menu.html">Kolekce</a><a href="o-nas.html">Příběh</a><a href="galerie.html">Galerie</a><a href="kontakt.html">Kontakt</a></nav>
+  </div>
+  <div class="footer__bottom"><span>Sokolovská 92, Praha 8 – Karlín · yo@drop-store.cz</span><span>© 2026 DROP · demo · SiteSpot</span></div>
+</footer>
+
+<a href="kontakt.html" class="floatcta">Najít nás</a>
+<script src="js/main.js"></script>
+</body>
+</html>

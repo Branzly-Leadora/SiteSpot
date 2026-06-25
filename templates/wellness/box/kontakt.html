@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kontakt — BOX</title>
+<meta name="description" content="Najdi BOX — adresa ve Vysočanech, otevírací doba a rezervace zkušebního tréninku zdarma.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="kontakt">
+
+<nav class="nav">
+  <a href="index.html" class="nav__logo">BOX <small>/2021</small></a>
+  <ul class="nav__links">
+    <li><a href="index.html">Úvod</a></li>
+    <li><a href="menu.html">Tréninky</a></li>
+    <li><a href="o-nas.html">Příběh</a></li>
+    <li><a href="galerie.html">Galerie</a></li>
+    <li><a href="kontakt.html" class="active">Kontakt</a></li>
+    <li><a href="#vzkaz" class="nav__cta">Napsat</a></li>
+  </ul>
+  <button class="nav__burger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<header class="pagehead">
+  <p class="secnum">Najdeš nás</p>
+  <h1>Kde a <em>kdy</em></h1>
+  <p>První trénink je zdarma a nezávazně. Rezervuj si ho přes formulář nebo prostě přijď na zkušební hodinu.</p>
+</header>
+
+<section>
+  <div class="contact__inner">
+    <div class="contact__col">
+      <p class="secnum">01 — Otevřeno</p>
+      <div class="hours">
+        <div class="hours__row" data-days="0,1,2,3,4"><span class="hours__day">Pondělí – Pátek</span><span class="hours__time">6:00 – 21:00</span></div>
+        <div class="hours__row" data-days="5"><span class="hours__day">Sobota</span><span class="hours__time">8:00 – 18:00</span></div>
+        <div class="hours__row" data-days="6"><span class="hours__day">Neděle</span><span class="hours__time">9:00 – 14:00</span></div>
+      </div>
+      <div class="details">
+        <div class="detail"><span class="k">Adresa</span><span class="v">Nákladní 12, 190 00 Praha 9 – Vysočany</span></div>
+        <div class="detail"><span class="k">Telefon</span><span class="v"><a href="tel:+420605330110">+420 605 330 110</a></span></div>
+        <div class="detail"><span class="k">E-mail</span><span class="v"><a href="mailto:ahoj@box-praha.cz">ahoj@box-praha.cz</a></span></div>
+        <div class="detail"><span class="k">Doprava</span><span class="v">4 min od stanice Vysočanská · parkování v areálu</span></div>
+      </div>
+      <div class="mapbox">
+        <svg viewBox="0 0 600 360" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <rect width="600" height="360" fill="#F2F1EC"/>
+          <g stroke="#D5D4CD" stroke-width="6" fill="none"><path d="M-20 90 H620"/><path d="M-20 200 H620"/><path d="M-20 300 H620"/><path d="M120 -20 V380"/><path d="M300 -20 V380"/><path d="M460 -20 V380"/></g>
+          <g stroke="#E2E1DA" stroke-width="3" fill="none"><path d="M-20 145 H620"/><path d="M-20 250 H620"/><path d="M210 -20 V380"/><path d="M385 -20 V380"/></g>
+          <rect x="150" y="105" width="120" height="80" fill="#DEDDD4"/><rect x="330" y="210" width="100" height="70" fill="#DEDDD4"/><rect x="60" y="210" width="50" height="60" fill="#DEDDD4"/>
+          <rect x="287" y="187" width="26" height="26" fill="#C9A100"/><path d="M300 187 L300 162" stroke="#121210" stroke-width="3"/>
+        </svg>
+        <a href="https://maps.google.com/?q=Nákladní+12+Praha" target="_blank" rel="noopener" class="mapbox__btn">Mapy ↗</a>
+      </div>
+      <div class="mappin">Stará hala v areálu, žluté vrata s nápisem BOX — nemůžeš minout.</div>
+    </div>
+
+    <div class="contact__col">
+      <p class="secnum">02 — Zkušební trénink</p>
+      <h2 class="s-title" style="font-size:clamp(1.6rem,3vw,2.2rem);margin-bottom:1.4rem">Napiš <em>nám</em></h2>
+      <form class="rform" id="vzkaz">
+        <div class="rform__row">
+          <div class="field"><label for="jmeno">Jméno</label><input type="text" id="jmeno" placeholder="Jan Novák" required></div>
+          <div class="field"><label for="tel">Telefon</label><input type="tel" id="tel" placeholder="+420 …" required></div>
+        </div>
+        <div class="rform__row">
+          <div class="field"><label for="datum">Datum</label><input type="date" id="datum"></div>
+          <div class="field"><label for="uroven">Úroveň</label><select id="uroven"><option>Úplný začátečník</option><option>Občas cvičím</option><option>Pravidelně trénuji</option><option>CrossFit už dělám</option></select></div>
+        </div>
+        <div class="field"><label for="email">E-mail</label><input type="email" id="email" placeholder="jan@email.cz"></div>
+        <div class="field"><label for="pozn">Zpráva</label><textarea id="pozn" rows="3" placeholder="Cíl, zdravotní omezení, na co se ptáš…"></textarea></div>
+        <button type="submit" class="btn btn--solid" style="width:100%"><span>Odeslat zprávu</span></button>
+        <div class="rform__done">✓ Díky! Zprávu jsme dostali — ozveme se s termínem zkušebního tréninku. <em>(Ukázkový formulář — neodesílá se.)</em></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer__top">
+    <div><div class="footer__brand">BOX</div><p>Funkční trénink & CrossFit · Vysočany</p></div>
+    <nav class="footer__nav"><a href="index.html">Úvod</a><a href="menu.html">Tréninky</a><a href="o-nas.html">Příběh</a><a href="galerie.html">Galerie</a><a href="kontakt.html">Kontakt</a></nav>
+  </div>
+  <div class="footer__bottom"><span>Nákladní 12, Praha 9 · +420 605 330 110</span><span>© 2026 BOX · demo · SiteSpot</span></div>
+</footer>
+
+<a href="#vzkaz" class="floatcta">Napsat</a>
+<script src="js/main.js"></script>
+</body>
+</html>

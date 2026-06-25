@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kontakt & poptávka — Hodovna</title>
+<meta name="description" content="Nezávazná poptávka cateringu Hodovna — adresa, kontakt a formulář. Odpovídáme do 24 hodin.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="kontakt">
+
+<div class="util">
+  <div class="util__inner">
+    <div class="util__l"><span>Catering pro firmy i soukromé akce</span></div>
+    <div class="util__r"><a href="tel:+420226200300">+420 226 200 300</a><a href="mailto:poptavka@hodovna.cz">poptavka@hodovna.cz</a></div>
+  </div>
+</div>
+
+<nav class="nav">
+  <a href="index.html" class="nav__logo">Hodovna</a>
+  <ul class="nav__links">
+    <li><a href="index.html">Úvod</a></li>
+    <li><a href="menu.html">Nabídka</a></li>
+    <li><a href="o-nas.html">O nás</a></li>
+    <li><a href="galerie.html">Reference</a></li>
+    <li><a href="kontakt.html" class="active">Kontakt</a></li>
+    <li><a href="#poptavka" class="nav__cta">Nezávazná poptávka</a></li>
+  </ul>
+  <button class="nav__burger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<header class="pagehead">
+  <h1>Nezávazná <em>poptávka</em></h1>
+  <p>Řekněte nám termín, počet hostů a představu. Ozveme se do 24 hodin s nabídkou na míru.</p>
+</header>
+
+<section>
+  <div class="contact__inner">
+    <div class="reveal-l">
+      <div class="infocard">
+        <p class="eyebrow">Kancelář & kuchyně</p>
+        <h2 class="s-title" style="font-size:clamp(1.5rem,3vw,2rem)">Kdy nás <em>zastihnete</em></h2>
+        <div class="hours">
+          <div class="hours__row" data-days="0,1,2,3,4"><span class="hours__day">Pondělí – Pátek</span><span class="hours__time">9:00 – 17:00</span></div>
+          <div class="hours__row" data-days="5"><span class="hours__day">Sobota</span><span class="hours__time">dle domluvy</span></div>
+          <div class="hours__row" data-days="6"><span class="hours__day">Neděle</span><span class="hours__time">zavřeno</span></div>
+        </div>
+        <div class="details">
+          <div class="detail"><div class="ic">📍</div><div class="txt"><strong>Adresa</strong>Bubenská 8, 170 00 Praha 7 – Holešovice</div></div>
+          <div class="detail"><div class="ic">📞</div><div class="txt"><strong>Telefon</strong><a href="tel:+420226200300">+420 226 200 300</a></div></div>
+          <div class="detail"><div class="ic">✉️</div><div class="txt"><strong>E-mail</strong><a href="mailto:poptavka@hodovna.cz">poptavka@hodovna.cz</a></div></div>
+          <div class="detail"><div class="ic">🧾</div><div class="txt"><strong>Fakturační údaje</strong>IČO 123 45 678 · DIČ CZ12345678</div></div>
+        </div>
+        <div class="mapbox">
+          <svg viewBox="0 0 600 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <rect width="600" height="300" fill="#EAF1FF"/>
+            <g stroke="#CFE0F5" stroke-width="6" fill="none"><path d="M-20 80 H620"/><path d="M-20 170 H620"/><path d="M-20 250 H620"/><path d="M120 -20 V320"/><path d="M300 -20 V320"/><path d="M460 -20 V320"/></g>
+            <g stroke="#DCEAFA" stroke-width="3" fill="none"><path d="M-20 125 H620"/><path d="M-20 210 H620"/><path d="M210 -20 V320"/><path d="M385 -20 V320"/></g>
+            <rect x="150" y="95" width="120" height="60" rx="4" fill="#D6E5F7"/><rect x="330" y="180" width="100" height="55" rx="4" fill="#D6E5F7"/>
+            <circle cx="300" cy="170" r="12" fill="#2D6FB0"/><circle cx="300" cy="170" r="24" fill="none" stroke="#2D6FB0" stroke-width="2" opacity="0.5"/><path d="M300 170 L300 140" stroke="#2D6FB0" stroke-width="3"/>
+          </svg>
+          <a href="https://maps.google.com/?q=Bubenská+8+Praha" target="_blank" rel="noopener" class="mapbox__btn">Otevřít v Mapách</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal-r" id="poptavka">
+      <form class="rform">
+        <p class="eyebrow">Poptávkový formulář</p>
+        <h2 class="s-title" style="font-size:clamp(1.5rem,3vw,2rem);margin-bottom:1.4rem">Poptat <em>catering</em></h2>
+        <div class="rform__row">
+          <div class="field"><label for="jmeno">Jméno / firma</label><input type="text" id="jmeno" placeholder="Jan Novák / Firma s.r.o." required></div>
+          <div class="field"><label for="tel">Telefon</label><input type="tel" id="tel" placeholder="+420 …" required></div>
+        </div>
+        <div class="rform__row">
+          <div class="field"><label for="email">E-mail</label><input type="email" id="email" placeholder="jan@firma.cz" required></div>
+          <div class="field"><label for="typ">Typ akce</label><select id="typ"><option>Firemní akce</option><option>Svatba</option><option>Oslava / narozeniny</option><option>Raut / recepce</option><option>Jiné</option></select></div>
+        </div>
+        <div class="rform__row">
+          <div class="field"><label for="datum">Termín</label><input type="date" id="datum"></div>
+          <div class="field"><label for="osob">Počet hostů</label><select id="osob"><option>do 20</option><option>20–50</option><option>50–100</option><option>100–200</option><option>200+</option></select></div>
+        </div>
+        <div class="field"><label for="pozn">Vaše představa</label><textarea id="pozn" rows="3" placeholder="Místo konání, rozpočet, preference, alergie…"></textarea></div>
+        <button type="submit" class="btn btn--primary" style="width:100%;justify-content:center">Odeslat poptávku</button>
+        <div class="rform__done">✓ Děkujeme! Poptávku máme — ozveme se vám do 24 hodin s nabídkou. <em>(Ukázkový formulář — neodesílá se.)</em></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer__top">
+    <div><div class="footer__brand">Hodovna</div><p>Profesionální catering pro firmy i soukromé akce v Praze a okolí.</p></div>
+    <div class="footer__col"><h5>Služby</h5><a href="menu.html">Firemní akce</a><a href="menu.html">Svatby & oslavy</a><a href="menu.html">Rauty & recepce</a></div>
+    <div class="footer__col"><h5>Firma</h5><a href="o-nas.html">O nás</a><a href="galerie.html">Reference</a><a href="kontakt.html">Kontakt</a></div>
+    <div class="footer__col"><h5>Kontakt</h5><a href="tel:+420226200300">+420 226 200 300</a><a href="mailto:poptavka@hodovna.cz">poptavka@hodovna.cz</a><p>Bubenská 8, Praha 7</p></div>
+  </div>
+  <div class="footer__bottom"><span>© 2026 Hodovna · IČO 123 45 678</span><span>Ukázkový web · demo · SiteSpot</span></div>
+</footer>
+
+<a href="#poptavka" class="floatcta">Nezávazná poptávka</a>
+<script src="js/main.js"></script>
+</body>
+</html>

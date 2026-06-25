@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kontakt & pobočky — SMASH</title>
+<meta name="description" content="Najdi SMASH — pobočky v Praze, otevírací doba, kontakt a catering na akce.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="kontakt">
+
+<nav class="nav">
+  <a href="index.html" class="nav__logo"><span>🍔</span> SMASH</a>
+  <ul class="nav__links">
+    <li><a href="index.html">Úvod</a></li>
+    <li><a href="menu.html">Menu</a></li>
+    <li><a href="o-nas.html">Příběh</a></li>
+    <li><a href="galerie.html">Galerie</a></li>
+    <li><a href="kontakt.html" class="active">Kontakt</a></li>
+    <li><a href="#napis" class="nav__cta">Napsat nám</a></li>
+  </ul>
+  <button class="nav__burger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<header class="pagehead">
+  <div class="glow glow--p"></div>
+  <div class="pagehead__in">
+    <h1>Najdeš nás <span class="grad-text">všude</span></h1>
+    <p>Šest poboček po Praze. Flagship na Krakovské — a tam míří i pošta.</p>
+  </div>
+</header>
+
+<section>
+  <div class="contact__inner">
+    <div class="reveal-l">
+      <div class="infocard">
+        <span class="eyebrow">Flagship · Krakovská</span>
+        <h2 class="s-title" style="font-size:clamp(1.5rem,3vw,2rem)">Otevřeno <span class="grad-text">každý den</span></h2>
+        <div class="hours">
+          <div class="hours__row" data-days="0,1,2,3"><span class="hours__day">Pondělí – Čtvrtek</span><span class="hours__time">11:00 – 23:00</span></div>
+          <div class="hours__row" data-days="4,5"><span class="hours__day">Pátek – Sobota</span><span class="hours__time">11:00 – 02:00</span></div>
+          <div class="hours__row" data-days="6"><span class="hours__day">Neděle</span><span class="hours__time">12:00 – 22:00</span></div>
+        </div>
+        <div class="details">
+          <div class="detail"><div class="ic">📍</div><div class="txt"><strong>Flagship</strong>Krakovská 12, 110 00 Praha 1</div></div>
+          <div class="detail"><div class="ic">🏬</div><div class="txt"><strong>Další pobočky</strong>Anděl · Karlín · Vinohrady · Letná · Dejvice</div></div>
+          <div class="detail"><div class="ic">📞</div><div class="txt"><strong>Telefon</strong><a href="tel:+420777666555">+420 777 666 555</a></div></div>
+          <div class="detail"><div class="ic">🚚</div><div class="txt"><strong>Rozvoz</strong>Wolt · Foodora · Bolt Food</div></div>
+        </div>
+        <div class="mapbox">
+          <svg viewBox="0 0 600 340" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <rect width="600" height="340" fill="#110F1C"/>
+            <g stroke="#221F30" stroke-width="6" fill="none"><path d="M-20 90 H620"/><path d="M-20 190 H620"/><path d="M-20 280 H620"/><path d="M120 -20 V360"/><path d="M300 -20 V360"/><path d="M460 -20 V360"/></g>
+            <g stroke="#1A1727" stroke-width="3" fill="none"><path d="M-20 140 H620"/><path d="M-20 235 H620"/><path d="M210 -20 V360"/><path d="M385 -20 V360"/></g>
+            <rect x="150" y="105" width="120" height="60" rx="4" fill="#1C1930"/><rect x="330" y="200" width="100" height="55" rx="4" fill="#1C1930"/>
+            <circle cx="300" cy="190" r="13" fill="#FF5E3A"/><circle cx="300" cy="190" r="26" fill="none" stroke="#FF2D78" stroke-width="2" opacity="0.6"/><path d="M300 190 L300 158" stroke="#FF5E3A" stroke-width="3"/>
+          </svg>
+          <a href="https://maps.google.com/?q=Krakovská+12+Praha" target="_blank" rel="noopener" class="mapbox__btn">Otevřít v Mapách</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal-r" id="napis">
+      <form class="rform">
+        <span class="eyebrow">Napiš nám</span>
+        <h2 class="s-title" style="font-size:clamp(1.5rem,3vw,2rem);margin:.6rem 0 1.2rem">Catering, akce nebo <span class="grad-text">jen pochvala?</span></h2>
+        <div class="rform__row">
+          <div class="field"><label for="jmeno">Jméno</label><input type="text" id="jmeno" placeholder="Jan Novák" required></div>
+          <div class="field"><label for="tel">Telefon</label><input type="tel" id="tel" placeholder="+420 …"></div>
+        </div>
+        <div class="rform__row">
+          <div class="field"><label for="email">E-mail</label><input type="email" id="email" placeholder="jan@email.cz" required></div>
+          <div class="field"><label for="typ">Téma</label><select id="typ"><option>Catering / akce</option><option>Firemní objednávka</option><option>Spolupráce</option><option>Zpětná vazba</option><option>Něco jiného</option></select></div>
+        </div>
+        <div class="field"><label for="pozn">Zpráva</label><textarea id="pozn" rows="4" placeholder="O co jde?"></textarea></div>
+        <button type="submit" class="btn btn--grad" style="width:100%;justify-content:center">Odeslat zprávu</button>
+        <div class="rform__done">✓ Díky! Zprávu máme — ozveme se ti co nejdřív. <em>(Ukázkový formulář — neodesílá se.)</em></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer__top">
+    <div><div class="footer__brand">🍔 SMASH</div><p>Smash burgery a street food v Praze. Objednej online, vyzvedni za 15 minut.</p></div>
+    <div class="footer__col"><h5>Menu</h5><a href="menu.html">Burgery</a><a href="menu.html">Sides</a><a href="menu.html">Nápoje</a></div>
+    <div class="footer__col"><h5>SMASH</h5><a href="o-nas.html">Příběh</a><a href="galerie.html">Galerie</a><a href="kontakt.html">Pobočky</a></div>
+    <div class="footer__col"><h5>Kontakt</h5><a href="tel:+420777666555">+420 777 666 555</a><a href="mailto:ahoj@smash-burger.cz">ahoj@smash-burger.cz</a><p>Krakovská 12, Praha 1</p></div>
+  </div>
+  <div class="footer__bottom"><span>© 2026 SMASH</span><span>Ukázkový web · demo · SiteSpot</span></div>
+</footer>
+
+<a href="#napis" class="floatcta">Napsat nám 🍔</a>
+<script src="js/main.js"></script>
+</body>
+</html>

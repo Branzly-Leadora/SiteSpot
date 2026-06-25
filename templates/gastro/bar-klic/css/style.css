@@ -1,0 +1,289 @@
+/* ============================================================
+   BAR KLÍČ — Midnight Noir / CINEMATIC
+   Layout: celoplošný obrazový hero · boční kategorie menu ·
+   horizontální filmstrip galerie · lepkavá rezervační lišta
+   ============================================================ */
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:    #0C0A07;
+  --bg2:   #131009;
+  --panel: #080604;
+  --ink:   #F1E9DA;
+  --gold:  #C8A24A;
+  --gold2: #E6C57E;
+  --wine:  #7A2E3A;
+  --muted: #8E8068;
+  --line:  rgba(230, 197, 126, 0.16);
+  --line2: rgba(241, 233, 218, 0.08);
+  --ease:  cubic-bezier(0.7, 0, 0.2, 1);
+  --maxw:  1280px;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: 'DM Sans', system-ui, sans-serif; font-weight: 300; line-height: 1.7;
+  overflow-x: hidden; -webkit-font-smoothing: antialiased;
+}
+img { display: block; max-width: 100%; }
+a { color: inherit; }
+.wrap { max-width: var(--maxw); margin: 0 auto; }
+
+/* placeholders (tmavé) */
+.ph { position: relative; overflow: hidden; background: var(--panel); }
+.ph::after { content:''; position:absolute; inset:0; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.5'/%3E%3C/svg%3E"); opacity:.16; mix-blend-mode:overlay; }
+.ph-1 { background: radial-gradient(130% 130% at 30% 20%, #2a2114, #08060300 0%, #060402 75%); }
+.ph-2 { background: linear-gradient(150deg, #3a2a16, #08060380 78%); }
+.ph-3 { background: radial-gradient(130% 130% at 70% 30%, #4a1f2a, #06040270 74%); }
+.ph-4 { background: linear-gradient(160deg, #6b5320, #0c0905 82%); }
+.ph-5 { background: linear-gradient(150deg, #120e08, #4a3a1c 135%); }
+.ph-6 { background: radial-gradient(120% 120% at 40% 60%, #46341a, #060402 72%); }
+.ph-7 { background: linear-gradient(140deg, #14100a, #c8a24a 175%); }
+.ph-8 { background: radial-gradient(130% 130% at 60% 40%, #3a1822, #050304 74%); }
+
+/* ============================================================
+   NAV — průhledný přes obraz, ztmavne při scrollu
+   ============================================================ */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.6rem clamp(1.4rem, 5vw, 4rem);
+  transition: padding .5s var(--ease), background .5s var(--ease), box-shadow .5s var(--ease);
+}
+.nav.scrolled { background: rgba(12,10,7,.78); backdrop-filter: blur(20px); padding-top: 1rem; padding-bottom: 1rem; box-shadow: 0 1px 0 var(--line); }
+.nav__logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; text-decoration: none; color: var(--ink); display: flex; align-items: baseline; gap: .5rem; }
+.nav__logo small { font-family: 'DM Sans'; font-size: .5rem; letter-spacing: .3em; color: var(--gold); }
+.nav__links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+.nav__links a { text-decoration: none; font-size: .66rem; letter-spacing: .2em; text-transform: uppercase; color: rgba(241,233,218,.75); position: relative; transition: color .3s; white-space: nowrap; }
+.nav__links a::after { content:''; position:absolute; bottom:-4px; left:0; right:0; height:1px; background:var(--gold); transform:scaleX(0); transform-origin:right; transition:transform .3s var(--ease); }
+.nav__links a:hover, .nav__links a.active { color: var(--gold2); }
+.nav__links a:hover::after, .nav__links a.active::after { transform: scaleX(1); transform-origin: left; }
+.nav__cta { color: var(--bg) !important; background: var(--gold); padding: .55rem 1.2rem; font-size: .6rem !important; letter-spacing: .18em; }
+.nav__cta::after { display: none !important; }
+.nav__cta:hover { background: var(--gold2) !important; }
+.nav__burger { display: none; background: none; border: none; cursor: pointer; width: 28px; height: 20px; position: relative; }
+.nav__burger span { position: absolute; left: 0; width: 100%; height: 1.5px; background: var(--ink); transition: transform .35s var(--ease), opacity .25s; }
+.nav__burger span:nth-child(1){top:0}.nav__burger span:nth-child(2){top:50%;transform:translateY(-50%)}.nav__burger span:nth-child(3){bottom:0}
+body.menu-open .nav__burger span:nth-child(1){top:50%;transform:translateY(-50%) rotate(45deg)}
+body.menu-open .nav__burger span:nth-child(2){opacity:0}
+body.menu-open .nav__burger span:nth-child(3){bottom:50%;transform:translateY(50%) rotate(-45deg)}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn { display: inline-block; text-decoration: none; cursor: pointer; font-family: 'DM Sans'; font-weight: 500; font-size: .66rem; letter-spacing: .22em; text-transform: uppercase; padding: 1.05rem 2.6rem; border: 1px solid var(--gold); background: transparent; color: var(--gold2); position: relative; overflow: hidden; transition: color .4s; }
+.btn::before { content:''; position:absolute; inset:0; background: var(--gold); transform: translateY(101%); transition: transform .45s var(--ease); z-index:0; }
+.btn span { position: relative; z-index: 1; }
+.btn:hover { color: var(--bg); }
+.btn:hover::before { transform: translateY(0); }
+.btn--solid { background: var(--gold); color: var(--bg); border-color: var(--gold); }
+.btn--solid::before { background: var(--gold2); }
+.link { text-decoration: none; font-size: .66rem; letter-spacing: .22em; text-transform: uppercase; color: var(--gold2); border-bottom: 1px solid var(--gold); padding-bottom: .25rem; transition: color .3s; }
+.link:hover { color: var(--ink); }
+
+/* ============================================================
+   CINEMATIC HERO — celoplošný obraz
+   ============================================================ */
+.cine { height: 100vh; min-height: 620px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; text-align: center; }
+.cine__media { position: absolute; inset: 0; }
+.cine__media .ph { position: absolute; inset: 0; transform: scale(1.06); animation: kenburns 18s ease-out forwards; }
+@keyframes kenburns { to { transform: scale(1); } }
+.cine::after { content: ''; position: absolute; inset: 0; z-index: 2; background: radial-gradient(120% 90% at 50% 60%, rgba(12,10,7,.45), rgba(12,10,7,.86)); }
+.cine__content { position: relative; z-index: 3; padding: 0 1.4rem; }
+.cine__eyebrow { font-size: .64rem; letter-spacing: .5em; text-transform: uppercase; color: var(--gold2); margin-bottom: 1.8rem; opacity: 0; animation: fadeUp 1s var(--ease) .3s forwards; }
+.cine__title { font-family: 'Playfair Display', serif; font-weight: 700; font-size: clamp(3.4rem, 9vw, 8.5rem); line-height: .98; letter-spacing: -.01em; opacity: 0; animation: fadeUp 1.1s var(--ease) .45s forwards; }
+.cine__title em { font-style: italic; color: var(--gold2); }
+.cine__sub { font-size: 1rem; line-height: 1.8; color: rgba(241,233,218,.8); max-width: 480px; margin: 1.6rem auto 0; opacity: 0; animation: fadeUp 1s var(--ease) .65s forwards; }
+.cine__links { display: flex; gap: 2rem; align-items: center; justify-content: center; flex-wrap: wrap; margin-top: 2.6rem; opacity: 0; animation: fadeUp 1s var(--ease) .85s forwards; }
+.cine__scroll { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); z-index: 3; font-size: .56rem; letter-spacing: .3em; text-transform: uppercase; color: rgba(241,233,218,.5); display: flex; flex-direction: column; align-items: center; gap: .6rem; }
+.cine__scroll::after { content: ''; width: 1px; height: 38px; background: linear-gradient(var(--gold), transparent); }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
+
+/* ============================================================
+   SECTIONS / shared
+   ============================================================ */
+section { padding: clamp(4.5rem, 9vw, 8.5rem) clamp(1.4rem, 5vw, 4rem); }
+.eyebrow { font-size: .6rem; letter-spacing: .42em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.3rem; }
+.eyebrow--center { text-align: center; }
+.s-title { font-family: 'Playfair Display', serif; font-weight: 600; font-size: clamp(2.1rem, 4.6vw, 3.6rem); line-height: 1.08; }
+.s-title em { font-style: italic; color: var(--gold2); }
+
+/* split intro — text + obraz */
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 0; align-items: stretch; }
+.split__text { padding: clamp(3rem,7vw,6rem) clamp(1.4rem,5vw,5rem); display: flex; flex-direction: column; justify-content: center; }
+.split__text p { font-size: .98rem; line-height: 1.95; color: var(--muted); margin-top: 1.4rem; }
+.split__media { position: relative; min-height: 420px; }
+.split__media .ph { position: absolute; inset: 0; }
+
+/* full-bleed image band s textem přes */
+.feature { position: relative; min-height: clamp(420px, 60vw, 640px); display: flex; align-items: flex-end; overflow: hidden; }
+.feature .ph { position: absolute; inset: 0; }
+.feature::after { content:''; position:absolute; inset:0; background: linear-gradient(to top, rgba(8,6,4,.85), rgba(8,6,4,.2) 70%); }
+.feature__content { position: relative; z-index: 2; padding: clamp(2.5rem,6vw,5rem); max-width: 620px; }
+
+/* ============================================================
+   SIGNATURE — řada na tmavém s velkými čísly
+   ============================================================ */
+.sig { background: var(--bg2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.sig__head { text-align: center; margin-bottom: 3.5rem; }
+.sig__list { max-width: 880px; margin: 0 auto; }
+.sig__item { display: grid; grid-template-columns: auto 1fr auto; gap: 1.8rem; align-items: baseline; padding: 1.9rem 0; border-bottom: 1px solid var(--line2); }
+.sig__num { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.5rem; color: var(--gold); }
+.sig__body h4 { font-family: 'Playfair Display', serif; font-weight: 600; font-size: 1.5rem; }
+.sig__body p { font-size: .86rem; color: var(--muted); line-height: 1.6; margin-top: .3rem; }
+.sig__price { font-size: 1rem; color: var(--gold2); white-space: nowrap; }
+
+/* ============================================================
+   REVIEWS — stacked velké citace
+   ============================================================ */
+.qstack { max-width: 980px; margin: 0 auto; }
+.qstack__row { padding: 2.6rem 0; border-bottom: 1px solid var(--line2); display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: center; }
+.qstack__row:last-child { border-bottom: none; }
+.qstack p { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 400; font-size: clamp(1.3rem, 2.4vw, 1.9rem); line-height: 1.45; color: var(--ink); }
+.qstack .who { font-size: .6rem; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+.qstack .who .stars { color: var(--gold); display: block; margin-bottom: .4rem; letter-spacing: 2px; }
+
+/* ============================================================
+   MENU — boční kategorie (rail) + seznam
+   ============================================================ */
+.barmenu { display: grid; grid-template-columns: 240px 1fr; gap: clamp(2rem,5vw,4rem); align-items: start; max-width: 1100px; margin: 0 auto; }
+.menu__tabs { display: flex; flex-direction: column; gap: .2rem; position: sticky; top: 110px; }
+.menu__tab { text-align: left; padding: .9rem 1rem; font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 500; border: none; border-left: 2px solid var(--line2); cursor: pointer; background: transparent; color: var(--muted); transition: all .25s; }
+.menu__tab.active { color: var(--gold2); border-left-color: var(--gold); padding-left: 1.4rem; }
+.menu__tab:hover:not(.active) { color: var(--ink); }
+.menu__grid { display: flex; flex-direction: column; }
+.menu__panel { display: contents; }
+.mitem { padding: 1.4rem 0; border-bottom: 1px solid var(--line2); }
+.mitem__top { display: flex; align-items: baseline; gap: .8rem; }
+.mitem__name { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 500; }
+.mitem__dots { flex: 1; border-bottom: 1px dotted var(--line); transform: translateY(-.25rem); }
+.mitem__price { font-size: .92rem; color: var(--gold2); white-space: nowrap; }
+.mitem__desc { font-size: .84rem; color: var(--muted); line-height: 1.6; margin-top: .4rem; max-width: 80%; }
+.mitem__tag { display: inline-block; margin-left: .6rem; font-family: 'DM Sans'; font-size: .54rem; letter-spacing: .16em; text-transform: uppercase; color: var(--wine); vertical-align: middle; }
+.menu__note { max-width: 1100px; margin: 2.4rem auto 0; font-size: .72rem; color: var(--muted); }
+
+/* ============================================================
+   GALLERY — horizontální filmstrip + lightbox
+   ============================================================ */
+.gal { display: flex; gap: 14px; overflow-x: auto; padding: 0 clamp(1.4rem,5vw,4rem) 1.4rem; scroll-snap-type: x mandatory; scrollbar-width: thin; scrollbar-color: var(--gold) transparent; }
+.gal::-webkit-scrollbar { height: 6px; }
+.gal::-webkit-scrollbar-thumb { background: var(--gold); }
+.gal__item { position: relative; flex: 0 0 clamp(260px, 34vw, 420px); aspect-ratio: 3/4; overflow: hidden; cursor: pointer; scroll-snap-align: center; }
+.gal__item .ph { position: absolute; inset: 0; transition: transform .7s var(--ease), filter .5s; filter: brightness(.82) saturate(.95); }
+.gal__item:hover .ph { transform: scale(1.05); filter: brightness(1) saturate(1.1); }
+.gal__item::after { content:''; position:absolute; inset:0; background: linear-gradient(to top, rgba(8,6,4,.6), transparent 55%); }
+.gal__cap { position: absolute; bottom: 1.1rem; left: 1.2rem; z-index: 2; font-size: .58rem; letter-spacing: .22em; text-transform: uppercase; color: rgba(241,233,218,.9); }
+.galhint { text-align: center; font-size: .56rem; letter-spacing: .26em; text-transform: uppercase; color: var(--muted); margin-top: 1rem; }
+
+.lightbox { position: fixed; inset: 0; z-index: 9000; background: rgba(5,3,2,.97); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity .4s, visibility .4s; }
+.lightbox.open { opacity: 1; visibility: visible; }
+.lightbox__inner { width: min(70vw, 720px); max-height: 80vh; aspect-ratio: 4/3; border: 1px solid rgba(230,197,126,.3); position: relative; }
+.lightbox__inner .ph { position: absolute; inset: 0; }
+.lightbox__cap { position: absolute; bottom: -2.2rem; left: 0; font-size: .62rem; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+.lightbox__close { position: absolute; top: 1.6rem; right: 2rem; background: none; border: none; color: var(--ink); font-size: 2rem; cursor: pointer; line-height: 1; }
+.lightbox__nav { position: absolute; top: 50%; transform: translateY(-50%); background: none; border: 1px solid rgba(230,197,126,.3); color: var(--ink); width: 48px; height: 48px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; transition: background .3s; }
+.lightbox__nav:hover { background: rgba(200,162,74,.25); }
+.lightbox__nav.prev { left: 3vw; } .lightbox__nav.next { right: 3vw; }
+
+/* ============================================================
+   CONTACT
+   ============================================================ */
+.contact__inner { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2.5rem, 7vw, 6rem); align-items: start; }
+.hours { margin-top: 1.8rem; }
+.hours__row { display: flex; align-items: baseline; gap: .6rem; padding: .9rem 0; border-bottom: 1px solid var(--line2); }
+.hours__day { font-size: .92rem; color: var(--muted); white-space: nowrap; }
+.hours__dots { flex: 1; border-bottom: 1px dotted var(--line); transform: translateY(-.25rem); }
+.hours__time { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--ink); white-space: nowrap; }
+.hours__row.today .hours__day, .hours__row.today .hours__time { color: var(--gold2); }
+.details { margin-top: 2.4rem; display: flex; flex-direction: column; gap: 1.1rem; }
+.detail { display: flex; gap: 1rem; align-items: baseline; }
+.detail .k { font-size: .56rem; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); width: 92px; flex-shrink: 0; }
+.detail .v { font-size: .92rem; color: var(--ink); }
+.detail a { color: var(--gold2); text-decoration: none; } .detail a:hover { color: var(--ink); }
+.mapbox { position: relative; aspect-ratio: 16/11; border: 1px solid var(--line); overflow: hidden; background: var(--panel); }
+.mapbox svg { width: 100%; height: 100%; display: block; }
+.mapbox__btn { position: absolute; bottom: 1.2rem; right: 1.2rem; background: var(--gold); color: var(--bg); text-decoration: none; padding: .7rem 1.3rem; font-size: .58rem; letter-spacing: .18em; text-transform: uppercase; transition: background .3s; }
+.mapbox__btn:hover { background: var(--gold2); }
+.mappin { margin-top: 1.4rem; font-size: .88rem; color: var(--muted); line-height: 1.7; border-left: 2px solid var(--gold); padding-left: 1.2rem; }
+
+.rform { margin-top: 2rem; }
+.rform__row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+.field { margin-bottom: 1.2rem; }
+.field label { display: block; font-size: .56rem; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: .5rem; }
+.field input, .field select, .field textarea { width: 100%; border: none; border-bottom: 1px solid var(--line); background: transparent; padding: .7rem 0; font-family: 'DM Sans'; font-size: .95rem; color: var(--ink); outline: none; transition: border-color .25s; }
+.field input::placeholder, .field textarea::placeholder { color: rgba(142,128,104,.6); }
+.field select option { background: var(--bg2); color: var(--ink); }
+.field input:focus, .field select:focus, .field textarea:focus { border-color: var(--gold); }
+.rform__done { display: none; margin-top: 1rem; padding: 1rem 0; border-top: 1px solid var(--gold); font-size: .9rem; color: var(--gold2); }
+.rform__done.show { display: block; }
+
+/* ============================================================
+   CTA + FOOTER
+   ============================================================ */
+.ed-cta { text-align: center; background: var(--panel); border-top: 1px solid var(--line); }
+.ed-cta .eyebrow { color: var(--gold); }
+.ed-cta__links { display: flex; gap: 2.5rem; justify-content: center; align-items: center; flex-wrap: wrap; margin-top: 2.4rem; }
+
+.footer { background: var(--panel); color: var(--ink); padding: clamp(3rem,6vw,5rem) clamp(1.4rem,5vw,4rem) 6rem; border-top: 1px solid var(--line); }
+.footer__top { max-width: var(--maxw); margin: 0 auto; text-align: center; padding-bottom: 2.6rem; border-bottom: 1px solid var(--line2); }
+.footer__brand { font-family: 'Playfair Display', serif; font-size: 2.1rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+.footer__brand + p { font-size: .82rem; color: var(--muted); margin-top: .8rem; }
+.footer__nav { display: flex; gap: 1.8rem; justify-content: center; margin-top: 1.6rem; flex-wrap: wrap; }
+.footer__nav a { font-size: .6rem; letter-spacing: .22em; text-transform: uppercase; color: rgba(241,233,218,.6); text-decoration: none; }
+.footer__nav a:hover { color: var(--gold2); }
+.footer__bottom { max-width: var(--maxw); margin: 1.6rem auto 0; display: flex; justify-content: space-between; gap: .6rem; flex-wrap: wrap; font-size: .58rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+
+/* lepkavá rezervační lišta dole (reuse floatcta JS hook) */
+.floatcta.resbar {
+  left: 0; right: 0; bottom: 0; width: 100%; border-radius: 0;
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  padding: .9rem clamp(1.4rem,5vw,4rem); background: rgba(12,10,7,.92); backdrop-filter: blur(16px);
+  border-top: 1px solid var(--line); box-shadow: none; color: var(--ink);
+  font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; transform: translateY(100%);
+}
+.floatcta.resbar.show { transform: translateY(0); }
+.floatcta.resbar:hover { background: rgba(12,10,7,.96); color: var(--ink); }
+.resbar__note { color: var(--muted); letter-spacing: .12em; }
+.resbar__note b { color: var(--gold2); }
+.resbar__act { background: var(--gold); color: var(--bg); padding: .6rem 1.4rem; font-weight: 600; }
+
+/* page header */
+.pagehead { padding: clamp(8.5rem,14vw,12rem) clamp(1.4rem,5vw,4rem) clamp(2.5rem,5vw,4rem); text-align: center; border-bottom: 1px solid var(--line); background: radial-gradient(120% 90% at 50% 0%, rgba(200,162,74,.08), transparent 60%); }
+.pagehead .eyebrow { margin-bottom: 1.2rem; }
+.pagehead h1 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: clamp(3rem,8vw,6rem); line-height: .95; letter-spacing: -.01em; }
+.pagehead h1 em { font-style: italic; color: var(--gold2); }
+.pagehead p { max-width: 480px; margin: 1.5rem auto 0; color: var(--muted); font-size: .95rem; }
+
+/* reveal */
+.reveal { opacity: 0; transform: translateY(40px); transition: opacity .9s var(--ease), transform .9s var(--ease); }
+.reveal.vis { opacity: 1; transform: none; }
+.reveal-l { opacity: 0; transform: translateX(-44px); transition: opacity .9s var(--ease), transform .9s var(--ease); }
+.reveal-l.vis { opacity: 1; transform: none; }
+.reveal-r { opacity: 0; transform: translateX(44px); transition: opacity .9s var(--ease), transform .9s var(--ease); }
+.reveal-r.vis { opacity: 1; transform: none; }
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 900px) {
+  .nav__burger { display: block; z-index: 490; }
+  .nav__links { position: fixed; inset: 0 0 0 auto; width: min(80vw,320px); background: var(--bg2); flex-direction: column; align-items: flex-start; justify-content: center; gap: 1.8rem; padding: 3rem; transform: translateX(100%); transition: transform .5s var(--ease); box-shadow: -20px 0 60px -20px rgba(0,0,0,.6); z-index: 480; }
+  body.menu-open .nav__links { transform: translateX(0); }
+  .nav__links a { font-size: .9rem; }
+  .split, .contact__inner { grid-template-columns: 1fr; }
+  .split__media { min-height: 320px; }
+  .barmenu { grid-template-columns: 1fr; }
+  .menu__tabs { position: static; flex-direction: row; flex-wrap: wrap; gap: .4rem; margin-bottom: 1.5rem; }
+  .menu__tab { border-left: none; border-bottom: 2px solid var(--line2); font-size: 1.05rem; padding: .5rem .8rem; }
+  .menu__tab.active { padding-left: .8rem; border-left: none; border-bottom-color: var(--gold); }
+  .mitem__desc { max-width: 100%; }
+  .qstack__row { grid-template-columns: 1fr; gap: 1rem; }
+  .sig__item { grid-template-columns: auto 1fr; } .sig__price { grid-column: 2; }
+  .rform__row { grid-template-columns: 1fr; }
+  .lightbox__inner { width: 88vw; } .lightbox__nav.prev{left:1rem}.lightbox__nav.next{right:1rem}
+  .footer__bottom { justify-content: center; }
+}
+@media (prefers-reduced-motion: reduce) { .reveal,.reveal-l,.reveal-r{opacity:1!important;transform:none!important} .cine__media .ph{animation:none!important} }

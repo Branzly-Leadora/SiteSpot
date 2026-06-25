@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Co umím & ceník — Šikula</title>
+<meta name="description" content="Co umí hodinový manžel Šikula — opravy, montáže, voda & elektro, malování a zahrada.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="menu">
+
+<nav class="nav">
+  <a href="index.html" class="nav__logo">Šikula <small>hodinový manžel</small></a>
+  <ul class="nav__links">
+    <li><a href="index.html">Úvod</a></li>
+    <li><a href="menu.html" class="active">Co umím</a></li>
+    <li><a href="o-nas.html">O mně</a></li>
+    <li><a href="galerie.html">Práce</a></li>
+    <li><a href="kontakt.html">Kontakt</a></li>
+    <li><a href="kontakt.html" class="nav__cta">Objednat</a></li>
+  </ul>
+  <button class="nav__burger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<header class="pagehead">
+  <p class="eyebrow eyebrow--center">Co umím</p>
+  <h1>S čím vám <em>pomůžu</em></h1>
+  <p>Ceny jsou orientační. Účtuji férově — podle času a materiálu, nikdy ne víc, než se domluvíme.</p>
+</header>
+
+<section style="padding-top:0">
+  <div class="menu__tabs">
+    <button class="menu__tab active" data-tab="opravy">Opravy</button>
+    <button class="menu__tab" data-tab="montaze">Montáže</button>
+    <button class="menu__tab" data-tab="voda">Voda & elektro</button>
+    <button class="menu__tab" data-tab="malovani">Malování & zahrada</button>
+  </div>
+
+  <div class="menu__grid">
+    <div class="menu__panel" data-panel="opravy">
+      <div class="mitem"><div class="mitem__top"><span class="mitem__name">Drobné opravy</span><span class="mitem__price">od 350 Kč</span></div><p class="mitem__desc">Kliky, panty, zámky, vrzání.</p><span class="mitem__tag">Nej</span></div>
+      <div class="mitem"><div class="mitem__top"><span class="mitem__name">Police & obrazy</span><span class="mitem__price">od 250 Kč</span></div><p class="mitem__desc">Pověsím rovně a napevno.</p></div>
+      <div class="mitem"><div class="mitem__top"><span class="mitem__name">Seřízení dveří & oken</span><span class="mitem__price">od 300 Kč</span></div><p class="mitem__desc">Aby zase lícovaly a těsnily.</p></div>
+      <div class="mitem"><div class="mitem__top"><span class="mitem__name">Silikonování</span><span class="mitem__price">od 400 Kč</span></div><p class="mitem__desc">Vana, dřez, kouty — čistě a natěsno.</p></div>
+    </div>
+
+    <div class="menu__panel" data-panel="montaze" style="display:none">
+      <div class="mitem"><div class="mitem__top"><span class="mitem__name">Montáž nábytku</span><span class="mitem__price">od 450 Kč</span></div><p class="mitem__desc">Skříně, postele, komody z krabic.</p><span class="mitem__tag">Oblíbené</span></div>
+      <div class="mitem"><div class="mitem__top"><span class="mitem__name">Kuchyně & vestavby</span><span class="mitem__price">dle rozsahu</span></div><p class="mitem__desc">Montáž a osazení spotřebičů.</p></div>
+      <div class="mitem"><div class="mitem__top"><span class="mitem__name">Karnýše & žaluzie</span><span class="mitem__price">od 350 Kč</span></div><p class="mitem__desc">Záclonové tyče, rolety, žaluzie.</p></div>
+      <div class="mitem"><div class="mitem__top"><span class="mitem__name">Televize na zeď</span><span class="mitem__price">od 600 Kč</span></div><p class="mitem__desc">Držák, kabely, schování drátů.</p></div>
+    </div>
+
+    <div class="menu__panel" data-panel="voda" style="display:none">
+      <div class="mitem"><div class="mitem__top"><span class="mitem__name">Výměna baterie</span><span class="mitem__price">od 500 Kč</span></div><p class="mitem__desc">Kuchyň i koupelna.</p></div>
+      <div class="mitem"><div class="mitem__top"><span class="mitem__name">Kapající kohoutek</span><span class="mitem__price">od 400 Kč</span></div><p class="mitem__desc">Těsnění, ventily, drobné netěsnosti.</p></div>
+      <div class="mitem"><div class="mitem__top"><span class="mitem__name">Výměna zásuvky / vypínače</span><span class="mitem__price">od 350 Kč</span></div><p class="mitem__desc">Drobné elektro práce.</p></div>
+      <div class="mitem"><div class="mitem__top"><span class="mitem__name">Výměna svítidla</span><span class="mitem__price">od 300 Kč</span></div><p class="mitem__desc">Lustr, lampa, LED panel.</p></div>
+    </div>
+
+    <div class="menu__panel" data-panel="malovani" style="display:none">
+      <div class="mitem"><div class="mitem__top"><span class="mitem__name">Malování pokoje</span><span class="mitem__price">dle plochy</span></div><p class="mitem__desc">Příprava, malba, úklid.</p></div>
+      <div class="mitem"><div class="mitem__top"><span class="mitem__name">Drobné zednické práce</span><span class="mitem__price">od 400 Kč</span></div><p class="mitem__desc">Zaspárování, vyspravení, štuk.</p></div>
+      <div class="mitem"><div class="mitem__top"><span class="mitem__name">Úklid zahrady</span><span class="mitem__price">od 450 Kč</span></div><p class="mitem__desc">Sekání, hrabání, drobné úpravy.</p></div>
+      <div class="mitem"><div class="mitem__top"><span class="mitem__name">Stěhování drobností</span><span class="mitem__price">dle rozsahu</span></div><p class="mitem__desc">Odvoz a pomoc s těžkými kusy.</p></div>
+    </div>
+  </div>
+
+  <p class="menu__note">Doprava po Praze v ceně do 30 minut. Materiál účtuji za nákupní cenu.</p>
+</section>
+
+<div class="ctaband">
+  <div class="ctaband__tile">
+    <p class="eyebrow eyebrow--center" style="color:#fff;justify-content:center">Něco vás trápí?</p>
+    <h2 class="s-title">Tak <em>zavolejte</em></h2>
+    <div class="ctaband__acts">
+      <a href="kontakt.html" class="btn btn--primary">Objednat práci</a>
+      <a href="tel:+420776550440" class="btn btn--dark">Zavolat hned</a>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer__top">
+    <div><div class="footer__brand">Šikula</div><p>Hodinový manžel pro váš domov · Praha a okolí.</p></div>
+    <div class="footer__col"><h5>Kde působím</h5><p>Praha a blízké okolí<br>Po–So</p></div>
+    <div class="footer__col"><h5>Kontakt</h5><a href="tel:+420776550440">+420 776 550 440</a><a href="mailto:tonda@sikula-manzel.cz">tonda@sikula-manzel.cz</a></div>
+  </div>
+  <div class="footer__bottom"><span>© 2026 Šikula</span><span>Ukázkový web · demo · SiteSpot</span></div>
+</footer>
+
+<a href="kontakt.html" class="floatcta">Objednat práci</a>
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Řešení & ceník — WATT</title>
+<meta name="description" content="Řešení WATT — fotovoltaika, baterie, tepelná čerpadla, wallbox a chytrá domácnost.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="menu">
+
+<nav class="nav">
+  <a href="index.html" class="nav__logo"><span>⚡</span> WATT</a>
+  <ul class="nav__links">
+    <li><a href="index.html">Úvod</a></li>
+    <li><a href="menu.html" class="active">Řešení</a></li>
+    <li><a href="o-nas.html">O nás</a></li>
+    <li><a href="galerie.html">Realizace</a></li>
+    <li><a href="kontakt.html">Kontakt</a></li>
+    <li><a href="kontakt.html" class="nav__cta">Spočítat úsporu</a></li>
+  </ul>
+  <button class="nav__burger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<header class="pagehead">
+  <div class="glow glow--p"></div>
+  <div class="pagehead__in">
+    <h1>Naše <span class="grad-text">řešení</span></h1>
+    <p>Vyberte oblast a my vám spočítáme úsporu i dotaci na míru vaší spotřebě.</p>
+  </div>
+</header>
+
+<section style="padding-top:0">
+  <div style="text-align:center"><div class="menu__tabs">
+    <button class="menu__tab active" data-tab="fve">Fotovoltaika</button>
+    <button class="menu__tab" data-tab="baterie">Baterie & čerpadla</button>
+    <button class="menu__tab" data-tab="wallbox">Wallbox</button>
+    <button class="menu__tab" data-tab="smart">Smart home</button>
+  </div></div>
+
+  <div class="menu__grid">
+    <div class="menu__panel" data-panel="fve">
+      <div class="mitem"><div class="mitem__img"><div class="ph ph-2"></div><span class="badge">TOP</span></div><div class="mitem__b"><div class="mitem__name">FVE 5 kWp</div><p class="mitem__desc">Ideál pro menší domácnost. Panely, měnič, montáž.</p><div class="mitem__row"><span class="mitem__price grad-text">od 199 000 Kč</span><button class="mitem__add" aria-label="Více">+</button></div></div></div>
+      <div class="mitem"><div class="mitem__img"><div class="ph ph-4"></div></div><div class="mitem__b"><div class="mitem__name">FVE 8 kWp</div><p class="mitem__desc">Pro rodinný dům s vyšší spotřebou.</p><div class="mitem__row"><span class="mitem__price grad-text">od 279 000 Kč</span><button class="mitem__add" aria-label="Více">+</button></div></div></div>
+      <div class="mitem"><div class="mitem__img"><div class="ph ph-7"></div></div><div class="mitem__b"><div class="mitem__name">FVE 10+ kWp</div><p class="mitem__desc">Velké střechy a firmy.</p><div class="mitem__row"><span class="mitem__price grad-text">dle projektu</span><button class="mitem__add" aria-label="Více">+</button></div></div></div>
+      <div class="mitem"><div class="mitem__img"><div class="ph ph-5"></div></div><div class="mitem__b"><div class="mitem__name">Ohřev vody fotovoltaikou</div><p class="mitem__desc">Přebytky do bojleru, ne do sítě.</p><div class="mitem__row"><span class="mitem__price grad-text">od 24 000 Kč</span><button class="mitem__add" aria-label="Více">+</button></div></div></div>
+    </div>
+
+    <div class="menu__panel" data-panel="baterie" style="display:none">
+      <div class="mitem"><div class="mitem__img"><div class="ph ph-5"></div><span class="badge">HIT</span></div><div class="mitem__b"><div class="mitem__name">Baterie 5 kWh</div><p class="mitem__desc">Uložte si přebytky na večer.</p><div class="mitem__row"><span class="mitem__price grad-text">od 89 000 Kč</span><button class="mitem__add" aria-label="Více">+</button></div></div></div>
+      <div class="mitem"><div class="mitem__img"><div class="ph ph-8"></div></div><div class="mitem__b"><div class="mitem__name">Baterie 10 kWh</div><p class="mitem__desc">Větší kapacita i záloha při výpadku.</p><div class="mitem__row"><span class="mitem__price grad-text">od 149 000 Kč</span><button class="mitem__add" aria-label="Více">+</button></div></div></div>
+      <div class="mitem"><div class="mitem__img"><div class="ph ph-3"></div></div><div class="mitem__b"><div class="mitem__name">Tepelné čerpadlo</div><p class="mitem__desc">Topení a ohřev vody úsporně.</p><div class="mitem__row"><span class="mitem__price grad-text">od 219 000 Kč</span><button class="mitem__add" aria-label="Více">+</button></div></div></div>
+    </div>
+
+    <div class="menu__panel" data-panel="wallbox" style="display:none">
+      <div class="mitem"><div class="mitem__img"><div class="ph ph-4"></div><span class="badge">EV</span></div><div class="mitem__b"><div class="mitem__name">Wallbox 11 kW</div><p class="mitem__desc">Domácí nabíječka pro elektromobil.</p><div class="mitem__row"><span class="mitem__price grad-text">od 18 000 Kč</span><button class="mitem__add" aria-label="Více">+</button></div></div></div>
+      <div class="mitem"><div class="mitem__img"><div class="ph ph-7"></div></div><div class="mitem__b"><div class="mitem__name">Wallbox + chytré řízení</div><p class="mitem__desc">Nabíjení z přebytků fotovoltaiky.</p><div class="mitem__row"><span class="mitem__price grad-text">od 28 000 Kč</span><button class="mitem__add" aria-label="Více">+</button></div></div></div>
+    </div>
+
+    <div class="menu__panel" data-panel="smart" style="display:none">
+      <div class="mitem"><div class="mitem__img"><div class="ph ph-8"></div></div><div class="mitem__b"><div class="mitem__name">Řízení spotřeby</div><p class="mitem__desc">Spotřebiče se zapnou, když svítí slunce.</p><div class="mitem__row"><span class="mitem__price grad-text">dle projektu</span><button class="mitem__add" aria-label="Více">+</button></div></div></div>
+      <div class="mitem"><div class="mitem__img"><div class="ph ph-2"></div></div><div class="mitem__b"><div class="mitem__name">Chytré osvětlení & topení</div><p class="mitem__desc">Vše z jedné appky.</p><div class="mitem__row"><span class="mitem__price grad-text">dle projektu</span><button class="mitem__add" aria-label="Více">+</button></div></div></div>
+      <div class="mitem"><div class="mitem__img"><div class="ph ph-5"></div></div><div class="mitem__b"><div class="mitem__name">Monitoring & servis</div><p class="mitem__desc">Hlídáme výrobu i spotřebu za vás.</p><div class="mitem__row"><span class="mitem__price grad-text">od 290 Kč/měs</span><button class="mitem__add" aria-label="Více">+</button></div></div></div>
+    </div>
+  </div>
+  <p class="menu__note">Ceny jsou orientační a závisí na střeše i spotřebě. Dotaci až 60 % vyřídíme za vás.</p>
+</section>
+
+<section class="ctaband">
+  <div class="glow glow--o"></div>
+  <div class="ctaband__inner">
+    <h2 class="s-title">Spočítáme <span class="grad-text">vaši úsporu</span></h2>
+    <p style="color:var(--muted);max-width:460px;margin:1rem auto 0">Nezávazně a zdarma. Dotaci vyřídíme.</p>
+    <div class="ctaband__acts"><a href="kontakt.html" class="btn btn--grad">Spočítat úsporu</a></div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer__top">
+    <div><div class="footer__brand">⚡ WATT</div><p>Fotovoltaika, baterie a chytré domácnosti na klíč. Dotace vyřídíme za vás.</p></div>
+    <div class="footer__col"><h5>Řešení</h5><a href="menu.html">Fotovoltaika</a><a href="menu.html">Baterie</a><a href="menu.html">Wallbox</a></div>
+    <div class="footer__col"><h5>WATT</h5><a href="o-nas.html">O nás</a><a href="galerie.html">Realizace</a><a href="kontakt.html">Kontakt</a></div>
+    <div class="footer__col"><h5>Kontakt</h5><a href="tel:+420770440880">+420 770 440 880</a><a href="mailto:ahoj@watt-energie.cz">ahoj@watt-energie.cz</a><p>Solární 7, Praha 9</p></div>
+  </div>
+  <div class="footer__bottom"><span>© 2026 WATT</span><span>Ukázkový web · demo · SiteSpot</span></div>
+</footer>
+
+<a href="kontakt.html" class="floatcta">Spočítat úsporu ⚡</a>
+<script src="js/main.js"></script>
+</body>
+</html>

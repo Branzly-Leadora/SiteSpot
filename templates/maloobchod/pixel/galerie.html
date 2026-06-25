@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galerie — PIXEL</title>
+<meta name="description" content="Galerie PIXEL — prodejna, herní koutek, setup zóna a výloha plná novinek.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="galerie">
+
+<nav class="nav">
+  <a href="index.html" class="nav__logo"><span>🎮</span> PIXEL</a>
+  <ul class="nav__links">
+    <li><a href="index.html">Úvod</a></li>
+    <li><a href="menu.html">Produkty</a></li>
+    <li><a href="o-nas.html">O nás</a></li>
+    <li><a href="galerie.html" class="active">Galerie</a></li>
+    <li><a href="kontakt.html">Kontakt</a></li>
+    <li><a href="menu.html" class="nav__cta">Do e-shopu</a></li>
+  </ul>
+  <button class="nav__burger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<header class="pagehead">
+  <div class="glow glow--p"></div>
+  <div class="pagehead__in">
+    <h1><span class="grad-text">Galerie</span></h1>
+    <p>Mrkni, jak to u nás na prodejně žije. Klikni pro zvětšení.</p>
+  </div>
+</header>
+
+<section style="padding-top:0">
+  <div class="gal">
+    <div class="gal__item" data-cap="Regály plné her"><div class="ph ph-2"></div><span class="gal__cap">Regály s hrami</span></div>
+    <div class="gal__item" data-cap="Herní koutek"><div class="ph ph-4"></div><span class="gal__cap">Herní koutek</span></div>
+    <div class="gal__item" data-cap="Setup zóna"><div class="ph ph-6"></div><span class="gal__cap">Setup zóna</span></div>
+    <div class="gal__item" data-cap="Stěna s konzolemi"><div class="ph ph-3"></div><span class="gal__cap">Konzole</span></div>
+    <div class="gal__item" data-cap="Naše prodejna"><div class="ph ph-1"></div><span class="gal__cap">Prodejna</span></div>
+    <div class="gal__item" data-cap="RGB příslušenství"><div class="ph ph-8"></div><span class="gal__cap">RGB zóna</span></div>
+    <div class="gal__item" data-cap="Výloha s novinkami"><div class="ph ph-7"></div><span class="gal__cap">Výloha</span></div>
+    <div class="gal__item" data-cap="Náš tým"><div class="ph ph-5"></div><span class="gal__cap">Crew</span></div>
+  </div>
+</section>
+
+<section class="ctaband">
+  <div class="glow glow--o"></div>
+  <div class="ctaband__inner">
+    <h2 class="s-title">Naživo je to <span class="grad-text">ještě lepší</span></h2>
+    <div class="ctaband__acts"><a href="menu.html" class="btn btn--grad">Do e-shopu</a><a href="kontakt.html" class="btn btn--ghost">Najít prodejnu</a></div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer__top">
+    <div><div class="footer__brand">🎮 PIXEL</div><p>Herní a tech obchod v Praze. Objednej online, vyzvedni na prodejně nebo doruč až domů.</p></div>
+    <div class="footer__col"><h5>Produkty</h5><a href="menu.html">Konzole</a><a href="menu.html">Hry</a><a href="menu.html">Příslušenství</a></div>
+    <div class="footer__col"><h5>PIXEL</h5><a href="o-nas.html">O nás</a><a href="galerie.html">Galerie</a><a href="kontakt.html">Prodejna</a></div>
+    <div class="footer__col"><h5>Kontakt</h5><a href="tel:+420777123456">+420 777 123 456</a><a href="mailto:hej@pixel-store.cz">hej@pixel-store.cz</a><p>Vinohradská 112, Praha 3</p></div>
+  </div>
+  <div class="footer__bottom"><span>© 2026 PIXEL</span><span>Ukázkový web · demo · SiteSpot</span></div>
+</footer>
+
+<div class="lightbox" aria-hidden="true">
+  <button class="lightbox__close" aria-label="Zavřít">×</button>
+  <button class="lightbox__nav prev" aria-label="Předchozí">‹</button>
+  <div class="lightbox__inner"><div class="ph ph-2"></div><span class="lightbox__cap"></span></div>
+  <button class="lightbox__nav next" aria-label="Další">›</button>
+</div>
+
+<a href="menu.html" class="floatcta">Do e-shopu 🎮</a>
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galerie — BOX</title>
+<meta name="description" content="Nahlédni do BOXU — hala, činky, hrazda, tréninky a komunita.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="galerie">
+
+<nav class="nav">
+  <a href="index.html" class="nav__logo">BOX <small>/2021</small></a>
+  <ul class="nav__links">
+    <li><a href="index.html">Úvod</a></li>
+    <li><a href="menu.html">Tréninky</a></li>
+    <li><a href="o-nas.html">Příběh</a></li>
+    <li><a href="galerie.html" class="active">Galerie</a></li>
+    <li><a href="kontakt.html">Kontakt</a></li>
+    <li><a href="kontakt.html" class="nav__cta">Zkušební trénink</a></li>
+  </ul>
+  <button class="nav__burger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<header class="pagehead">
+  <p class="secnum">Nahlédni k nám</p>
+  <h1>Galerie</h1>
+  <p>Beton, ocel a pot. Klikni pro zvětšení.</p>
+</header>
+
+<section style="padding-left:0;padding-right:0">
+  <div class="gal">
+    <div class="gal__item s-big" data-idx="01" data-cap="Hlavní hala"><div class="ph ph-1"></div><span class="gal__cap">Hala</span></div>
+    <div class="gal__item s-sm" data-idx="02" data-cap="Činky & kotouče"><div class="ph ph-3"></div><span class="gal__cap">Železo</span></div>
+    <div class="gal__item s-sm" data-idx="03" data-cap="Hrazda & kruhy"><div class="ph ph-6"></div><span class="gal__cap">Gymnastika</span></div>
+    <div class="gal__item s-tall" data-idx="04" data-cap="WOD v plném proudu"><div class="ph ph-5"></div><span class="gal__cap">WOD</span></div>
+    <div class="gal__item s-wide" data-idx="05" data-cap="Kettlebelly & rack"><div class="ph ph-2"></div><span class="gal__cap">Vybavení</span></div>
+    <div class="gal__item s-sm" data-idx="06" data-cap="Vzpírání"><div class="ph ph-8"></div><span class="gal__cap">Síla</span></div>
+    <div class="gal__item s-wide" data-idx="07" data-cap="Komunita po tréninku"><div class="ph ph-1"></div><span class="gal__cap">Parta</span></div>
+    <div class="gal__item s-tall" data-idx="08" data-cap="Koučové v akci"><div class="ph ph-6"></div><span class="gal__cap">Koučové</span></div>
+  </div>
+</section>
+
+<section class="ed-cta">
+  <p class="secnum secnum--center">Láká tě to?</p>
+  <h2 class="s-title">Naživo to <em>bolí líp</em></h2>
+  <div class="ed-cta__links">
+    <a href="kontakt.html" class="btn btn--solid"><span>Zkušební trénink</span></a>
+    <a href="menu.html" class="btn"><span>Tréninky</span></a>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer__top">
+    <div><div class="footer__brand">BOX</div><p>Funkční trénink & CrossFit · Vysočany</p></div>
+    <nav class="footer__nav"><a href="index.html">Úvod</a><a href="menu.html">Tréninky</a><a href="o-nas.html">Příběh</a><a href="galerie.html">Galerie</a><a href="kontakt.html">Kontakt</a></nav>
+  </div>
+  <div class="footer__bottom"><span>Nákladní 12, Praha 9 · +420 605 330 110</span><span>© 2026 BOX · demo · SiteSpot</span></div>
+</footer>
+
+<div class="lightbox" aria-hidden="true">
+  <button class="lightbox__close" aria-label="Zavřít">×</button>
+  <button class="lightbox__nav prev" aria-label="Předchozí">‹</button>
+  <div class="lightbox__inner"><div class="ph ph-1"></div><span class="lightbox__cap"></span></div>
+  <button class="lightbox__nav next" aria-label="Další">›</button>
+</div>
+
+<a href="kontakt.html" class="floatcta">Zkušební trénink</a>
+<script src="js/main.js"></script>
+</body>
+</html>

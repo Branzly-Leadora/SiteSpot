@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kontakt & rezervace — Útočiště</title>
+<meta name="description" content="Rezervujte si lekci v Útočišti — adresa na Vinohradech, otevírací doba, telefon a online rezervace.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="kontakt">
+
+<nav class="nav">
+  <a href="index.html" class="nav__logo">Útočiště</a>
+  <ul class="nav__links">
+    <li><a href="index.html">Úvod</a></li>
+    <li><a href="menu.html">Lekce</a></li>
+    <li><a href="o-nas.html">Příběh</a></li>
+    <li><a href="galerie.html">Studio</a></li>
+    <li><a href="kontakt.html" class="active">Kontakt</a></li>
+    <li><a href="#rezervace" class="nav__cta">Rezervovat</a></li>
+  </ul>
+  <button class="nav__burger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<header class="pagehead">
+  <p class="eyebrow">Kde nás najdete</p>
+  <h1>Jsme tu <em>pro vás</em></h1>
+  <p>Místo si rezervujte předem — lekce bývají plné. Stačí formulář níže nebo nám zavolejte.</p>
+</header>
+
+<section>
+  <div class="wrap contact__inner">
+    <div class="reveal-l">
+      <p class="eyebrow">Otevírací doba</p>
+      <h2 class="s-title" style="font-size:clamp(1.8rem,3.5vw,2.6rem)">Kdy máme <em>otevřeno</em></h2>
+      <div class="hours">
+        <div class="hours__row" data-days="0,1,2,3,4"><span class="hours__day">Pondělí – Pátek</span><span class="hours__dots"></span><span class="hours__time">7:00 – 21:00</span></div>
+        <div class="hours__row" data-days="5"><span class="hours__day">Sobota</span><span class="hours__dots"></span><span class="hours__time">8:00 – 18:00</span></div>
+        <div class="hours__row" data-days="6"><span class="hours__day">Neděle</span><span class="hours__dots"></span><span class="hours__time">9:00 – 17:00</span></div>
+      </div>
+
+      <div class="details">
+        <div class="detail"><span class="k">Adresa</span><span class="v">Mánesova 64, 120 00 Praha 2 – Vinohrady</span></div>
+        <div class="detail"><span class="k">Telefon</span><span class="v"><a href="tel:+420271730450">+420 271 730 450</a></span></div>
+        <div class="detail"><span class="k">E-mail</span><span class="v"><a href="mailto:ahoj@utociste-studio.cz">ahoj@utociste-studio.cz</a></span></div>
+        <div class="detail"><span class="k">Doprava</span><span class="v">3 min od stanice Jiřího z Poděbrad · tram i metro A</span></div>
+      </div>
+
+      <div class="mappin" style="margin-top:2.4rem">Najdete nás v Mánesově ulici kousek od náměstí Jiřího z Poděbrad. Zvoňte na „Útočiště", studio je ve druhém patře — výtah i schody vás dovedou ke klidu.</div>
+    </div>
+
+    <div class="reveal-r">
+      <div class="mapbox">
+        <svg viewBox="0 0 600 420" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <rect width="600" height="420" fill="#E7E4D6"/>
+          <g stroke="#D4D2BE" stroke-width="6" fill="none">
+            <path d="M-20 100 H620"/><path d="M-20 230 H620"/><path d="M-20 340 H620"/>
+            <path d="M120 -20 V440"/><path d="M300 -20 V440"/><path d="M460 -20 V440"/>
+          </g>
+          <g stroke="#DEDCC9" stroke-width="3" fill="none">
+            <path d="M-20 160 H620"/><path d="M-20 290 H620"/><path d="M210 -20 V440"/><path d="M385 -20 V440"/>
+          </g>
+          <path d="M0 360 Q150 330 300 372 T600 350 V440 H0 Z" fill="#C7D6BC" opacity="0.7"/>
+          <rect x="150" y="120" width="120" height="80" fill="#D7D3BD"/>
+          <rect x="330" y="240" width="100" height="70" fill="#D7D3BD"/>
+          <rect x="60" y="250" width="50" height="60" fill="#D7D3BD"/>
+          <circle cx="300" cy="225" r="13" fill="#6E7F5E"/>
+          <circle cx="300" cy="225" r="26" fill="none" stroke="#6E7F5E" stroke-width="2" opacity="0.5"/>
+          <path d="M300 225 L300 192" stroke="#6E7F5E" stroke-width="3"/>
+        </svg>
+        <a href="https://maps.google.com/?q=Mánesova+64+Praha" target="_blank" rel="noopener" class="mapbox__btn">Otevřít v Mapách</a>
+      </div>
+
+      <form class="rform" id="rezervace">
+        <p class="eyebrow" style="margin-top:.5rem">Online rezervace lekce</p>
+        <div class="rform__row">
+          <div class="field"><label for="jmeno">Jméno a příjmení</label><input type="text" id="jmeno" placeholder="Jan Novák" required></div>
+          <div class="field"><label for="tel">Telefon</label><input type="tel" id="tel" placeholder="+420 …" required></div>
+        </div>
+        <div class="rform__row">
+          <div class="field"><label for="lekce">Lekce</label>
+            <select id="lekce"><option>Hatha jóga</option><option>Vinyasa flow</option><option>Power jóga</option><option>Jin jóga</option><option>Restorativní jóga</option><option>Meditace & dech</option><option>Kurz pro začátečníky</option></select>
+          </div>
+          <div class="field"><label for="datum">Datum</label><input type="date" id="datum" required></div>
+        </div>
+        <div class="rform__row">
+          <div class="field"><label for="cas">Čas</label>
+            <select id="cas"><option>7:00</option><option>9:00</option><option>12:00</option><option>17:00</option><option>18:30</option><option>20:00</option></select>
+          </div>
+          <div class="field"><label for="email">E-mail</label><input type="email" id="email" placeholder="jan@email.cz"></div>
+        </div>
+        <div class="field"><label for="pozn">Poznámka (nepovinné)</label><textarea id="pozn" rows="2" placeholder="Jsem začátečník, zdravotní omezení, půjčení podložky…"></textarea></div>
+        <button type="submit" class="btn btn--solid" style="width:100%"><span>Odeslat rezervaci</span></button>
+        <div class="rform__done">✓ Děkujeme! Vaši rezervaci jsme přijali — ozveme se s potvrzením. <em>(Ukázkový formulář — neodesílá se.)</em></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer__top">
+    <div class="footer__brand">Útočiště</div>
+    <p>Jóga a meditační studio · Mánesova 64, Praha 2 – Vinohrady</p>
+    <nav class="footer__nav">
+      <a href="index.html">Úvod</a><a href="menu.html">Lekce</a><a href="o-nas.html">Příběh</a><a href="galerie.html">Studio</a><a href="kontakt.html">Kontakt</a>
+    </nav>
+  </div>
+  <div class="footer__bottom">
+    <span>© 2026 Útočiště</span>
+    <span>Ukázkový web · demo · SiteSpot</span>
+  </div>
+</footer>
+
+<a href="#rezervace" class="floatcta">Rezervovat lekci</a>
+<script src="js/main.js"></script>
+</body>
+</html>

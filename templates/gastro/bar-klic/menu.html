@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nápojový lístek — Bar Klíč</title>
+<meta name="description" content="Nápojový lístek Bar Klíč — autorské koktejly, přírodní vína, nealko a malé jídlo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="menu">
+
+<nav class="nav">
+  <a href="index.html" class="nav__logo">Klíč <small>BAR · 2017</small></a>
+  <ul class="nav__links">
+    <li><a href="index.html">Úvod</a></li>
+    <li><a href="menu.html" class="active">Nápoje</a></li>
+    <li><a href="o-nas.html">Příběh</a></li>
+    <li><a href="galerie.html">Galerie</a></li>
+    <li><a href="kontakt.html">Kontakt</a></li>
+    <li><a href="kontakt.html" class="nav__cta">Rezervovat</a></li>
+  </ul>
+  <button class="nav__burger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<header class="pagehead">
+  <p class="eyebrow">Co míchá pult</p>
+  <h1>Nápojový <em>lístek</em></h1>
+  <p>Koktejly ladíme podle sezóny, vína se točí podle nálady sklepa. Vyberte kategorii.</p>
+</header>
+
+<section>
+  <div class="barmenu">
+    <div class="menu__tabs">
+      <button class="menu__tab active" data-tab="koktejly">Koktejly</button>
+      <button class="menu__tab" data-tab="vina">Vína</button>
+      <button class="menu__tab" data-tab="jidlo">Malé jídlo</button>
+      <button class="menu__tab" data-tab="nealko">Nealko</button>
+    </div>
+
+    <div class="menu__grid">
+      <div class="menu__panel" data-panel="koktejly">
+        <div class="mitem"><div class="mitem__top"><span class="mitem__name">Klíč Negroni<span class="mitem__tag">signature</span></span><span class="mitem__dots"></span><span class="mitem__price">195 Kč</span></div><p class="mitem__desc">Gin, Campari, vermut zrající v sudu po whisky. Náš podpis.</p></div>
+        <div class="mitem"><div class="mitem__top"><span class="mitem__name">Půlnoční Old Fashioned<span class="mitem__tag">oblíbené</span></span><span class="mitem__dots"></span><span class="mitem__price">210 Kč</span></div><p class="mitem__desc">Bourbon, demerara, čokoládový bitter, pomerančová kůra.</p></div>
+        <div class="mitem"><div class="mitem__top"><span class="mitem__name">Dušní Sour</span><span class="mitem__dots"></span><span class="mitem__price">185 Kč</span></div><p class="mitem__desc">Žitná whisky, citron, javorový sirup, vaječný bílek.</p></div>
+        <div class="mitem"><div class="mitem__top"><span class="mitem__name">Zahradní Spritz</span><span class="mitem__dots"></span><span class="mitem__price">165 Kč</span></div><p class="mitem__desc">Aperitiv, pét-nat, tonik, sezónní bylinky z trhu.</p></div>
+        <div class="mitem"><div class="mitem__top"><span class="mitem__name">Espresso Martini</span><span class="mitem__dots"></span><span class="mitem__price">195 Kč</span></div><p class="mitem__desc">Vodka, čerstvé espresso, kávový likér.</p></div>
+        <div class="mitem"><div class="mitem__top"><span class="mitem__name">Tichý Margarita</span><span class="mitem__dots"></span><span class="mitem__price">200 Kč</span></div><p class="mitem__desc">Tequila reposado, mezcal, limetka, agáve, uzená sůl.</p></div>
+      </div>
+
+      <div class="menu__panel" data-panel="vina" style="display:none">
+        <div class="mitem"><div class="mitem__top"><span class="mitem__name">Pét-nat, růžové<span class="mitem__tag">sezónní</span></span><span class="mitem__dots"></span><span class="mitem__price">145 / 690 Kč</span></div><p class="mitem__desc">Morava · přírodní šumivé. Sklenka / láhev.</p></div>
+        <div class="mitem"><div class="mitem__top"><span class="mitem__name">Ryzlink, naturální</span><span class="mitem__dots"></span><span class="mitem__price">135 / 640 Kč</span></div><p class="mitem__desc">Mikulovsko · suché, minerální, lehce divoké.</p></div>
+        <div class="mitem"><div class="mitem__top"><span class="mitem__name">Oranžové, skin contact<span class="mitem__tag">pro odvážné</span></span><span class="mitem__dots"></span><span class="mitem__price">155 / 720 Kč</span></div><p class="mitem__desc">Macerované bílé · tříslo, sušené meruňky, čaj.</p></div>
+        <div class="mitem"><div class="mitem__top"><span class="mitem__name">Frankovka, lehká</span><span class="mitem__dots"></span><span class="mitem__price">150 / 700 Kč</span></div><p class="mitem__desc">Velké Pavlovice · chlazené červené, višeň, pepř.</p></div>
+        <div class="mitem"><div class="mitem__top"><span class="mitem__name">Champagne grower</span><span class="mitem__dots"></span><span class="mitem__price">— / 1 290 Kč</span></div><p class="mitem__desc">Malý vinař · na zvláštní večer a dobré zprávy.</p></div>
+      </div>
+
+      <div class="menu__panel" data-panel="jidlo" style="display:none">
+        <div class="mitem"><div class="mitem__top"><span class="mitem__name">Tartare z hovězího</span><span class="mitem__dots"></span><span class="mitem__price">185 Kč</span></div><p class="mitem__desc">Ručně sekané, kapary, žloutek, křupavý chléb.</p></div>
+        <div class="mitem"><div class="mitem__top"><span class="mitem__name">Sýrové prkénko<span class="mitem__tag">k vínu</span></span><span class="mitem__dots"></span><span class="mitem__price">245 Kč</span></div><p class="mitem__desc">Výběr zrajících sýrů, med, ořechy, chléb na kvásku.</p></div>
+        <div class="mitem"><div class="mitem__top"><span class="mitem__name">Oliva & gilda</span><span class="mitem__dots"></span><span class="mitem__price">95 Kč</span></div><p class="mitem__desc">Marinované olivy, ančovička, feferonka.</p></div>
+        <div class="mitem"><div class="mitem__top"><span class="mitem__name">Croquetas</span><span class="mitem__dots"></span><span class="mitem__price">145 Kč</span></div><p class="mitem__desc">Křupavé kroketky se šunkou a manchegem.</p></div>
+      </div>
+
+      <div class="menu__panel" data-panel="nealko" style="display:none">
+        <div class="mitem"><div class="mitem__top"><span class="mitem__name">Bezalko koktejl dne<span class="mitem__tag">dnešní</span></span><span class="mitem__dots"></span><span class="mitem__price">125 Kč</span></div><p class="mitem__desc">Barman vám namíchá i bez alkoholu — zeptejte se.</p></div>
+        <div class="mitem"><div class="mitem__top"><span class="mitem__name">Domácí limonáda</span><span class="mitem__dots"></span><span class="mitem__price">85 Kč</span></div><p class="mitem__desc">Sezónní ovoce, bylinky, čerstvě připravená.</p></div>
+        <div class="mitem"><div class="mitem__top"><span class="mitem__name">Kombucha na čepu</span><span class="mitem__dots"></span><span class="mitem__price">95 Kč</span></div><p class="mitem__desc">Fermentovaná, lehce perlivá, osvěžující.</p></div>
+        <div class="mitem"><div class="mitem__top"><span class="mitem__name">Espresso / Caffè</span><span class="mitem__dots"></span><span class="mitem__price">od 55 Kč</span></div><p class="mitem__desc">Výběrová káva i pozdě večer.</p></div>
+      </div>
+    </div>
+  </div>
+  <p class="menu__note">Informace o alergenech vám rádi sdělíme u baru. Nabídka a ceny se mohou měnit podle sezóny.</p>
+</section>
+
+<section class="ed-cta">
+  <p class="eyebrow eyebrow--center">Máte vybráno?</p>
+  <h2 class="s-title">Rezervujte si <em>místo u baru</em></h2>
+  <div class="ed-cta__links">
+    <a href="kontakt.html" class="btn btn--solid"><span>Rezervovat</span></a>
+    <a href="tel:+420608112233" class="link">Zavolat</a>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer__top">
+    <div class="footer__brand">Klíč</div>
+    <p>Autorské koktejly a přírodní vína · Dušní 9, Praha 1 · otevřeno po setmění</p>
+    <nav class="footer__nav">
+      <a href="index.html">Úvod</a><a href="menu.html">Nápoje</a><a href="o-nas.html">Příběh</a><a href="galerie.html">Galerie</a><a href="kontakt.html">Kontakt</a>
+    </nav>
+  </div>
+  <div class="footer__bottom">
+    <span>© 2026 Bar Klíč</span>
+    <span>Ukázkový web · demo · SiteSpot</span>
+  </div>
+</footer>
+
+<a href="kontakt.html" class="floatcta resbar">
+  <span class="resbar__note">Bar Klíč · <b>dnes otevřeno do 02:00</b></span>
+  <span class="resbar__act">Rezervovat místo</span>
+</a>
+<script src="js/main.js"></script>
+</body>
+</html>

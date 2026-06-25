@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Studio — Útočiště</title>
+<meta name="description" content="Nahlédněte do studia Útočiště — prosvětlený sál, čajový kout, šatny a atmosféra klidné praxe.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="galerie">
+
+<nav class="nav">
+  <a href="index.html" class="nav__logo">Útočiště</a>
+  <ul class="nav__links">
+    <li><a href="index.html">Úvod</a></li>
+    <li><a href="menu.html">Lekce</a></li>
+    <li><a href="o-nas.html">Příběh</a></li>
+    <li><a href="galerie.html" class="active">Studio</a></li>
+    <li><a href="kontakt.html">Kontakt</a></li>
+    <li><a href="kontakt.html" class="nav__cta">Rezervovat lekci</a></li>
+  </ul>
+  <button class="nav__burger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<header class="pagehead">
+  <p class="eyebrow">Pohled dovnitř</p>
+  <h1>Naše <em>studio</em></h1>
+  <p>Prosvětlený sál, čaj po lekci a kout, kde se dá jen tak sedět. Klikněte pro zvětšení.</p>
+</header>
+
+<section style="padding-top:clamp(2rem,4vw,3rem)">
+  <div class="wrap">
+    <div class="gal">
+      <div class="gal__item s-tall" data-cap="Hlavní sál — ranní světlo"><div class="ph ph-1"></div><span class="gal__cap">Sál</span></div>
+      <div class="gal__item s-wide" data-cap="Vinyasa flow v pohybu"><div class="ph ph-4"></div><span class="gal__cap">Lekce</span></div>
+      <div class="gal__item s-sm" data-cap="Čajový kout"><div class="ph ph-3"></div><span class="gal__cap">Čajovna</span></div>
+      <div class="gal__item s-big" data-cap="Podložky & pomůcky"><div class="ph ph-2"></div><span class="gal__cap">Vybavení</span></div>
+      <div class="gal__item s-sm" data-cap="Meditační koutek"><div class="ph ph-6"></div><span class="gal__cap">Meditace</span></div>
+      <div class="gal__item s-sm" data-cap="Šatny & sprchy"><div class="ph ph-7"></div><span class="gal__cap">Zázemí</span></div>
+      <div class="gal__item s-wide" data-cap="Večerní jin lekce"><div class="ph ph-8"></div><span class="gal__cap">Atmosféra</span></div>
+      <div class="gal__item s-tall" data-cap="Závěrečná relaxace"><div class="ph ph-5"></div><span class="gal__cap">Klid</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="ed-cta">
+  <p class="eyebrow eyebrow--center">Líbí se vám?</p>
+  <h2 class="s-title">Naživo se to <em>líp dýchá</em></h2>
+  <div class="ed-cta__links">
+    <a href="kontakt.html" class="btn"><span>Rezervovat lekci</span></a>
+    <a href="menu.html" class="link" style="color:var(--gold2);border-color:var(--gold2)">Prohlédnout lekce</a>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer__top">
+    <div class="footer__brand">Útočiště</div>
+    <p>Jóga a meditační studio · Mánesova 64, Praha 2 – Vinohrady</p>
+    <nav class="footer__nav">
+      <a href="index.html">Úvod</a><a href="menu.html">Lekce</a><a href="o-nas.html">Příběh</a><a href="galerie.html">Studio</a><a href="kontakt.html">Kontakt</a>
+    </nav>
+  </div>
+  <div class="footer__bottom">
+    <span>© 2026 Útočiště</span>
+    <span>Ukázkový web · demo · SiteSpot</span>
+  </div>
+</footer>
+
+<div class="lightbox" aria-hidden="true">
+  <button class="lightbox__close" aria-label="Zavřít">×</button>
+  <button class="lightbox__nav prev" aria-label="Předchozí">‹</button>
+  <div class="lightbox__inner"><div class="ph ph-1"></div><span class="lightbox__cap"></span></div>
+  <button class="lightbox__nav next" aria-label="Další">›</button>
+</div>
+
+<a href="kontakt.html" class="floatcta">Rezervovat lekci</a>
+<script src="js/main.js"></script>
+</body>
+</html>

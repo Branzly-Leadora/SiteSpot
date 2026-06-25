@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galerie — FORMA</title>
+<meta name="description" content="Nahlédni do FORMY — prostor, jídlo, káva a atmosféra.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="galerie">
+
+<nav class="nav">
+  <a href="index.html" class="nav__logo">FORMA <small>/2020</small></a>
+  <ul class="nav__links">
+    <li><a href="index.html">Úvod</a></li>
+    <li><a href="menu.html">Menu</a></li>
+    <li><a href="o-nas.html">Příběh</a></li>
+    <li><a href="galerie.html" class="active">Galerie</a></li>
+    <li><a href="kontakt.html">Kontakt</a></li>
+    <li><a href="kontakt.html" class="nav__cta">Najít nás</a></li>
+  </ul>
+  <button class="nav__burger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<header class="pagehead">
+  <p class="secnum">Nahlédni k nám</p>
+  <h1>Galerie</h1>
+  <p>Černobíle, jak to máme rádi. Klikni pro zvětšení.</p>
+</header>
+
+<section style="padding-left:0;padding-right:0">
+  <div class="gal">
+    <div class="gal__item s-big" data-idx="01" data-cap="Prostor / hlavní sál"><div class="ph ph-1"></div><span class="gal__cap">Prostor</span></div>
+    <div class="gal__item s-sm" data-idx="02" data-cap="Avokádo toast"><div class="ph ph-3"></div><span class="gal__cap">Z talíře</span></div>
+    <div class="gal__item s-sm" data-idx="03" data-cap="Pour over filtr"><div class="ph ph-6"></div><span class="gal__cap">Káva</span></div>
+    <div class="gal__item s-tall" data-idx="04" data-cap="Banana bread"><div class="ph ph-5"></div><span class="gal__cap">Sladké</span></div>
+    <div class="gal__item s-wide" data-idx="05" data-cap="Pákový kávovar"><div class="ph ph-2"></div><span class="gal__cap">Pult</span></div>
+    <div class="gal__item s-sm" data-idx="06" data-cap="Šakšuka"><div class="ph ph-8"></div><span class="gal__cap">Brunch</span></div>
+    <div class="gal__item s-wide" data-idx="07" data-cap="Ranní světlo"><div class="ph ph-1"></div><span class="gal__cap">Atmosféra</span></div>
+    <div class="gal__item s-tall" data-idx="08" data-cap="Tým za pákem"><div class="ph ph-6"></div><span class="gal__cap">Tým</span></div>
+  </div>
+</section>
+
+<section class="ed-cta">
+  <p class="secnum secnum--center">Líbí se ti to?</p>
+  <h2 class="s-title">Naživo je to <em>lepší</em></h2>
+  <div class="ed-cta__links">
+    <a href="kontakt.html" class="btn btn--solid"><span>Najít nás</span></a>
+    <a href="menu.html" class="btn"><span>Menu</span></a>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer__top">
+    <div><div class="footer__brand">FORMA</div><p>Brunch & coffee · Žižkov</p></div>
+    <nav class="footer__nav"><a href="index.html">Úvod</a><a href="menu.html">Menu</a><a href="o-nas.html">Příběh</a><a href="galerie.html">Galerie</a><a href="kontakt.html">Kontakt</a></nav>
+  </div>
+  <div class="footer__bottom"><span>Bořivojova 35, Praha 3 · +420 776 220 020</span><span>© 2026 FORMA · demo · SiteSpot</span></div>
+</footer>
+
+<div class="lightbox" aria-hidden="true">
+  <button class="lightbox__close" aria-label="Zavřít">×</button>
+  <button class="lightbox__nav prev" aria-label="Předchozí">‹</button>
+  <div class="lightbox__inner"><div class="ph ph-1"></div><span class="lightbox__cap"></span></div>
+  <button class="lightbox__nav next" aria-label="Další">›</button>
+</div>
+
+<a href="kontakt.html" class="floatcta">Najít nás</a>
+<script src="js/main.js"></script>
+</body>
+</html>
