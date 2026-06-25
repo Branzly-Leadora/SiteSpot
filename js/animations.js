@@ -21,7 +21,7 @@
   }
 
   /* ── Config ─────────────────────────────────────────────── */
-  const ANIM_MS     = 900;
+  const ANIM_MS     = 1100;
   const WHEEL_THRESH = 200;
 
   /* ── Collect panels: every top-level section + footer ───── */
@@ -52,19 +52,50 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      will-change: transform, opacity;
+      will-change: clip-path, transform;
       transition:
-        transform ${ANIM_MS}ms cubic-bezier(0.76,0,0.24,1),
-        opacity   ${ANIM_MS}ms cubic-bezier(0.76,0,0.24,1);
+        clip-path ${ANIM_MS}ms cubic-bezier(0.76, 0, 0.24, 1),
+        transform ${ANIM_MS}ms cubic-bezier(0.76, 0, 0.24, 1);
       z-index: 10;
     }
 
     /* z-index stacking so nav always on top */
     #nav { z-index: 9000 !important; }
 
-    .ss-panel--above { transform: translateY(-100%); opacity: 0; pointer-events: none; }
-    .ss-panel--active{ transform: translateY(0);     opacity: 1; pointer-events: auto; }
-    .ss-panel--below { transform: translateY(100%);  opacity: 0; pointer-events: none; }
+    /* clip-path states — panels slide in from bottom/top */
+    .ss-panel--above {
+      clip-path: inset(0 0 100% 0);
+      transform: scale(0.96);
+      pointer-events: none;
+    }
+    .ss-panel--active {
+      clip-path: inset(0 0 0% 0);
+      transform: scale(1);
+      pointer-events: auto;
+    }
+    .ss-panel--below {
+      clip-path: inset(100% 0 0% 0);
+      transform: scale(0.96);
+      pointer-events: none;
+    }
+
+    /* The outgoing panel shrinks back while new one reveals */
+    .ss-panel--leaving-up {
+      clip-path: inset(0 0 0% 0);
+      transform: scale(0.94);
+      pointer-events: none;
+      transition:
+        clip-path ${ANIM_MS}ms cubic-bezier(0.76, 0, 0.24, 1),
+        transform ${ANIM_MS}ms cubic-bezier(0.76, 0, 0.24, 1);
+    }
+    .ss-panel--leaving-down {
+      clip-path: inset(0 0 0% 0);
+      transform: scale(0.94);
+      pointer-events: none;
+      transition:
+        clip-path ${ANIM_MS}ms cubic-bezier(0.76, 0, 0.24, 1),
+        transform ${ANIM_MS}ms cubic-bezier(0.76, 0, 0.24, 1);
+    }
 
     /* Footer panel: align content to center */
     .ss-panel--footer {
@@ -257,27 +288,38 @@
     const prev = current;
     const down = next > prev;
 
+    // Remove entering class from previous
     panels[prev].classList.remove('ss-entering');
-    panels[prev].classList.remove('ss-panel--active');
-    panels[prev].classList.add(down ? 'ss-panel--above' : 'ss-panel--below');
 
-    // Position next panel on the correct side instantly (no transition)
+    // Outgoing panel: scale down (stays in place, just shrinks)
+    panels[prev].classList.remove('ss-panel--active');
+    panels[prev].classList.add(down ? 'ss-panel--leaving-up' : 'ss-panel--leaving-down');
+
+    // Snap next panel into position instantly (off-screen, no transition)
     panels[next].style.transition = 'none';
-    panels[next].classList.remove('ss-panel--above', 'ss-panel--below', 'ss-panel--active');
+    panels[next].classList.remove('ss-panel--above', 'ss-panel--below', 'ss-panel--active', 'ss-panel--leaving-up', 'ss-panel--leaving-down');
     panels[next].classList.add(down ? 'ss-panel--below' : 'ss-panel--above');
     void panels[next].offsetHeight; // force reflow
     panels[next].style.transition = '';
 
-    // Animate in
+    // Animate new panel in via clip-path reveal
     requestAnimationFrame(() => {
-      panels[next].classList.remove('ss-panel--above', 'ss-panel--below');
-      panels[next].classList.add('ss-panel--active', 'ss-entering');
+      requestAnimationFrame(() => {
+        panels[next].classList.remove('ss-panel--above', 'ss-panel--below');
+        panels[next].classList.add('ss-panel--active', 'ss-entering');
+      });
     });
 
-    // Fix all others
+    // After animation: clean up outgoing panel to its final above/below state
+    setTimeout(() => {
+      panels[prev].classList.remove('ss-panel--leaving-up', 'ss-panel--leaving-down');
+      panels[prev].classList.add(down ? 'ss-panel--above' : 'ss-panel--below');
+    }, ANIM_MS + 50);
+
+    // Fix all other panels instantly
     panels.forEach((p, i) => {
       if (i !== prev && i !== next) {
-        p.classList.remove('ss-panel--active', 'ss-panel--above', 'ss-panel--below', 'ss-entering');
+        p.classList.remove('ss-panel--active', 'ss-panel--above', 'ss-panel--below', 'ss-panel--leaving-up', 'ss-panel--leaving-down', 'ss-entering');
         p.classList.add(i < next ? 'ss-panel--above' : 'ss-panel--below');
       }
     });
