@@ -733,13 +733,14 @@ footer{border-top:none;padding:0;max-width:unset;margin:0}
     if(e.key==='ArrowUp'||e.key==='PageUp'){e.preventDefault();goTo(cur-1)}
   });
 
-  /* anchor links */
-  document.querySelectorAll('a[href^="#"]').forEach(a=>{
-    a.addEventListener('click',e=>{
-      const id=a.getAttribute('href').slice(1);
-      const idx=sourceEls.findIndex(s=>s.id===id);
-      if(idx!==-1){e.preventDefault();goTo(idx);}
-    });
+  /* anchor links — event delegation aby fungovaly i dynamicky přidané */
+  document.addEventListener('click',e=>{
+    const a=e.target.closest('a[href^="#"]');
+    if(!a) return;
+    const id=a.getAttribute('href').slice(1);
+    if(!id) return;
+    const idx=sourceEls.findIndex(s=>s.id===id);
+    if(idx!==-1){e.preventDefault();goTo(idx);}
   });
 })();
 
@@ -767,7 +768,7 @@ footer{border-top:none;padding:0;max-width:unset;margin:0}
   /* instantly reveal inside active panel */
   document.querySelectorAll('.ss-panel.ss-active .reveal').forEach(el=>el.classList.add('visible'));
 
-  /* contact form */
+  /* contact form — POST /api/contact */
   const form=document.getElementById('contact-form');
   if(form){
     form.addEventListener('submit',async e=>{
@@ -775,11 +776,44 @@ footer{border-top:none;padding:0;max-width:unset;margin:0}
       const name=document.getElementById('name')?.value.trim();
       const email=document.getElementById('email')?.value.trim();
       if(!name||!email) return;
+
       const btn=form.querySelector('[type=submit]');
+      const origHTML=btn.innerHTML;
       btn.disabled=true;
       btn.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" opacity=".25"/><path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur=".8s" repeatCount="indefinite"/></path></svg> Odesílám…';
-      await new Promise(r=>setTimeout(r,1400));
-      form.innerHTML=`<div style="padding:3rem 2rem;text-align:center;border:1px solid rgba(39,183,165,.25);border-radius:8px;background:rgba(39,183,165,.05)"><svg viewBox="0 0 48 48" fill="none" width="48" height="48" style="margin:0 auto 1.5rem;display:block"><circle cx="24" cy="24" r="22" stroke="#27b7a5" stroke-width="1.5"/><path d="M14 24l7 7 13-13" stroke="#27b7a5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><p style="font-size:1.1rem;font-weight:700;color:#eef2f7;margin-bottom:.5rem">Zpráva odeslána!</p><p style="color:#7da8c4;font-size:.95rem">Ozvu se vám do 24 hodin. Díky, ${name.replace(/[<>]/g,'')}!</p></div>`;
+
+      const data={
+        name,
+        email,
+        company:document.getElementById('company')?.value.trim()||'',
+        message:document.getElementById('message')?.value.trim()||'',
+      };
+
+      try{
+        const res=await fetch('/api/contact',{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify(data),
+        });
+        const json=await res.json();
+
+        if(json.ok){
+          form.innerHTML=`<div style="padding:3rem 2rem;text-align:center;border:1px solid rgba(39,183,165,.25);border-radius:8px;background:rgba(39,183,165,.05)"><svg viewBox="0 0 48 48" fill="none" width="48" height="48" style="margin:0 auto 1.5rem;display:block"><circle cx="24" cy="24" r="22" stroke="#27b7a5" stroke-width="1.5"/><path d="M14 24l7 7 13-13" stroke="#27b7a5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><p style="font-size:1.1rem;font-weight:700;color:#eef2f7;margin-bottom:.5rem">Zpráva odeslána!</p><p style="color:#7da8c4;font-size:.95rem">${json.message}</p></div>`;
+        } else {
+          btn.disabled=false;
+          btn.innerHTML=origHTML;
+          // Zobraz chybu pod formulářem
+          let err=form.querySelector('.form-error');
+          if(!err){err=document.createElement('p');err.className='form-error';err.style.cssText='color:#ff6b6b;font-size:.85rem;margin-top:.75rem;text-align:center';form.appendChild(err);}
+          err.textContent=json.message||'Něco se pokazilo. Zkuste to znovu.';
+        }
+      }catch(err){
+        btn.disabled=false;
+        btn.innerHTML=origHTML;
+        let errEl=form.querySelector('.form-error');
+        if(!errEl){errEl=document.createElement('p');errEl.className='form-error';errEl.style.cssText='color:#ff6b6b;font-size:.85rem;margin-top:.75rem;text-align:center';form.appendChild(errEl);}
+        errEl.textContent='Chyba sítě. Zkuste to znovu nebo napište přímo na hello@sitespot.cz';
+      }
     });
   }
 
