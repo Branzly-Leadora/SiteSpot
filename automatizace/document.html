@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vytěžování dokumentů — ukázka SiteSpot</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="demo.css" />
+  <style>
+    .split { flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+    @media (max-width: 640px) { .split { grid-template-columns: 1fr; overflow: auto; } }
+    .pane { display: flex; flex-direction: column; min-height: 0; }
+    .pane__h { font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-2); margin-bottom: 0.6rem; }
+
+    /* fake invoice */
+    .doc { position: relative; flex: 1; background: #f4f6f8; color: #1a2230; border-radius: 8px; padding: 1.1rem 1.2rem; overflow: hidden; font-size: 0.74rem; box-shadow: 0 18px 40px rgba(0,0,0,0.4); }
+    .doc h4 { font-size: 1rem; margin-bottom: 0.1rem; color: #0c1a2e; }
+    .doc .row { display: flex; justify-content: space-between; gap: 1rem; }
+    .doc hr { border: none; border-top: 1px solid #d3dae2; margin: 0.6rem 0; }
+    .doc table { width: 100%; border-collapse: collapse; margin-top: 0.3rem; }
+    .doc td { padding: 0.22rem 0; border-bottom: 1px solid #e2e7ec; }
+    .doc .tot { font-weight: 700; color: #0c1a2e; }
+    .doc .muted2 { color: #6b7a8d; }
+    .scan { position: absolute; left: 0; right: 0; height: 40%; top: -40%;
+      background: linear-gradient(180deg, transparent, rgba(39,183,165,0.25), transparent);
+      box-shadow: 0 0 24px rgba(39,183,165,0.5); display: none; }
+    .doc.scanning .scan { display: block; animation: scan 1.4s ease-in-out 2; }
+    @keyframes scan { 0% { top: -40%; } 100% { top: 100%; } }
+
+    /* extracted fields */
+    .fields { flex: 1; overflow: auto; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-2); padding: 0.4rem 0; }
+    .frow { display: flex; justify-content: space-between; gap: 1rem; padding: 0.6rem 1rem; border-bottom: 1px solid var(--border); font-size: 0.84rem; }
+    .frow:last-child { border-bottom: none; }
+    .frow .lab { color: var(--gray-2); }
+    .frow .val { font-weight: 600; text-align: right; }
+    .frow .val.empty { color: var(--gray-2); font-weight: 400; }
+    .frow .val .conf { font-size: 0.6rem; color: var(--accent-2); margin-left: 0.4rem; }
+    .controls { display: flex; align-items: center; gap: 0.75rem; padding-top: 1rem; flex-shrink: 0; }
+  </style>
+</head>
+<body>
+  <div class="demo">
+    <div class="demo__bar">
+      <span class="demo__dots"><i></i><i></i><i></i></span>
+      <span class="demo__title">Vytěžování dokumentů</span>
+      <span class="demo__live" id="livebadge"><i></i> Ukázka</span>
+    </div>
+    <div class="demo__body">
+      <div class="split">
+        <div class="pane">
+          <div class="pane__h">Vstup · přijatá faktura (PDF)</div>
+          <div class="doc" id="doc">
+            <div class="scan"></div>
+            <h4>FAKTURA — daňový doklad</h4>
+            <div class="muted2">č. FV2026-0042</div>
+            <hr/>
+            <div class="row"><div><strong>Dodavatel</strong><br/>Dřevo Hrubý s.r.o.<br/><span class="muted2">IČO 24681012, DIČ CZ24681012</span></div>
+            <div style="text-align:right"><strong>Odběratel</strong><br/>ACME s.r.o.<br/><span class="muted2">Plzeň</span></div></div>
+            <hr/>
+            <div class="row"><span class="muted2">Vystaveno</span><span>12. 6. 2026</span></div>
+            <div class="row"><span class="muted2">Splatnost</span><span>26. 6. 2026</span></div>
+            <table>
+              <tr><td>Dubový stůl na míru</td><td style="text-align:right">18 000 Kč</td></tr>
+              <tr><td>Doprava + montáž</td><td style="text-align:right">2 000 Kč</td></tr>
+              <tr><td class="muted2">DPH 21 %</td><td style="text-align:right" class="muted2">4 200 Kč</td></tr>
+            </table>
+            <hr/>
+            <div class="row tot"><span>Celkem k úhradě</span><span>24 200 Kč</span></div>
+            <div class="muted2" style="margin-top:0.5rem">Č. účtu: 1234567890/0800 · VS: 20260042</div>
+          </div>
+        </div>
+        <div class="pane">
+          <div class="pane__h">Výstup · strukturovaná data <span id="livehint" class="muted"></span></div>
+          <div class="fields" id="fields"></div>
+        </div>
+      </div>
+      <div class="controls">
+        <button class="btn" id="run">⤓ Zpracovat dokument</button>
+        <span class="chip muted" id="state">Připraveno</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  (function () {
+    'use strict';
+    const FIELDS = [
+      { lab: 'Typ dokladu', val: 'Faktura — daňový doklad', conf: '99 %' },
+      { lab: 'Číslo faktury', val: 'FV2026-0042', conf: '99 %' },
+      { lab: 'Dodavatel', val: 'Dřevo Hrubý s.r.o.', conf: '98 %' },
+      { lab: 'IČO', val: '24681012', conf: '99 %' },
+      { lab: 'Datum vystavení', val: '2026-06-12', conf: '97 %' },
+      { lab: 'Datum splatnosti', val: '2026-06-26', conf: '97 %' },
+      { lab: 'Variabilní symbol', val: '20260042', conf: '99 %' },
+      { lab: 'Č. účtu', val: '1234567890/0800', conf: '98 %' },
+      { lab: 'Základ DPH', val: '20 000 Kč', conf: '96 %' },
+      { lab: 'DPH 21 %', val: '4 200 Kč', conf: '96 %' },
+      { lab: 'Celkem k úhradě', val: '24 200 Kč', conf: '99 %' },
+    ];
+
+    const doc = document.getElementById('doc');
+    const fieldsEl = document.getElementById('fields');
+    const stateEl = document.getElementById('state');
+    const runBtn = document.getElementById('run');
+    const liveBadge = document.getElementById('livebadge');
+    const liveHint = document.getElementById('livehint');
+
+    function renderEmpty(list) {
+      fieldsEl.innerHTML = '';
+      (list || FIELDS).forEach(f => {
+        const r = document.createElement('div');
+        r.className = 'frow';
+        r.innerHTML = '<span class="lab">' + f.lab + '</span><span class="val empty">—</span>';
+        fieldsEl.appendChild(r);
+      });
+    }
+    renderEmpty();
+
+    async function fetchLive() {
+      try {
+        const ctrl = new AbortController();
+        const to = setTimeout(() => ctrl.abort(), 8000);
+        const res = await fetch('/api/demo', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: ctrl.signal,
+          body: JSON.stringify({ kind: 'document' })
+        });
+        clearTimeout(to);
+        if (!res.ok) throw new Error('no backend');
+        const data = await res.json();
+        return data.live ? data : null;
+      } catch (e) { return null; }
+    }
+
+    let busy = false;
+    async function run() {
+      if (busy) return; busy = true;
+      runBtn.disabled = true;
+      renderEmpty();
+      doc.classList.add('scanning');
+      stateEl.classList.remove('chip--ok');
+      stateEl.textContent = 'Čtu dokument…';
+
+      const livePromise = fetchLive();
+
+      // scan phase
+      await new Promise(r => setTimeout(r, 1500));
+      stateEl.textContent = 'Rozpoznávám pole…';
+      await new Promise(r => setTimeout(r, 900));
+      doc.classList.remove('scanning');
+
+      const data = await livePromise;
+      const list = (data && data.fields && data.fields.length) ? data.fields : FIELDS;
+      if (data && data.live) {
+        liveBadge.innerHTML = '<i></i> Naživo přes Claude';
+        liveHint.textContent = '· extrahováno modelem';
+        renderEmpty(list); // re-render labels from the model's actual output
+      }
+
+      const rows = fieldsEl.querySelectorAll('.frow');
+      list.forEach((f, i) => {
+        setTimeout(() => {
+          if (!rows[i]) return;
+          const val = rows[i].querySelector('.val');
+          val.className = 'val in';
+          val.innerHTML = f.val + (f.conf ? '<span class="conf">' + f.conf + '</span>' : '');
+        }, i * 160);
+      });
+
+      setTimeout(() => {
+        stateEl.textContent = '✓ ' + list.length + ' polí vytěženo → zapsáno do účetnictví';
+        stateEl.classList.add('chip--ok');
+        runBtn.disabled = false; busy = false;
+      }, list.length * 160 + 300);
+    }
+
+    runBtn.addEventListener('click', run);
+    setTimeout(run, 600);
+  })();
+  </script>
+</body>
+</html>

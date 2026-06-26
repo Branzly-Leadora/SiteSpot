@@ -129,6 +129,71 @@ app.post('/api/contact', async (req, res) => {
   }
 });
 
+// ── AI demo endpoint (chatbot + document extraction) ──────
+// Powers the two "live" automation demos on /automatizace.html.
+// Calls Claude IF ANTHROPIC_API_KEY is set in .env; otherwise responds
+// 503 so the front-end gracefully falls back to its canned demo data.
+const AI_KEY   = process.env.ANTHROPIC_API_KEY;
+const AI_MODEL = process.env.ANTHROPIC_MODEL || 'claude-haiku-4-5-20251001';
+
+async function callClaude(system, messages, maxTokens = 400) {
+  const resp = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      'x-api-key': AI_KEY,
+      'anthropic-version': '2023-06-01',
+    },
+    body: JSON.stringify({ model: AI_MODEL, max_tokens: maxTokens, system, messages }),
+  });
+  if (!resp.ok) throw new Error('Claude API ' + resp.status);
+  const data = await resp.json();
+  return (data.content || []).map(b => b.text || '').join('').trim();
+}
+
+const SAMPLE_INVOICE = `FAKTURA — daňový doklad č. FV2026-0042
+Dodavatel: Dřevo Hrubý s.r.o., IČO 24681012, DIČ CZ24681012
+Odběratel: ACME s.r.o., Plzeň
+Vystaveno: 12. 6. 2026  Splatnost: 26. 6. 2026
+Dubový stůl na míru 18 000 Kč; Doprava + montáž 2 000 Kč; DPH 21 % 4 200 Kč
+Celkem k úhradě: 24 200 Kč
+Č. účtu: 1234567890/0800  VS: 20260042`;
+
+app.post('/api/demo', async (req, res) => {
+  const { kind, message, history } = req.body || {};
+
+  // No API key → let the front-end use its own realistic canned demo.
+  if (!AI_KEY) return res.status(503).json({ ok: false, live: false, reason: 'no-api-key' });
+
+  try {
+    if (kind === 'chat') {
+      const sys = 'Jsi přátelský AI asistent webové agentury SiteSpot z Plzně. ' +
+        'Odpovídáš česky a stručně (2–4 věty). Pomáháš s dotazy na weby, e-shopy, ceny, ' +
+        'termíny a automatizace. Web na míru od 25 000 Kč, e-shop od 60 000 Kč, realizace 2–10 týdnů. ' +
+        'Když jde o konkrétní poptávku nebo nevíš, doporuč napsat na hello@sitespot.cz. Nevymýšlej si fakta.';
+      const msgs = (Array.isArray(history) ? history.slice(-8) : [])
+        .filter(m => m && m.role && m.content)
+        .concat([{ role: 'user', content: String(message || '').slice(0, 1000) }]);
+      const reply = await callClaude(sys, msgs, 350);
+      return res.json({ ok: true, live: true, reply });
+    }
+
+    if (kind === 'document') {
+      const sys = 'Jsi systém na vytěžování dat z dokumentů. Z faktury vrať POUZE validní JSON ' +
+        've tvaru {"fields":[{"lab":"...","val":"...","conf":"99 %"}]}. Žádný jiný text.';
+      const out = await callClaude(sys, [{ role: 'user', content: 'Vytěž tuto fakturu:\n' + SAMPLE_INVOICE }], 800);
+      let fields = null;
+      try { fields = JSON.parse(out.replace(/^```json?|```$/g, '').trim()).fields; } catch (e) {}
+      return res.json({ ok: true, live: true, fields });
+    }
+
+    return res.status(400).json({ ok: false, message: 'Neznámý typ ukázky.' });
+  } catch (err) {
+    console.error('Demo AI error:', err.message);
+    return res.status(502).json({ ok: false, live: false });
+  }
+});
+
 // ── Fallback — SPA ────────────────────────────────────────
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));

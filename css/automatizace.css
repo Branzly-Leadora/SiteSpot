@@ -1,0 +1,133 @@
+/* SiteSpot — automatizace.css
+   Automation showcase. Layered ON TOP of templates.css — reuses
+   .tpl-hero / .tpl-filters / .tpl-grid / .tpl-card / .cta-band etc.
+   Only the automation-specific preview pane lives here. */
+
+/* ── Preview pane: animated automation pipeline ──────────────── */
+.auto-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(150deg, #0a1622 0%, #0a1f1c 100%);
+  padding: 1.4rem 1.1rem;
+}
+
+.auto-status {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.56rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gray-2);
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border);
+  padding: 0.24rem 0.55rem;
+  border-radius: 2px;
+}
+.auto-status i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 7px var(--accent);
+  animation: autoBlink 2.2s ease-in-out infinite;
+}
+@keyframes autoBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+/* The trigger → engine → result chain */
+.auto-flow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 0;
+}
+
+.auto-node {
+  flex-shrink: 0;
+  max-width: 36%;
+  padding: 0.5rem 0.6rem;
+  border-radius: 8px;
+  font-size: 0.64rem;
+  font-weight: 600;
+  line-height: 1.25;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-2);
+  color: var(--gray);
+  transition: border-color 0.3s, color 0.3s, background 0.3s;
+}
+.auto-node--ai {
+  background: rgba(39, 183, 165, 0.12);
+  border-color: rgba(39, 183, 165, 0.5);
+  color: var(--accent-2);
+  box-shadow: 0 0 0 0 rgba(39, 183, 165, 0.35);
+  animation: autoPulse 2.6s ease-in-out infinite;
+}
+@keyframes autoPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(39, 183, 165, 0.35); }
+  50% { box-shadow: 0 0 0 7px rgba(39, 183, 165, 0); }
+}
+.auto-card:hover .auto-node--ai { animation-duration: 1.5s; }
+.auto-card:hover .auto-node { border-color: var(--border-2); color: var(--white); }
+
+/* Connector with a travelling pulse */
+.auto-link {
+  flex: 1 1 auto;
+  min-width: 18px;
+  height: 2px;
+  position: relative;
+  background: linear-gradient(90deg, var(--border-2), rgba(39, 183, 165, 0.45));
+  overflow: hidden;
+}
+.auto-link::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -6px;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-2);
+  box-shadow: 0 0 8px var(--accent-2);
+  animation: autoDot 2.6s linear infinite;
+}
+.auto-link.delay::after { animation-delay: 1.3s; }
+@keyframes autoDot {
+  0%   { left: -6px; opacity: 0; }
+  12%  { opacity: 1; }
+  88%  { opacity: 1; }
+  100% { left: 100%; opacity: 0; }
+}
+
+/* ── Badge variant ───────────────────────────────────────────── */
+.tpl-card__badge.auto {
+  background: rgba(39, 183, 165, 0.1);
+  color: var(--accent-2);
+  border: 1px solid rgba(39, 183, 165, 0.28);
+}
+
+/* ── Footer caption (replaces the "Zobrazit" button) ─────────── */
+.auto-flowcap {
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gray-2);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .auto-node { font-size: 0.6rem; padding: 0.45rem 0.5rem; }
+}

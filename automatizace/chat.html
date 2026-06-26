@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI chatbot — ukázka SiteSpot</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="demo.css" />
+  <style>
+    .demo__body { padding: 0; }
+    .chat { flex: 1; min-height: 0; overflow: auto; padding: 1.3rem; display: flex; flex-direction: column; gap: 0.9rem; }
+    .msg { max-width: 80%; display: flex; gap: 0.6rem; align-items: flex-end; }
+    .msg__b {
+      padding: 0.7rem 0.95rem; border-radius: 14px; font-size: 0.88rem; line-height: 1.55;
+    }
+    .msg.bot { align-self: flex-start; }
+    .msg.bot .msg__b { background: var(--surface-2); border: 1px solid var(--border); border-bottom-left-radius: 4px; }
+    .msg.me { align-self: flex-end; flex-direction: row-reverse; }
+    .msg.me .msg__b { background: var(--accent); color: #06231f; border-bottom-right-radius: 4px; font-weight: 500; }
+    .av { width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; background: rgba(39,183,165,0.15); border: 1px solid rgba(39,183,165,0.35); }
+    .typing { display: inline-flex; gap: 4px; padding: 0.2rem 0; }
+    .typing i { width: 6px; height: 6px; border-radius: 50%; background: var(--gray); animation: tdot 1.2s infinite; }
+    .typing i:nth-child(2) { animation-delay: 0.2s; } .typing i:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes tdot { 0%,60%,100% { opacity: 0.25; transform: translateY(0); } 30% { opacity: 1; transform: translateY(-3px); } }
+    .quick { display: flex; flex-wrap: wrap; gap: 0.45rem; padding: 0 1.3rem 0.6rem; }
+    .quick button {
+      font-family: var(--font); font-size: 0.72rem; color: var(--gray); cursor: pointer;
+      border: 1px solid var(--border-2); background: transparent; border-radius: 100px; padding: 0.35rem 0.75rem;
+      transition: all 0.2s;
+    }
+    .quick button:hover { border-color: var(--accent); color: var(--accent-2); }
+    .composer { display: flex; gap: 0.6rem; padding: 0.9rem 1.3rem 1.1rem; border-top: 1px solid var(--border); flex-shrink: 0; }
+    .composer input {
+      flex: 1; background: rgba(255,255,255,0.03); border: 1px solid var(--border-2); border-radius: 10px;
+      padding: 0.7rem 0.95rem; color: var(--white); font-family: var(--font); font-size: 0.88rem; outline: none;
+    }
+    .composer input:focus { border-color: var(--accent); }
+  </style>
+</head>
+<body>
+  <div class="demo">
+    <div class="demo__bar">
+      <span class="demo__dots"><i></i><i></i><i></i></span>
+      <span class="demo__title">AI chatbot · web podpora</span>
+      <span class="demo__live" id="livebadge"><i></i> Ukázka</span>
+    </div>
+    <div class="chat" id="chat"></div>
+    <div class="quick" id="quick"></div>
+    <form class="composer" id="form">
+      <input id="input" autocomplete="off" placeholder="Napište dotaz…" />
+      <button class="btn" type="submit">Odeslat</button>
+    </form>
+  </div>
+
+  <script>
+  (function () {
+    'use strict';
+    const chat = document.getElementById('chat');
+    const form = document.getElementById('form');
+    const input = document.getElementById('input');
+    const quickWrap = document.getElementById('quick');
+    const liveBadge = document.getElementById('livebadge');
+
+    const QUICK = ['Kolik stojí web?', 'Jak dlouho trvá realizace?', 'Děláte e-shopy?', 'Chci nabídku'];
+
+    // Canned fallback knowledge (used when the live /api/demo endpoint is unavailable)
+    const FAQ = [
+      { k: ['cena','stojí','kolik','cenu','rozpočet'], a: 'Web na míru u nás startuje od 25 000 Kč, e-shop od 60 000 Kč. Přesnou cenu připravíme po krátké konzultaci — záleží na rozsahu. Chcete nezávaznou nabídku?' },
+      { k: ['dlouho','termín','trvá','kdy'], a: 'Prezentační web zvládneme za 2–4 týdny, větší projekty 6–10 týdnů. Po zadání dostanete přesný harmonogram.' },
+      { k: ['eshop','e-shop','obchod','prodávat'], a: 'Ano, děláme e-shopy i napojení na platby a sklad. Od jednoduchých až po řešení na míru. O jaký sortiment jde?' },
+      { k: ['nabídk','poptáv','konzultac','schůzk','zavolat'], a: 'Super! Nechte mi e-mail nebo telefon a do 24 hodin se ozveme s návrhem. Případně rovnou napište na hello@sitespot.cz.' },
+      { k: ['seo','google','vyhledáv'], a: 'Každý web stavíme SEO-ready — rychlost, struktura, meta data. Volitelně řešíme i dlouhodobé SEO a obsah.' },
+    ];
+    function canned(text) {
+      const t = text.toLowerCase();
+      const hit = FAQ.find(f => f.k.some(k => t.includes(k)));
+      return hit ? hit.a : 'Dobrá otázka! Tohle rád upřesní někdo z týmu — napište prosím na hello@sitespot.cz nebo nechte kontakt a ozveme se. Mezitím: chcete vědět něco o cenách, termínech nebo našich službách?';
+    }
+
+    const history = [];
+    function addMsg(who, text) {
+      const m = document.createElement('div');
+      m.className = 'msg ' + who + ' in';
+      m.innerHTML = (who === 'bot' ? '<span class="av">✦</span>' : '') +
+                    '<div class="msg__b"></div>';
+      m.querySelector('.msg__b').textContent = text;
+      chat.appendChild(m);
+      chat.scrollTop = chat.scrollHeight;
+    }
+    function showTyping() {
+      const m = document.createElement('div');
+      m.className = 'msg bot'; m.id = 'typing';
+      m.innerHTML = '<span class="av">✦</span><div class="msg__b"><span class="typing"><i></i><i></i><i></i></span></div>';
+      chat.appendChild(m); chat.scrollTop = chat.scrollHeight;
+    }
+    function hideTyping() { const t = document.getElementById('typing'); if (t) t.remove(); }
+
+    async function reply(text) {
+      showTyping();
+      let answer, live = false;
+      try {
+        const ctrl = new AbortController();
+        const to = setTimeout(() => ctrl.abort(), 8000);
+        const res = await fetch('/api/demo', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: ctrl.signal,
+          body: JSON.stringify({ kind: 'chat', message: text, history })
+        });
+        clearTimeout(to);
+        if (!res.ok) throw new Error('no backend');
+        const data = await res.json();
+        answer = data.reply; live = !!data.live;
+      } catch (e) {
+        // graceful fallback — realistic canned answer with a human-like delay
+        await new Promise(r => setTimeout(r, 650 + Math.random() * 500));
+        answer = canned(text);
+      }
+      hideTyping();
+      addMsg('bot', answer);
+      history.push({ role: 'user', content: text }, { role: 'assistant', content: answer });
+      if (live) { liveBadge.innerHTML = '<i></i> Naživo přes Claude'; }
+    }
+
+    function send(text) {
+      if (!text.trim()) return;
+      addMsg('me', text);
+      input.value = '';
+      reply(text.trim());
+    }
+
+    QUICK.forEach(q => {
+      const b = document.createElement('button');
+      b.textContent = q;
+      b.addEventListener('click', () => send(q));
+      quickWrap.appendChild(b);
+    });
+
+    form.addEventListener('submit', e => { e.preventDefault(); send(input.value); });
+
+    // Seed conversation
+    addMsg('bot', 'Dobrý den! 👋 Jsem AI asistent SiteSpot. Zeptejte se mě na ceny, termíny nebo služby — a když si nebudu vědět rady, předám vás kolegovi.');
+  })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI e-mailový asistent — ukázka SiteSpot</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="demo.css" />
+  <style>
+    .split { flex: 1; min-height: 0; display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 1.1rem; }
+    @media (max-width: 640px) { .split { grid-template-columns: 1fr; overflow: auto; } }
+    .pane { display: flex; flex-direction: column; min-height: 0; }
+    .pane__h { font-size: 0.64rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-2); margin-bottom: 0.55rem; }
+    .list { flex: 1; overflow: auto; border: 1px solid var(--border); border-radius: 8px; }
+    .mailrow { padding: 0.7rem 0.85rem; border-bottom: 1px solid var(--border); cursor: pointer; transition: background 0.2s; }
+    .mailrow:last-child { border-bottom: none; }
+    .mailrow:hover { background: rgba(255,255,255,0.03); }
+    .mailrow.active { background: rgba(39,183,165,0.08); box-shadow: inset 2px 0 0 var(--accent); }
+    .mailrow .from { font-weight: 600; font-size: 0.84rem; display: flex; justify-content: space-between; }
+    .mailrow .subj { font-size: 0.78rem; color: var(--gray); }
+    .mailrow .snip { font-size: 0.72rem; color: var(--gray-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .tag { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.04em; padding: 0.12rem 0.45rem; border-radius: 100px; }
+    .t-lead { background: rgba(39,183,165,0.15); color: var(--accent-2); }
+    .t-urgent { background: rgba(232,123,123,0.15); color: #e87b7b; }
+    .t-info { background: rgba(125,168,196,0.15); color: var(--gray); }
+
+    .reader { flex: 1; overflow: auto; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-2); padding: 1rem 1.1rem; }
+    .reader .meta { font-size: 0.78rem; color: var(--gray); margin-bottom: 0.7rem; }
+    .reader .body { font-size: 0.86rem; line-height: 1.6; color: var(--white); white-space: pre-wrap; }
+    .ai { margin-top: 1rem; border: 1px solid rgba(39,183,165,0.28); background: rgba(39,183,165,0.05); border-radius: 8px; padding: 0.85rem 1rem; }
+    .ai__h { display: flex; align-items: center; gap: 0.5rem; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent-2); margin-bottom: 0.6rem; }
+    .ai__meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.7rem; }
+    .ai__draft { font-size: 0.85rem; line-height: 1.6; white-space: pre-wrap; color: var(--white); border-left: 2px solid rgba(39,183,165,0.4); padding-left: 0.8rem; }
+    .ai__actions { display: flex; gap: 0.5rem; margin-top: 0.8rem; }
+    .empty { display: flex; flex: 1; align-items: center; justify-content: center; color: var(--gray-2); font-size: 0.85rem; text-align: center; padding: 2rem; }
+  </style>
+</head>
+<body>
+  <div class="demo">
+    <div class="demo__bar">
+      <span class="demo__dots"><i></i><i></i><i></i></span>
+      <span class="demo__title">AI e-mailový asistent · Doručená pošta</span>
+      <span class="demo__live"><i></i> AI třídí</span>
+    </div>
+    <div class="demo__body">
+      <div class="split">
+        <div class="pane">
+          <div class="pane__h">Doručená pošta · automaticky roztříděno</div>
+          <div class="list" id="list"></div>
+        </div>
+        <div class="pane">
+          <div class="pane__h">Detail + návrh odpovědi</div>
+          <div class="reader" id="reader"><div class="empty">Vyberte e-mail vlevo — AI ho rozřadí a&nbsp;připraví odpověď.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  (function () {
+    'use strict';
+    const MAILS = [
+      { from: 'Jan Novák', time: '9:12', subj: 'Poptávka – nový web pro restauraci', tag: 't-lead', tagL: 'LEAD',
+        body: 'Dobrý den,\n\nmáme restauraci v Plzni a sháníme nový web s online rezervací a menu. Kolik by to přibližně stálo a jak dlouho by to trvalo?\n\nDěkuji, Jan Novák',
+        priority: 'Vysoká', intent: 'Nová obchodní poptávka', draft: 'Dobrý den, pane Nováku,\n\nděkujeme za zájem! Web s online rezervací a menu pro restauraci u nás vychází orientačně na 45–70 tis. Kč a realizace trvá 4–6 týdnů. Rád vám připravím přesnou nabídku — hodil by se vám krátký call tento týden?\n\nS pozdravem,\ntým SiteSpot' },
+      { from: 'Faktura Wedos', time: '8:40', subj: 'Faktura za hosting 2026', tag: 't-info', tagL: 'INFO',
+        body: 'Vážený zákazníku,\nv příloze zasíláme fakturu za hostingové služby...',
+        priority: 'Nízká', intent: 'Administrativa / faktura', draft: 'Automaticky přeposláno do účetnictví a uloženo. Není potřeba odpovídat — pouze ke schválení úhrady.' },
+      { from: 'Petra K.', time: 'včera', subj: 'RE: Nabídka – urgentní', tag: 't-urgent', tagL: 'URGENTNÍ',
+        body: 'Dobrý den,\npotřebovala bych to vědět co nejdřív, šéf to chce do pátku. Můžete potvrdit termín?',
+        priority: 'Urgentní', intent: 'Čeká na odpověď · termín', draft: 'Dobrý den, paní Petro,\n\nrozumím, že to spěchá. Termín do pátku potvrzuji — návrh vám pošlu nejpozději ve čtvrtek dopoledne. Kdyby cokoli, jsem na telefonu.\n\nS pozdravem,\ntým SiteSpot' },
+      { from: 'newsletter@nástroj.io', time: 'včera', subj: '5 tipů pro vyšší konverze', tag: 't-info', tagL: 'PROMO',
+        body: 'Ahoj, koukni na naše nové tipy...',
+        priority: 'Nízká', intent: 'Marketing / newsletter', draft: 'Nevyžaduje odpověď. Zařazeno do složky „Promo".' },
+    ];
+
+    const list = document.getElementById('list');
+    const reader = document.getElementById('reader');
+
+    MAILS.forEach((m, i) => {
+      const row = document.createElement('div');
+      row.className = 'mailrow';
+      row.innerHTML =
+        '<div class="from">' + m.from + '<span class="tag ' + m.tag + '">' + m.tagL + '</span></div>' +
+        '<div class="subj">' + m.subj + '</div>' +
+        '<div class="snip muted">' + m.body.split('\n')[0] + '</div>';
+      row.addEventListener('click', () => open(i, row));
+      list.appendChild(row);
+    });
+
+    function open(i, row) {
+      document.querySelectorAll('.mailrow').forEach(r => r.classList.remove('active'));
+      row.classList.add('active');
+      const m = MAILS[i];
+      reader.innerHTML =
+        '<div class="meta"><strong>' + m.from + '</strong> · ' + m.time + '<br/>' + m.subj + '</div>' +
+        '<div class="body">' + m.body + '</div>' +
+        '<div class="ai"><div class="ai__h">✦ AI vyhodnocení <span class="muted" style="font-weight:400;text-transform:none;letter-spacing:0">analyzuji…</span></div>' +
+        '<div class="ai__meta"></div><div class="ai__draft"></div>' +
+        '<div class="ai__actions" style="opacity:0"><button class="btn">Odeslat odpověď</button><button class="btn btn--ghost">Upravit</button></div></div>';
+
+      const aiHead = reader.querySelector('.ai__h .muted');
+      const meta = reader.querySelector('.ai__meta');
+      const draft = reader.querySelector('.ai__draft');
+      const actions = reader.querySelector('.ai__actions');
+
+      setTimeout(() => {
+        aiHead.remove();
+        meta.innerHTML =
+          '<span class="chip chip--ok">Štítek: ' + m.tagL + '</span>' +
+          '<span class="chip">Priorita: ' + m.priority + '</span>' +
+          '<span class="chip">' + m.intent + '</span>';
+        meta.classList.add('in');
+        // type out the draft
+        let j = 0; const txt = m.draft;
+        (function type() {
+          draft.textContent = txt.slice(0, j);
+          if (j < txt.length) { j += 3; setTimeout(type, 12); }
+          else { actions.style.transition = 'opacity .4s'; actions.style.opacity = '1'; }
+        })();
+      }, 700);
+    }
+
+    // auto-open first
+    setTimeout(() => { const first = document.querySelector('.mailrow'); if (first) first.click(); }, 500);
+  })();
+  </script>
+</body>
+</html>

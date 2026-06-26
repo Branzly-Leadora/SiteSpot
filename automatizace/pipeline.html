@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ukázka automatizace — SiteSpot</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="demo.css" />
+  <style>
+    .pipe { display: flex; align-items: center; justify-content: center; gap: 0; padding: 1.5rem 0.5rem 2rem; }
+    .pstep {
+      flex: 0 0 auto; max-width: 140px;
+      display: flex; flex-direction: column; align-items: center; gap: 0.55rem; text-align: center;
+    }
+    .pnode {
+      width: 56px; height: 56px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--surface-2); border: 1px solid var(--border-2);
+      font-size: 1.4rem; position: relative;
+      transition: all 0.4s var(--ease);
+    }
+    .pnode.on {
+      border-color: var(--accent); background: rgba(39,183,165,0.14);
+      box-shadow: 0 0 0 6px rgba(39,183,165,0.08), 0 0 22px rgba(39,183,165,0.35);
+      transform: translateY(-2px) scale(1.04);
+    }
+    .pnode.done { border-color: rgba(39,183,165,0.5); }
+    .pnode .tick {
+      position: absolute; top: -6px; right: -6px;
+      width: 20px; height: 20px; border-radius: 50%;
+      background: var(--accent); color: #06231f; font-size: 0.7rem; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transform: scale(0); transition: all 0.3s var(--ease);
+    }
+    .pnode.done .tick { opacity: 1; transform: scale(1); }
+    .plabel { font-size: 0.72rem; font-weight: 600; color: var(--gray); line-height: 1.25; }
+    .pnode.on + .plabel, .pnode.done + .plabel { color: var(--white); }
+    .plink {
+      flex: 1 1 auto; min-width: 26px; height: 2px; position: relative;
+      background: var(--border-2); margin: 0 2px 1.9rem; align-self: center; overflow: hidden; border-radius: 2px;
+    }
+    .plink .fill { position: absolute; inset: 0; width: 0; background: linear-gradient(90deg, var(--accent), var(--accent-2)); transition: width 0.6s var(--ease); }
+    .plink.flow .fill { width: 100%; }
+
+    .log {
+      flex: 1; min-height: 0; margin-top: 0.5rem;
+      border: 1px solid var(--border); border-radius: 8px; background: var(--bg-2);
+      display: flex; flex-direction: column; overflow: hidden;
+    }
+    .log__head { padding: 0.55rem 0.9rem; border-bottom: 1px solid var(--border); font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-2); }
+    .log__list { flex: 1; overflow: auto; padding: 0.6rem 0.9rem; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.82rem; }
+    .logrow { display: flex; gap: 0.7rem; align-items: baseline; }
+    .logrow time { font-family: var(--mono); font-size: 0.7rem; color: var(--gray-2); flex-shrink: 0; }
+    .logrow .dot { color: var(--accent); }
+    .controls { display: flex; align-items: center; gap: 0.75rem; padding-top: 1rem; }
+    @media (max-width: 560px) { .pnode { width: 46px; height: 46px; font-size: 1.1rem; } .plabel { font-size: 0.64rem; } }
+  </style>
+</head>
+<body>
+  <div class="demo">
+    <div class="demo__bar">
+      <span class="demo__dots"><i></i><i></i><i></i></span>
+      <span class="demo__title" id="title">Automatizace</span>
+      <span class="demo__live"><i></i> Simulace</span>
+    </div>
+    <div class="demo__body">
+      <div class="pipe" id="pipe"></div>
+      <div class="log">
+        <div class="log__head">Záznam běhu</div>
+        <div class="log__list" id="loglist"></div>
+      </div>
+      <div class="controls">
+        <button class="btn" id="run">▶ Spustit znovu</button>
+        <span class="chip muted" id="state">Připraveno</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  (function () {
+    'use strict';
+    // Each scene: title + ordered steps. A step = node (emoji+label) + log line shown when it fires.
+    const SCENES = {
+      poptavky: {
+        title: 'Zpracování poptávek',
+        steps: [
+          { icon: '📝', label: 'Formulář', log: 'Nová poptávka: Jan Novák, „Potřebuji nový web…"' },
+          { icon: '⚙️', label: 'Make', log: 'Validace + obohacení dat (IČO, web firmy)' },
+          { icon: '🗂️', label: 'CRM', log: 'Vytvořen kontakt #4821 → fáze „Nová poptávka"' },
+          { icon: '🔔', label: 'Slack + SMS', log: 'Notifikace týmu: „Reaguj do 1 h" odeslána' },
+        ],
+      },
+      fakturace: {
+        title: 'Fakturace a upomínky',
+        steps: [
+          { icon: '🛒', label: 'Objednávka', log: 'Objednávka #2026-0042, 24 200 Kč vč. DPH' },
+          { icon: '🧾', label: 'Fakturoid', log: 'Vystavena faktura FV2026-0042, splatnost 14 dní' },
+          { icon: '📧', label: 'E-mail', log: 'Faktura odeslána zákazníkovi + do účetnictví' },
+          { icon: '⏰', label: 'Hlídač splatnosti', log: 'Po termínu → automatická upomínka naplánována' },
+        ],
+      },
+      onboarding: {
+        title: 'Onboarding zákazníka',
+        steps: [
+          { icon: '✍️', label: 'Podpis smlouvy', log: 'Smlouva podepsána (DocuSign) — klient ACME s.r.o.' },
+          { icon: '⚙️', label: 'Workflow', log: 'Založen účet, vygenerovány přístupy' },
+          { icon: '📧', label: 'Uvítací série', log: 'Naplánováno 5 e-mailů (den 0, 1, 3, 7, 14)' },
+          { icon: '✅', label: 'Úkoly týmu', log: 'Account managerovi přiřazen onboarding checklist' },
+        ],
+      },
+      sync: {
+        title: 'Synchronizace systémů',
+        steps: [
+          { icon: '🗂️', label: 'CRM', log: 'Změna: u kontaktu #4821 upraven telefon' },
+          { icon: '🔁', label: 'Sync', log: 'Detekována změna → mapování polí' },
+          { icon: '📊', label: 'Účetnictví', log: 'Záznam aktualizován (obousměrně)' },
+          { icon: '📧', label: 'E-mail nástroj', log: 'Kontakt sjednocen — žádné duplicity' },
+        ],
+      },
+      reporty: {
+        title: 'Týdenní report',
+        steps: [
+          { icon: '🗄️', label: 'Zdroje dat', log: 'Staženo: prodeje, poptávky, web, e-shop' },
+          { icon: '🧮', label: 'Souhrn', log: 'Tržby 312 400 Kč (+8 %), 47 poptávek, konverze 23 %' },
+          { icon: '📈', label: 'Report', log: 'Vygenerován PDF přehled s grafy' },
+          { icon: '📧', label: 'E-mail majiteli', log: 'Pondělí 7:00 — report doručen' },
+        ],
+      },
+      followup: {
+        title: 'Follow-up sekvence',
+        steps: [
+          { icon: '👤', label: 'Nový lead', log: 'Lead „Petra K." bez reakce 2 dny' },
+          { icon: '🧠', label: 'Sekvence', log: 'Spuštěn krok 2/4 — připomínka nabídky' },
+          { icon: '📧', label: 'E-mail', log: 'Personalizovaný follow-up odeslán' },
+          { icon: '🛑', label: 'Auto-stop', log: 'Jakmile lead odpoví → sekvence se zastaví' },
+        ],
+      },
+      outreach: {
+        title: 'Automatický outreach',
+        steps: [
+          { icon: '🔎', label: 'Seznam firem', log: 'Nalezeno 120 firem dle kritérií (obor, region)' },
+          { icon: '🧠', label: 'AI personalizace', log: 'Pro každou firmu vytvořen kontext + jiný e-mail' },
+          { icon: '📧', label: 'Odeslání', log: 'Dávka 30/den (anti-spam limit), GDPR opt-out' },
+          { icon: '📥', label: 'Odpovědi', log: '3 odpovědi → přesun do CRM „Zájem"' },
+        ],
+      },
+      leadscoring: {
+        title: 'Lead scoring',
+        steps: [
+          { icon: '📥', label: 'Poptávka', log: 'Nová poptávka: ACME s.r.o., rozpočet 80 tis. Kč' },
+          { icon: '🧠', label: 'AI scoring', log: 'Vyhodnoceno: obor, rozpočet, naléhavost, zdroj' },
+          { icon: '🎯', label: 'Skóre', log: 'Skóre 92/100 — „Horký lead"' },
+          { icon: '🗂️', label: 'CRM priorita', log: 'Zařazeno na vrchol fronty → notifikace obchodu' },
+        ],
+      },
+      monitoring: {
+        title: 'Sledování konkurence',
+        steps: [
+          { icon: '🌐', label: 'Weby konkurence', log: 'Kontrola 8 sledovaných stránek' },
+          { icon: '🔍', label: 'Monitor', log: 'Detekováno: konkurent A snížil cenu o 12 %' },
+          { icon: '🧠', label: 'Vyhodnocení', log: 'Vyhodnoceno jako významná změna' },
+          { icon: '🔔', label: 'Alert', log: 'Upozornění odesláno na e-mail + Slack' },
+        ],
+      },
+    };
+
+    const params = new URLSearchParams(location.search);
+    const scene = SCENES[params.get('scene')] || SCENES.poptavky;
+    document.getElementById('title').textContent = scene.title;
+    document.title = scene.title + ' — ukázka';
+
+    const pipe = document.getElementById('pipe');
+    const loglist = document.getElementById('loglist');
+    const stateEl = document.getElementById('state');
+    const runBtn = document.getElementById('run');
+
+    // Build pipeline DOM
+    const nodes = [], links = [];
+    scene.steps.forEach((s, i) => {
+      if (i > 0) {
+        const link = document.createElement('div');
+        link.className = 'plink';
+        link.innerHTML = '<span class="fill"></span>';
+        pipe.appendChild(link);
+        links.push(link);
+      }
+      const step = document.createElement('div');
+      step.className = 'pstep';
+      step.innerHTML =
+        '<div class="pnode">' + s.icon + '<span class="tick">✓</span></div>' +
+        '<div class="plabel">' + s.label + '</div>';
+      pipe.appendChild(step);
+      nodes.push(step.querySelector('.pnode'));
+    });
+
+    const now = () => {
+      const d = new Date();
+      return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)+':'+('0'+d.getSeconds()).slice(-2);
+    };
+
+    let timers = [];
+    function clearTimers() { timers.forEach(clearTimeout); timers = []; }
+
+    function run() {
+      clearTimers();
+      loglist.innerHTML = '';
+      nodes.forEach(n => n.classList.remove('on', 'done'));
+      links.forEach(l => l.classList.remove('flow'));
+      runBtn.disabled = true;
+      stateEl.textContent = 'Běží…';
+      stateEl.classList.remove('chip--ok');
+
+      let t = 350;
+      scene.steps.forEach((s, i) => {
+        timers.push(setTimeout(() => {
+          if (i > 0) links[i - 1].classList.add('flow');
+          nodes[i].classList.add('on');
+        }, t));
+        timers.push(setTimeout(() => {
+          const row = document.createElement('div');
+          row.className = 'logrow in';
+          row.innerHTML = '<time>' + now() + '</time><span class="dot">●</span><span>' + s.log + '</span>';
+          loglist.appendChild(row);
+          loglist.scrollTop = loglist.scrollHeight;
+        }, t + 250));
+        timers.push(setTimeout(() => {
+          nodes[i].classList.remove('on');
+          nodes[i].classList.add('done');
+        }, t + 850));
+        t += 1050;
+      });
+
+      timers.push(setTimeout(() => {
+        runBtn.disabled = false;
+        stateEl.textContent = '✓ Hotovo za ' + ((t / 1000).toFixed(1)) + ' s';
+        stateEl.classList.add('chip--ok');
+      }, t + 200));
+    }
+
+    runBtn.addEventListener('click', run);
+    setTimeout(run, 500);
+  })();
+  </script>
+</body>
+</html>

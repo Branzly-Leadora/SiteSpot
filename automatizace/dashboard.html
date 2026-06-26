@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Live dashboard — ukázka SiteSpot</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="demo.css" />
+  <style>
+    .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.9rem; }
+    @media (max-width: 640px) { .kpis { grid-template-columns: repeat(2, 1fr); } }
+    .kpi { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 0.9rem 1rem; }
+    .kpi__lab { font-size: 0.64rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gray-2); }
+    .kpi__val { font-size: 1.45rem; font-weight: 700; margin: 0.3rem 0 0.15rem; }
+    .kpi__delta { font-size: 0.7rem; font-weight: 600; }
+    .up { color: var(--accent-2); } .down { color: #e87b7b; }
+    .spark { width: 100%; height: 26px; display: block; margin-top: 0.45rem; }
+    .chartwrap { flex: 1; min-height: 0; margin-top: 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1rem 0.6rem; display: flex; flex-direction: column; }
+    .chartwrap h4 { font-size: 0.78rem; color: var(--gray); font-weight: 600; margin-bottom: 0.2rem; display: flex; justify-content: space-between; }
+    .chartwrap canvas { flex: 1; width: 100%; min-height: 120px; }
+    .legend { display: flex; gap: 1.2rem; font-size: 0.7rem; color: var(--gray-2); padding-top: 0.3rem; }
+    .legend span i { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 5px; vertical-align: middle; }
+  </style>
+</head>
+<body>
+  <div class="demo">
+    <div class="demo__bar">
+      <span class="demo__dots"><i></i><i></i><i></i></span>
+      <span class="demo__title">Obchodní dashboard · reálný čas</span>
+      <span class="demo__live"><i></i> Live data</span>
+    </div>
+    <div class="demo__body">
+      <div class="kpis" id="kpis"></div>
+      <div class="chartwrap">
+        <h4>Tržby dnes <span class="muted mono" id="clock"></span></h4>
+        <canvas id="chart"></canvas>
+        <div class="legend"><span><i style="background:#27b7a5"></i>Tržby</span><span><i style="background:#5dd9cb;opacity:.5"></i>Predikce</span></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  (function () {
+    'use strict';
+    const KPIS = [
+      { lab: 'Tržby dnes', base: 312400, suf: ' Kč', delta: +8.2, fmt: v => Math.round(v).toLocaleString('cs-CZ') },
+      { lab: 'Poptávky', base: 47, suf: '', delta: +12, fmt: v => Math.round(v) },
+      { lab: 'Konverze', base: 23.4, suf: ' %', delta: +1.8, fmt: v => v.toFixed(1) },
+      { lab: 'Ø objednávka', base: 6648, suf: ' Kč', delta: -2.1, fmt: v => Math.round(v).toLocaleString('cs-CZ') },
+    ];
+    const kpisEl = document.getElementById('kpis');
+    const clock = document.getElementById('clock');
+    const sparks = [];
+
+    KPIS.forEach((k, i) => {
+      const el = document.createElement('div');
+      el.className = 'kpi in'; el.style.animationDelay = (i * 0.08) + 's';
+      el.innerHTML =
+        '<div class="kpi__lab">' + k.lab + '</div>' +
+        '<div class="kpi__val" id="kv' + i + '">—</div>' +
+        '<div class="kpi__delta ' + (k.delta >= 0 ? 'up' : 'down') + '">' + (k.delta >= 0 ? '▲ +' : '▼ ') + Math.abs(k.delta) + (k.suf === ' %' ? ' p.b.' : ' %') + ' vs. min. týden</div>' +
+        '<canvas class="spark" id="sp' + i + '"></canvas>';
+      kpisEl.appendChild(el);
+      k.cur = k.base * 0.9;
+      k.hist = Array.from({ length: 28 }, (_, j) => k.base * (0.8 + 0.2 * j / 28) * (0.97 + Math.random() * 0.06));
+    });
+
+    function drawSpark(canvas, data, color) {
+      const dpr = window.devicePixelRatio || 1;
+      const w = canvas.clientWidth, h = canvas.clientHeight;
+      canvas.width = w * dpr; canvas.height = h * dpr;
+      const ctx = canvas.getContext('2d'); ctx.scale(dpr, dpr);
+      const min = Math.min(...data), max = Math.max(...data), range = max - min || 1;
+      ctx.beginPath();
+      data.forEach((v, i) => {
+        const x = i / (data.length - 1) * w, y = h - ((v - min) / range) * (h - 4) - 2;
+        i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+      });
+      ctx.strokeStyle = color; ctx.lineWidth = 1.5; ctx.lineJoin = 'round'; ctx.stroke();
+    }
+
+    // main chart: today's revenue, real + predicted
+    const chart = document.getElementById('chart');
+    const cctx = chart.getContext('2d');
+    let series = Array.from({ length: 32 }, (_, i) => 6000 + i * 320 + Math.random() * 1800);
+    function drawChart() {
+      const dpr = window.devicePixelRatio || 1;
+      const w = chart.clientWidth, h = chart.clientHeight;
+      chart.width = w * dpr; chart.height = h * dpr;
+      cctx.setTransform(dpr, 0, 0, dpr, 0, 0); cctx.clearRect(0, 0, w, h);
+      const all = series.concat(predict());
+      const min = Math.min(...all) * 0.95, max = Math.max(...all) * 1.05, range = max - min || 1;
+      const X = i => i / (all.length - 1) * w, Y = v => h - ((v - min) / range) * (h - 12) - 6;
+      // grid
+      cctx.strokeStyle = 'rgba(255,255,255,0.05)'; cctx.lineWidth = 1;
+      for (let g = 0; g <= 3; g++) { const y = (h - 12) * g / 3 + 6; cctx.beginPath(); cctx.moveTo(0, y); cctx.lineTo(w, y); cctx.stroke(); }
+      // actual
+      cctx.beginPath(); series.forEach((v, i) => { i ? cctx.lineTo(X(i), Y(v)) : cctx.moveTo(X(i), Y(v)); });
+      cctx.strokeStyle = '#27b7a5'; cctx.lineWidth = 2; cctx.lineJoin = 'round'; cctx.stroke();
+      // area
+      cctx.lineTo(X(series.length - 1), h); cctx.lineTo(0, h); cctx.closePath();
+      cctx.fillStyle = 'rgba(39,183,165,0.08)'; cctx.fill();
+      // prediction (dashed)
+      const pred = predict();
+      cctx.beginPath(); cctx.moveTo(X(series.length - 1), Y(series[series.length - 1]));
+      pred.forEach((v, i) => cctx.lineTo(X(series.length + i), Y(v)));
+      cctx.setLineDash([5, 4]); cctx.strokeStyle = 'rgba(93,217,203,0.5)'; cctx.lineWidth = 2; cctx.stroke(); cctx.setLineDash([]);
+    }
+    function predict() {
+      const last = series[series.length - 1], slope = (series[series.length - 1] - series[series.length - 6]) / 5;
+      return Array.from({ length: 8 }, (_, i) => last + slope * (i + 1));
+    }
+
+    function tick() {
+      KPIS.forEach((k, i) => {
+        k.cur += (k.base - k.cur) * 0.18 + (Math.random() - 0.45) * k.base * 0.004;
+        document.getElementById('kv' + i).textContent = k.fmt(k.cur) + k.suf;
+        k.hist.push(k.hist[k.hist.length - 1] * (0.995 + Math.random() * 0.01)); k.hist.shift();
+        drawSpark(document.getElementById('sp' + i), k.hist, i === 3 ? '#e87b7b' : '#27b7a5');
+      });
+      series.push(series[series.length - 1] + 280 + Math.random() * 1400); series.shift();
+      drawChart();
+      const d = new Date();
+      clock.textContent = '● ' + ('0'+d.getHours()).slice(-2) + ':' + ('0'+d.getMinutes()).slice(-2) + ':' + ('0'+d.getSeconds()).slice(-2);
+    }
+    tick(); setInterval(tick, 1200);
+    window.addEventListener('resize', drawChart);
+  })();
+  </script>
+</body>
+</html>

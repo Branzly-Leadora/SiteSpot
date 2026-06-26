@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Automatizace & Systémy — SiteSpot</title>
+  <meta name="description" content="Automatizace procesů a AI systémy na míru od SiteSpot. Méně ruční práce, více času na byznys." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/templates.css" />
+  <link rel="stylesheet" href="css/automatizace.css" />
+</head>
+<body>
+
+  <div class="bg-layer" aria-hidden="true"></div>
+
+  <!-- NAV — always scrolled on subpage -->
+  <nav id="nav" class="scrolled">
+    <a href="index.html" class="nav-logo">Site<span>Spot</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html#work">Work</a></li>
+      <li><a href="index.html#services">Services</a></li>
+      <li><a href="templates.html">Weby</a></li>
+      <li><a href="automatizace.html" class="nav-active">Automatizace</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+    <a href="index.html#contact" class="nav-cta">Start a project</a>
+  </nav>
+
+  <!-- HERO -->
+  <div class="tpl-hero">
+    <div class="tpl-hero__inner">
+      <span class="eyebrow">Automatizace &amp; systémy</span>
+      <h1 class="tpl-hero__title">
+        Práce, kterou už<br/>
+        neděláte <em>ručně.</em>
+      </h1>
+      <p class="tpl-hero__sub">
+        Propojíme vaše nástroje, nasadíme AI tam, kde dává smysl, a necháme rutinu běžet samu.
+        Vy řešíte byznys — ne kopírování dat mezi systémy.
+      </p>
+    </div>
+    <div class="tpl-hero__meta">
+      <div class="tpl-meta-item">
+        <span class="tpl-meta-num">24</span>
+        <span class="tpl-meta-label">Řešení</span>
+      </div>
+      <div class="tpl-meta-item">
+        <span class="tpl-meta-num">24/7</span>
+        <span class="tpl-meta-label">Běží samy</span>
+      </div>
+      <div class="tpl-meta-item">
+        <span class="tpl-meta-num">ROI</span>
+        <span class="tpl-meta-label">Měřitelné</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FILTER BAR -->
+  <div class="tpl-filters">
+    <button class="tpl-filter active" data-filter="all">Vše</button>
+    <button class="tpl-filter" data-filter="procesy">Procesy</button>
+    <button class="tpl-filter" data-filter="podpora">AI podpora</button>
+    <button class="tpl-filter" data-filter="interni">Interní AI</button>
+    <button class="tpl-filter" data-filter="dokumenty">Dokumenty &amp; data</button>
+    <button class="tpl-filter" data-filter="sales">Lead &amp; sales</button>
+    <button class="tpl-filter" data-filter="analytika">Analytika</button>
+  </div>
+
+  <!-- AUTOMATION GRID -->
+  <div class="tpl-grid">
+
+    <!-- ══════════ PROCESY ══════════ -->
+    <article class="tpl-card auto-card reveal" data-cat="procesy">
+      <div class="tpl-card__preview auto-preview">
+        <span class="auto-status"><i></i> Běží 24/7</span>
+        <div class="auto-flow">
+          <span class="auto-node">Formulář</span>
+          <span class="auto-link"></span>
+          <span class="auto-node auto-node--ai">Make</span>
+          <span class="auto-link delay"></span>
+          <span class="auto-node">CRM + Slack</span>
+        </div>
+      </div>
+      <div class="tpl-card__body">
+        <div class="tpl-card__meta"><span class="tpl-card__cat">Procesy · Lead intake</span><span class="tpl-card__badge auto">Auto</span></div>
+        <h3 class="tpl-card__name">Automatické zpracování poptávek</h3>
+        <p class="tpl-card__desc">Formulář na webu → e-mail → zápis do CRM → notifikace na Slack a telefon. Nic nezapadne a nic se nepřepisuje ručně.</p>
+        <div class="tpl-card__footer"><div class="tpl-card__tags"><span>Make</span><span>Webhook</span><span>CRM</span></div><span class="auto-flowcap">trigger → akce</span></div>
+      </div>
+    </article>
+
+    <article class="tpl-card auto-card reveal" data-cat="procesy">
+      <div class="tpl-card__preview auto-preview">
+        <span class="auto-status"><i></i> Běží 24/7</span>
+        <div class="auto-flow">
+          <span class="auto-node">Objednávka</span>
+          <span class="auto-link"></span>
+          <span class="auto-node auto-node--ai">Fakturoid</span>
+          <span class="auto-link delay"></span>
+          <span class="auto-node">Faktura + upomínka</span>
+        </div>
+      </div>
+      <div class="tpl-card__body">
+        <div class="tpl-card__meta"><span class="tpl-card__cat">Procesy · Finance</span><span class="tpl-card__badge auto">Auto</span></div>
+        <h3 class="tpl-card__name">Automatická fakturace a upomínky</h3>
+        <p class="tpl-card__desc">Z objednávky se vystaví faktura ve Fakturoidu, odešle zákazníkovi a hlídá splatnost. Po termínu sama pošle upomínku.</p>
+        <div class="tpl-card__footer"><div class="tpl-card__tags"><span>Fakturoid</span><span>Make</span></div><span class="auto-flowcap">trigger → akce</span></div>
+      </div>
+    </article>
+
+    <article class="tpl-card auto-card reveal" data-cat="procesy">
+      <div class="tpl-card__preview auto-preview">
+        <span class="auto-status"><i></i> Běží 24/7</span>
+        <div class="auto-flow">
+          <span class="auto-node">Podpis smlouvy</span>
+          <span class="auto-link"></span>
+          <span class="auto-node auto-node--ai">Workflow</span>
+          <span class="auto-link delay"></span>
+          <span class="auto-node">Účet + e-maily</span>
+        </div>
+      </div>
+      <div class="tpl-card__body">
+        <div class="tpl-card__meta"><span class="tpl-card__cat">Procesy · Onboarding</span><span class="tpl-card__badge auto">Auto</span></div>
+        <h3 class="tpl-card__name">Onboarding nových zákazníků</h3>
+        <p class="tpl-card__desc">Nový klient projde celým uvítacím procesem sám — založení účtu, přístupy, série e-mailů a úkoly pro tým. Bez ruční práce.</p>
+        <div class="tpl-card__footer"><div class="tpl-card__tags"><span>Make</span><span>E-mail</span><span>Tasks</span></div><span class="auto-flowcap">trigger → akce</span></div>
+      </div>
+    </article>
+
+    <article class="tpl-card auto-card reveal" data-cat="procesy">
+      <div class="tpl-card__preview auto-preview">
+        <span class="auto-status"><i></i> Běží 24/7</span>
+        <div class="auto-flow">
+          <span class="auto-node">CRM</span>
+          <span class="auto-link"></span>
+          <span class="auto-node auto-node--ai">Sync</span>
+          <span class="auto-link delay"></span>
+          <span class="auto-node">Účetnictví</span>
+        </div>
+      </div>
+      <div class="tpl-card__body">
+        <div class="tpl-card__meta"><span class="tpl-card__cat">Procesy · Integrace</span><span class="tpl-card__badge auto">Auto</span></div>
+        <h3 class="tpl-card__name">Synchronizace dat mezi systémy</h3>
+        <p class="tpl-card__desc">CRM ↔ účetnictví ↔ e-mail vždy ve shodě. Změna na jednom místě se obratem propíše všude. Žádné duplicity, žádné přepisování.</p>
+        <div class="tpl-card__footer"><div class="tpl-card__tags"><span>API</span><span>Make</span><span>2-way</span></div><span class="auto-flowcap">obousměrně</span></div>
+      </div>
+    </article>
+
+    <article class="tpl-card auto-card reveal" data-cat="procesy">
+      <div class="tpl-card__preview auto-preview">
+        <span class="auto-status"><i></i> Každé pondělí</span>
+        <div class="auto-flow">
+          <span class="auto-node">Data</span>
+          <span class="auto-link"></span>
+          <span class="auto-node auto-node--ai">Souhrn</span>
+          <span class="auto-link delay"></span>
+          <span class="auto-node">E-mail majiteli</span>
+        </div>
+      </div>
+      <div class="tpl-card__body">
+        <div class="tpl-card__meta"><span class="tpl-card__cat">Procesy · Reporting</span><span class="tpl-card__badge auto">Auto</span></div>
+        <h3 class="tpl-card__name">Automatické týdenní reporty</h3>
+        <p class="tpl-card__desc">Každé pondělí ráno přijde majiteli do e-mailu přehledné shrnutí týdne — tržby, poptávky, nejlepší produkty. Bez otevírání pěti aplikací.</p>
+        <div class="tpl-card__footer"><div class="tpl-card__tags"><span>Make</span><span>Cron</span><span>E-mail</span></div><span class="auto-flowcap">naplánováno</span></div>
+      </div>
+    </article>
+
+    <!-- ══════════ AI PODPORA ══════════ -->
+    <article class="tpl-card auto-card reveal" data-cat="podpora">
+      <div class="tpl-card__preview auto-preview">
+        <span class="auto-status"><i></i> Online</span>
+        <div class="auto-flow">
+          <span class="auto-node">Dotaz</span>
+          <span class="auto-link"></span>
+          <span class="auto-node auto-node--ai">Claude</span>
+          <span class="auto-link delay"></span>
+          <span class="auto-node">Odpověď / člověk</span>
+        </div>
+      </div>
+      <div class="tpl-card__body">
+        <div class="tpl-card__meta"><span class="tpl-card__cat">AI podpora · Chatbot</span><span class="tpl-card__badge auto">AI</span></div>
+        <h3 class="tpl-card__name">AI chatbot na web</h3>
+        <p class="tpl-card__desc">Odpovídá na časté dotazy z vašich podkladů, kvalifikuje poptávky a když si neví rady, slušně předá konverzaci živému člověku.</p>
+        <div class="tpl-card__footer"><div class="tpl-card__tags"><span>Claude</span><span>RAG</span><span>Web</span></div><span class="auto-flowcap">dotaz → odpověď</span></div>
+      </div>
+    </article>
+
+    <article class="tpl-card auto-card reveal" data-cat="podpora">
+      <div class="tpl-card__preview auto-preview">
+        <span class="auto-status"><i></i> Online</span>
+        <div class="auto-flow">
+          <span class="auto-node">Inbox</span>
+          <span class="auto-link"></span>
+          <span class="auto-node auto-node--ai">Claude</span>
+          <span class="auto-link delay"></span>
+          <span class="auto-node">Štítek + návrh</span>
+        </div>
+      </div>
+      <div class="tpl-card__body">
+        <div class="tpl-card__meta"><span class="tpl-card__cat">AI podpora · E-mail</span><span class="tpl-card__badge auto">AI</span></div>
+        <h3 class="tpl-card__name">AI e-mailový asistent</h3>
+        <p class="tpl-card__desc">Třídí příchozí e-maily podle tématu a priority a ke každému připraví návrh odpovědi. Vy jen zkontrolujete a odešlete.</p>
+        <div class="tpl-card__footer"><div class="tpl-card__tags"><span>Claude</span><span>Gmail</span></div><span class="auto-flowcap">třídí → navrhuje</span></div>
+      </div>
+    </article>
+
+    <article class="tpl-card auto-card reveal" data-cat="podpora">
+      <div class="tpl-card__preview auto-preview">
+        <span class="auto-status"><i></i> Online</span>
+        <div class="auto-flow">
+          <span class="auto-node">Recenze</span>
+          <span class="auto-link"></span>
+          <span class="auto-node auto-node--ai">Claude</span>
+          <span class="auto-link delay"></span>
+          <span class="auto-node">Odpověď ke schválení</span>
+        </div>
+      </div>
+      <div class="tpl-card__body">
+        <div class="tpl-card__meta"><span class="tpl-card__cat">AI podpora · Reputace</span><span class="tpl-card__badge auto">AI</span></div>
+        <h3 class="tpl-card__name">Automatické odpovědi na recenze</h3>
+        <p class="tpl-card__desc">Nová recenze na Google nebo Firmy.cz? AI připraví zdvořilou odpověď v tónu vaší značky. Stačí odkliknout — reputace roste sama.</p>
+        <div class="tpl-card__footer"><div class="tpl-card__tags"><span>Claude</span><span>Google</span><span>Firmy.cz</span></div><span class="auto-flowcap">recenze → odpověď</span></div>
+      </div>
+    </article>
+
+    <article class="tpl-card auto-card reveal" data-cat="podpora">
+      <div class="tpl-card__preview auto-preview">
+        <span class="auto-status"><i></i> Po každém hovoru</span>
+        <div class="auto-flow">
+          <span class="auto-node">Hovor</span>
+          <span class="auto-link"></span>
+          <span class="auto-node auto-node--ai">Přepis + AI</span>
+          <span class="auto-link delay"></span>
+          <span class="auto-node">Zápis + úkol</span>
+        </div>
+      </div>
+      <div class="tpl-card__body">
+        <div class="tpl-card__meta"><span class="tpl-card__cat">AI podpora · Hovory</span><span class="tpl-card__badge auto">AI</span></div>
+        <h3 class="tpl-card__name">AI asistent na telefonní hovory</h3>
+        <p class="tpl-card__desc">Hovor se přepíše, AI z něj vytáhne podstatu a vytvoří zápis i úkoly do CRM. Žádné „zapomněl jsem, na čem jsme se domluvili".</p>
+        <div class="tpl-card__footer"><div class="tpl-card__tags"><span>Whisper</span><span>Claude</span><span>CRM</span></div><span class="auto-flowcap">hovor → úkol</span></div>
+      </div>
+    </article>
+
+    <!-- ══════════ INTERNÍ AI ══════════ -->
+    <article class="tpl-card auto-card reveal" data-cat="interni">
+      <div class="tpl-card__preview auto-preview">
+        <span class="auto-status"><i></i> Interní</span>
+        <div class="auto-flow">
+          <span class="auto-node">Dotaz týmu</span>
+          <span class="auto-link"></span>
+          <span class="auto-node auto-node--ai">RAG + Claude</span>
+          <span class="auto-link delay"></span>
+          <span class="auto-node">Odpověď se zdrojem</span>
+        </div>
+      </div>
+      <div class="tpl-card__body">
+        <div class="tpl-card__meta"><span class="tpl-card__cat">Interní AI · Knowledge base</span><span class="tpl-card__badge auto">AI</span></div>
+        <h3 class="tpl-card__name">AI asistent na firemní dokumenty</h3>
+        <p class="tpl-card__desc">Zeptáte se přirozeně a dostanete odpověď ze smluv, ceníků a manuálů — i s odkazem na zdroj. Konec hledání v desítkách souborů.</p>
+        <div class="tpl-card__footer"><div class="tpl-card__tags"><span>Claude</span><span>RAG</span><span>Vektory</span></div><span class="auto-flowcap">ptej se → najdi</span></div>
+      </div>
+    </article>
+
+    <article class="tpl-card auto-card reveal" data-cat="interni">
+      <div class="tpl-card__preview auto-preview">
+        <span class="auto-status"><i></i> Po každé schůzce</span>
+        <div class="auto-flow">
+          <span class="auto-node">Nahrávka</span>
+          <span class="auto-link"></span>
+          <span class="auto-node auto-node--ai">Claude</span>
+          <span class="auto-link delay"></span>
+          <span class="auto-node">Zápis + úkoly</span>
+        </div>
+      </div>
+      <div class="tpl-card__body">
+        <div class="tpl-card__meta"><span class="tpl-card__cat">Interní AI · Meetingy</span><span class="tpl-card__badge auto">AI</span></div>
+        <h3 class="tpl-card__name">Automatické shrnutí schůzek</h3>
+        <p class="tpl-card__desc">Z nahrávky vznikne strukturovaný zápis, seznam rozhodnutí a úkoly s odpovědnými osobami. Rovnou do Notionu nebo e-mailu.</p>
+        <div class="tpl-card__footer"><div class="tpl-card__tags"><span>Whisper</span><span>Claude</span><span>Notion</span></div><span class="auto-flowcap">zvuk → zápis</span></div>
+      </div>
+    </article>
+
+    <article class="tpl-card auto-card reveal" data-cat="interni">
+      <div class="tpl-card__preview auto-preview">
+        <span class="auto-status"><i></i> Na vyžádání</span>
+        <div class="auto-flow">
+          <span class="auto-node">Parametry</span>
+          <span class="auto-link"></span>
+          <span class="auto-node auto-node--ai">Claude</span>
+          <span class="auto-link delay"></span>
+          <span class="auto-node">Draft nabídky</span>
+        </div>
+      </div>
+      <div class="tpl-card__body">
+        <div class="tpl-card__meta"><span class="tpl-card__cat">Interní AI · Sales</span><span class="tpl-card__badge auto">AI</span></div>
+        <h3 class="tpl-card__name">AI generátor nabídek</h3>
+        <p class="tpl-card__desc">Vyplníte pár parametrů a dostanete hotový draft cenové nabídky ve vaší šabloně — text, položky i PDF. Z hodin práce minuty.</p>
+        <div class="tpl-card__footer"><div class="tpl-card__tags"><span>Claude</span><span>PDF</span><span>Šablony</span></div><span class="auto-flowcap">zadání → draft</span></div>
+      </div>
+    </article>
+
+    <article class="tpl-card auto-card reveal" data-cat="interni">
+      <div class="tpl-card__preview auto-preview">
+        <span class="auto-status"><i></i> Na vyžádání</span>
+        <div class="auto-flow">
+          <span class="auto-node">Brief</span>
+          <span class="auto-link"></span>
+          <span class="auto-node auto-node--ai">Claude</span>
+          <span class="auto-link delay"></span>
+          <span class="auto-node">Popisky + posty</span>
+        </div>
+      </div>
+      <div class="tpl-card__body">
+        <div class="tpl-card__meta"><span class="tpl-card__cat">Interní AI · Obsah</span><span class="tpl-card__badge auto">AI</span></div>
+        <h3 class="tpl-card__name">Generování obsahu</h3>
+        <p class="tpl-card__desc">Produktové popisky, příspěvky na sítě, newslettery — v jednotném tónu značky a ve velkém množství. Vy jen vyberete a publikujete.</p>
+        <div class="tpl-card__footer"><div class="tpl-card__tags"><span>Claude</span><span>SEO</span></div><span class="auto-flowcap">brief → obsah</span></div>
+      </div>
+    </article>
+
+    <article class="tpl-card auto-card reveal" data-cat="interni">
+      <div class="tpl-card__preview auto-preview">
+        <span class="auto-status"><i></i> Interní</span>
+        <div class="auto-flow">
+          <span class="auto-node">Otázka</span>
+          <span class="auto-link"></span>
+          <span class="auto-node auto-node--ai">Claude + MCP</span>
+          <span class="auto-link delay"></span>
+          <span class="auto-node">Akce v systémech</span>
+        </div>
+      </div>
+      <div class="tpl-card__body">
+        <div class="tpl-card__meta"><span class="tpl-card__cat">Interní AI · Asistent</span><span class="tpl-card__badge auto">AI</span></div>
+        <h3 class="tpl-card__name">AI „druhý mozek" firmy</h3>
+        <p class="tpl-card__desc">Asistent napojený na vaše systémy přes MCP — zeptáte se přirozeně a on rovnou jedná: založí úkol, najde objednávku, připraví podklad.</p>
+        <div class="tpl-card__footer"><div class="tpl-card__tags"><span>Claude</span><span>MCP</span><span>Interní</span></div><span class="auto-flowcap">ptej se → jednej</span></div>
+      </div>
+    </article>
+
+    <!-- ══════════ DOKUMENTY & DATA ══════════ -->
+    <article class="tpl-card auto-card reveal" data-cat="dokumenty">
+      <div class="tpl-card__preview auto-preview">
+        <span class="auto-status"><i></i> Při příchodu</span>
+        <div class="auto-flow">
+          <span class="auto-node">Faktura / PDF</span>
+          <span class="auto-link"></span>
+          <span class="auto-node auto-node--ai">Claude vision</span>
+          <span class="auto-link delay"></span>
+          <span class="auto-node">Data do systému</span>
+        </div>
+      </div>
+      <div class="tpl-card__body">
+        <div class="tpl-card__meta"><span class="tpl-card__cat">Dokumenty · Vytěžování</span><span class="tpl-card__badge auto">AI</span></div>
+        <h3 class="tpl-card__name">Vytěžování dokumentů</h3>
+        <p class="tpl-card__desc">Z přijaté faktury, dodacího listu nebo PDF AI vytáhne částky, položky a údaje a zapíše je do účetnictví. Konec ručního přepisování.</p>
+        <div class="tpl-card__footer"><div class="tpl-card__tags"><span>Claude</span><span>OCR</span><span>JSON</span></div><span class="auto-flowcap">PDF → data</span></div>
+      </div>
+    </article>
+
+    <article class="tpl-card auto-card reveal" data-cat="dokumenty">
+      <div class="tpl-card__preview auto-preview">
+        <span class="auto-status"><i></i> Na vyžádání</span>
+        <div class="auto-flow">
+          <span class="auto-node">Smlouva</span>
+          <span class="auto-link"></span>
+          <span class="auto-node auto-node--ai">Claude</span>
+          <span class="auto-link delay"></span>
+          <span class="auto-node">Rizika + shrnutí</span>
+        </div>
+      </div>
+      <div class="tpl-card__body">
+        <div class="tpl-card__meta"><span class="tpl-card__cat">Dokumenty · Kontrola</span><span class="tpl-card__badge auto">AI</span></div>
+        <h3 class="tpl-card__name">Kontrola smluv a rizik</h3>
+        <p class="tpl-card__desc">AI projde smlouvu, upozorní na nestandardní podmínky, sankce a chybějící body a napíše srozumitelné shrnutí. Druhý pár očí, který nikdy nespí.</p>
+        <div class="tpl-card__footer"><div class="tpl-card__tags"><span>Claude</span><span>Legal</span></div><span class="auto-flowcap">text → rizika</span></div>
+      </div>
+    </article>
+
+    <article class="tpl-card auto-card reveal" data-cat="dokumenty">
+      <div class="tpl-card__preview auto-preview">
+        <span class="auto-status"><i></i> Na vyžádání</span>
+        <div class="auto-flow">
+          <span class="auto-node">Obsah</span>
+          <span class="auto-link"></span>
+          <span class="auto-node auto-node--ai">Claude</span>
+          <span class="auto-link delay"></span>
+          <span class="auto-node">Vícejazyčně</span>
+        </div>
+      </div>
+      <div class="tpl-card__body">
+        <div class="tpl-card__meta"><span class="tpl-card__cat">Dokumenty · Lokalizace</span><span class="tpl-card__badge auto">AI</span></div>
+        <h3 class="tpl-card__name">AI překlady a lokalizace</h3>
+        <p class="tpl-card__desc">Web, e-shop nebo dokumenty v dalších jazycích — s ohledem na kontext a tón, ne strojově. Expanze na nové trhy bez čekání na agenturu.</p>
+        <div class="tpl-card__footer"><div class="tpl-card__tags"><span>Claude</span><span>i18n</span></div><span class="auto-flowcap">CZ → svět</span></div>
+      </div>
+    </article>
+
+    <!-- ══════════ LEAD & SALES ══════════ -->
+    <article class="tpl-card auto-card reveal" data-cat="sales">
+      <div class="tpl-card__preview auto-preview">
+        <span class="auto-status"><i></i> Běží na pozadí</span>
+        <div class="auto-flow">
+          <span class="auto-node">Seznam firem</span>
+          <span class="auto-link"></span>
+          <span class="auto-node auto-node--ai">Scraper + AI</span>
+          <span class="auto-link delay"></span>
+          <span class="auto-node">Personalizované e-maily</span>
+        </div>
+      </div>
+      <div class="tpl-card__body">
+        <div class="tpl-card__meta"><span class="tpl-card__cat">Lead &amp; sales · Outreach</span><span class="tpl-card__badge auto">AI</span></div>
+        <h3 class="tpl-card__name">Automatický outreach</h3>
+        <p class="tpl-card__desc">Najde relevantní firmy, zjistí o nich kontext a napíše každé jiný, osobní e-mail. Žádné „Vážený pane/paní" hromadné spamy.</p>
+        <div class="tpl-card__footer"><div class="tpl-card__tags"><span>Scraping</span><span>Claude</span><span>SMTP</span></div><span class="auto-flowcap">cíl → e-mail</span></div>
+      </div>
+    </article>
+
+    <article class="tpl-card auto-card reveal" data-cat="sales">
+      <div class="tpl-card__preview auto-preview">
+        <span class="auto-status"><i></i> U každé poptávky</span>
+        <div class="auto-flow">
+          <span class="auto-node">Poptávka</span>
+          <span class="auto-link"></span>
+          <span class="auto-node auto-node--ai">AI scoring</span>
+          <span class="auto-link delay"></span>
+          <span class="auto-node">Skóre + priorita</span>
+        </div>
+      </div>
+      <div class="tpl-card__body">
+        <div class="tpl-card__meta"><span class="tpl-card__cat">Lead &amp; sales · Scoring</span><span class="tpl-card__badge auto">AI</span></div>
+        <h3 class="tpl-card__name">Lead scoring</h3>
+        <p class="tpl-card__desc">AI vyhodnotí každou poptávku a označí ty s nejvyšší šancí na uzavření. Obchod ví, komu zavolat první — a neztrácí čas.</p>
+        <div class="tpl-card__footer"><div class="tpl-card__tags"><span>Claude</span><span>CRM</span></div><span class="auto-flowcap">lead → priorita</span></div>
+      </div>
+    </article>
+
+    <article class="tpl-card auto-card reveal" data-cat="sales">
+      <div class="tpl-card__preview auto-preview">
+        <span class="auto-status"><i></i> Běží 24/7</span>
+        <div class="auto-flow">
+          <span class="auto-node">Nový lead</span>
+          <span class="auto-link"></span>
+          <span class="auto-node auto-node--ai">Sekvence</span>
+          <span class="auto-link delay"></span>
+          <span class="auto-node">Připomínky + e-maily</span>
+        </div>
+      </div>
+      <div class="tpl-card__body">
+        <div class="tpl-card__meta"><span class="tpl-card__cat">Lead &amp; sales · Follow-up</span><span class="tpl-card__badge auto">Auto</span></div>
+        <h3 class="tpl-card__name">Follow-up sekvence</h3>
+        <p class="tpl-card__desc">Každý lead dostane správný follow-up ve správný čas — bez toho, aby na něj někdo myslel. Sekvence se sama zastaví, jakmile zákazník odpoví.</p>
+        <div class="tpl-card__footer"><div class="tpl-card__tags"><span>Make</span><span>CRM</span></div><span class="auto-flowcap">lead → kontakt</span></div>
+      </div>
+    </article>
+
+    <article class="tpl-card auto-card reveal" data-cat="sales">
+      <div class="tpl-card__preview auto-preview">
+        <span class="auto-status"><i></i> Denní monitoring</span>
+        <div class="auto-flow">
+          <span class="auto-node">Web konkurence</span>
+          <span class="auto-link"></span>
+          <span class="auto-node auto-node--ai">Monitor</span>
+          <span class="auto-link delay"></span>
+          <span class="auto-node">Změna → alert</span>
+        </div>
+      </div>
+      <div class="tpl-card__body">
+        <div class="tpl-card__meta"><span class="tpl-card__cat">Lead &amp; sales · Intel</span><span class="tpl-card__badge auto">Auto</span></div>
+        <h3 class="tpl-card__name">Sledování konkurence</h3>
+        <p class="tpl-card__desc">Automatický monitoring cen, novinek a akcí konkurence. Jakmile se něco změní, přijde vám upozornění. Vždy o krok napřed.</p>
+        <div class="tpl-card__footer"><div class="tpl-card__tags"><span>Scraping</span><span>Cron</span><span>Alert</span></div><span class="auto-flowcap">změna → alert</span></div>
+      </div>
+    </article>
+
+    <!-- ══════════ ANALYTIKA ══════════ -->
+    <article class="tpl-card auto-card reveal" data-cat="analytika">
+      <div class="tpl-card__preview auto-preview">
+        <span class="auto-status"><i></i> Real-time</span>
+        <div class="auto-flow">
+          <span class="auto-node">Zdroje dat</span>
+          <span class="auto-link"></span>
+          <span class="auto-node auto-node--ai">ETL</span>
+          <span class="auto-link delay"></span>
+          <span class="auto-node">Živý dashboard</span>
+        </div>
+      </div>
+      <div class="tpl-card__body">
+        <div class="tpl-card__meta"><span class="tpl-card__cat">Analytika · Dashboard</span><span class="tpl-card__badge auto">Auto</span></div>
+        <h3 class="tpl-card__name">Dashboard s KPIs v reálném čase</h3>
+        <p class="tpl-card__desc">Tržby, poptávky, konverze i sklad na jedné obrazovce — vždy aktuální. Místo exportů z pěti aplikací jeden přehled, který se aktualizuje sám.</p>
+        <div class="tpl-card__footer"><div class="tpl-card__tags"><span>API</span><span>Dashboard</span></div><span class="auto-flowcap">data → přehled</span></div>
+      </div>
+    </article>
+
+    <article class="tpl-card auto-card reveal" data-cat="analytika">
+      <div class="tpl-card__preview auto-preview">
+        <span class="auto-status"><i></i> Průběžně</span>
+        <div class="auto-flow">
+          <span class="auto-node">Objednávky</span>
+          <span class="auto-link"></span>
+          <span class="auto-node auto-node--ai">Analýza</span>
+          <span class="auto-link delay"></span>
+          <span class="auto-node">Kdo / co / kdy</span>
+        </div>
+      </div>
+      <div class="tpl-card__body">
+        <div class="tpl-card__meta"><span class="tpl-card__cat">Analytika · Zákazníci</span><span class="tpl-card__badge auto">AI</span></div>
+        <h3 class="tpl-card__name">Analýza zákaznických dat</h3>
+        <p class="tpl-card__desc">Kdo u vás nakupuje, co a kdy — přehledně a srozumitelně. Najdete své nejlepší zákazníky i příležitosti, které vám utíkaly.</p>
+        <div class="tpl-card__footer"><div class="tpl-card__tags"><span>SQL</span><span>Claude</span></div><span class="auto-flowcap">data → vhled</span></div>
+      </div>
+    </article>
+
+    <article class="tpl-card auto-card reveal" data-cat="analytika">
+      <div class="tpl-card__preview auto-preview">
+        <span class="auto-status"><i></i> Prediktivní</span>
+        <div class="auto-flow">
+          <span class="auto-node">Historie</span>
+          <span class="auto-link"></span>
+          <span class="auto-node auto-node--ai">ML model</span>
+          <span class="auto-link delay"></span>
+          <span class="auto-node">Předpověď</span>
+        </div>
+      </div>
+      <div class="tpl-card__body">
+        <div class="tpl-card__meta"><span class="tpl-card__cat">Analytika · Predikce</span><span class="tpl-card__badge auto">AI</span></div>
+        <h3 class="tpl-card__name">Predikce nákupu a odchodu</h3>
+        <p class="tpl-card__desc">Model odhadne, kdy zákazník pravděpodobně nakoupí znovu a kdo hrozí odchodem. Zasáhnete včas — kampaní nebo telefonem.</p>
+        <div class="tpl-card__footer"><div class="tpl-card__tags"><span>ML</span><span>Scoring</span></div><span class="auto-flowcap">data → předpověď</span></div>
+      </div>
+    </article>
+
+  </div>
+
+  <!-- CTA BAND -->
+  <div class="cta-band reveal">
+    <h2 class="cta-title">
+      Nevíte, co<br/>
+      jde <em>zautomatizovat?</em>
+    </h2>
+    <div class="cta-actions">
+      <a href="index.html#contact" class="btn-primary">
+        Nezávazná konzultace
+        <svg width="14" height="14" fill="none" viewBox="0 0 14 14">
+          <path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </a>
+      <a href="index.html#work" class="btn-outline">Naše projekty</a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand">SiteSpot</div>
+        <div class="footer-tag">Award-Winning Digital Agency</div>
+      </div>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="index.html#work">Work</a>
+        <a href="index.html#services">Services</a>
+        <a href="templates.html">Weby</a>
+        <a href="automatizace.html">Automatizace</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+      <div class="footer-socials">
+        <a href="#">LinkedIn</a>
+        <a href="#">Instagram</a>
+        <a href="#">Behance</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 SiteSpot. Všechna práva vyhrazena.</span>
+      <span>Navrženo &amp; vyvinuto v Plzni.</span>
+    </div>
+  </footer>
+
+  <!-- PREVIEW MODAL -->
+  <div class="tpl-modal" id="tplModal" aria-hidden="true">
+    <div class="tpl-modal__backdrop" data-tpl-close></div>
+    <div class="tpl-modal__window" role="dialog" aria-modal="true" aria-label="Náhled ukázky">
+      <div class="tpl-modal__bar">
+        <span class="tpl-modal__dots"><i></i><i></i><i></i></span>
+        <span class="tpl-modal__url" id="tplModalUrl">ukázka</span>
+        <a class="tpl-modal__open" id="tplModalOpen" href="#" target="_blank" rel="noopener">Otevřít na celé okno ↗</a>
+        <button class="tpl-modal__close" id="tplModalClose" data-tpl-close aria-label="Zavřít náhled">×</button>
+      </div>
+      <div class="tpl-modal__body">
+        <iframe class="tpl-modal__frame" id="tplModalFrame" title="Náhled ukázky" src="about:blank"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script src="js/automatizace.js"></script>
+  <script src="js/animations.js"></script>
+</body>
+</html>
