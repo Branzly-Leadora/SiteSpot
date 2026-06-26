@@ -4,6 +4,31 @@
 
 .tpl-card[data-url] { cursor: pointer; }
 
+/* ── Náhled šablony v kartě (miniatura) ──────────────────────
+   Dawův přepis templates.css tato pravidla maže, takže žijí tady. */
+.tpl-card__frame {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--surface);
+  transition: transform 0.5s var(--ease);
+}
+.tpl-card:hover .tpl-card__frame { transform: scale(1.04); }
+
+/* iframe se vykreslí ve 4× velikosti (desktop layout) a zmenší na 25 % → vyplní kartu */
+.tpl-card__frame iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 400%;
+  height: 400%;
+  border: 0;
+  transform: scale(0.25);
+  transform-origin: top left;
+  pointer-events: none;
+  background: #F4EDE0;
+}
+
 .tpl-modal {
   position: fixed;
   inset: 0;
