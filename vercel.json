@@ -1,0 +1,34 @@
+{
+  "version": 2,
+  "name": "sitespot",
+  "builds": [
+    { "src": "server.js", "use": "@vercel/node" },
+    { "src": "index.html", "use": "@vercel/static" },
+    { "src": "leads.html", "use": "@vercel/static" },
+    { "src": "automation.html", "use": "@vercel/static" },
+    { "src": "marketing.html", "use": "@vercel/static" },
+    { "src": "brand.html", "use": "@vercel/static" },
+    { "src": "content.html", "use": "@vercel/static" },
+    { "src": "a.html", "use": "@vercel/static" },
+    { "src": "websites/**", "use": "@vercel/static" }
+  ],
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/server.js" },
+    { "src": "/websites/(.*)", "dest": "/websites/$1" },
+    { "src": "/a", "dest": "/a.html" },
+    { "src": "/leads.html", "dest": "/leads.html" },
+    { "src": "/automation.html", "dest": "/automation.html" },
+    { "src": "/marketing.html", "dest": "/marketing.html" },
+    { "src": "/brand.html", "dest": "/brand.html" },
+    { "src": "/content.html", "dest": "/content.html" },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ],
+  "env": {
+    "SMTP_HOST": "@smtp_host",
+    "SMTP_PORT": "@smtp_port",
+    "SMTP_USER": "@smtp_user",
+    "SMTP_PASS": "@smtp_pass",
+    "MAIL_TO": "@mail_to",
+    "ANTHROPIC_API_KEY": "@anthropic_api_key"
+  }
+}

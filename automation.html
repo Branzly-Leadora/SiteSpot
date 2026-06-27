@@ -9,15 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet"/>
 <style>
-:root{
-  --bg:#070a0f; --bg-2:#0c1018; --surface:#111620; --surface-2:#181e2c;
-  --border:rgba(255,255,255,0.07); --border-2:rgba(255,255,255,0.14);
-  --accent:#27b7a5; --accent-2:#5dd9cb;
-  --accent-dim:rgba(39,183,165,0.10); --accent-glow:rgba(39,183,165,0.22);
-  --white:#eef2f7; --gray:#7da8c4; --gray-2:#3a5570;
-  --font-sans:'DM Sans',sans-serif; --font-serif:'Playfair Display',Georgia,serif;
-  --ease:cubic-bezier(0.16,1,0.3,1);
-}
+:root{--bg:#070a0f;--bg-2:#0c1018;--surface:#111620;--surface-2:#181e2c;--border:rgba(255,255,255,0.07);--border-2:rgba(255,255,255,0.14);--accent:#27b7a5;--accent-2:#5dd9cb;--accent-dim:rgba(39,183,165,0.10);--accent-glow:rgba(39,183,165,0.22);--white:#eef2f7;--gray:#7da8c4;--gray-2:#3a5570;--font-sans:'DM Sans',sans-serif;--font-serif:'Playfair Display',Georgia,serif;--ease:cubic-bezier(0.16,1,0.3,1)}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;font-size:16px;-webkit-font-smoothing:antialiased}
 body{background:var(--bg);color:var(--white);font-family:var(--font-sans);line-height:1.65;overflow-x:hidden}
@@ -25,38 +17,15 @@ a{color:inherit;text-decoration:none}
 ul{list-style:none}
 img{max-width:100%;display:block}
 button{cursor:pointer;font-family:inherit}
-
-.btn-primary{
-  display:inline-flex;align-items:center;gap:.6rem;
-  padding:.85rem 1.75rem;background:var(--accent);color:#070a0f;
-  font-weight:700;font-size:.875rem;border:none;border-radius:3px;
-  letter-spacing:.01em;transition:background .2s,transform .2s,box-shadow .2s;
-}
+.btn-primary{display:inline-flex;align-items:center;gap:.6rem;padding:.85rem 1.75rem;background:var(--accent);color:#070a0f;font-weight:700;font-size:.875rem;border:none;border-radius:3px;letter-spacing:.01em;transition:background .2s,transform .2s,box-shadow .2s}
 .btn-primary:hover{background:var(--accent-2);transform:translateY(-2px);box-shadow:0 8px 32px var(--accent-glow)}
-
-.btn-outline{
-  display:inline-flex;align-items:center;gap:.6rem;
-  padding:.85rem 1.75rem;background:transparent;color:var(--gray);
-  font-weight:500;font-size:.875rem;
-  border:1px solid var(--border-2);border-radius:3px;
-  transition:color .2s,border-color .2s,background .2s;
-}
+.btn-outline{display:inline-flex;align-items:center;gap:.6rem;padding:.85rem 1.75rem;background:transparent;color:var(--gray);font-weight:500;font-size:.875rem;border:1px solid var(--border-2);border-radius:3px;transition:color .2s,border-color .2s,background .2s}
 .btn-outline:hover{color:var(--white);border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.04)}
-
-.eyebrow{
-  display:inline-block;font-size:.68rem;font-weight:600;
-  color:var(--accent-2);letter-spacing:.22em;text-transform:uppercase;margin-bottom:1rem;
-}
-
-/* NAV */
-#nav{
-  position:fixed;top:0;left:0;right:0;z-index:9000;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:1.2rem 3rem;
-  background:rgba(7,10,15,0.88);
-  backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);
-  border-bottom:1px solid var(--border);
-}
+.eyebrow{display:inline-block;font-size:.68rem;font-weight:600;color:var(--accent-2);letter-spacing:.22em;text-transform:uppercase;margin-bottom:1rem}
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .75s var(--ease),transform .75s var(--ease)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-d1{transition-delay:.1s}.reveal-d2{transition-delay:.2s}.reveal-d3{transition-delay:.3s}
+#nav{position:fixed;top:0;left:0;right:0;z-index:9000;display:flex;align-items:center;justify-content:space-between;padding:1.2rem 3rem;background:rgba(7,10,15,0.88);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border-bottom:1px solid var(--border)}
 .nav-logo{font-family:var(--font-sans);font-size:1.25rem;font-weight:700;color:var(--white);letter-spacing:-.02em;flex-shrink:0}
 .nav-logo span{color:var(--accent)}
 .nav-links{display:flex;align-items:center;gap:2.5rem}
@@ -64,51 +33,47 @@ button{cursor:pointer;font-family:inherit}
 .nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:1px;background:var(--accent);transition:width .3s var(--ease)}
 .nav-links a:hover::after{width:100%}
 .nav-links a:hover,.nav-links a.nav-active{color:var(--white)}
-.nav-cta{
-  display:inline-flex;align-items:center;gap:.4rem;
-  padding:.55rem 1.2rem;border:1px solid var(--border-2);border-radius:3px;
-  font-size:.85rem;font-weight:600;color:var(--white) !important;
-  transition:border-color .2s,background .2s;
-}
+.nav-cta{display:inline-flex;align-items:center;gap:.4rem;padding:.55rem 1.2rem;border:1px solid var(--border-2);border-radius:3px;font-size:.85rem;font-weight:600;color:var(--white)!important;transition:border-color .2s,background .2s}
 .nav-cta:hover{border-color:var(--accent);background:var(--accent-dim)}
-
-/* HERO */
-.hero{
-  min-height:60vh;display:flex;flex-direction:column;
-  justify-content:center;padding:8rem 3rem 4rem;
-  max-width:1200px;margin:0 auto;width:100%;
-}
-.hero-headline{
-  font-family:var(--font-serif);
-  font-size:clamp(2.5rem,5vw,4.5rem);
-  font-weight:700;line-height:.95;letter-spacing:-.03em;
-  margin-bottom:1.5rem;
-}
+.hero{min-height:70vh;display:flex;flex-direction:column;justify-content:center;padding:8rem 3rem 4rem;max-width:1200px;margin:0 auto;width:100%}
+.hero-headline{font-family:var(--font-serif);font-size:clamp(2.5rem,5vw,4.5rem);font-weight:700;line-height:.95;letter-spacing:-.03em;margin-bottom:1.5rem}
 .hero-headline em{font-style:italic;color:var(--accent)}
-.hero-sub{
-  font-size:1.05rem;color:var(--gray);max-width:560px;line-height:1.8;
-}
+.hero-sub{font-size:1.05rem;color:var(--gray);max-width:560px;line-height:1.8}
 .hero-actions{display:flex;gap:1rem;margin-top:2rem;flex-wrap:wrap}
-
-/* COMING SOON */
-.coming-soon{
-  max-width:1200px;margin:0 auto;padding:4rem 3rem 6rem;
-  text-align:center;
-}
-.coming-soon-card{
-  background:var(--surface);border:1px solid var(--border);border-radius:12px;
-  padding:4rem 2rem;max-width:600px;margin:0 auto;
-}
-.coming-soon-icon{
-  width:64px;height:64px;border-radius:50%;
-  background:var(--accent-dim);border:1px solid rgba(39,183,165,.2);
-  display:flex;align-items:center;justify-content:center;
-  color:var(--accent);margin:0 auto 1.5rem;
-}
-.coming-soon h2{font-family:var(--font-serif);font-size:1.75rem;font-weight:700;margin-bottom:1rem}
-.coming-soon p{color:var(--gray);font-size:.95rem;line-height:1.8;margin-bottom:1.5rem}
-
-/* FOOTER */
+.features{padding:4rem 0 3rem}
+.container{max-width:1200px;margin:0 auto;padding:0 3rem}
+.features-intro{display:flex;align-items:flex-start;justify-content:space-between;gap:4rem;margin-bottom:3rem}
+.features-intro h2{font-family:var(--font-serif);font-size:clamp(2rem,4vw,3.25rem);font-weight:700;line-height:1.05;letter-spacing:-.03em;flex-shrink:0;max-width:420px}
+.features-intro p{color:var(--gray);font-size:.95rem;line-height:1.8;max-width:420px;padding-top:.35rem}
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.feature-card{padding:2rem 1.5rem;background:var(--surface);border:1px solid var(--border);border-radius:10px;transition:background .25s,transform .3s,box-shadow .3s,border-color .3s}
+.feature-card:hover{background:var(--surface-2);transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,.4);border-color:var(--border-2)}
+.feature-card__icon{width:40px;height:40px;border-radius:8px;background:var(--accent-dim);border:1px solid rgba(39,183,165,.2);display:flex;align-items:center;justify-content:center;color:var(--accent);margin-bottom:1rem}
+.feature-card h3{font-family:var(--font-serif);font-size:1.1rem;font-weight:700;margin-bottom:.5rem}
+.feature-card p{font-size:.82rem;color:var(--gray);line-height:1.7}
+.process{padding:4rem 0 3rem;background:var(--bg-2);border-top:1px solid var(--border)}
+.process-steps{display:flex;gap:1.5rem;flex-wrap:wrap}
+.process-step{flex:1;min-width:200px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.5rem;transition:background .2s,border-color .2s}
+.process-step:hover{border-color:var(--accent)}
+.process-step__num{font-size:.7rem;color:var(--accent);letter-spacing:.15em;font-weight:600;display:block;margin-bottom:.5rem}
+.process-step h3{font-family:var(--font-serif);font-size:1rem;font-weight:700;margin-bottom:.5rem}
+.process-step p{font-size:.82rem;color:var(--gray);line-height:1.7}
+.pricing{padding:4rem 0 3rem}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.price-card{padding:2.5rem 2rem;background:var(--surface);border:1px solid var(--border);border-radius:10px;display:flex;flex-direction:column;gap:1.25rem;transition:background .2s,border-color .2s}
+.price-card:hover{border-color:var(--accent)}
+.price-card.featured{border-color:var(--accent);background:linear-gradient(180deg,var(--surface),rgba(39,183,165,.04));position:relative}
+.price-card.featured::before{content:'Doporučené';position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--accent);color:#070a0f;padding:.2rem .8rem;border-radius:4px;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.price-card h3{font-family:var(--font-serif);font-size:1.25rem;font-weight:700}
+.price-card .price{font-family:var(--font-serif);font-size:2rem;font-weight:700;color:var(--accent)}
+.price-card .price span{font-size:.85rem;color:var(--gray);font-weight:400}
+.price-card ul{display:flex;flex-direction:column;gap:.5rem}
+.price-card ul li{font-size:.82rem;color:var(--gray);padding-left:1.2rem;position:relative}
+.price-card ul li::before{content:'✓';position:absolute;left:0;color:var(--accent)}
+.cta-band{max-width:1200px;margin:3rem auto 0;padding:4rem 3rem;display:flex;align-items:center;justify-content:space-between;gap:3rem;border:1px solid var(--border);border-radius:12px;background:linear-gradient(135deg,rgba(39,183,165,.06) 0%,transparent 60%);backdrop-filter:blur(8px)}
+.cta-title{font-family:var(--font-serif);font-size:clamp(2rem,4vw,3.5rem);font-weight:700;line-height:1.0;letter-spacing:-.03em}
+.cta-title em{font-style:italic;color:var(--accent)}
+.cta-actions{display:flex;gap:1rem;flex-shrink:0;flex-wrap:wrap}
 footer{border-top:1px solid var(--border);padding:3rem 0 2rem}
 .footer-inner{max-width:1200px;margin:0 auto;padding:0 3rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
 .footer-brand{font-family:var(--font-sans);font-size:1.1rem;font-weight:700;color:var(--white);letter-spacing:-.02em}
@@ -116,15 +81,8 @@ footer{border-top:1px solid var(--border);padding:3rem 0 2rem}
 .footer-nav{display:flex;gap:2rem;flex-wrap:wrap}
 .footer-nav a{font-size:.875rem;color:var(--gray-2);transition:color .2s}.footer-nav a:hover{color:var(--white)}
 .footer-copy{font-size:.76rem;color:var(--gray-2)}
-
-@media(max-width:768px){
-  #nav{padding:1.2rem 1.5rem}
-  .nav-links{display:none}
-  .hero{padding:7rem 1.5rem 3rem}
-  .hero-headline{font-size:clamp(2.2rem,9vw,3.5rem)}
-  .coming-soon{padding:3rem 1.5rem 5rem}
-  .footer-inner{padding:0 1.5rem;flex-direction:column;gap:1rem;text-align:center}
-}
+@media(max-width:1024px){.features-grid{grid-template-columns:repeat(2,1fr)}.pricing-grid{grid-template-columns:repeat(2,1fr)}.process-steps{flex-direction:column}.cta-band{flex-direction:column;align-items:flex-start;padding:3rem}}
+@media(max-width:768px){#nav{padding:1.2rem 1.5rem}.nav-links{display:none}.hero{padding:7rem 1.5rem 3rem}.hero-headline{font-size:clamp(2.2rem,9vw,3.5rem)}.container{padding:0 1.5rem}.features-grid{grid-template-columns:1fr}.pricing-grid{grid-template-columns:1fr}.features-intro{flex-direction:column;gap:1.5rem}.cta-band{padding:3rem 1.5rem;margin:1.5rem 1.5rem}.footer-inner{padding:0 1.5rem;flex-direction:column;gap:1rem;text-align:center}}
 </style>
 </head>
 <body>
@@ -153,14 +111,141 @@ footer{border-top:1px solid var(--border);padding:3rem 0 2rem}
   </div>
 </section>
 
-<section class="coming-soon">
-  <div class="coming-soon-card">
-    <div class="coming-soon-icon">
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+<section class="features">
+  <div class="container">
+    <div class="features-intro reveal">
+      <h2>Co umíme automatizovat?</h2>
+      <p>Kompletní sales automation stack — od prvního kontaktu až po uzavřenou dohodu.</p>
     </div>
-    <h2>Detailní obsah připravujeme</h2>
-    <p>Tato stránka bude brzy obsahovat ceník, case studies, workflow diagramy a detailní popis našich automatizačních služeb. Mezitím nám napište — rádi vám vše vysvětlíme osobně.</p>
-    <a href="mailto:hello@sitespot.cz" class="btn-primary">Napsat e-mail</a>
+    <div class="features-grid">
+      <div class="feature-card reveal">
+        <div class="feature-card__icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </div>
+        <h3>Cold Email Outreach</h3>
+        <p>Personalizované emailové sekvence, které otevírají dveře. A/B testování, sledování otevření a kliků.</p>
+      </div>
+      <div class="feature-card reveal reveal-d1">
+        <div class="feature-card__icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <h3>LinkedIn Outreach</h3>
+        <p>Automatizované spojení, zprávy a follow-up na LinkedIn. Cílené na decision makery ve vašem oboru.</p>
+      </div>
+      <div class="feature-card reveal reveal-d2">
+        <div class="feature-card__icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        </div>
+        <h3>Sortování Odpovědí</h3>
+        <p>AI klasifikace odpovědí — zájem, odmítnutí, otázka, follow-up. Každá odpověď jde tam, kam má.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-card__icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <h3>CRM Integrace</h3>
+        <p>Automatický zápis do CRM, aktualizace stavů, vytváření úkolů. Váš pipeline běží sám.</p>
+      </div>
+      <div class="feature-card reveal reveal-d1">
+        <div class="feature-card__icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <h3>Follow-up Sekvence</h3>
+        <p>Chytré follow-upy, které reagují na chování. Nikdy nezapomenete na slib — ani vy, ani váš CRM.</p>
+      </div>
+      <div class="feature-card reveal reveal-d2">
+        <div class="feature-card__icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        </div>
+        <h3>Reportování</h3>
+        <p>Měsíční reporty — kolik odesláno, kolik odpovědí, konverze. Víte přesně, co funguje.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="process">
+  <div class="container">
+    <div class="features-intro reveal" style="margin-bottom:3rem">
+      <h2>Jak to funguje?</h2>
+      <p>Od nastavení až po automatizovaný sales — za 3 kroky.</p>
+    </div>
+    <div class="process-steps">
+      <div class="process-step reveal">
+        <span class="process-step__num">KROK 01</span>
+        <h3>Strategie</h3>
+        <p>Definujeme cílovou skupinu, zprávu, kanály a frekvenci. Nastavíme integrace na váš CRM.</p>
+      </div>
+      <div class="process-step reveal reveal-d1">
+        <span class="process-step__num">KROK 02</span>
+        <h3>Automatizace</h3>
+        <p>Nastavíme sekvence, šablony, scoring a pravidla. Vše otestujeme, než spustíme naplno.</p>
+      </div>
+      <div class="process-step reveal reveal-d2">
+        <span class="process-step__num">KROK 03</span>
+        <h3>Běh & Optimalizace</h3>
+        <p>System běží 24/7. Optimalizujeme na základě dat, A/B testujeme a škálujeme.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pricing">
+  <div class="container">
+    <div class="features-intro reveal" style="margin-bottom:3rem">
+      <h2>Ceník</h2>
+      <p>Předem známé ceny. Žádné skryté poplatky.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="price-card reveal">
+        <h3>Start</h3>
+        <div class="price">8 000 Kč<span> / měsíc</span></div>
+        <ul>
+          <li>1 kanál (email nebo LinkedIn)</li>
+          <li>500 kontaktů / měsíc</li>
+          <li>3 follow-up sekvence</li>
+          <li>Basic reporting</li>
+          <li>Email support</li>
+        </ul>
+        <a href="/#contact" class="btn-outline" style="width:100%;justify-content:center">Poptat</a>
+      </div>
+      <div class="price-card featured reveal reveal-d1">
+        <h3>Growth</h3>
+        <div class="price">18 000 Kč<span> / měsíc</span></div>
+        <ul>
+          <li>2 kanály (email + LinkedIn)</li>
+          <li>2 000 kontaktů / měsíc</li>
+          <li>AI sortování odpovědí</li>
+          <li>CRM integrace</li>
+          <li>A/B testování</li>
+          <li>Týdenní reporty</li>
+        </ul>
+        <a href="/#contact" class="btn-primary" style="width:100%;justify-content:center">Poptat</a>
+      </div>
+      <div class="price-card reveal reveal-d2">
+        <h3>Enterprise</h3>
+        <div class="price">Na dotaz</div>
+        <ul>
+          <li>Všechny kanály</li>
+          <li>Neomezené kontakty</li>
+          <li>Custom workflowy</li>
+          <li>API & webhooky</li>
+          <li>Dedicated account manager</li>
+          <li>Real-time dashboard</li>
+        </ul>
+        <a href="/#contact" class="btn-outline" style="width:100%;justify-content:center">Kontaktovat</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="container" style="padding-bottom:4rem">
+  <div class="cta-band reveal">
+    <h2 class="cta-title">Automatizujte<br/><em>svůj sales.</em></h2>
+    <div class="cta-actions">
+      <a href="/#contact" class="btn-primary">Začít spolupráci<svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
+      <a href="/" class="btn-outline">Zpět na hub</a>
+    </div>
   </div>
 </section>
 
@@ -173,6 +258,15 @@ footer{border-top:1px solid var(--border);padding:3rem 0 2rem}
     <div class="footer-copy">© 2025 SiteSpot</div>
   </div>
 </footer>
+
+<script>
+(function(){
+  const revObs=new IntersectionObserver(en=>{
+    en.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');revObs.unobserve(e.target);}});
+  },{threshold:.1,rootMargin:'0px 0px -50px 0px'});
+  document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));
+})();
+</script>
 
 </body>
 </html>
