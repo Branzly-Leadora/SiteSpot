@@ -20,9 +20,18 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Statické soubory — celý projekt servírujeme z rootu
+// Statické soubory — root projekt
 app.use(express.static(path.join(__dirname)));
+// Starý web přesunutý do /websites/
+app.use('/websites', express.static(path.join(__dirname, 'websites')));
 
+// ── Redirecty ze starých cest na /websites/ ─────────────────
+app.get('/index.html', (req, res) => res.redirect('/websites/'));
+app.get('/automatizace.html', (req, res) => res.redirect('/websites/automatizace.html'));
+app.get('/templates.html', (req, res) => res.redirect('/websites/templates.html'));
+
+// ── Internal Central (/a) ─────────────────────────────────
+app.get('/a', (req, res) => res.sendFile(path.join(__dirname, 'a.html')));
 // ── Nodemailer transporter ────────────────────────────────
 // Funguje s jakýmkoliv SMTP (Gmail, Outlook, Wedos, Forpsi…)
 // Pro Gmail: zapni "App Password" v Google účtu (ne heslo k účtu)
@@ -214,7 +223,8 @@ app.post('/api/demo', async (req, res) => {
   }
 });
 
-// ── Fallback — SPA ────────────────────────────────────────
+// ── Fallback — SPA na rootu ─────────────────────────────
+// Pro hlavní hub (nový index.html); /websites/ obsluhuje static middleware výše
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });

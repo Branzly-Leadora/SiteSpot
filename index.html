@@ -3,14 +3,12 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SiteSpot — Creative Digital Experiences</title>
-  <meta name="description" content="SiteSpot je digitální agentura, která tvoří weby a digitální zážitky pro firmy, které chtějí být vidět."/>
+  <title>SiteSpot — AI-Powered Growth Partner</title>
+  <meta name="description" content="SiteSpot spojuje AI automatizaci, generování leadů, vývoj webů a marketing. Vše pod jednou střechou."/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet"/>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <style>
-/* ── TOKENS ─────────────────────────────────────────────── */
 :root{
   --bg:#070a0f; --bg-2:#0c1018; --surface:#111620; --surface-2:#181e2c;
   --border:rgba(255,255,255,0.07); --border-2:rgba(255,255,255,0.14);
@@ -20,8 +18,6 @@
   --font-sans:'DM Sans',sans-serif; --font-serif:'Playfair Display',Georgia,serif;
   --ease:cubic-bezier(0.16,1,0.3,1);
 }
-
-/* ── RESET ──────────────────────────────────────────────── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;font-size:16px;-webkit-font-smoothing:antialiased}
 body{background:var(--bg);color:var(--white);font-family:var(--font-sans);line-height:1.65;overflow-x:hidden}
@@ -30,62 +26,14 @@ ul{list-style:none}
 img{max-width:100%;display:block}
 button{cursor:pointer;font-family:inherit}
 
-/* ── CUSTOM CURSOR ─────────────────────────────────────── */
-@media(pointer:fine){
-  *{cursor:none !important}
-}
-#cur-ring{
-  position:fixed;width:36px;height:36px;border-radius:50%;
-  border:1.5px solid rgba(39,183,165,0.7);
-  pointer-events:none;z-index:99999;
-  transform:translate(-50%,-50%);
-  transition:width .35s var(--ease),height .35s var(--ease),
-             border-color .35s,background .35s,opacity .3s;
-  mix-blend-mode:normal;
-}
-#cur-dot{
-  position:fixed;width:5px;height:5px;border-radius:50%;
-  background:var(--accent);pointer-events:none;z-index:99999;
-  transform:translate(-50%,-50%);
-  transition:transform .1s,opacity .3s;
-}
-#cur-ring.hover{
-  width:56px;height:56px;
-  background:rgba(39,183,165,0.08);
-  border-color:var(--accent-2);
-}
-#cur-ring.click{
-  width:26px;height:26px;
-  background:rgba(39,183,165,0.18);
-}
-@media(pointer:coarse){#cur-ring,#cur-dot{display:none}}
+@keyframes heroIn{from{opacity:0;transform:translateY(36px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes scrollLine{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
 
-/* ── THREE CANVAS ───────────────────────────────────────── */
-#bg-canvas{
-  position:fixed;inset:0;width:100%;height:100%;
-  z-index:0;pointer-events:none;
-}
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .75s var(--ease),transform .75s var(--ease)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-d1{transition-delay:.1s}.reveal-d2{transition-delay:.2s}.reveal-d3{transition-delay:.3s}
 
-/* ── CANVAS OVERLAY (darkens bg on non-hero sections) ───── */
-#bg-overlay{
-  position:fixed;inset:0;z-index:1;pointer-events:none;
-  background:var(--bg);
-  opacity:0;
-  transition:opacity 700ms cubic-bezier(0.76,0,0.24,1);
-}
-#bg-overlay.active{opacity:0.82;}
-
-/* ── Z LAYERS ───────────────────────────────────────────── */
-nav,section,footer,.cta-band,.container{position:relative;z-index:2}
-
-/* ── NOISE GRAIN ────────────────────────────────────────── */
-.bg-noise{
-  position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.022;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size:200px 200px;
-}
-
-/* ── BUTTONS ────────────────────────────────────────────── */
 .btn-primary{
   display:inline-flex;align-items:center;gap:.6rem;
   padding:.85rem 1.75rem;background:var(--accent);color:#070a0f;
@@ -96,8 +44,6 @@ nav,section,footer,.cta-band,.container{position:relative;z-index:2}
 .btn-primary:hover{background:var(--accent-2);transform:translateY(-2px);box-shadow:0 8px 32px var(--accent-glow)}
 .btn-primary svg{transition:transform .35s var(--ease)}
 .btn-primary:hover svg{transform:translate(3px,-3px)}
-@keyframes btnGlow{0%{box-shadow:0 8px 32px rgba(39,183,165,.35)}60%{box-shadow:0 8px 48px rgba(39,183,165,.55)}100%{box-shadow:0 8px 32px rgba(39,183,165,.35)}}
-.btn-primary:hover{animation:btnGlow .55s ease forwards}
 
 .btn-outline{
   display:inline-flex;align-items:center;gap:.6rem;
@@ -115,34 +61,9 @@ nav,section,footer,.cta-band,.container{position:relative;z-index:2}
 .btn-outline:hover::before{left:140%}
 .btn-outline:hover{color:var(--white);border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.04)}
 
-/* ── EYEBROW ────────────────────────────────────────────── */
 .eyebrow{
   display:inline-block;font-size:.68rem;font-weight:600;
   color:var(--accent-2);letter-spacing:.22em;text-transform:uppercase;margin-bottom:1rem;
-}
-
-/* ── ANIMATIONS ─────────────────────────────────────────── */
-@keyframes heroIn{from{opacity:0;transform:translateY(36px)}to{opacity:1;transform:translateY(0)}}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-@keyframes scrollLine{
-  0%{transform:scaleY(0);transform-origin:top}
-  50%{transform:scaleY(1);transform-origin:top}
-  51%{transform:scaleY(1);transform-origin:bottom}
-  100%{transform:scaleY(0);transform-origin:bottom}
-}
-@keyframes ssUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
-
-/* ── REVEAL ─────────────────────────────────────────────── */
-.reveal{opacity:0;transform:translateY(30px);transition:opacity .75s var(--ease),transform .75s var(--ease)}
-.reveal.visible{opacity:1;transform:translateY(0)}
-.reveal-d1{transition-delay:.1s}.reveal-d2{transition-delay:.2s}.reveal-d3{transition-delay:.3s}
-
-/* ── GLASSMORPHISM HELPER ───────────────────────────────── */
-.glass{
-  background:rgba(7,10,15,0.55);
-  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
-  border:1px solid var(--border);
-  border-radius:8px;
 }
 
 /* ══════════════════════════════════════════════════════════
@@ -177,169 +98,112 @@ nav,section,footer,.cta-band,.container{position:relative;z-index:2}
 .nav-cta:hover{border-color:var(--accent);background:var(--accent-dim)}
 
 /* ══════════════════════════════════════════════════════════
-   FULL-PAGE SCROLL ENGINE
-════════════════════════════════════════════════════════════ */
-html,body{overflow:hidden !important;height:100% !important}
-
-.ss-panel{
-  position:fixed !important;inset:0 !important;
-  width:100% !important;height:100% !important;
-  overflow-y:auto;overflow-x:hidden;
-  display:flex;flex-direction:column;justify-content:center;
-  will-change:transform,opacity;
-  transition:transform 900ms cubic-bezier(0.76,0,0.24,1),
-             opacity   900ms cubic-bezier(0.76,0,0.24,1);
-  z-index:10;
-}
-.ss-above{transform:translateY(-100%);opacity:0;pointer-events:none}
-.ss-active{transform:translateY(0);opacity:1;pointer-events:auto}
-.ss-below{transform:translateY(100%);opacity:0;pointer-events:none}
-
-/* Entrance stagger per section */
-.ss-entering .hero-headline{animation:heroIn .9s var(--ease) .15s both !important}
-.ss-entering .hero-sub{animation:heroIn .9s var(--ease) .32s both !important}
-.ss-entering .hero-actions{animation:heroIn .9s var(--ease) .48s both !important;opacity:0}
-.ss-entering .work-header{animation:ssUp .7s var(--ease) .1s both}
-.ss-entering .work-item:nth-child(1){animation:ssUp .6s var(--ease) .18s both}
-.ss-entering .work-item:nth-child(2){animation:ssUp .6s var(--ease) .26s both}
-.ss-entering .work-item:nth-child(3){animation:ssUp .6s var(--ease) .34s both}
-.ss-entering .work-item:nth-child(4){animation:ssUp .6s var(--ease) .42s both}
-.ss-entering .work-item:nth-child(5){animation:ssUp .6s var(--ease) .50s both}
-.ss-entering .services-intro{animation:ssUp .7s var(--ease) .1s both}
-.ss-entering .service-item:nth-child(1){animation:ssUp .6s var(--ease) .20s both}
-.ss-entering .service-item:nth-child(2){animation:ssUp .6s var(--ease) .30s both}
-.ss-entering .service-item:nth-child(3){animation:ssUp .6s var(--ease) .40s both}
-.ss-entering .service-item:nth-child(4){animation:ssUp .6s var(--ease) .50s both}
-.ss-entering .cta-band{animation:ssUp .7s var(--ease) .1s both}
-.ss-entering .contact-info{animation:ssUp .7s var(--ease) .22s both}
-.ss-entering .form{animation:ssUp .7s var(--ease) .36s both}
-.ss-entering .footer-statement{animation:ssUp .7s var(--ease) .1s both}
-.ss-entering .footer-stats{animation:ssUp .7s var(--ease) .25s both}
-.ss-entering .footer-bottom-row{animation:ssUp .6s var(--ease) .38s both}
-.ss-entering .footer-bottom{animation:ssUp .6s var(--ease) .48s both}
-.ss-panel .reveal{opacity:1 !important;transform:none !important;transition:none !important}
-
-/* Dot nav */
-#ss-dots{
-  position:fixed;right:1.75rem;top:50%;transform:translateY(-50%);
-  display:flex;flex-direction:column;gap:10px;z-index:9100;
-}
-.ss-dot{
-  position:relative;width:7px;height:7px;border-radius:50%;
-  background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.12);
-  cursor:none;
-  transition:background .3s,transform .3s,box-shadow .3s;
-}
-.ss-dot.active{background:var(--accent);border-color:var(--accent);box-shadow:0 0 10px rgba(39,183,165,.55);transform:scale(1.45)}
-.ss-dot:hover:not(.active){background:rgba(255,255,255,.4)}
-.ss-dot::before{
-  content:attr(data-label);position:absolute;right:18px;top:50%;
-  transform:translateY(-50%) translateX(4px);
-  font-size:.62rem;font-family:var(--font-sans);
-  color:var(--gray-2);letter-spacing:.1em;text-transform:uppercase;
-  white-space:nowrap;opacity:0;
-  transition:opacity .2s,transform .2s;pointer-events:none;
-}
-.ss-dot:hover::before,.ss-dot.active::before{opacity:1;transform:translateY(-50%) translateX(0);color:var(--accent-2)}
-#ss-bar{position:fixed;top:0;left:0;height:2px;z-index:9999;pointer-events:none;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width .6s var(--ease)}
-
-/* ══════════════════════════════════════════════════════════
    HERO
 ════════════════════════════════════════════════════════════ */
 .hero{
   min-height:100vh;display:flex;flex-direction:column;
   justify-content:center;padding:0 3rem;
+  position:relative;
 }
 .hero-inner{
-  display:grid;grid-template-columns:1fr 1fr;
-  align-items:center;gap:2rem;
+  display:grid;grid-template-columns:1.2fr 1fr;
+  align-items:center;gap:4rem;
   max-width:1200px;margin:0 auto;width:100%;
 }
 .hero-text{display:flex;flex-direction:column;align-items:flex-start;text-align:left;}
 .hero-headline{
   font-family:var(--font-serif);
-  font-size:clamp(3rem,6vw,6.5rem);
+  font-size:clamp(2.8rem,5.5vw,5.5rem);
   font-weight:700;line-height:.95;letter-spacing:-.03em;
-  margin-bottom:2rem;
+  margin-bottom:1.75rem;
   opacity:0;animation:heroIn 1s var(--ease) .1s forwards;
 }
 .hero-headline em{font-style:italic;color:var(--accent)}
 .hero-sub{
-  font-size:1.05rem;color:var(--gray);max-width:420px;line-height:1.8;
+  font-size:1.05rem;color:var(--gray);max-width:480px;line-height:1.8;
   opacity:0;animation:heroIn 1s var(--ease) .3s forwards;
 }
 .hero-actions{
   display:flex;gap:1rem;margin-top:2.5rem;justify-content:flex-start;
   opacity:0;animation:heroIn 1s var(--ease) .5s forwards;
 }
-.hero-3d{/* right column — 3D canvas occupies this space visually */
-  height:100%;min-height:500px;position:relative;
+.hero-visual{
+  position:relative;height:100%;min-height:420px;
+  display:flex;align-items:center;justify-content:center;
+}
+.hero-visual-inner{
+  width:100%;max-width:420px;
+  aspect-ratio:1;
+  border-radius:50%;
+  background:radial-gradient(circle at 30% 30%, rgba(39,183,165,0.15), transparent 60%);
+  border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+  animation:fadeIn 1.2s ease .6s both;
+}
+.hero-visual-inner::before{
+  content:'';position:absolute;inset:-20px;
+  border-radius:50%;
+  border:1px solid rgba(39,183,165,0.08);
+  animation:pulseRing 4s ease-in-out infinite;
+}
+@keyframes pulseRing{
+  0%,100%{transform:scale(1);opacity:1}
+  50%{transform:scale(1.05);opacity:.6}
+}
+.hero-visual-icon{
+  font-size:4rem;color:var(--accent);opacity:.9;
 }
 .hero-bottom{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);opacity:0;animation:fadeIn 1s var(--ease) 1s forwards}
 .scroll-hint{display:flex;align-items:center;gap:1rem;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gray-2)}
 .scroll-line{width:40px;height:1px;background:var(--gray-2);transform-origin:left;animation:scrollLine 2.2s ease-in-out 1.5s infinite}
 
 /* ══════════════════════════════════════════════════════════
-   WORK
-════════════════════════════════════════════════════════════ */
-.work{padding:5rem 0 3rem}
-.work-header{
-  max-width:1200px;margin:0 auto;padding:0 3rem;
-  display:flex;align-items:flex-start;justify-content:space-between;gap:3rem;
-  margin-bottom:2.5rem;
-}
-.work-header-left h2{font-family:var(--font-serif);font-size:clamp(2rem,4vw,3.25rem);font-weight:700;letter-spacing:-.03em;line-height:1.1;margin-top:.5rem}
-.work-header-right{max-width:360px;color:var(--gray);font-size:.95rem;line-height:1.75;padding-top:.25rem}
-.work-list{max-width:1200px;margin:0 auto;padding:0 3rem;border-top:1px solid var(--border)}
-.work-item{
-  display:grid;grid-template-columns:60px 1fr 200px 60px 32px;
-  align-items:center;gap:1rem;
-  padding:1.4rem 0;
-  border-bottom:1px solid var(--border);
-  color:var(--gray);transition:color .25s,background .25s;
-  position:relative;overflow:hidden;
-}
-.work-item::before{
-  content:'';position:absolute;left:-100%;top:0;bottom:0;width:60%;
-  background:linear-gradient(90deg,transparent,rgba(39,183,165,.06),transparent);
-  transition:left .55s var(--ease);pointer-events:none;
-}
-.work-item:hover::before{left:140%}
-.work-item:hover{color:var(--white)}
-.work-num{font-size:.72rem;color:var(--gray-2);letter-spacing:.1em;font-weight:500}
-.work-title{font-family:var(--font-serif);font-size:1.25rem;font-weight:700;color:var(--white);letter-spacing:-.01em}
-.work-type{font-size:.8rem;color:var(--gray-2);letter-spacing:.05em}
-.work-year{font-size:.8rem;color:var(--gray-2);text-align:right}
-.work-arrow{display:flex;justify-content:flex-end;color:var(--accent);opacity:0;transform:translateX(-6px);transition:opacity .25s,transform .25s}
-.work-item:hover .work-arrow{opacity:1;transform:translateX(0)}
-
-/* ══════════════════════════════════════════════════════════
    SERVICES
 ════════════════════════════════════════════════════════════ */
-.services{padding:4rem 0 2rem}
+.services{padding:6rem 0 4rem}
 .container{max-width:1200px;margin:0 auto;padding:0 3rem}
 .services-intro{
   display:flex;align-items:flex-start;justify-content:space-between;gap:4rem;
-  margin-bottom:3rem;
+  margin-bottom:4rem;
 }
 .services-intro h2{font-family:var(--font-serif);font-size:clamp(2rem,4vw,3.25rem);font-weight:700;line-height:1.05;letter-spacing:-.03em;flex-shrink:0;max-width:420px}
-.services-intro p{color:var(--gray);font-size:.95rem;line-height:1.8;max-width:400px;padding-top:.35rem}
-.services-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;border:1px solid var(--border);border-radius:8px;overflow:hidden}
-.service-item{
+.services-intro p{color:var(--gray);font-size:.95rem;line-height:1.8;max-width:420px;padding-top:.35rem}
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.service-card{
   padding:2.5rem 2rem;background:var(--surface);
-  border-right:1px solid var(--border);
-  transition:background .25s,transform .35s var(--ease),box-shadow .35s;
-  transform-style:preserve-3d;
+  border:1px solid var(--border);border-radius:10px;
+  transition:background .25s,transform .35s var(--ease),box-shadow .35s,border-color .3s;
+  display:flex;flex-direction:column;gap:1.25rem;
 }
-.service-item:last-child{border-right:none}
-.service-item:hover{background:var(--surface-2);box-shadow:0 24px 64px rgba(0,0,0,.5)}
-.service-num{font-size:.7rem;color:var(--accent);letter-spacing:.15em;font-weight:600;display:block;margin-bottom:1rem}
-.service-item h3{font-family:var(--font-serif);font-size:1.35rem;font-weight:700;line-height:1.15;margin-bottom:1.25rem}
-.service-item h3 em{font-style:italic;color:var(--accent)}
-.service-tags{display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.5rem}
-.service-tags li{font-size:.75rem;color:var(--gray-2);letter-spacing:.04em;padding-left:.75rem;position:relative}
-.service-tags li::before{content:'—';position:absolute;left:0;color:var(--accent);opacity:.6}
-.service-desc{font-size:.82rem;color:var(--gray);line-height:1.7}
+.service-card:hover{background:var(--surface-2);box-shadow:0 24px 64px rgba(0,0,0,.5);border-color:var(--border-2);transform:translateY(-4px)}
+.service-card__icon{
+  width:48px;height:48px;border-radius:10px;
+  background:var(--accent-dim);border:1px solid rgba(39,183,165,.2);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--accent);font-size:1.25rem;
+}
+.service-card h3{font-family:var(--font-serif);font-size:1.35rem;font-weight:700;line-height:1.15;margin-bottom:.25rem}
+.service-card h3 em{font-style:italic;color:var(--accent)}
+.service-card p{font-size:.85rem;color:var(--gray);line-height:1.7;flex:1}
+.service-card__link{
+  display:inline-flex;align-items:center;gap:.4rem;
+  font-size:.82rem;font-weight:600;color:var(--accent);margin-top:auto;
+  transition:gap .2s;
+}
+.service-card:hover .service-card__link{gap:.7rem}
+
+/* ══════════════════════════════════════════════════════════
+   ABOUT / WHY
+════════════════════════════════════════════════════════════ */
+.about{padding:6rem 0 4rem;background:var(--bg-2);border-top:1px solid var(--border)}
+.about-inner{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
+.about-left h2{font-family:var(--font-serif);font-size:clamp(2rem,4vw,3.25rem);font-weight:700;line-height:1.05;letter-spacing:-.03em;margin-bottom:1.5rem}
+.about-left p{color:var(--gray);font-size:.95rem;line-height:1.8;margin-bottom:1.5rem}
+.about-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem}
+.about-stat{display:flex;flex-direction:column;gap:.25rem}
+.about-stat-num{font-family:var(--font-serif);font-size:2rem;font-weight:700;color:var(--accent);line-height:1}
+.about-stat-label{font-size:.68rem;color:var(--gray-2);letter-spacing:.12em;text-transform:uppercase}
 
 /* ══════════════════════════════════════════════════════════
    CTA BAND
@@ -358,7 +222,7 @@ html,body{overflow:hidden !important;height:100% !important}
 /* ══════════════════════════════════════════════════════════
    CONTACT
 ════════════════════════════════════════════════════════════ */
-.contact{padding:4rem 0 2rem}
+.contact{padding:6rem 0 2rem}
 .contact-inner{display:grid;grid-template-columns:1fr 1.2fr;gap:5rem;align-items:flex-start}
 .contact-info h2{font-family:var(--font-serif);font-size:clamp(2rem,4vw,3.25rem);font-weight:700;line-height:1.05;letter-spacing:-.03em;margin:.75rem 0 1.5rem}
 .contact-info p{color:var(--gray);font-size:.95rem;line-height:1.8;margin-bottom:2rem}
@@ -380,27 +244,14 @@ html,body{overflow:hidden !important;height:100% !important}
 /* ══════════════════════════════════════════════════════════
    FOOTER
 ════════════════════════════════════════════════════════════ */
-footer{border-top:none;padding:0;max-width:unset;margin:0}
-.footer-inner{
-  max-width:1200px;margin:0 auto;padding:3rem 3rem 2rem;
-  display:flex;flex-direction:column;height:100%;justify-content:space-between;
-}
-.footer-main{flex:1;display:flex;flex-direction:column;justify-content:center}
-.footer-statement{display:flex;align-items:flex-end;justify-content:space-between;gap:2rem;padding-bottom:2.5rem}
-.footer-tagline{font-family:var(--font-serif);font-size:clamp(2.8rem,6vw,5.5rem);font-weight:700;line-height:.95;letter-spacing:-.03em;color:var(--white)}
+footer{border-top:1px solid var(--border);padding:4rem 0 2rem}
+.footer-inner{max-width:1200px;margin:0 auto;padding:0 3rem}
+.footer-top{display:flex;align-items:flex-start;justify-content:space-between;gap:2rem;margin-bottom:3rem;flex-wrap:wrap}
+.footer-tagline{font-family:var(--font-serif);font-size:clamp(2.2rem,5vw,4rem);font-weight:700;line-height:.95;letter-spacing:-.03em;color:var(--white);max-width:500px}
 .footer-tagline em{font-style:italic;color:var(--accent)}
 .footer-cta{flex-shrink:0}
-.footer-stats{display:flex;gap:3rem;padding:2rem 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:2.5rem}
-.footer-stat{display:flex;flex-direction:column;gap:.25rem}
-.footer-stat-num{font-family:var(--font-serif);font-size:2rem;font-weight:700;color:var(--accent);line-height:1}
-.footer-stat-label{font-size:.68rem;color:var(--gray-2);letter-spacing:.12em;text-transform:uppercase}
-.footer-bottom-row{display:flex;align-items:flex-start;justify-content:space-between;gap:2rem;margin-bottom:1.5rem;flex-wrap:wrap}
-.footer-brand{font-family:var(--font-sans);font-size:1.1rem;font-weight:700;color:var(--white);letter-spacing:-.02em;margin-bottom:.35rem}
-.footer-tag{font-size:.72rem;color:var(--gray-2);letter-spacing:.08em}
-.footer-nav{display:flex;gap:2.5rem;flex-wrap:wrap;align-items:center}
+.footer-nav{display:flex;gap:2.5rem;flex-wrap:wrap;margin-bottom:3rem}
 .footer-nav a{font-size:.875rem;color:var(--gray-2);transition:color .2s}.footer-nav a:hover{color:var(--white)}
-.footer-socials{display:flex;gap:1.5rem}
-.footer-socials a{font-size:.82rem;color:var(--gray-2);transition:color .2s}.footer-socials a:hover{color:var(--white)}
 .footer-bottom{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;padding-top:1.5rem;border-top:1px solid var(--border);font-size:.76rem;color:var(--gray-2)}
 
 /* ══════════════════════════════════════════════════════════
@@ -408,261 +259,48 @@ footer{border-top:none;padding:0;max-width:unset;margin:0}
 ════════════════════════════════════════════════════════════ */
 @media(max-width:1024px){
   .services-grid{grid-template-columns:repeat(2,1fr)}
-  .service-item{border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
-  .services-intro{flex-direction:column;gap:1.5rem}
+  .about-inner{grid-template-columns:1fr;gap:3rem}
   .cta-band{flex-direction:column;align-items:flex-start;padding:3rem}
   .contact-inner{grid-template-columns:1fr;gap:3rem}
+  .hero-inner{grid-template-columns:1fr;gap:3rem}
 }
 @media(max-width:768px){
-  html,body{overflow:auto !important;height:auto !important}
-  .ss-panel{position:static !important;overflow:visible !important;pointer-events:auto !important;opacity:1 !important;transform:none !important;height:auto !important}
-  #ss-dots,#ss-bar{display:none}
   #nav{padding:1.2rem 1.5rem}
   .nav-links{display:none}.nav-cta{display:none}
   .hero{padding:0 1.5rem;min-height:100svh}
-  .hero-inner{grid-template-columns:1fr;}
-  .hero-3d{display:none;}
-  .hero-text{align-items:flex-start;text-align:left;}
-  .hero-headline{font-size:clamp(2.8rem,12vw,5rem)}
-  .work-header{padding:0 1.5rem;flex-direction:column;gap:1.5rem}.work-list{padding:0 1.5rem}
-  .work-item{grid-template-columns:40px 1fr 32px;gap:.75rem}.work-type,.work-year{display:none}
+  .hero-inner{grid-template-columns:1fr;text-align:center}
+  .hero-text{align-items:center}
+  .hero-headline{font-size:clamp(2.5rem,11vw,4rem)}
+  .hero-visual{min-height:280px}
+  .hero-actions{justify-content:center}
   .container{padding:0 1.5rem}
   .services-grid{grid-template-columns:1fr}
-  .service-item{padding:2rem 1.5rem}
-  .cta-band{padding:3rem 1.5rem;margin:1.5rem 1.5rem;border-radius:8px}
+  .services-intro{flex-direction:column;gap:1.5rem}
+  .cta-band{padding:3rem 1.5rem;margin:1.5rem 1.5rem}
   .form{padding:1.75rem 1.5rem}.form-row{grid-template-columns:1fr}
-  footer{padding:3rem 1.5rem 2rem}
-  .footer-statement{flex-direction:column;align-items:flex-start}
-  .footer-stats{flex-wrap:wrap;gap:1.5rem}
-  .footer-bottom-row{flex-direction:column;gap:1.5rem}
+  .footer-inner{padding:0 1.5rem}
+  .footer-top{flex-direction:column;gap:1.5rem}
+  .footer-nav{gap:1.5rem}
+  .footer-bottom{flex-direction:column;gap:.5rem;text-align:center}
 }
 </style>
 </head>
 <body>
 
-<script>
-/* ── i18n: překlad CZ ↔ EN podle IP ─────────────────────────────
-   Volá /api/locale → pokud není CZ, přepíše texty na angličtinu.
-   Spouští se co nejdříve (inline, synchronně), ale protože fetch
-   je async, texty se přepíší těsně po DOMContentLoaded — vizuálně
-   nezpozorovatelné (stránka je ještě skrytá za animacemi).        */
-(function () {
-  const EN = {
-    /* <title> */
-    title: 'SiteSpot — Creative Digital Experiences',
-    /* <meta description> */
-    metaDesc: 'SiteSpot is a digital agency creating websites and digital experiences for businesses that want to be seen.',
-    /* NAV */
-    navTemplates: 'Templates',
-    navCta: 'Start a project',
-    /* HERO */
-    heroLine1: 'Websites that',
-    heroLine2: 'sell',
-    heroLine3: 'for you.',
-    heroSub: 'We design and develop digital experiences for businesses that want to be seen — and remembered.',
-    heroCta: 'Start a project',
-    heroWork: 'Our work',
-    /* WORK */
-    workEyebrow: 'Selected projects',
-    workH2: 'Our work',
-    workDesc: 'We are a team passionate about turning ideas into digital reality — project by project.',
-    workType3: 'Corporate · Local',
-    workType4: 'Presentation · Retail',
-    /* SERVICES */
-    servicesH2: 'We are an unusual\ndigital agency.',
-    servicesDesc: 'We focus on turning your vision into a compelling digital experience — with precision, taste, and measurable results.',
-    s1Tags: ['Logo & visual identity', 'Typography', 'Color palette', 'Brand guidelines'],
-    s1Desc: 'We build a consistent brand voice that reflects your company\'s values and goals at every touchpoint.',
-    s2Tags: ['Web development', 'App Development', 'UI/UX Design', 'Headless CMS'],
-    s2Desc: 'We work closely with you to understand your vision and deliver results that exceed expectations.',
-    s3Tags: ['SEO & Content', 'Social Media', 'Email Marketing', 'Analytics'],
-    s3Desc: 'Effective marketing goes beyond promotion — it\'s about understanding your customer and sustainable growth.',
-    s4Tags: ['Shopify & Custom', 'Conversion optimisation', 'Product photography', 'Payment gateways'],
-    s4Desc: 'Online stores designed for maximum conversion — from the first visit to repeat purchase.',
-    /* CTA BAND */
-    ctaTitle1: "Don't be afraid",
-    ctaTitle2: 'to reach out.',
-    ctaStartProject: 'Start a project',
-    ctaViewWork: 'View work',
-    /* CONTACT */
-    contactEyebrow: 'Contact',
-    contactH2: 'Your website is\none call\naway.',
-    contactDesc: 'Free 30-minute no-obligation consultation. We\'ll tell you honestly what makes sense for you — and what doesn\'t.',
-    contactLocation: 'Pilsen, Czech Republic',
-    labelName: 'Name',
-    labelEmail: 'E-mail',
-    labelCompany: 'Company',
-    labelMessage: 'Message',
-    placeholderName: 'John Smith',
-    placeholderEmail: 'john@company.com',
-    placeholderCompany: 'Company name (optional)',
-    placeholderMessage: 'Describe your project or situation...',
-    submitBtn: 'Send message',
-    /* FOOTER */
-    footerTagline1: 'Digital agency',
-    footerTagline2: 'from',
-    footerTaglineCity: 'Pilsen.',
-    footerCta: 'Get in touch',
-    statLabel1: 'Projects',
-    statLabel2: 'Years of experience',
-    statLabel3: 'Satisfaction',
-    statLabel4: 'Response',
-    footerTemplates: 'Templates',
-    footerCopy: '© 2025 SiteSpot. All rights reserved.',
-    footerMade: 'Designed & developed in Pilsen.',
-    /* JS strings (form feedback etc.) */
-    formSending: 'Sending…',
-    formSent: 'Message sent!',
-    formThanks: (name) => `We\'ll get back to you within 24 hours. Thanks, ${name}!`,
-    formNetErr: 'Network error. Please try again or write directly to hello@sitespot.cz',
-  };
-
-  function applyEN() {
-    const d = document;
-
-    // title + meta
-    d.title = EN.title;
-    const metaEl = d.querySelector('meta[name="description"]');
-    if (metaEl) metaEl.content = EN.metaDesc;
-    d.documentElement.lang = 'en';
-
-    // NAV
-    const tplNavLink = [...d.querySelectorAll('.nav-links a')].find(a => a.getAttribute('href') === 'templates.html');
-    if (tplNavLink) tplNavLink.textContent = EN.navTemplates;
-    const navCta = d.querySelector('.nav-cta');
-    if (navCta) navCta.textContent = EN.navCta;
-
-    // HERO
-    const hh = d.querySelector('.hero-headline');
-    if (hh) hh.innerHTML = `${EN.heroLine1}<br/><em>${EN.heroLine2}</em><br/>${EN.heroLine3}`;
-    const hs = d.querySelector('.hero-sub');
-    if (hs) hs.textContent = EN.heroSub;
-    const heroActions = d.querySelectorAll('.hero-actions a');
-    if (heroActions[0]) heroActions[0].innerHTML = `${EN.heroCta}<svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>`;
-    if (heroActions[1]) heroActions[1].textContent = EN.heroWork;
-
-    // WORK
-    const workEyebrow = d.querySelector('.work-header .eyebrow');
-    if (workEyebrow) workEyebrow.textContent = EN.workEyebrow;
-    const workH2 = d.querySelector('.work-header-left h2');
-    if (workH2) workH2.textContent = EN.workH2;
-    const workRight = d.querySelector('.work-header-right');
-    if (workRight) workRight.textContent = EN.workDesc;
-    // Translate CZ-specific work types
-    const workItems = d.querySelectorAll('.work-item');
-    if (workItems[2]) {
-      const t = workItems[2].querySelector('.work-type');
-      if (t) t.textContent = EN.workType3;
-    }
-    if (workItems[3]) {
-      const t = workItems[3].querySelector('.work-type');
-      if (t) t.textContent = EN.workType4;
-    }
-
-    // SERVICES
-    const svcH2 = d.querySelector('.services-intro h2');
-    if (svcH2) svcH2.innerHTML = EN.servicesH2.replace('\n', '<br/>');
-    const svcDesc = d.querySelector('.services-intro p');
-    if (svcDesc) svcDesc.textContent = EN.servicesDesc;
-
-    const svcItems = d.querySelectorAll('.service-item');
-    [[EN.s1Tags, EN.s1Desc], [EN.s2Tags, EN.s2Desc], [EN.s3Tags, EN.s3Desc], [EN.s4Tags, EN.s4Desc]]
-      .forEach(([tags, desc], i) => {
-        const item = svcItems[i];
-        if (!item) return;
-        const lis = item.querySelectorAll('.service-tags li');
-        tags.forEach((t, j) => { if (lis[j]) lis[j].textContent = t; });
-        const p = item.querySelector('.service-desc');
-        if (p) p.textContent = desc;
-      });
-
-    // CTA BAND
-    const ctaTitle = d.querySelector('.cta-title');
-    if (ctaTitle) ctaTitle.innerHTML = `${EN.ctaTitle1}<br/><em>${EN.ctaTitle2}</em>`;
-    const ctaActions = d.querySelectorAll('.cta-actions a');
-    if (ctaActions[0]) ctaActions[0].innerHTML = `${EN.ctaStartProject}<svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>`;
-    if (ctaActions[1]) ctaActions[1].textContent = EN.ctaViewWork;
-
-    // CONTACT
-    const cEyebrow = d.querySelector('.contact-info .eyebrow');
-    if (cEyebrow) cEyebrow.textContent = EN.contactEyebrow;
-    const cH2 = d.querySelector('.contact-info h2');
-    if (cH2) cH2.innerHTML = EN.contactH2.replace(/\n/g, '<br/>');
-    const cDesc = d.querySelector('.contact-info > p');
-    if (cDesc) cDesc.textContent = EN.contactDesc;
-    const cMeta = d.querySelectorAll('.contact-meta span');
-    if (cMeta[1]) cMeta[1].textContent = EN.contactLocation;
-
-    // FORM labels & placeholders
-    const fName = d.getElementById('name');
-    const fEmail = d.getElementById('email');
-    const fCompany = d.getElementById('company');
-    const fMessage = d.getElementById('message');
-    if (fName) { fName.placeholder = EN.placeholderName; }
-    if (fEmail) { fEmail.placeholder = EN.placeholderEmail; }
-    if (fCompany) { fCompany.placeholder = EN.placeholderCompany; }
-    if (fMessage) { fMessage.placeholder = EN.placeholderMessage; }
-    const fLabels = d.querySelectorAll('.form-field label');
-    const labelMap = { name: EN.labelName, email: EN.labelEmail, company: EN.labelCompany, message: EN.labelMessage };
-    fLabels.forEach(lbl => {
-      const forAttr = lbl.getAttribute('for');
-      if (labelMap[forAttr]) lbl.textContent = labelMap[forAttr];
-    });
-    const submitBtn = d.querySelector('#contact-form [type="submit"]');
-    if (submitBtn) submitBtn.innerHTML = `${EN.submitBtn}<svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>`;
-
-    // FOOTER
-    const ftag = d.querySelector('.footer-tagline');
-    if (ftag) ftag.innerHTML = `${EN.footerTagline1}<br/>${EN.footerTagline2} <em>${EN.footerTaglineCity}</em>`;
-    const fCta = d.querySelector('.footer-cta');
-    if (fCta) fCta.innerHTML = `${EN.footerCta}<svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>`;
-    const statLabels = d.querySelectorAll('.footer-stat-label');
-    [EN.statLabel1, EN.statLabel2, EN.statLabel3, EN.statLabel4].forEach((t, i) => {
-      if (statLabels[i]) statLabels[i].textContent = t;
-    });
-    const footerNavLinks = d.querySelectorAll('.footer-nav a');
-    footerNavLinks.forEach(a => { if (a.getAttribute('href') === 'templates.html') a.textContent = EN.footerTemplates; });
-    const footerBottom = d.querySelectorAll('.footer-bottom span');
-    if (footerBottom[0]) footerBottom[0].textContent = EN.footerCopy;
-    if (footerBottom[1]) footerBottom[1].textContent = EN.footerMade;
-
-    // Expose EN strings for form JS (form submit replaces button text)
-    window._i18n = EN;
-  }
-
-  // Fetch locale and apply EN if not CZ
-  fetch('/api/locale')
-    .then(r => r.json())
-    .then(data => {
-      if (data.country !== 'CZ') {
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', applyEN);
-        } else {
-          applyEN();
-        }
-      }
-    })
-    .catch(() => { /* chyba → ponechat češtinu */ });
-})();
-</script>
-
-<canvas id="bg-canvas"></canvas>
-<div id="bg-overlay" aria-hidden="true"></div>
-<div class="bg-noise" aria-hidden="true"></div>
-<div id="cur-ring"></div>
-<div id="cur-dot"></div>
-
 <!-- NAV -->
 <nav id="nav">
-  <a href="#" class="nav-logo">Site<span>Spot</span></a>
+  <a href="/" class="nav-logo">Site<span>Spot</span></a>
   <ul class="nav-links">
-    <li><a href="#work">Work</a></li>
-    <li><a href="#services">Services</a></li>
-    <li><a href="templates.html">Weby</a></li>
-    <li><a href="automatizace.html">Automatizace</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="#services">Služby</a></li>
+    <li><a href="/websites/">Weby</a></li>
+    <li><a href="leads.html">Leady</a></li>
+    <li><a href="automation.html">Automatizace</a></li>
+    <li><a href="marketing.html">Marketing</a></li>
+    <li><a href="brand.html">Brand</a></li>
+    <li><a href="content.html">Content</a></li>
+    <li><a href="#contact">Kontakt</a></li>
   </ul>
-  <a href="#contact" class="nav-cta">Start a project</a>
+  <a href="#contact" class="nav-cta">Začít spolupráci</a>
 </nav>
 
 <!-- HERO -->
@@ -670,44 +308,31 @@ footer{border-top:none;padding:0;max-width:unset;margin:0}
   <div class="hero-inner">
     <div class="hero-text">
       <h1 class="hero-headline">
-        Weby, které<br/>
-        <em>prodávají</em><br/>
-        za vás.
+        Automatizace,<br/>
+        která <em>roste</em><br/>
+        s vámi.
       </h1>
       <p class="hero-sub">
-        Navrhujeme a vyvíjíme digitální zážitky pro firmy,
-        které chtějí být vidět — a pamatovány.
+        SiteSpot je váš AI-powered growth partner. Spojujeme automatizaci,
+        generování leadů, vývoj webů a marketing — vše pod jednou střechou.
+        Méně ruční práce. Více výsledků.
       </p>
       <div class="hero-actions">
         <a href="#contact" class="btn-primary">
-          Začít projekt
+          Začít spolupráci
           <svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </a>
-        <a href="#work" class="btn-outline">Naše práce</a>
+        <a href="#services" class="btn-outline">Prozkoumat služby</a>
       </div>
     </div>
-    <div class="hero-3d" aria-hidden="true"></div>
+    <div class="hero-visual">
+      <div class="hero-visual-inner">
+        <svg class="hero-visual-icon" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M12 2a10 10 0 0 1 10 10"/><path d="M21 12h-3"/><path d="M18 15l-3-3"/><path d="M18 9l-3 3"/></svg>
+      </div>
+    </div>
   </div>
   <div class="hero-bottom">
     <div class="scroll-hint"><div class="scroll-line"></div>Scroll</div>
-  </div>
-</section>
-
-<!-- WORK -->
-<section class="work" id="work">
-  <div class="work-header reveal">
-    <div class="work-header-left">
-      <span class="eyebrow">Vybrané projekty</span>
-      <h2>Naše práce</h2>
-    </div>
-    <p class="work-header-right">Jsme tým, který je vášnivý v přeměně nápadů na digitální realitu — projekt po projektu.</p>
-  </div>
-  <div class="work-list">
-    <a href="#" class="work-item reveal"><span class="work-num">01</span><span class="work-title">LuxWear Store</span><span class="work-type">E-commerce · Móda</span><span class="work-year">2024</span><span class="work-arrow"><svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></a>
-    <a href="#" class="work-item reveal reveal-d1"><span class="work-num">02</span><span class="work-title">FlowDesk SaaS</span><span class="work-type">Web App · B2B</span><span class="work-year">2024</span><span class="work-arrow"><svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></a>
-    <a href="#" class="work-item reveal reveal-d2"><span class="work-num">03</span><span class="work-title">ProServis CZ</span><span class="work-type">Firemní web · Lokální</span><span class="work-year">2024</span><span class="work-arrow"><svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></a>
-    <a href="#" class="work-item reveal reveal-d3"><span class="work-num">04</span><span class="work-title">Optik Dvořák</span><span class="work-type">Prezentační web · Retail</span><span class="work-year">2023</span><span class="work-arrow"><svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></a>
-    <a href="#" class="work-item reveal"><span class="work-num">05</span><span class="work-title">Café Regner</span><span class="work-type">Hospitality · Brand</span><span class="work-year">2023</span><span class="work-arrow"><svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></a>
   </div>
 </section>
 
@@ -715,14 +340,87 @@ footer{border-top:none;padding:0;max-width:unset;margin:0}
 <section class="services" id="services">
   <div class="container">
     <div class="services-intro reveal">
-      <h2>Jsme neobvyklá<br/>digitální agentura.</h2>
-      <p>Soustředíme se na přeměnu vaší vize v poutivý digitální zážitek — s přesností, vkusem a výsledky, které se měří.</p>
+      <h2>Co umíme<br/>zařídit?</h2>
+      <p>Od prvního leadu až po opakovaný nákup. Kompletní digitální growth stack pod jednou střechou — bez zbytečných agentur.</p>
     </div>
     <div class="services-grid">
-      <div class="service-item reveal"><span class="service-num">01</span><h3>Brand<br/><em>Identities</em></h3><ul class="service-tags"><li>Logo & vizuální identita</li><li>Typografie</li><li>Barevná paleta</li><li>Brand guidelines</li></ul><p class="service-desc">Vytvoříme konzistentní brand voice, který odráží hodnoty a cíle vaší firmy na každém touchpointu.</p></div>
-      <div class="service-item reveal reveal-d1"><span class="service-num">02</span><h3>Smart<br/><em>Development</em></h3><ul class="service-tags"><li>Vývoj webu</li><li>App Development</li><li>UI/UX Design</li><li>Headless CMS</li></ul><p class="service-desc">Pracujeme úzce s vámi, abychom pochopili vaši vizi a doručili výsledek, který předčí očekávání.</p></div>
-      <div class="service-item reveal reveal-d2"><span class="service-num">03</span><h3>Marketing<br/><em>Campaigns</em></h3><ul class="service-tags"><li>SEO & Content</li><li>Social Media</li><li>Email Marketing</li><li>Analytics</li></ul><p class="service-desc">Efektivní marketing přesahuje propagaci — jde o pochopení zákazníka a udržitelný růst.</p></div>
-      <div class="service-item reveal reveal-d3"><span class="service-num">04</span><h3>E-commerce<br/><em>Solutions</em></h3><ul class="service-tags"><li>Shopify & Custom</li><li>Konverzní optimalizace</li><li>Produktová fotografie</li><li>Platební brány</li></ul><p class="service-desc">Online obchody navržené pro maximální konverzi — od první návštěvy po opakovaný nákup.</p></div>
+      <a href="/websites/" class="service-card reveal">
+        <div class="service-card__icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <h3>Weby &amp;<br/><em>E-shopy</em></h3>
+        <p>Weby, které prodávají. Od prezentačních stránek přes Shopify e-shopy až po headless CMS řešení.</p>
+        <span class="service-card__link">Zobrazit weby <svg width="12" height="12" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+      </a>
+      <a href="leads.html" class="service-card reveal reveal-d1">
+        <div class="service-card__icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h3>Lead Gen &amp;<br/><em>Enrichment</em></h3>
+        <p>Automatizované sběry leadů, ověření kontaktů, scoring a napojení přímo do vašeho CRM.</p>
+        <span class="service-card__link">Více o leadech <svg width="12" height="12" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+      </a>
+      <a href="automation.html" class="service-card reveal reveal-d2">
+        <div class="service-card__icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <h3>Outreach &amp;<br/><em>Automatizace</em></h3>
+        <p>Automatický outreach, sortování odpovědí, follow-up sekvence a napojení na váš sales pipeline.</p>
+        <span class="service-card__link">Více o automatizaci <svg width="12" height="12" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+      </a>
+      <a href="marketing.html" class="service-card reveal">
+        <div class="service-card__icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        </div>
+        <h3>Marketingové<br/><em>Služby</em></h3>
+        <p>Placená reklama, SEO, content marketing, email kampaně a analytika — vše napojené na výsledky.</p>
+        <span class="service-card__link">Více o marketingu <svg width="12" height="12" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+      </a>
+      <a href="brand.html" class="service-card reveal reveal-d1">
+        <div class="service-card__icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <h3>Brand Identity &amp;<br/><em>Design</em></h3>
+        <p>Logo, vizuální identita, brand guidelines, UI/UX design — konzistentní značka napříč všemi kanály.</p>
+        <span class="service-card__link">Více o brandu <svg width="12" height="12" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+      </a>
+      <a href="content.html" class="service-card reveal reveal-d2">
+        <div class="service-card__icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+        </div>
+        <h3>Video &amp;<br/><em>Content</em></h3>
+        <p>Reklamní videa, produktové fotografie, sociální content, copywriting — vše co potřebujete k růstu.</p>
+        <span class="service-card__link">Více o contentu <svg width="12" height="12" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT / WHY -->
+<section class="about" id="about">
+  <div class="container">
+    <div class="about-inner reveal">
+      <div class="about-left">
+        <span class="eyebrow">Proč SiteSpot?</span>
+        <h2>Od nápadu<br/>k <em>výsledku</em> —<br/>bez mezer.</h2>
+        <p>Většina agentur dělá buď weby, nebo marketing, nebo automatizaci. My děláme všechno — a propojujeme to dohromady. Váš web sbírá leady, leady se automaticky zpracovávají, a marketing přivádí další. Celý ekosystém, nebo izolované nástroje.</p>
+        <p>Začali jsme jako webová agentura. Dneska běží na našich systémech desítky firem — od lokálních živnostníků po SaaS startupy.</p>
+      </div>
+      <div class="about-right">
+        <div class="about-stats">
+          <div class="about-stat"><span class="about-stat-num">50+</span><span class="about-stat-label">Projektů</span></div>
+          <div class="about-stat"><span class="about-stat-num">5</span><span class="about-stat-label">Let zkušeností</span></div>
+          <div class="about-stat"><span class="about-stat-num">100%</span><span class="about-stat-label">Spokojenost</span></div>
+          <div class="about-stat"><span class="about-stat-num">24h</span><span class="about-stat-label">Odpověď</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="cta-band reveal" style="margin-top:4rem">
+      <h2 class="cta-title">Nebojte se<br/><em>ozvat.</em></h2>
+      <div class="cta-actions">
+        <a href="#contact" class="btn-primary">Začít spolupráci<svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
+        <a href="/websites/" class="btn-outline">Starý web</a>
+      </div>
     </div>
   </div>
 </section>
@@ -730,17 +428,10 @@ footer{border-top:none;padding:0;max-width:unset;margin:0}
 <!-- CONTACT -->
 <section class="contact" id="contact">
   <div class="container">
-    <div class="cta-band reveal" style="margin:0 0 3rem;max-width:unset">
-      <h2 class="cta-title">Nebojte se<br/><em>ozvat.</em></h2>
-      <div class="cta-actions">
-        <a href="#contact" class="btn-primary">Začít projekt<svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
-        <a href="#work" class="btn-outline">Zobrazit práce</a>
-      </div>
-    </div>
     <div class="contact-inner">
       <div class="contact-info reveal">
         <span class="eyebrow">Kontakt</span>
-        <h2>Váš web je<br/>jeden hovor<br/>daleko.</h2>
+        <h2>Váš growth<br/>je jeden hovor<br/>daleko.</h2>
         <p>Bezplatná 30minutová konzultace bez závazků. Řekneme vám upřímně, co pro vás dává smysl — a co ne.</p>
         <div class="contact-meta">
           <span>Email: <a href="mailto:hello@sitespot.cz">hello@sitespot.cz</a></span>
@@ -763,311 +454,99 @@ footer{border-top:none;padding:0;max-width:unset;margin:0}
 <!-- FOOTER -->
 <footer>
   <div class="footer-inner">
-    <div class="footer-main">
-      <div class="footer-statement">
-        <p class="footer-tagline">Digitální agentura<br/>z <em>Plzně.</em></p>
-        <a href="#contact" class="btn-primary footer-cta">Ozvěte se nám<svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
-      </div>
-      <div class="footer-stats">
-        <div class="footer-stat"><span class="footer-stat-num">50+</span><span class="footer-stat-label">Projektů</span></div>
-        <div class="footer-stat"><span class="footer-stat-num">5</span><span class="footer-stat-label">Let zkušeností</span></div>
-        <div class="footer-stat"><span class="footer-stat-num">100%</span><span class="footer-stat-label">Spokojenost</span></div>
-        <div class="footer-stat"><span class="footer-stat-num">24h</span><span class="footer-stat-label">Odpověď</span></div>
-      </div>
+    <div class="footer-top">
+      <p class="footer-tagline">SiteSpot<br/>AI Growth <em>Partner.</em></p>
+      <a href="#contact" class="btn-primary footer-cta">Začít spolupráci<svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
     </div>
-    <div class="footer-bottom-row">
-      <div><div class="footer-brand">SiteSpot</div><div class="footer-tag">Award-Winning Digital Agency</div></div>
-      <nav class="footer-nav" aria-label="Footer navigation">
-        <a href="#work">Work</a><a href="#services">Services</a><a href="templates.html">Weby</a><a href="automatizace.html">Automatizace</a><a href="#contact">Contact</a>
-      </nav>
-      <div class="footer-socials"><a href="#">LinkedIn</a><a href="#">Instagram</a><a href="#">Behance</a></div>
-    </div>
+    <nav class="footer-nav" aria-label="Footer navigation">
+      <a href="/websites/">Weby</a>
+      <a href="leads.html">Leady</a>
+      <a href="automation.html">Automatizace</a>
+      <a href="marketing.html">Marketing</a>
+      <a href="brand.html">Brand</a>
+      <a href="content.html">Content</a>
+      <a href="#contact">Kontakt</a>
+    </nav>
     <div class="footer-bottom">
       <span>© 2025 SiteSpot. Všechna práva vyhrazena.</span>
-      <span>Navrženo & vyvinuto v Plzni.</span>
+      <span>Navrženo &amp; vyvinuto v Plzni.</span>
     </div>
   </div>
 </footer>
 
-<script src="js/three-scene.js"></script>
 <script>
 (function(){
 'use strict';
 
-/* Three.js scene is loaded via three-scene.js */
+/* Nav scrolled */
+const nav=document.getElementById('nav');
+if(nav){
+  window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>40),{passive:true});
+}
 
-/* ══════════════════════════════════════════════════════════
-   CUSTOM CURSOR
-════════════════════════════════════════════════════════════ */
-(function initCursor(){
-  const ring=document.getElementById('cur-ring');
-  const dot=document.getElementById('cur-dot');
-  if(!ring || window.matchMedia('(pointer:coarse)').matches) return;
+/* Reveal on scroll */
+const revObs=new IntersectionObserver(en=>{
+  en.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');revObs.unobserve(e.target);}});
+},{threshold:.1,rootMargin:'0px 0px -50px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));
 
-  let rx=0,ry=0,dx=0,dy=0;
-  document.addEventListener('mousemove',e=>{dx=e.clientX;dy=e.clientY},{passive:true});
-  document.addEventListener('mouseleave',()=>{ring.style.opacity='0';dot.style.opacity='0'});
-  document.addEventListener('mouseenter',()=>{ring.style.opacity='1';dot.style.opacity='1'});
-  document.addEventListener('mousedown',()=>ring.classList.add('click'));
-  document.addEventListener('mouseup',()=>ring.classList.remove('click'));
-
-  const hoverEls='a,button,.work-item,.service-item,.tpl-card,.ss-dot,.tpl-filter';
-  document.addEventListener('mouseover',e=>{
-    if(e.target.closest(hoverEls)) ring.classList.add('hover');
-  });
-  document.addEventListener('mouseout',e=>{
-    if(e.target.closest(hoverEls)) ring.classList.remove('hover');
-  });
-
-  (function loop(){
-    rx+=(dx-rx)*.14; ry+=(dy-ry)*.14;
-    ring.style.left=rx+'px'; ring.style.top=ry+'px';
-    dot.style.left=dx+'px'; dot.style.top=dy+'px';
-    requestAnimationFrame(loop);
-  })();
-})();
-
-/* ══════════════════════════════════════════════════════════
-   FULL-PAGE SCROLL ENGINE
-════════════════════════════════════════════════════════════ */
-(function initScroll(){
-  if(window.innerWidth<=768) return;
-
-  const SECTION_IDS=['hero','work','services','contact'];
-  const LABELS=['Hero','Work','Services','Contact','Footer'];
-  const ANIM=900, THRESH=200;
-
-  const sourceEls=[
-    ...SECTION_IDS.map(id=>document.getElementById(id)),
-    document.querySelector('footer')
-  ].filter(Boolean);
-
-  /* wrap each in a panel */
-  const panels=sourceEls.map(el=>{
-    const p=document.createElement('div');
-    p.className='ss-panel';
-    el.parentNode.insertBefore(p,el);
-    p.appendChild(el);
-    return p;
-  });
-  window._ssPanels=panels.length;
-
-  panels.forEach((p,i)=>p.classList.add(i===0?'ss-active':'ss-below'));
-  panels[0].classList.add('ss-entering');
-
-  /* dot nav */
-  const dotsW=document.createElement('div'); dotsW.id='ss-dots';
-  panels.forEach((_,i)=>{
-    const d=document.createElement('button');
-    d.className='ss-dot'+(i===0?' active':'');
-    d.dataset.label=LABELS[i]||'';
-    d.setAttribute('aria-label',LABELS[i]||'Section');
-    d.addEventListener('click',()=>goTo(i));
-    dotsW.appendChild(d);
-  });
-  document.body.appendChild(dotsW);
-  const dots=[...dotsW.querySelectorAll('.ss-dot')];
-
-  /* progress bar */
-  const bar=document.createElement('div'); bar.id='ss-bar'; bar.style.width='0%';
-  document.body.appendChild(bar);
-
-  let cur=0, anim=false;
-  window._ssCurrent=0;
-
-  const bgOverlay=document.getElementById('bg-overlay');
-  function updateOverlay(idx){
-    if(bgOverlay) bgOverlay.classList.toggle('active', idx>0);
-  }
-  updateOverlay(0);
-
-  function goTo(next){
-    if(next===cur||anim||next<0||next>=panels.length) return;
-    anim=true;
-    const down=next>cur;
-    panels[cur].classList.remove('ss-entering','ss-active');
-    panels[cur].classList.add(down?'ss-above':'ss-below');
-
-    panels[next].style.transition='none';
-    panels[next].classList.remove('ss-above','ss-below','ss-active');
-    panels[next].classList.add(down?'ss-below':'ss-above');
-    void panels[next].offsetHeight;
-    panels[next].style.transition='';
-
-    requestAnimationFrame(()=>{
-      panels[next].classList.remove('ss-above','ss-below');
-      panels[next].classList.add('ss-active','ss-entering');
-    });
-
-    panels.forEach((p,i)=>{
-      if(i!==cur&&i!==next){
-        p.classList.remove('ss-active','ss-above','ss-below','ss-entering');
-        p.classList.add(i<next?'ss-above':'ss-below');
-      }
-    });
-
-    cur=next;
-    window._ssCurrent=cur;
-    updateOverlay(cur);
-    dots.forEach((d,i)=>d.classList.toggle('active',i===next));
-    bar.style.width=(next/(panels.length-1)*100)+'%';
-    setTimeout(()=>{anim=false},ANIM+60);
-  }
-
-  /* wheel */
-  let acc=0, lastW=0;
-  window.addEventListener('wheel',e=>{
+/* Contact form */
+const form=document.getElementById('contact-form');
+if(form){
+  form.addEventListener('submit',async e=>{
     e.preventDefault();
-    const now=Date.now();
-    if(now-lastW>400) acc=0;
-    lastW=now; acc+=e.deltaY;
-    if(Math.abs(acc)>=THRESH){goTo(cur+(acc>0?1:-1));acc=0;}
-  },{passive:false});
+    const name=document.getElementById('name')?.value.trim();
+    const email=document.getElementById('email')?.value.trim();
+    if(!name||!email) return;
 
-  /* touch */
-  let ty=null;
-  window.addEventListener('touchstart',e=>{ty=e.touches[0].clientY},{passive:true});
-  window.addEventListener('touchend',e=>{
-    if(ty===null) return;
-    const dy=ty-e.changedTouches[0].clientY;
-    if(Math.abs(dy)>60) goTo(cur+(dy>0?1:-1));
-    ty=null;
-  },{passive:true});
+    const btn=form.querySelector('[type=submit]');
+    const origHTML=btn.innerHTML;
+    btn.disabled=true;
+    btn.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" opacity=".25"/><path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur=".8s" repeatCount="indefinite"/></path></svg> Odesílám…';
 
-  /* keyboard */
-  window.addEventListener('keydown',e=>{
-    if(e.key==='ArrowDown'||e.key==='PageDown'){e.preventDefault();goTo(cur+1)}
-    if(e.key==='ArrowUp'||e.key==='PageUp'){e.preventDefault();goTo(cur-1)}
-  });
+    const data={name,email,company:document.getElementById('company')?.value.trim()||'',message:document.getElementById('message')?.value.trim()||''};
 
-  /* anchor links — event delegation aby fungovaly i dynamicky přidané */
-  document.addEventListener('click',e=>{
-    const a=e.target.closest('a[href^="#"]');
-    if(!a) return;
-    const id=a.getAttribute('href').slice(1);
-    if(!id) return;
-    const idx=sourceEls.findIndex(s=>s.id===id);
-    if(idx!==-1){e.preventDefault();goTo(idx);}
-  });
-})();
-
-/* ══════════════════════════════════════════════════════════
-   NAV + REVEAL + FORM + SERVICE TILT + MAGNETIC
-════════════════════════════════════════════════════════════ */
-(function initUI(){
-  /* nav scrolled */
-  const nav=document.getElementById('nav');
-  if(nav){
-    const sub=document.querySelector('.ss-panel');
-    if(!sub){
-      window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>40),{passive:true});
-    } else {
-      nav.classList.add('scrolled');
-    }
-  }
-
-  /* reveal (for mobile fallback) */
-  const revObs=new IntersectionObserver(en=>{
-    en.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');revObs.unobserve(e.target);}});
-  },{threshold:.1,rootMargin:'0px 0px -50px 0px'});
-  document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));
-
-  /* instantly reveal inside active panel */
-  document.querySelectorAll('.ss-panel.ss-active .reveal').forEach(el=>el.classList.add('visible'));
-
-  /* contact form — POST /api/contact */
-  const form=document.getElementById('contact-form');
-  if(form){
-    form.addEventListener('submit',async e=>{
-      e.preventDefault();
-      const name=document.getElementById('name')?.value.trim();
-      const email=document.getElementById('email')?.value.trim();
-      if(!name||!email) return;
-
-      const btn=form.querySelector('[type=submit]');
-      const origHTML=btn.innerHTML;
-      btn.disabled=true;
-      btn.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" opacity=".25"/><path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur=".8s" repeatCount="indefinite"/></path></svg> '+(window._i18n?window._i18n.formSending:'Odesílám…');
-
-      const data={
-        name,
-        email,
-        company:document.getElementById('company')?.value.trim()||'',
-        message:document.getElementById('message')?.value.trim()||'',
-      };
-
-      try{
-        const res=await fetch('/api/contact',{
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body:JSON.stringify(data),
-        });
-        const json=await res.json();
-
-        if(json.ok){
-          form.innerHTML=`<div style="padding:3rem 2rem;text-align:center;border:1px solid rgba(39,183,165,.25);border-radius:8px;background:rgba(39,183,165,.05)"><svg viewBox="0 0 48 48" fill="none" width="48" height="48" style="margin:0 auto 1.5rem;display:block"><circle cx="24" cy="24" r="22" stroke="#27b7a5" stroke-width="1.5"/><path d="M14 24l7 7 13-13" stroke="#27b7a5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><p style="font-size:1.1rem;font-weight:700;color:#eef2f7;margin-bottom:.5rem">${window._i18n?window._i18n.formSent:'Zpráva odeslána!'}</p><p style="color:#7da8c4;font-size:.95rem">${json.message}</p></div>`;
-        } else {
-          btn.disabled=false;
-          btn.innerHTML=origHTML;
-          // Zobraz chybu pod formulářem
-          let err=form.querySelector('.form-error');
-          if(!err){err=document.createElement('p');err.className='form-error';err.style.cssText='color:#ff6b6b;font-size:.85rem;margin-top:.75rem;text-align:center';form.appendChild(err);}
-          err.textContent=json.message||'Něco se pokazilo. Zkuste to znovu.';
-        }
-      }catch(err){
-        btn.disabled=false;
-        btn.innerHTML=origHTML;
-        let errEl=form.querySelector('.form-error');
-        if(!errEl){errEl=document.createElement('p');errEl.className='form-error';errEl.style.cssText='color:#ff6b6b;font-size:.85rem;margin-top:.75rem;text-align:center';form.appendChild(errEl);}
-        errEl.textContent=window._i18n?window._i18n.formNetErr:'Chyba sítě. Zkuste to znovu nebo napište přímo na hello@sitespot.cz';
+    try{
+      const res=await fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+      const json=await res.json();
+      if(json.ok){
+        form.innerHTML=`<div style="padding:3rem 2rem;text-align:center;border:1px solid rgba(39,183,165,.25);border-radius:8px;background:rgba(39,183,165,.05)"><svg viewBox="0 0 48 48" fill="none" width="48" height="48" style="margin:0 auto 1.5rem;display:block"><circle cx="24" cy="24" r="22" stroke="#27b7a5" stroke-width="1.5"/><path d="M14 24l7 7 13-13" stroke="#27b7a5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><p style="font-size:1.1rem;font-weight:700;color:#eef2f7;margin-bottom:.5rem">Zpráva odeslána!</p><p style="color:#7da8c4;font-size:.95rem">${json.message}</p></div>`;
+      } else {
+        btn.disabled=false; btn.innerHTML=origHTML;
+        let err=form.querySelector('.form-error');
+        if(!err){err=document.createElement('p');err.className='form-error';err.style.cssText='color:#ff6b6b;font-size:.85rem;margin-top:.75rem;text-align:center';form.appendChild(err);}
+        err.textContent=json.message||'Něco se pokazilo. Zkuste to znovu.';
       }
-    });
-  }
-
-  /* service 3D tilt */
-  document.querySelectorAll('.service-item').forEach(el=>{
-    el.addEventListener('mousemove',e=>{
-      const r=el.getBoundingClientRect();
-      el.style.transform=`perspective(600px) rotateY(${((e.clientX-r.left)/r.width-.5)*6}deg) rotateX(${-((e.clientY-r.top)/r.height-.5)*6}deg) translateZ(6px)`;
-    });
-    el.addEventListener('mouseleave',()=>el.style.transform='');
-  });
-
-  /* magnetic buttons */
-  document.querySelectorAll('.btn-primary,.btn-outline,.nav-cta').forEach(el=>{
-    el.addEventListener('mousemove',e=>{
-      const r=el.getBoundingClientRect();
-      el.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.22}px,${(e.clientY-r.top-r.height/2)*.3}px)`;
-    });
-    el.addEventListener('mouseleave',()=>{
-      el.style.transition='transform .5s cubic-bezier(0.16,1,0.3,1)';
-      el.style.transform='';
-      setTimeout(()=>el.style.transition='',500);
-    });
-  });
-
-  /* mobile burger */
-  if(window.innerWidth<=768){
-    const navLinks=document.querySelector('.nav-links');
-    if(navLinks){
-      const burger=document.createElement('button');
-      burger.innerHTML='<span></span><span></span><span></span>';
-      Object.assign(burger.style,{display:'flex',flexDirection:'column',gap:'6px',background:'none',border:'none',cursor:'pointer',padding:'4px',zIndex:'100'});
-      burger.querySelectorAll('span').forEach(s=>Object.assign(s.style,{display:'block',width:'22px',height:'1.5px',background:'#eef2f7',transition:'transform .3s,opacity .3s'}));
-      nav.insertBefore(burger,nav.lastElementChild);
-      burger.addEventListener('click',()=>{
-        const open=navLinks.classList.toggle('open');
-        document.body.style.overflow=open?'hidden':'';
-        const [s1,s2,s3]=burger.querySelectorAll('span');
-        if(open){s1.style.transform='translateY(7.5px) rotate(45deg)';s2.style.opacity='0';s3.style.transform='translateY(-7.5px) rotate(-45deg)';}
-        else{s1.style.transform='';s2.style.opacity='1';s3.style.transform='';}
-      });
-      const mStyle=document.createElement('style');
-      mStyle.textContent='.nav-links.open{display:flex!important;flex-direction:column;position:fixed;inset:0;background:rgba(7,10,15,.97);backdrop-filter:blur(24px);justify-content:center;align-items:center;gap:2.5rem;z-index:99}.nav-links.open li a{font-size:1.5rem}';
-      document.head.appendChild(mStyle);
+    }catch(err){
+      btn.disabled=false; btn.innerHTML=origHTML;
+      let errEl=form.querySelector('.form-error');
+      if(!errEl){errEl=document.createElement('p');errEl.className='form-error';errEl.style.cssText='color:#ff6b6b;font-size:.85rem;margin-top:.75rem;text-align:center';form.appendChild(errEl);}
+      errEl.textContent='Chyba sítě. Zkuste to znovu nebo napište přímo na hello@sitespot.cz';
     }
+  });
+}
+
+/* Mobile burger */
+if(window.innerWidth<=768){
+  const navLinks=document.querySelector('.nav-links');
+  if(navLinks){
+    const burger=document.createElement('button');
+    burger.innerHTML='<span></span><span></span><span></span>';
+    Object.assign(burger.style,{display:'flex',flexDirection:'column',gap:'6px',background:'none',border:'none',cursor:'pointer',padding:'4px',zIndex:'100'});
+    burger.querySelectorAll('span').forEach(s=>Object.assign(s.style,{display:'block',width:'22px',height:'1.5px',background:'#eef2f7',transition:'transform .3s,opacity .3s'}));
+    nav.insertBefore(burger,nav.lastElementChild);
+    burger.addEventListener('click',()=>{
+      const open=navLinks.classList.toggle('open');
+      document.body.style.overflow=open?'hidden':'';
+      const [s1,s2,s3]=burger.querySelectorAll('span');
+      if(open){s1.style.transform='translateY(7.5px) rotate(45deg)';s2.style.opacity='0';s3.style.transform='translateY(-7.5px) rotate(-45deg)';}
+      else{s1.style.transform='';s2.style.opacity='1';s3.style.transform='';}
+    });
+    const mStyle=document.createElement('style');
+    mStyle.textContent='.nav-links.open{display:flex!important;flex-direction:column;position:fixed;inset:0;background:rgba(7,10,15,.97);backdrop-filter:blur(24px);justify-content:center;align-items:center;gap:2.5rem;z-index:99}.nav-links.open li a{font-size:1.5rem}';
+    document.head.appendChild(mStyle);
   }
-})();
+}
 
 })();
 </script>
