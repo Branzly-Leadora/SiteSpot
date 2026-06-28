@@ -3,7 +3,8 @@
   'use strict';
 
   const filters = document.querySelectorAll('.tpl-filter');
-  const cards   = document.querySelectorAll('.tpl-card');
+  // Scope to grid only — carousel slides share .tpl-card but have no data-cat
+  const cards   = document.querySelectorAll('.tpl-grid .tpl-card');
 
   filters.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -16,10 +17,7 @@
         const matches = cat === 'all' || card.dataset.cat === cat;
         if (matches) {
           card.style.display = '';
-          // Small delay so the reveal transition fires cleanly
-          requestAnimationFrame(() => {
-            requestAnimationFrame(() => card.classList.add('visible'));
-          });
+          card.classList.add('visible'); // force visible immediately, don't rely on observer
         } else {
           card.style.display = 'none';
         }
