@@ -223,6 +223,9 @@ app.post('/api/demo', async (req, res) => {
   }
 });
 
+// ── Nabídka pro Telemarkclub Monínec (čistá URL bez .html) ─
+app.get('/telemarkclub', (req, res) => res.sendFile(path.join(__dirname, 'telemarkclub.html')));
+
 // ── Fallback — SPA na rootu ─────────────────────────────
 // Pro hlavní hub (nový index.html); /websites/ obsluhuje static middleware výše
 app.get('*', (req, res) => {

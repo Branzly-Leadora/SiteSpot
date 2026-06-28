@@ -10,6 +10,7 @@
     { "src": "brand.html", "use": "@vercel/static" },
     { "src": "content.html", "use": "@vercel/static" },
     { "src": "a.html", "use": "@vercel/static" },
+    { "src": "telemarkclub.html", "use": "@vercel/static" },
     { "src": "websites/**", "use": "@vercel/static" }
   ],
   "routes": [
@@ -21,6 +22,7 @@
     { "src": "/marketing.html", "dest": "/marketing.html" },
     { "src": "/brand.html", "dest": "/brand.html" },
     { "src": "/content.html", "dest": "/content.html" },
+    { "src": "/telemarkclub", "dest": "/telemarkclub.html" },
     { "src": "/(.*)", "dest": "/index.html" }
   ],
   "env": {
