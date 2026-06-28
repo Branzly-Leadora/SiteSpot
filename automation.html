@@ -83,6 +83,23 @@ footer{border-top:1px solid var(--border);padding:3rem 0 2rem}
 .footer-copy{font-size:.76rem;color:var(--gray-2)}
 @media(max-width:1024px){.features-grid{grid-template-columns:repeat(2,1fr)}.pricing-grid{grid-template-columns:repeat(2,1fr)}.process-steps{flex-direction:column}.cta-band{flex-direction:column;align-items:flex-start;padding:3rem}}
 @media(max-width:768px){#nav{padding:1.2rem 1.5rem}.nav-links{display:none}.hero{padding:7rem 1.5rem 3rem}.hero-headline{font-size:clamp(2.2rem,9vw,3.5rem)}.container{padding:0 1.5rem}.features-grid{grid-template-columns:1fr}.pricing-grid{grid-template-columns:1fr}.features-intro{flex-direction:column;gap:1.5rem}.cta-band{padding:3rem 1.5rem;margin:1.5rem 1.5rem}.footer-inner{padding:0 1.5rem;flex-direction:column;gap:1rem;text-align:center}}
+/* ── Demo showcase ── */
+.demos{padding:4rem 0 5rem;border-top:1px solid var(--border)}
+.demos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3.5rem}
+.demo-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;display:flex;flex-direction:column;transition:transform .35s var(--ease),border-color .3s,box-shadow .35s;cursor:pointer}
+.demo-card:hover{transform:translateY(-5px);border-color:var(--border-2);box-shadow:0 24px 56px rgba(0,0,0,.5)}
+.demo-card__preview{position:relative;aspect-ratio:4/3;overflow:hidden}
+.demo-card__frame{position:absolute;inset:0;overflow:hidden;transition:transform .5s var(--ease)}
+.demo-card:hover .demo-card__frame{transform:scale(1.04)}
+.demo-card__frame iframe{position:absolute;top:0;left:0;width:400%;height:400%;border:0;transform:scale(.25);transform-origin:top left;pointer-events:none;background:#0c1018}
+.demo-card__overlay{position:absolute;inset:0;background:rgba(0,0,0,.52);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s}
+.demo-card:hover .demo-card__overlay{opacity:1}
+.demo-card__label{font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--white);border:1px solid rgba(255,255,255,.35);padding:.5rem 1.1rem;border-radius:2px}
+.demo-card__body{padding:1.25rem 1.5rem;display:flex;flex-direction:column;gap:.3rem}
+.demo-card__tag{font-size:.68rem;color:var(--accent-2);letter-spacing:.08em;text-transform:uppercase}
+.demo-card__name{font-family:var(--font-serif);font-size:1.1rem;font-weight:700;color:var(--white);line-height:1.2}
+@media(max-width:1024px){.demos-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.demos-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -90,13 +107,10 @@ footer{border-top:1px solid var(--border);padding:3rem 0 2rem}
 <nav id="nav">
   <a href="/" class="nav-logo">Site<span>Spot</span></a>
   <ul class="nav-links">
-    <li><a href="/">Hub</a></li>
-    <li><a href="/websites/">Weby</a></li>
-    <li><a href="leads.html">Leady</a></li>
+    <li><a href="/#services">Služby</a></li>
+    <li><a href="/websites/templates.html">Weby</a></li>
     <li><a href="automation.html" class="nav-active">Automatizace</a></li>
-    <li><a href="marketing.html">Marketing</a></li>
-    <li><a href="brand.html">Brand</a></li>
-    <li><a href="content.html">Content</a></li>
+    <li><a href="/#contact">Kontakt</a></li>
   </ul>
   <a href="/#contact" class="nav-cta">Kontakt</a>
 </nav>
@@ -108,6 +122,96 @@ footer{border-top:1px solid var(--border);padding:3rem 0 2rem}
   <div class="hero-actions">
     <a href="/#contact" class="btn-primary">Poptat službu <svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
     <a href="/" class="btn-outline">Zpět na hub</a>
+  </div>
+</section>
+
+<section class="demos">
+  <div class="container">
+    <div class="features-intro reveal">
+      <h2>Živé<br/><em>ukázky.</em></h2>
+      <p>Klikni a prohlédni si reálné demo. Každý nástroj je funkční prototyp — ne mockup.</p>
+    </div>
+    <div class="demos-grid">
+
+      <a class="demo-card reveal" href="/websites/automatizace/chat.html" target="_blank">
+        <div class="demo-card__preview">
+          <div class="demo-card__frame">
+            <iframe src="/websites/automatizace/chat.html" loading="lazy" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
+          </div>
+          <div class="demo-card__overlay"><span class="demo-card__label">Otevřít demo</span></div>
+        </div>
+        <div class="demo-card__body">
+          <span class="demo-card__tag">AI · Chatbot</span>
+          <h3 class="demo-card__name">AI Chatbot</h3>
+        </div>
+      </a>
+
+      <a class="demo-card reveal reveal-d1" href="/websites/automatizace/inbox.html" target="_blank">
+        <div class="demo-card__preview">
+          <div class="demo-card__frame">
+            <iframe src="/websites/automatizace/inbox.html" loading="lazy" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
+          </div>
+          <div class="demo-card__overlay"><span class="demo-card__label">Otevřít demo</span></div>
+        </div>
+        <div class="demo-card__body">
+          <span class="demo-card__tag">AI · E-mail</span>
+          <h3 class="demo-card__name">E-mailový asistent</h3>
+        </div>
+      </a>
+
+      <a class="demo-card reveal reveal-d2" href="/websites/automatizace/pipeline.html" target="_blank">
+        <div class="demo-card__preview">
+          <div class="demo-card__frame">
+            <iframe src="/websites/automatizace/pipeline.html" loading="lazy" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
+          </div>
+          <div class="demo-card__overlay"><span class="demo-card__label">Otevřít demo</span></div>
+        </div>
+        <div class="demo-card__body">
+          <span class="demo-card__tag">Sales · Pipeline</span>
+          <h3 class="demo-card__name">Sales Pipeline</h3>
+        </div>
+      </a>
+
+      <a class="demo-card reveal" href="/websites/automatizace/dashboard.html" target="_blank">
+        <div class="demo-card__preview">
+          <div class="demo-card__frame">
+            <iframe src="/websites/automatizace/dashboard.html" loading="lazy" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
+          </div>
+          <div class="demo-card__overlay"><span class="demo-card__label">Otevřít demo</span></div>
+        </div>
+        <div class="demo-card__body">
+          <span class="demo-card__tag">Analytics · Dashboard</span>
+          <h3 class="demo-card__name">Live Dashboard</h3>
+        </div>
+      </a>
+
+      <a class="demo-card reveal reveal-d1" href="/websites/automatizace/document.html" target="_blank">
+        <div class="demo-card__preview">
+          <div class="demo-card__frame">
+            <iframe src="/websites/automatizace/document.html" loading="lazy" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
+          </div>
+          <div class="demo-card__overlay"><span class="demo-card__label">Otevřít demo</span></div>
+        </div>
+        <div class="demo-card__body">
+          <span class="demo-card__tag">AI · Dokumenty</span>
+          <h3 class="demo-card__name">Vytěžování dokumentů</h3>
+        </div>
+      </a>
+
+      <a class="demo-card reveal reveal-d2" href="/websites/automatizace/generator.html" target="_blank">
+        <div class="demo-card__preview">
+          <div class="demo-card__frame">
+            <iframe src="/websites/automatizace/generator.html" loading="lazy" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
+          </div>
+          <div class="demo-card__overlay"><span class="demo-card__label">Otevřít demo</span></div>
+        </div>
+        <div class="demo-card__body">
+          <span class="demo-card__tag">AI · Generátor</span>
+          <h3 class="demo-card__name">AI Generátor</h3>
+        </div>
+      </a>
+
+    </div>
   </div>
 </section>
 
@@ -244,7 +348,7 @@ footer{border-top:1px solid var(--border);padding:3rem 0 2rem}
     <h2 class="cta-title">Automatizujte<br/><em>svůj sales.</em></h2>
     <div class="cta-actions">
       <a href="/#contact" class="btn-primary">Začít spolupráci<svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
-      <a href="/" class="btn-outline">Zpět na hub</a>
+      <a href="/" class="btn-outline">Zpět na hlavní stránku</a>
     </div>
   </div>
 </section>
@@ -253,9 +357,9 @@ footer{border-top:1px solid var(--border);padding:3rem 0 2rem}
   <div class="footer-inner">
     <div class="footer-brand">Site<span>Spot</span></div>
     <nav class="footer-nav" aria-label="Footer navigation">
-      <a href="/">Hub</a><a href="/websites/">Weby</a><a href="leads.html">Leady</a><a href="automation.html">Automatizace</a><a href="marketing.html">Marketing</a><a href="brand.html">Brand</a><a href="content.html">Content</a>
+      <a href="/">Hub</a><a href="/websites/templates.html">Weby</a><a href="automation.html">Automatizace</a><a href="/#contact">Kontakt</a>
     </nav>
-    <div class="footer-copy">© 2025 SiteSpot</div>
+    <div class="footer-copy">© 2026 SiteSpot</div>
   </div>
 </footer>
 
