@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ceník — SiteSpot Internal</title>
+  <meta name="robots" content="noindex, nofollow"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#070a0f; --bg-2:#0c1018; --surface:#111620; --surface-2:#181e2c;
+  --border:rgba(255,255,255,0.07); --border-2:rgba(255,255,255,0.14);
+  --accent:#27b7a5; --accent-2:#5dd9cb;
+  --accent-dim:rgba(39,183,165,0.10);
+  --white:#eef2f7; --gray:#7da8c4; --gray-2:#3a5570;
+  --font-sans:'DM Sans',sans-serif; --font-serif:'Playfair Display',Georgia,serif;
+  --ease:cubic-bezier(0.16,1,0.3,1);
+  --c-mala:#27b7a5;
+  --c-stredni:#4ade80;
+  --c-velka:#f97316;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--white);font-family:var(--font-sans);line-height:1.65;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+ul{list-style:none}
+
+/* NAV */
+#nav{
+  position:fixed;top:0;left:0;right:0;z-index:9000;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.2rem 3rem;
+  background:rgba(7,10,15,0.88);
+  backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{font-family:var(--font-sans);font-size:1.25rem;font-weight:700;color:var(--white);letter-spacing:-.02em;flex-shrink:0}
+.nav-logo span{color:var(--accent)}
+.nav-links{display:flex;align-items:center;gap:2.5rem}
+.nav-links a{color:var(--gray);font-size:.875rem;font-weight:400;transition:color .2s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:1px;background:var(--accent);transition:width .3s var(--ease)}
+.nav-links a:hover::after{width:100%}
+.nav-links a:hover{color:var(--white)}
+.nav-cta{
+  display:inline-flex;align-items:center;gap:.4rem;
+  padding:.55rem 1.2rem;border:1px solid var(--border-2);border-radius:3px;
+  font-size:.85rem;font-weight:600;color:var(--white) !important;
+  transition:border-color .2s,background .2s;
+}
+.nav-cta:hover{border-color:var(--accent);background:var(--accent-dim)}
+
+/* LAYOUT */
+.wrap{max-width:1100px;margin:0 auto;padding:7rem 3rem 5rem}
+
+/* PAGE HEADER */
+.page-header{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  gap:2rem;margin-bottom:2.5rem;padding-bottom:2rem;
+  border-bottom:1px solid var(--border);flex-wrap:wrap;
+}
+.page-header-label{font-size:.62rem;color:var(--accent);font-weight:600;letter-spacing:.22em;text-transform:uppercase;display:block;margin-bottom:.5rem}
+.page-header h1{font-family:var(--font-serif);font-size:clamp(1.8rem,3vw,2.8rem);font-weight:700;line-height:1;letter-spacing:-.03em}
+.page-header h1 em{font-style:italic;color:var(--accent)}
+.page-meta{font-size:.72rem;color:var(--gray-2);text-align:right;line-height:1.9}
+
+/* LEGEND */
+.legend{display:flex;align-items:center;gap:2rem;margin-bottom:3rem;flex-wrap:wrap}
+.legend-cat{font-size:.62rem;color:var(--gray-2);text-transform:uppercase;letter-spacing:.15em}
+.legend-item{display:flex;align-items:center;gap:.45rem;font-size:.78rem;color:var(--gray)}
+.legend-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.dot-mala{background:var(--c-mala)}
+.dot-stredni{background:var(--c-stredni)}
+.dot-velka{background:var(--c-velka)}
+
+/* SECTION */
+.section{margin-bottom:3.5rem}
+.section-title{display:flex;align-items:center;gap:.75rem;margin-bottom:1.25rem;font-size:1.25rem;font-weight:700;letter-spacing:-.02em}
+.section-chip{
+  display:inline-block;font-size:.58rem;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;
+  padding:.22rem .6rem;border-radius:3px;
+}
+.chip-balicky{background:rgba(39,183,165,.15);color:#5dd9cb}
+.chip-web{background:rgba(59,130,246,.15);color:#60a5fa}
+.chip-marketing{background:rgba(236,72,153,.15);color:#f472b6}
+.chip-auto{background:rgba(251,146,60,.15);color:#fb923c}
+.chip-doplnky{background:rgba(168,85,247,.15);color:#c084fc}
+
+/* PACKAGES */
+.packages-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.pkg-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  padding:1.75rem;display:flex;flex-direction:column;gap:1.2rem;
+}
+.pkg-card.featured{border-color:rgba(74,222,128,.3);background:rgba(74,222,128,.03)}
+.pkg-head{display:flex;align-items:flex-start;justify-content:space-between;gap:.5rem}
+.pkg-name{font-family:var(--font-serif);font-size:1.2rem;font-weight:700}
+.pkg-badge{
+  font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  padding:.22rem .6rem;border-radius:3px;
+}
+.badge-zaklad,.badge-komplet{background:rgba(255,255,255,.07);color:var(--gray)}
+.badge-doporuceno{background:rgba(74,222,128,.15);color:#4ade80}
+.pkg-desc{font-size:.78rem;color:var(--gray);line-height:1.6}
+.pkg-features{display:flex;flex-direction:column;gap:0;flex:1}
+.pkg-features li{
+  display:flex;align-items:flex-start;gap:.5rem;
+  font-size:.78rem;color:var(--gray);
+  padding:.45rem 0;border-top:1px solid var(--border);
+}
+.pkg-features li:first-child{border-top:none;padding-top:0}
+.pkg-features li::before{content:'→';color:var(--accent);font-size:.72rem;flex-shrink:0;padding-top:.05rem}
+.featured .pkg-features li::before{color:#4ade80}
+.pkg-prices{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;
+  padding:.75rem;background:rgba(0,0,0,.25);border-radius:8px;
+}
+.pkg-price-col .label{font-size:.58rem;color:var(--gray-2);text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:.2rem}
+.pkg-price-col .val{font-size:.92rem;font-weight:700;display:block}
+.pkg-price-col .monthly{font-size:.63rem;color:var(--gray);display:block;margin-top:.15rem;line-height:1.4}
+.pkg-note{font-size:.68rem;color:var(--gray)}
+
+/* TABLE */
+.price-table{width:100%;border-collapse:collapse}
+.price-table th{
+  font-size:.62rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--gray-2);padding:.55rem 1rem;text-align:left;
+  border-bottom:1px solid var(--border);
+}
+.price-table th:not(:first-child){text-align:right}
+.price-table td{padding:.85rem 1rem;border-bottom:1px solid var(--border);vertical-align:top;font-size:.86rem}
+.price-table td:not(:first-child){text-align:right}
+.price-table tr:last-child td{border-bottom:none}
+.price-table tbody tr:hover td{background:rgba(255,255,255,.02)}
+.svc-name{font-weight:600;color:var(--white);display:block;margin-bottom:.15rem}
+.svc-desc{font-size:.72rem;color:var(--gray);display:block}
+.p-mala{color:var(--c-mala);font-weight:600;display:block}
+.p-stredni{color:var(--c-stredni);font-weight:600;display:block}
+.p-velka{color:var(--c-velka);font-weight:600;display:block}
+.p-monthly{font-size:.69rem;color:var(--gray);display:block;margin-top:.1rem}
+.p-dash{color:var(--gray-2);display:block}
+
+/* NOTES */
+.notes-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  padding:1.75rem;
+}
+.notes-title{font-size:.88rem;font-weight:700;margin-bottom:1rem}
+.notes-list{display:flex;flex-direction:column;gap:.6rem}
+.notes-list li{
+  display:flex;align-items:flex-start;gap:.6rem;
+  font-size:.78rem;color:var(--gray);line-height:1.65;
+}
+.notes-list li::before{content:'—';color:var(--gray-2);flex-shrink:0}
+.notes-list strong{color:var(--white)}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:2rem 0;margin-top:2rem}
+.footer-inner{max-width:1100px;margin:0 auto;padding:0 3rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.footer-brand{font-size:1rem;font-weight:700;letter-spacing:-.02em}
+.footer-brand span{color:var(--accent)}
+.footer-copy{font-size:.72rem;color:var(--gray-2)}
+
+@media(max-width:1000px){.packages-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:768px){
+  #nav{padding:1.2rem 1.5rem}
+  .nav-links{display:none}
+  .wrap{padding:6.5rem 1.5rem 3rem}
+  .packages-grid{grid-template-columns:1fr}
+  .page-header{flex-direction:column;gap:.75rem}
+  .page-meta{text-align:left}
+  .legend{flex-direction:column;align-items:flex-start;gap:.6rem}
+  .price-table th:nth-child(3),.price-table td:nth-child(3){display:none}
+  .footer-inner{padding:0 1.5rem;flex-direction:column;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="/" class="nav-logo">Site<span>Spot</span></a>
+  <ul class="nav-links">
+    <li><a href="/">Hub</a></li>
+    <li><a href="/websites/">Weby</a></li>
+    <li><a href="/leads.html">Leady</a></li>
+    <li><a href="/automation.html">Automatizace</a></li>
+    <li><a href="/marketing.html">Marketing</a></li>
+  </ul>
+  <a href="/a" class="nav-cta">← Central</a>
+</nav>
+
+<main class="wrap">
+
+  <div class="page-header">
+    <div>
+      <span class="page-header-label">SiteSpot / interní ceník</span>
+      <h1>Ceník <em>služeb</em></h1>
+    </div>
+    <div class="page-meta">
+      Pouze pro interní použití<br/>
+      Červen 2026 · v1.0
+    </div>
+  </div>
+
+  <div class="legend">
+    <span class="legend-cat">Kategorie klientů</span>
+    <div class="legend-item"><span class="legend-dot dot-mala"></span>Malá firma — živnostníci, restaurace, kadeřnictví (1–5 lidí)</div>
+    <div class="legend-item"><span class="legend-dot dot-stredni"></span>Střední firma — má management, 10–50 lidí</div>
+    <div class="legend-item"><span class="legend-dot dot-velka"></span>Velká firma — korporace, 50+ lidí</div>
+  </div>
+
+  <!-- GLOBÁLNÍ BALÍČKY -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-chip chip-balicky">Globální balíčky</span>
+    </div>
+    <div class="packages-grid">
+
+      <div class="pkg-card">
+        <div class="pkg-head">
+          <span class="pkg-name">Starter</span>
+          <span class="pkg-badge badge-zaklad">Základ</span>
+        </div>
+        <p class="pkg-desc">Web + základní viditelnost. Pro živnostníky a malé firmy co teprve jdou online.</p>
+        <ul class="pkg-features">
+          <li>Prezentační web s animacemi</li>
+          <li>SEO základní</li>
+          <li>Google Business Profile</li>
+          <li>Kontaktní formulář</li>
+        </ul>
+        <div class="pkg-prices">
+          <div class="pkg-price-col">
+            <span class="label">Malá</span>
+            <span class="val" style="color:var(--c-mala)">16–24k</span>
+          </div>
+          <div class="pkg-price-col">
+            <span class="label">Střední</span>
+            <span class="val" style="color:var(--c-stredni)">24–40k</span>
+          </div>
+          <div class="pkg-price-col">
+            <span class="label">Velká</span>
+            <span class="val" style="color:var(--c-velka)">40–85k</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="pkg-card featured">
+        <div class="pkg-head">
+          <span class="pkg-name">Business</span>
+          <span class="pkg-badge badge-doporuceno">Doporučeno</span>
+        </div>
+        <p class="pkg-desc">Web + rezervace nebo CRM + chatbot. Pro firmy co chtějí digitál co pracuje za ně.</p>
+        <ul class="pkg-features">
+          <li>Prezentační web s animacemi</li>
+          <li>Rezervační systém nebo CRM</li>
+          <li>AI chatbot</li>
+          <li>SEO základní</li>
+          <li>Google Business Profile</li>
+          <li>Automatický sběr recenzí</li>
+        </ul>
+        <div class="pkg-prices">
+          <div class="pkg-price-col">
+            <span class="label">Malá</span>
+            <span class="val" style="color:var(--c-mala)">35–55k</span>
+          </div>
+          <div class="pkg-price-col">
+            <span class="label">Střední</span>
+            <span class="val" style="color:var(--c-stredni)">55–90k</span>
+          </div>
+          <div class="pkg-price-col">
+            <span class="label">Velká</span>
+            <span class="val" style="color:var(--c-velka)">90–180k</span>
+          </div>
+        </div>
+        <p class="pkg-note">+ 1–2k/měsíc paušál (chatbot + rezervace/CRM)</p>
+      </div>
+
+      <div class="pkg-card">
+        <div class="pkg-head">
+          <span class="pkg-name">Full Stack</span>
+          <span class="pkg-badge badge-komplet">Komplet</span>
+        </div>
+        <p class="pkg-desc">Kompletní digitální zázemí. Web, automatizace, AI, marketing — vše nastaveno jednou.</p>
+        <ul class="pkg-features">
+          <li>Prezentační web + jazyk navíc</li>
+          <li>CRM + automatizace zakázek</li>
+          <li>AI chatbot + sběr recenzí</li>
+          <li>Email sekvence / follow-up</li>
+          <li>SEO + Google Business</li>
+          <li>Soc. sítě + šablony</li>
+        </ul>
+        <div class="pkg-prices">
+          <div class="pkg-price-col">
+            <span class="label">Malá</span>
+            <span class="val" style="color:var(--c-mala)">60–90k</span>
+          </div>
+          <div class="pkg-price-col">
+            <span class="label">Střední</span>
+            <span class="val" style="color:var(--c-stredni)">90–160k</span>
+          </div>
+          <div class="pkg-price-col">
+            <span class="label">Velká</span>
+            <span class="val" style="color:var(--c-velka)">160–320k</span>
+          </div>
+        </div>
+        <p class="pkg-note">+ 2–5k/měsíc paušál</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- WEB -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-chip chip-web">Web</span>
+      Weby
+    </div>
+    <table class="price-table">
+      <thead>
+        <tr>
+          <th style="width:52%">Služba</th>
+          <th>Malá</th>
+          <th>Střední</th>
+          <th>Velká</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="svc-name">Prezentační web</span><span class="svc-desc">Design na míru, animace, mobilní verze, základní stránky</span></td>
+          <td><span class="p-mala">12–18k</span></td>
+          <td><span class="p-stredni">18–30k</span></td>
+          <td><span class="p-velka">30–60k</span></td>
+        </tr>
+        <tr>
+          <td><span class="svc-name">Landing page</span><span class="svc-desc">Jedna stránka zaměřená na konverzi / akci</span></td>
+          <td><span class="p-mala">4–6k</span></td>
+          <td><span class="p-stredni">6–10k</span></td>
+          <td><span class="p-velka">10–20k</span></td>
+        </tr>
+        <tr>
+          <td><span class="svc-name">E-shop</span><span class="svc-desc">Produkty, košík, platební brána, správa objednávek</span></td>
+          <td><span class="p-mala">25–45k</span></td>
+          <td><span class="p-stredni">45–80k</span></td>
+          <td><span class="p-velka">80–150k</span></td>
+        </tr>
+        <tr>
+          <td><span class="svc-name">Vícejazyčná verze</span><span class="svc-desc">Za každý přidaný jazyk</span></td>
+          <td><span class="p-mala">2–3k</span></td>
+          <td><span class="p-stredni">3–5k</span></td>
+          <td><span class="p-velka">5–10k</span></td>
+        </tr>
+        <tr>
+          <td><span class="svc-name">Redesign existujícího webu</span><span class="svc-desc">Nový vizuál na stávající obsah</span></td>
+          <td><span class="p-mala">8–14k</span></td>
+          <td><span class="p-stredni">14–25k</span></td>
+          <td><span class="p-velka">25–50k</span></td>
+        </tr>
+        <tr>
+          <td><span class="svc-name">Správa a údržba webu</span><span class="svc-desc">Aktualizace, drobné změny, hosting dohled</span></td>
+          <td><span class="p-dash">—</span><span class="p-monthly">500–1k/měsíc</span></td>
+          <td><span class="p-dash">—</span><span class="p-monthly">1–2k/měsíc</span></td>
+          <td><span class="p-dash">—</span><span class="p-monthly">2–5k/měsíc</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- MARKETING -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-chip chip-marketing">Marketing</span>
+      Marketing &amp; viditelnost
+    </div>
+    <table class="price-table">
+      <thead>
+        <tr>
+          <th style="width:52%">Služba</th>
+          <th>Malá</th>
+          <th>Střední</th>
+          <th>Velká</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="svc-name">SEO základní</span><span class="svc-desc">Klíčová slova, meta tagy, technická struktura, rychlost</span></td>
+          <td><span class="p-mala">5–8k</span></td>
+          <td><span class="p-stredni">8–14k</span></td>
+          <td><span class="p-velka">14–25k</span></td>
+        </tr>
+        <tr>
+          <td><span class="svc-name">SEO průběžné</span><span class="svc-desc">Měsíční optimalizace, sledování pozic, obsah</span></td>
+          <td><span class="p-dash">—</span><span class="p-monthly">2–3k/měsíc</span></td>
+          <td><span class="p-dash">—</span><span class="p-monthly">3–6k/měsíc</span></td>
+          <td><span class="p-dash">—</span><span class="p-monthly">6–15k/měsíc</span></td>
+        </tr>
+        <tr>
+          <td><span class="svc-name">Google Business Profile</span><span class="svc-desc">Nastavení / oprava profilu, fotky, propojení s webem</span></td>
+          <td><span class="p-mala">1–1.5k</span></td>
+          <td><span class="p-stredni">1.5–2.5k</span></td>
+          <td><span class="p-velka">2.5–5k</span></td>
+        </tr>
+        <tr>
+          <td><span class="svc-name">SEO článek</span><span class="svc-desc">Obsah cílený na klíčové slovo, přivádí organiku</span></td>
+          <td><span class="p-mala">1–2k</span></td>
+          <td><span class="p-stredni">2–3.5k</span></td>
+          <td><span class="p-velka">3.5–6k</span></td>
+        </tr>
+        <tr>
+          <td><span class="svc-name">Nastavení soc. sítí</span><span class="svc-desc">Instagram / Facebook profil, bio, propojení</span></td>
+          <td><span class="p-mala">1.5–2k</span></td>
+          <td><span class="p-stredni">2–3.5k</span></td>
+          <td><span class="p-velka">3.5–6k</span></td>
+        </tr>
+        <tr>
+          <td><span class="svc-name">Šablony příspěvků (10 ks)</span><span class="svc-desc">Grafické šablony pro Instagram / Facebook</span></td>
+          <td><span class="p-mala">1.5–2.5k</span></td>
+          <td><span class="p-stredni">2.5–4k</span></td>
+          <td><span class="p-velka">4–7k</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- AUTOMATIZACE -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-chip chip-auto">Automatizace</span>
+      Automatizace &amp; AI systémy
+    </div>
+    <table class="price-table">
+      <thead>
+        <tr>
+          <th style="width:52%">Služba</th>
+          <th>Malá</th>
+          <th>Střední</th>
+          <th>Velká</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="svc-name">CRM na míru</span><span class="svc-desc">Správa zákazníků, pipeline, poznámky, followupy</span></td>
+          <td><span class="p-mala">18–25k</span><span class="p-monthly">+2–3k/měsíc</span></td>
+          <td><span class="p-stredni">30–50k</span><span class="p-monthly">+3–6k/měsíc</span></td>
+          <td><span class="p-velka">80–150k</span><span class="p-monthly">+6–12k/měsíc</span></td>
+        </tr>
+        <tr>
+          <td><span class="svc-name">Automatizace zakázek / poptávek</span><span class="svc-desc">Příjem → přiřazení → notifikace → faktura</span></td>
+          <td><span class="p-mala">12–18k</span><span class="p-monthly">+1–2k/měsíc</span></td>
+          <td><span class="p-stredni">20–35k</span><span class="p-monthly">+2–4k/měsíc</span></td>
+          <td><span class="p-velka">35–70k</span><span class="p-monthly">+4–8k/měsíc</span></td>
+        </tr>
+        <tr>
+          <td><span class="svc-name">Automatická fakturace</span><span class="svc-desc">Napojení na Fakturoid, upomínky, párování plateb</span></td>
+          <td><span class="p-mala">8–12k</span></td>
+          <td><span class="p-stredni">12–20k</span></td>
+          <td><span class="p-velka">20–40k</span></td>
+        </tr>
+        <tr>
+          <td><span class="svc-name">Email / follow-up sekvence</span><span class="svc-desc">Automatické emaily po akcích zákazníka (onboarding, follow-up, sezóna)</span></td>
+          <td><span class="p-mala">4–7k</span></td>
+          <td><span class="p-stredni">7–12k</span></td>
+          <td><span class="p-velka">12–20k</span></td>
+        </tr>
+        <tr>
+          <td><span class="svc-name">AI asistent na dokumenty</span><span class="svc-desc">Chatuje s interními dokumenty firmy (ceníky, smlouvy, manuály)</span></td>
+          <td><span class="p-mala">20–30k</span><span class="p-monthly">+2–3k/měsíc</span></td>
+          <td><span class="p-stredni">30–55k</span><span class="p-monthly">+3–5k/měsíc</span></td>
+          <td><span class="p-velka">55–100k</span><span class="p-monthly">+5–10k/měsíc</span></td>
+        </tr>
+        <tr>
+          <td><span class="svc-name">Reporting dashboard</span><span class="svc-desc">KPIs, obchodní výsledky v reálném čase</span></td>
+          <td><span class="p-mala">8–12k</span></td>
+          <td><span class="p-stredni">15–25k</span></td>
+          <td><span class="p-velka">25–50k</span></td>
+        </tr>
+        <tr>
+          <td><span class="svc-name">Automatizace scraping + outreach</span><span class="svc-desc">Hledání leadů, personalizované emaily, sekvence</span></td>
+          <td><span class="p-dash">—</span></td>
+          <td><span class="p-stredni">18–30k</span><span class="p-monthly">+1–2k/měsíc</span></td>
+          <td><span class="p-velka">25–50k</span><span class="p-monthly">+3–6k/měsíc</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- DOPLŇKY -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-chip chip-doplnky">Doplňky</span>
+      Věci na web
+    </div>
+    <table class="price-table">
+      <thead>
+        <tr>
+          <th style="width:52%">Služba</th>
+          <th>Malá</th>
+          <th>Střední</th>
+          <th>Velká</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="svc-name">AI chatbot</span><span class="svc-desc">24/7 odpovídá na dotazy, pomáhá se výběrem, FAQ</span></td>
+          <td><span class="p-mala">6–9k</span><span class="p-monthly">+700/měsíc</span></td>
+          <td><span class="p-stredni">9–15k</span><span class="p-monthly">+700/měsíc</span></td>
+          <td><span class="p-velka">15–28k</span><span class="p-monthly">+1.5–2.5k/měsíc</span></td>
+        </tr>
+        <tr>
+          <td><span class="svc-name">Rezervační systém</span><span class="svc-desc">Výběr termínu, potvrzení emailem/SMS, správa dostupnosti</span></td>
+          <td><span class="p-mala">8–12k</span><span class="p-monthly">+700/měsíc</span></td>
+          <td><span class="p-stredni">12–20k</span><span class="p-monthly">+700/měsíc</span></td>
+          <td><span class="p-velka">20–38k</span><span class="p-monthly">+1.5k/měsíc</span></td>
+        </tr>
+        <tr>
+          <td><span class="svc-name">Kalkulačka / konfigurátor</span><span class="svc-desc">Zákazník si nakonfiguruje produkt/službu, zobrazí cenu</span></td>
+          <td><span class="p-mala">5–8k</span></td>
+          <td><span class="p-stredni">8–14k</span></td>
+          <td><span class="p-velka">14–25k</span></td>
+        </tr>
+        <tr>
+          <td><span class="svc-name">Kontaktní / poptávkový formulář</span><span class="svc-desc">S napojením na email / CRM</span></td>
+          <td><span class="p-mala">1–2k</span></td>
+          <td><span class="p-stredni">2–4k</span></td>
+          <td><span class="p-velka">4–8k</span></td>
+        </tr>
+        <tr>
+          <td><span class="svc-name">Automatický sběr recenzí</span><span class="svc-desc">Email po nákupu/návštěvě s odkazem na recenzi</span></td>
+          <td><span class="p-mala">1.5–2.5k</span></td>
+          <td><span class="p-stredni">2.5–4k</span></td>
+          <td><span class="p-velka">4–8k</span></td>
+        </tr>
+        <tr>
+          <td><span class="svc-name">Platební brána</span><span class="svc-desc">GoPay / ComGate napojení</span></td>
+          <td><span class="p-mala">5–8k</span></td>
+          <td><span class="p-stredni">8–13k</span></td>
+          <td><span class="p-velka">12–20k</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- INTERNÍ POZNÁMKY -->
+  <div class="notes-card">
+    <p class="notes-title">Interní poznámky</p>
+    <ul class="notes-list">
+      <li><strong>Rozmezí vs. pevná cena:</strong> vždy říkáme rozmezí, pevnou cenu dáváme až po briefu nebo auditu.</li>
+      <li><strong>Kamarádská sleva:</strong> dávat spodní hranici rozmezí a zaokrouhlit dolů — neuvádět jako slevu v dokumentu.</li>
+      <li><strong>Malá firma bez budgetu:</strong> pokud klient nemá na Starter, nabídni jen web bez SEO — lepší zakázka než nic.</li>
+      <li><strong>Paušál:</strong> vždy účtovat za aktivně provozované věci (chatbot, CRM, rezervace). Web bez údržby = bez paušálu.</li>
+      <li><strong>Platba:</strong> 50 % při podpisu, 50 % při spuštění. U větších zakázek (50k+) třetiny.</li>
+      <li><strong>Dodání:</strong> web do 7–14 dní, komplexní systémy do 3–4 týdnů.</li>
+    </ul>
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">Site<span>Spot</span> Central</div>
+    <div class="footer-copy">© 2026 SiteSpot — Pouze pro interní použití</div>
+  </div>
+</footer>
+
+</body>
+</html>

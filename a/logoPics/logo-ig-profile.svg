@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="30%" r="65%">
+      <stop offset="0%"   stop-color="#0d1b27"/>
+      <stop offset="100%" stop-color="#070a0f"/>
+    </radialGradient>
+    <linearGradient id="pg" x1="10%" y1="0%" x2="90%" y2="100%">
+      <stop offset="0%"   stop-color="#7aeee0"/>
+      <stop offset="50%"  stop-color="#27b7a5"/>
+      <stop offset="100%" stop-color="#0e8070"/>
+    </linearGradient>
+    <radialGradient id="ag" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"   stop-color="#27b7a5" stop-opacity="0.20"/>
+      <stop offset="100%" stop-color="#27b7a5" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="hole" cx="38%" cy="32%" r="62%">
+      <stop offset="0%"   stop-color="#0d1520"/>
+      <stop offset="100%" stop-color="#070a0f"/>
+    </radialGradient>
+    <filter id="glow" x="-60%" y="-40%" width="220%" height="210%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="34" result="blur"/>
+      <feFlood flood-color="#27b7a5" flood-opacity="0.58" result="col"/>
+      <feComposite in="col" in2="blur" operator="in" result="tglow"/>
+      <feMerge>
+        <feMergeNode in="tglow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <pattern id="dots" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+      <circle cx="20" cy="20" r="1.2" fill="#27b7a5" opacity="0.06"/>
+    </pattern>
+  </defs>
+
+  <rect width="1080" height="1080" fill="url(#bg)"/>
+  <rect width="1080" height="1080" fill="url(#dots)"/>
+  <ellipse cx="540" cy="430" rx="380" ry="330" fill="url(#ag)"/>
+
+  <g filter="url(#glow)">
+    <path d="M540 250 C441 250 360 331 360 430 c0 138 180 385 180 385 s180-247 180-385 c0-99-81-180-180-180 Z" fill="url(#pg)"/>
+    <circle cx="540" cy="430" r="72" fill="url(#hole)"/>
+    <circle cx="540" cy="430" r="22" fill="#5dd9cb" opacity="0.72"/>
+  </g>
+</svg>

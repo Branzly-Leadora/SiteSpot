@@ -4,7 +4,13 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Automation & Outreach — SiteSpot</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
   <meta name="description" content="Automatický outreach, sortování odpovědí, follow-up sekvence a napojení na váš sales pipeline. SiteSpot Plzeň."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:title" content="Automation & Outreach — SiteSpot"/>
+  <meta property="og:description" content="Automatický outreach, sortování odpovědí, follow-up sekvence a napojení na váš sales pipeline."/>
+  <meta property="og:url" content="https://sitespot.cz/automation.html"/>
+  <meta name="twitter:card" content="summary_large_image"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet"/>
@@ -75,7 +81,7 @@ button{cursor:pointer;font-family:inherit}
 .cta-title em{font-style:italic;color:var(--accent)}
 .cta-actions{display:flex;gap:1rem;flex-shrink:0;flex-wrap:wrap}
 footer{border-top:1px solid var(--border);padding:3rem 0 2rem}
-.footer-inner{max-width:1200px;margin:0 auto;padding:0 3rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.footer-inner{max-width:1200px;margin:0 auto;padding:0 3rem}
 .footer-brand{font-family:var(--font-sans);font-size:1.1rem;font-weight:700;color:var(--white);letter-spacing:-.02em}
 .footer-brand span{color:var(--accent)}
 .footer-nav{display:flex;gap:2rem;flex-wrap:wrap}
@@ -107,12 +113,14 @@ footer{border-top:1px solid var(--border);padding:3rem 0 2rem}
 <nav id="nav">
   <a href="/" class="nav-logo">Site<span>Spot</span></a>
   <ul class="nav-links">
-    <li><a href="/#services">Služby</a></li>
-    <li><a href="/websites/templates.html">Weby</a></li>
+    <li><a href="/websites/templates.html">Práce</a></li>
+    <li><a href="leads.html">Leady</a></li>
     <li><a href="automation.html" class="nav-active">Automatizace</a></li>
-    <li><a href="/#contact">Kontakt</a></li>
+    <li><a href="marketing.html">Marketing</a></li>
+    <li><a href="brand.html">Brand</a></li>
+    <li><a href="content.html">Content</a></li>
   </ul>
-  <a href="/#contact" class="nav-cta">Kontakt</a>
+  <a href="/#contact" class="nav-cta">Začít spolupráci</a>
 </nav>
 
 <section class="hero">
@@ -348,18 +356,23 @@ footer{border-top:1px solid var(--border);padding:3rem 0 2rem}
     <h2 class="cta-title">Automatizujte<br/><em>svůj sales.</em></h2>
     <div class="cta-actions">
       <a href="/#contact" class="btn-primary">Začít spolupráci<svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
-      <a href="/" class="btn-outline">Zpět na hlavní stránku</a>
+      <a href="/" class="btn-outline">Zpět na hub</a>
     </div>
   </div>
 </section>
 
 <footer>
   <div class="footer-inner">
-    <div class="footer-brand">Site<span>Spot</span></div>
-    <nav class="footer-nav" aria-label="Footer navigation">
-      <a href="/">Hub</a><a href="/websites/templates.html">Weby</a><a href="automation.html">Automatizace</a><a href="/#contact">Kontakt</a>
-    </nav>
-    <div class="footer-copy">© 2026 SiteSpot</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:2rem">
+      <div class="footer-brand">Site<span>Spot</span></div>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="/websites/templates.html">Práce</a><a href="leads.html">Leady</a><a href="automation.html">Automatizace</a><a href="marketing.html">Marketing</a><a href="brand.html">Brand</a><a href="content.html">Content</a><a href="privacy.html">Ochrana dat</a>
+      </nav>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;padding-top:1.5rem;border-top:1px solid var(--border);font-size:.76rem;color:var(--gray-2)">
+      <span>© 2026 SiteSpot. Všechna práva vyhrazena.</span>
+      <span>Navrženo &amp; vyvinuto v Plzni.</span>
+    </div>
   </div>
 </footer>
 
@@ -369,6 +382,8 @@ footer{border-top:1px solid var(--border);padding:3rem 0 2rem}
     en.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');revObs.unobserve(e.target);}});
   },{threshold:.1,rootMargin:'0px 0px -50px 0px'});
   document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));
+  const nav=document.getElementById('nav');
+  if(nav&&window.innerWidth<=768){const navLinks=document.querySelector('.nav-links');if(navLinks){const burger=document.createElement('button');burger.innerHTML='<span></span><span></span><span></span>';Object.assign(burger.style,{display:'flex',flexDirection:'column',gap:'6px',background:'none',border:'none',cursor:'pointer',padding:'4px',zIndex:'100'});burger.querySelectorAll('span').forEach(s=>Object.assign(s.style,{display:'block',width:'22px',height:'1.5px',background:'#eef2f7',transition:'transform .3s,opacity .3s'}));nav.insertBefore(burger,nav.lastElementChild);burger.addEventListener('click',()=>{const open=navLinks.classList.toggle('open');document.body.style.overflow=open?'hidden':'';const[s1,s2,s3]=burger.querySelectorAll('span');if(open){s1.style.transform='translateY(7.5px) rotate(45deg)';s2.style.opacity='0';s3.style.transform='translateY(-7.5px) rotate(-45deg)';}else{s1.style.transform='';s2.style.opacity='1';s3.style.transform='';}});const mStyle=document.createElement('style');mStyle.textContent='.nav-links.open{display:flex!important;flex-direction:column;position:fixed;inset:0;background:rgba(7,10,15,.97);backdrop-filter:blur(24px);justify-content:center;align-items:center;gap:2.5rem;z-index:99}.nav-links.open li a{font-size:1.5rem}';document.head.appendChild(mStyle);}}
 })();
 </script>
 

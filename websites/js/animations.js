@@ -9,7 +9,7 @@
   if (window.innerWidth <= 768) { initHover(); return; }
 
   /* ── Skip panel mode on subpages (no main sections) ─────── */
-  const hasMainSections = !!(document.getElementById('hero') && document.getElementById('work'));
+  const hasMainSections = !!(document.getElementById('hero') && document.getElementById('services'));
   if (!hasMainSections) {
     // Still run hover effects and reveal on subpages
     const revealObs = new IntersectionObserver(entries => {
@@ -27,13 +27,12 @@
   /* ── Collect panels: every top-level section + footer ───── */
   const sourceEls = [
     document.getElementById('hero'),
-    document.getElementById('work'),
     document.getElementById('services'),
     document.getElementById('contact'),
     document.querySelector('footer'),
   ].filter(Boolean);
 
-  const LABELS = ['Hero','Work','Services','Contact','Footer'];
+  const LABELS = ['Hero','Services','Contact','Footer'];
 
   /* ── Global styles ──────────────────────────────────────── */
   const st = document.createElement('style');

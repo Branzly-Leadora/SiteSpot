@@ -4,6 +4,7 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SiteSpot — AI-Powered Growth Partner</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
   <meta name="description" content="SiteSpot spojuje AI automatizaci, generování leadů, vývoj webů a marketing. Vše pod jednou střechou."/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -131,29 +132,25 @@ button{cursor:pointer;font-family:inherit}
   position:relative;height:100%;min-height:420px;
   display:flex;align-items:center;justify-content:center;
 }
-.hero-visual-inner{
-  width:100%;max-width:420px;
-  aspect-ratio:1;
-  border-radius:50%;
-  background:radial-gradient(circle at 30% 30%, rgba(39,183,165,0.15), transparent 60%);
-  border:1px solid var(--border);
-  display:flex;align-items:center;justify-content:center;
-  position:relative;
+.hero-dash{
+  width:100%;max-width:380px;
+  display:flex;flex-direction:column;gap:.75rem;
   animation:fadeIn 1.2s ease .6s both;
 }
-.hero-visual-inner::before{
-  content:'';position:absolute;inset:-20px;
-  border-radius:50%;
-  border:1px solid rgba(39,183,165,0.08);
-  animation:pulseRing 4s ease-in-out infinite;
+.hero-dash__row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.hero-dash__card{
+  background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  padding:1.25rem 1.5rem;display:flex;flex-direction:column;gap:.35rem;
 }
-@keyframes pulseRing{
-  0%,100%{transform:scale(1);opacity:1}
-  50%{transform:scale(1.05);opacity:.6}
-}
-.hero-visual-icon{
-  font-size:4rem;color:var(--accent);opacity:.9;
-}
+.hero-dash__card--wide{flex-direction:row;align-items:center;gap:1rem}
+.hero-dash__card--accent{border-color:rgba(39,183,165,.25);background:rgba(39,183,165,.06)}
+.hero-dash__dot{width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0;box-shadow:0 0 8px var(--accent)}
+.hero-dash__label{font-size:.63rem;font-weight:600;color:var(--accent-2);letter-spacing:.12em;text-transform:uppercase}
+.hero-dash__name{font-size:.95rem;font-weight:600;color:var(--white);flex:1}
+.hero-dash__time{font-size:.75rem;color:var(--gray);flex-shrink:0}
+.hero-dash__num{font-family:var(--font-serif);font-size:2rem;font-weight:700;color:var(--white);line-height:1}
+.hero-dash__sub{font-size:.68rem;color:var(--gray)}
+.hero-dash__bar{height:3px;border-radius:999px;background:linear-gradient(90deg,var(--accent) 72%,var(--border) 72%);margin:.2rem 0}
 .hero-bottom{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);opacity:0;animation:fadeIn 1s var(--ease) 1s forwards}
 .scroll-hint{display:flex;align-items:center;gap:1rem;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gray-2)}
 .scroll-line{width:40px;height:1px;background:var(--gray-2);transform-origin:left;animation:scrollLine 2.2s ease-in-out 1.5s infinite}
@@ -331,14 +328,12 @@ footer{border-top:1px solid var(--border);padding:4rem 0 2rem}
 <nav id="nav">
   <a href="/" class="nav-logo">Site<span>Spot</span></a>
   <ul class="nav-links">
-    <li><a href="#services">Služby</a></li>
-    <li><a href="/websites/templates.html">Weby</a></li>
+    <li><a href="/websites/templates.html">Práce</a></li>
     <li><a href="leads.html">Leady</a></li>
     <li><a href="automation.html">Automatizace</a></li>
     <li><a href="marketing.html">Marketing</a></li>
     <li><a href="brand.html">Brand</a></li>
     <li><a href="content.html">Content</a></li>
-    <li><a href="#contact">Kontakt</a></li>
   </ul>
   <a href="#contact" class="nav-cta">Začít spolupráci</a>
 </nav>
@@ -358,16 +353,35 @@ footer{border-top:1px solid var(--border);padding:4rem 0 2rem}
         Méně ruční práce. Více výsledků.
       </p>
       <div class="hero-actions">
-        <button class="btn-primary" id="quote-btn">
+        <a href="#contact" class="btn-primary">
           Začít spolupráci
           <svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-        </button>
+        </a>
         <a href="#services" class="btn-outline">Prozkoumat služby</a>
       </div>
     </div>
     <div class="hero-visual">
-      <div class="hero-visual-inner">
-        <svg class="hero-visual-icon" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M12 2a10 10 0 0 1 10 10"/><path d="M21 12h-3"/><path d="M18 15l-3-3"/><path d="M18 9l-3 3"/></svg>
+      <div class="hero-dash">
+        <div class="hero-dash__card hero-dash__card--wide">
+          <div class="hero-dash__dot"></div>
+          <span class="hero-dash__name">Tavola Ristorante</span>
+          <span class="hero-dash__time">web za 4 dny</span>
+        </div>
+        <div class="hero-dash__row">
+          <div class="hero-dash__card">
+            <span class="hero-dash__num">147</span>
+            <span class="hero-dash__sub">nových leadů</span>
+          </div>
+          <div class="hero-dash__card">
+            <span class="hero-dash__num">+38%</span>
+            <span class="hero-dash__sub">konverzí</span>
+          </div>
+        </div>
+        <div class="hero-dash__card hero-dash__card--accent">
+          <span class="hero-dash__label">Automatizace aktivní</span>
+          <div class="hero-dash__bar"></div>
+          <span class="hero-dash__sub">outreach · follow-up · CRM sync</span>
+        </div>
       </div>
     </div>
   </div>
@@ -440,8 +454,9 @@ footer{border-top:1px solid var(--border);padding:4rem 0 2rem}
 <section class="weby" id="weby">
   <div class="container">
     <div class="services-intro reveal">
-      <h2>30 hotových<br/><em>webů.</em></h2>
-      <p>Gastro, beauty, wellness, řemesla, maloobchod — vyberte základ a přidejte svůj obsah. Nebo uděláme web úplně na míru.</p>
+      <span class="eyebrow">Portfolio</span>
+      <h2>Naše<br/><em>práce.</em></h2>
+      <p>Ukázky z naší tvorby pro gastro, beauty, řemesla, maloobchod i wellness. Každý design přizpůsobíme vaší firmě na míru.</p>
     </div>
     <div class="weby-grid">
 
@@ -458,59 +473,46 @@ footer{border-top:1px solid var(--border);padding:4rem 0 2rem}
         </div>
       </a>
 
-      <a class="weby-card reveal reveal-d1" href="/websites/templates/remesla/verk/index.html" target="_blank">
+      <a class="weby-card reveal reveal-d1" href="/websites/templates/remesla/monolit/index.html" target="_blank">
         <div class="weby-card__preview">
           <div class="weby-card__frame">
-            <iframe src="/websites/templates/remesla/verk/index.html" loading="lazy" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
+            <iframe src="/websites/templates/remesla/monolit/index.html" loading="lazy" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
           </div>
           <div class="weby-card__overlay"><span class="weby-card__label">Zobrazit</span></div>
         </div>
         <div class="weby-card__body">
-          <span class="weby-card__cat">Řemesla · Truhlářství</span>
-          <h3 class="weby-card__name">VERK</h3>
+          <span class="weby-card__cat">Řemesla · Stavby</span>
+          <h3 class="weby-card__name">MONOLIT</h3>
         </div>
       </a>
 
-      <a class="weby-card reveal reveal-d2" href="/websites/templates/beauty/lume/index.html" target="_blank">
+      <a class="weby-card reveal reveal-d2" href="/websites/templates/beauty/kvitko/index.html" target="_blank">
         <div class="weby-card__preview">
           <div class="weby-card__frame">
-            <iframe src="/websites/templates/beauty/lume/index.html" loading="lazy" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
+            <iframe src="/websites/templates/beauty/kvitko/index.html" loading="lazy" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
           </div>
           <div class="weby-card__overlay"><span class="weby-card__label">Zobrazit</span></div>
         </div>
         <div class="weby-card__body">
-          <span class="weby-card__cat">Beauty · Kosmetika</span>
-          <h3 class="weby-card__name">LUMÉ</h3>
+          <span class="weby-card__cat">Beauty · Nehty</span>
+          <h3 class="weby-card__name">KVÍTKO</h3>
         </div>
       </a>
 
-      <a class="weby-card reveal" href="/websites/templates/wellness/utociste/index.html" target="_blank">
+      <a class="weby-card reveal" href="/websites/templates/gastro/hodovna/index.html" target="_blank">
         <div class="weby-card__preview">
           <div class="weby-card__frame">
-            <iframe src="/websites/templates/wellness/utociste/index.html" loading="lazy" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
+            <iframe src="/websites/templates/gastro/hodovna/index.html" loading="lazy" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
           </div>
           <div class="weby-card__overlay"><span class="weby-card__label">Zobrazit</span></div>
         </div>
         <div class="weby-card__body">
-          <span class="weby-card__cat">Wellness · Masáže</span>
-          <h3 class="weby-card__name">ÚTOČIŠTĚ</h3>
+          <span class="weby-card__cat">Gastro · Catering</span>
+          <h3 class="weby-card__name">HODOVNA</h3>
         </div>
       </a>
 
-      <a class="weby-card reveal reveal-d1" href="/websites/templates/maloobchod/foliant/index.html" target="_blank">
-        <div class="weby-card__preview">
-          <div class="weby-card__frame">
-            <iframe src="/websites/templates/maloobchod/foliant/index.html" loading="lazy" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
-          </div>
-          <div class="weby-card__overlay"><span class="weby-card__label">Zobrazit</span></div>
-        </div>
-        <div class="weby-card__body">
-          <span class="weby-card__cat">Maloobchod · Knihkupectví</span>
-          <h3 class="weby-card__name">FOLIANT</h3>
-        </div>
-      </a>
-
-      <a class="weby-card reveal reveal-d2" href="/websites/templates/gastro/smash/index.html" target="_blank">
+      <a class="weby-card reveal reveal-d1" href="/websites/templates/gastro/smash/index.html" target="_blank">
         <div class="weby-card__preview">
           <div class="weby-card__frame">
             <iframe src="/websites/templates/gastro/smash/index.html" loading="lazy" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
@@ -523,10 +525,23 @@ footer{border-top:1px solid var(--border);padding:4rem 0 2rem}
         </div>
       </a>
 
+      <a class="weby-card reveal reveal-d2" href="/websites/templates/maloobchod/drop/index.html" target="_blank">
+        <div class="weby-card__preview">
+          <div class="weby-card__frame">
+            <iframe src="/websites/templates/maloobchod/drop/index.html" loading="lazy" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
+          </div>
+          <div class="weby-card__overlay"><span class="weby-card__label">Zobrazit</span></div>
+        </div>
+        <div class="weby-card__body">
+          <span class="weby-card__cat">Maloobchod · Streetwear</span>
+          <h3 class="weby-card__name">DROP</h3>
+        </div>
+      </a>
+
     </div>
     <div class="weby-cta">
       <a href="/websites/templates.html" class="btn-primary">
-        Zobrazit všech 30 webů
+        Zobrazit všechny projekty
         <svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
       </a>
     </div>
@@ -547,16 +562,48 @@ footer{border-top:1px solid var(--border);padding:4rem 0 2rem}
         <div class="about-stats">
           <div class="about-stat"><span class="about-stat-num">50+</span><span class="about-stat-label">Projektů</span></div>
           <div class="about-stat"><span class="about-stat-num">5</span><span class="about-stat-label">Let zkušeností</span></div>
-          <div class="about-stat"><span class="about-stat-num">100%</span><span class="about-stat-label">Spokojenost</span></div>
+          <div class="about-stat"><span class="about-stat-num">30+</span><span class="about-stat-label">Oborů</span></div>
           <div class="about-stat"><span class="about-stat-num">24h</span><span class="about-stat-label">Odpověď</span></div>
         </div>
       </div>
     </div>
     <div class="cta-band reveal" style="margin-top:4rem">
-      <h2 class="cta-title">Nebojte se<br/><em>ozvat.</em></h2>
+      <h2 class="cta-title">Jdeme<br/><em>na to?</em></h2>
       <div class="cta-actions">
         <a href="#contact" class="btn-primary">Začít spolupráci<svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
-        <a href="/websites/templates.html" class="btn-outline">Prohlédnout šablony</a>
+        <a href="/websites/templates.html" class="btn-outline">Prohlédnout práce</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROOF -->
+<section style="padding:5rem 0;border-top:1px solid var(--border)">
+  <div class="container">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:4rem;flex-wrap:wrap" class="reveal">
+      <div style="flex:1;min-width:260px">
+        <span class="eyebrow">Reálný projekt</span>
+        <h2 style="font-family:var(--font-serif);font-size:clamp(1.75rem,3vw,2.75rem);font-weight:700;line-height:1.05;letter-spacing:-.03em;margin-bottom:1rem">Galochrom — 231 firem,<br/>147 ověřených kontaktů.</h2>
+        <p style="color:var(--gray);font-size:.9rem;line-height:1.8;max-width:420px;margin-bottom:1.5rem">Excel s 231 firmami z chemického a pharma průmyslu → kompletní B2B prospecting list s ověřenými kontakty, AI úhlem k oslovení a vyčištěný od konkurentů. Zdarma.</p>
+        <a href="leads.html" style="display:inline-flex;align-items:center;gap:.4rem;font-size:.82rem;font-weight:600;color:var(--accent)">Jak to funguje <svg width="12" height="12" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;flex-shrink:0">
+        <div style="text-align:center;padding:1.5rem 2rem;background:var(--surface);border:1px solid var(--border);border-radius:8px">
+          <div style="font-family:var(--font-serif);font-size:2.25rem;font-weight:700;color:var(--accent);line-height:1">147</div>
+          <div style="font-size:.68rem;color:var(--gray-2);letter-spacing:.1em;text-transform:uppercase;margin-top:.4rem">Ověřených kontaktů</div>
+        </div>
+        <div style="text-align:center;padding:1.5rem 2rem;background:var(--surface);border:1px solid var(--border);border-radius:8px">
+          <div style="font-family:var(--font-serif);font-size:2.25rem;font-weight:700;color:var(--accent);line-height:1">63%</div>
+          <div style="font-size:.68rem;color:var(--gray-2);letter-spacing:.1em;text-transform:uppercase;margin-top:.4rem">Vysoká relevance</div>
+        </div>
+        <div style="text-align:center;padding:1.5rem 2rem;background:var(--surface);border:1px solid var(--border);border-radius:8px">
+          <div style="font-family:var(--font-serif);font-size:2.25rem;font-weight:700;color:var(--accent);line-height:1">93%</div>
+          <div style="font-size:.68rem;color:var(--gray-2);letter-spacing:.1em;text-transform:uppercase;margin-top:.4rem">Pokrytí tel. čísel</div>
+        </div>
+        <div style="text-align:center;padding:1.5rem 2rem;background:var(--surface);border:1px solid var(--border);border-radius:8px">
+          <div style="font-family:var(--font-serif);font-size:2.25rem;font-weight:700;color:var(--accent);line-height:1">B2B</div>
+          <div style="font-size:.68rem;color:var(--gray-2);letter-spacing:.1em;text-transform:uppercase;margin-top:.4rem">Chem · Pharma</div>
+        </div>
       </div>
     </div>
   </div>
@@ -582,6 +629,10 @@ footer{border-top:1px solid var(--border);padding:4rem 0 2rem}
         </div>
         <div class="form-field"><label for="company">Firma</label><input type="text" id="company" name="company" placeholder="Název firmy (nepovinné)"/></div>
         <div class="form-field"><label for="message">Zpráva</label><textarea id="message" name="message" rows="4" placeholder="Popište projekt nebo situaci..."></textarea></div>
+        <div class="form-field" style="flex-direction:row;align-items:flex-start;gap:.6rem;margin-bottom:.25rem">
+          <input type="checkbox" id="gdpr" name="gdpr" required style="margin-top:.25rem;accent-color:var(--accent);flex-shrink:0;width:14px;height:14px"/>
+          <label for="gdpr" style="font-size:.78rem;color:var(--gray-2);text-transform:none;letter-spacing:0;line-height:1.5;cursor:pointer">Souhlasím se <a href="privacy.html" target="_blank" style="color:var(--accent-2)">zpracováním osobních údajů</a> za účelem vyřízení mé poptávky.</label>
+        </div>
         <button type="submit" class="btn-primary">Odeslat zprávu<svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
       </form>
     </div>
@@ -596,13 +647,14 @@ footer{border-top:1px solid var(--border);padding:4rem 0 2rem}
       <a href="#contact" class="btn-primary footer-cta">Začít spolupráci<svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
     </div>
     <nav class="footer-nav" aria-label="Footer navigation">
-      <a href="/websites/templates.html">Weby</a>
+      <a href="/websites/templates.html">Práce</a>
       <a href="leads.html">Leady</a>
       <a href="automation.html">Automatizace</a>
       <a href="marketing.html">Marketing</a>
       <a href="brand.html">Brand</a>
       <a href="content.html">Content</a>
       <a href="#contact">Kontakt</a>
+      <a href="privacy.html">Ochrana dat</a>
     </nav>
     <div class="footer-bottom">
       <span>© 2026 SiteSpot. Všechna práva vyhrazena.</span>

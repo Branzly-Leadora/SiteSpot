@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080">
+  <defs>
+    <style><![CDATA[
+      @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;800&display=swap');
+    ]]></style>
+
+    <radialGradient id="bg" cx="50%" cy="28%" r="68%">
+      <stop offset="0%"   stop-color="#0d1b27"/>
+      <stop offset="100%" stop-color="#070a0f"/>
+    </radialGradient>
+    <linearGradient id="pg" x1="15%" y1="0%" x2="85%" y2="100%">
+      <stop offset="0%"   stop-color="#7aeee0"/>
+      <stop offset="50%"  stop-color="#27b7a5"/>
+      <stop offset="100%" stop-color="#0e8070"/>
+    </linearGradient>
+    <radialGradient id="ag" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"   stop-color="#27b7a5" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#27b7a5" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="hole" cx="40%" cy="35%" r="65%">
+      <stop offset="0%"   stop-color="#0d1520"/>
+      <stop offset="100%" stop-color="#070a0f"/>
+    </radialGradient>
+    <filter id="glow" x="-65%" y="-45%" width="230%" height="220%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="26" result="blur"/>
+      <feFlood flood-color="#27b7a5" flood-opacity="0.52" result="col"/>
+      <feComposite in="col" in2="blur" operator="in" result="tglow"/>
+      <feMerge>
+        <feMergeNode in="tglow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <pattern id="dots" x="0" y="0" width="36" height="36" patternUnits="userSpaceOnUse">
+      <circle cx="18" cy="18" r="1.1" fill="#27b7a5" opacity="0.055"/>
+    </pattern>
+  </defs>
+
+  <rect width="1080" height="1080" fill="url(#bg)"/>
+  <rect width="1080" height="1080" fill="url(#dots)"/>
+  <ellipse cx="540" cy="368" rx="318" ry="272" fill="url(#ag)"/>
+
+  <g filter="url(#glow)">
+    <path d="M540 246 C478 246 418 306 418 368 c0 86 122 260 122 260 s122-174 122-260 c0-62-54-122-122-122 Z" fill="url(#pg)"/>
+    <circle cx="540" cy="368" r="48" fill="url(#hole)"/>
+    <circle cx="540" cy="368" r="14" fill="#5dd9cb" opacity="0.72"/>
+  </g>
+
+  <text x="540" y="762"
+    font-family="'DM Sans', 'Helvetica Neue', Arial, sans-serif"
+    font-size="118" font-weight="800"
+    fill="#eef2f7" text-anchor="middle" letter-spacing="-5"
+  >Site<tspan fill="#27b7a5">Spot</tspan></text>
+
+  <line x1="432" y1="800" x2="648" y2="800" stroke="#27b7a5" stroke-width="1" opacity="0.22"/>
+
+  <text x="540" y="850"
+    font-family="'DM Sans', 'Helvetica Neue', Arial, sans-serif"
+    font-size="28" font-weight="300"
+    fill="#3a5570" text-anchor="middle" letter-spacing="10"
+  >sitespot.cz</text>
+</svg>

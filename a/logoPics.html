@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Loga — SiteSpot Internal</title>
+  <meta name="robots" content="noindex, nofollow"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#070a0f; --bg-2:#0c1018; --surface:#111620; --surface-2:#181e2c;
+  --border:rgba(255,255,255,0.07); --border-2:rgba(255,255,255,0.14);
+  --accent:#27b7a5; --accent-2:#5dd9cb;
+  --accent-dim:rgba(39,183,165,0.10); --accent-glow:rgba(39,183,165,0.22);
+  --white:#eef2f7; --gray:#7da8c4; --gray-2:#3a5570;
+  --font-sans:'DM Sans',sans-serif; --font-serif:'Playfair Display',Georgia,serif;
+  --ease:cubic-bezier(0.16,1,0.3,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--white);font-family:var(--font-sans);line-height:1.65;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{display:block}
+
+.btn-primary{
+  display:inline-flex;align-items:center;gap:.5rem;
+  padding:.65rem 1.4rem;background:var(--accent);color:#070a0f;
+  font-weight:700;font-size:.82rem;border:none;border-radius:6px;
+  letter-spacing:.01em;transition:background .2s,transform .2s,box-shadow .2s;cursor:pointer;
+}
+.btn-primary:hover{background:var(--accent-2);transform:translateY(-1px);box-shadow:0 6px 24px var(--accent-glow)}
+
+.btn-outline{
+  display:inline-flex;align-items:center;gap:.5rem;
+  padding:.65rem 1.4rem;background:transparent;color:var(--gray);
+  font-weight:500;font-size:.82rem;
+  border:1px solid var(--border-2);border-radius:6px;
+  transition:color .2s,border-color .2s,background .2s;
+}
+.btn-outline:hover{color:var(--white);border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.04)}
+
+.eyebrow{
+  display:inline-block;font-size:.62rem;font-weight:600;
+  color:var(--accent-2);letter-spacing:.22em;text-transform:uppercase;margin-bottom:.75rem;
+}
+
+/* NAV */
+#nav{
+  position:fixed;top:0;left:0;right:0;z-index:9000;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.2rem 3rem;
+  background:rgba(7,10,15,0.88);
+  backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{font-family:var(--font-sans);font-size:1.25rem;font-weight:700;color:var(--white);letter-spacing:-.02em}
+.nav-logo span{color:var(--accent)}
+.nav-back{
+  display:inline-flex;align-items:center;gap:.4rem;
+  padding:.55rem 1.2rem;border:1px solid var(--border-2);border-radius:3px;
+  font-size:.85rem;font-weight:600;color:var(--white);
+  transition:border-color .2s,background .2s;
+}
+.nav-back:hover{border-color:var(--accent);background:var(--accent-dim)}
+
+/* LAYOUT */
+.page{padding:7rem 3rem 4rem;max-width:1200px;margin:0 auto}
+
+.page-header{margin-bottom:3rem}
+.page-header h1{font-family:var(--font-serif);font-size:clamp(2rem,4vw,3.2rem);font-weight:700;line-height:1;letter-spacing:-.03em;margin-bottom:.75rem}
+.page-header h1 em{font-style:italic;color:var(--accent)}
+.page-header p{color:var(--gray);font-size:.95rem;max-width:480px;line-height:1.7}
+
+/* LOGO GRID */
+.logo-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-bottom:3rem;
+}
+@media(max-width:800px){.logo-grid{grid-template-columns:1fr}}
+
+.logo-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:14px;
+  padding:2rem;display:flex;flex-direction:column;gap:1.5rem;
+}
+.logo-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem}
+.logo-card-head h3{font-family:var(--font-serif);font-size:1.1rem;font-weight:700;letter-spacing:-.01em}
+.logo-card-head .dim{font-size:.7rem;color:var(--gray-2);letter-spacing:.06em;margin-top:.2rem}
+.logo-type{
+  font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  padding:.25rem .6rem;border-radius:4px;
+  background:rgba(39,183,165,.1);color:var(--accent-2);border:1px solid rgba(39,183,165,.2);
+  flex-shrink:0;
+}
+
+.logo-preview{
+  background:#070a0f;border:1px solid var(--border);border-radius:10px;
+  overflow:hidden;display:flex;align-items:center;justify-content:center;
+  padding:1.5rem;
+}
+.logo-preview img{width:100%;max-width:360px;height:auto;border-radius:6px}
+
+.logo-preview--circle .logo-preview img{
+  border-radius:50%;max-width:280px;
+}
+
+.logo-actions{display:flex;gap:.75rem;flex-wrap:wrap}
+
+/* SIZE STRIP */
+.sizes-section{margin-top:1rem}
+.sizes-section h2{font-family:var(--font-serif);font-size:1.4rem;font-weight:700;letter-spacing:-.02em;margin-bottom:.5rem}
+.sizes-section p{font-size:.85rem;color:var(--gray);margin-bottom:1.75rem}
+
+.size-strip{
+  display:flex;align-items:flex-end;gap:2rem;flex-wrap:wrap;
+  background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  padding:2rem;
+}
+.size-item{display:flex;flex-direction:column;align-items:center;gap:.75rem}
+.size-circle{border-radius:50%;overflow:hidden;flex-shrink:0}
+.size-circle img{width:100%;height:100%;display:block}
+.size-label{font-size:.65rem;color:var(--gray-2);letter-spacing:.06em;text-align:center}
+
+/* USAGE NOTES */
+.usage{
+  margin-top:2rem;background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  padding:1.75rem;
+}
+.usage h3{font-size:.85rem;font-weight:700;margin-bottom:.75rem;color:var(--white)}
+.usage ul{list-style:none;display:flex;flex-direction:column;gap:.5rem}
+.usage ul li{font-size:.82rem;color:var(--gray);display:flex;align-items:flex-start;gap:.6rem}
+.usage ul li::before{content:'→';color:var(--accent);flex-shrink:0;margin-top:.05rem}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:2rem 0;margin-top:4rem}
+.footer-inner{max-width:1200px;margin:0 auto;padding:0 3rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.footer-brand{font-size:1rem;font-weight:700;color:var(--white)}
+.footer-brand span{color:var(--accent)}
+.footer-copy{font-size:.72rem;color:var(--gray-2)}
+
+@media(max-width:768px){
+  #nav{padding:1.2rem 1.5rem}
+  .page{padding:6.5rem 1.5rem 3rem}
+  .footer-inner{padding:0 1.5rem;flex-direction:column;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="/a" class="nav-logo">Site<span>Spot</span> <span style="color:var(--gray-2);font-weight:400;font-size:.9rem">/ Loga</span></a>
+  <a href="/a" class="nav-back">← Central</a>
+</nav>
+
+<main class="page">
+
+  <div class="page-header">
+    <span class="eyebrow">Brand Assets</span>
+    <h1>Instagram<br/><em>Loga</em></h1>
+    <p>Oficiální loga pro Instagram — post verze a profilová fotka. SVG formát, 1080 × 1080 px.</p>
+  </div>
+
+  <div class="logo-grid">
+
+    <!-- Feed post logo -->
+    <div class="logo-card">
+      <div class="logo-card-head">
+        <div>
+          <h3>Feed Post & Story</h3>
+          <div class="dim">1080 × 1080 px · SVG</div>
+        </div>
+        <span class="logo-type">Post</span>
+      </div>
+      <div class="logo-preview">
+        <img src="/a/logoPics/logo-instagram.svg" alt="SiteSpot Instagram Logo"/>
+      </div>
+      <div class="logo-actions">
+        <a href="/a/logoPics/logo-instagram.svg" download="sitespot-logo-instagram.svg" class="btn-primary">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Stáhnout SVG
+        </a>
+        <a href="/a/logoPics/logo-instagram.svg" target="_blank" class="btn-outline">Otevřít</a>
+      </div>
+    </div>
+
+    <!-- Profile picture -->
+    <div class="logo-card">
+      <div class="logo-card-head">
+        <div>
+          <h3>Profilová fotka</h3>
+          <div class="dim">1080 × 1080 px · SVG · zobrazeno v kruhu</div>
+        </div>
+        <span class="logo-type">Profil</span>
+      </div>
+      <div class="logo-preview logo-preview--circle">
+        <img src="/a/logoPics/logo-ig-profile.svg" alt="SiteSpot Instagram Profile"/>
+      </div>
+      <div class="logo-actions">
+        <a href="/a/logoPics/logo-ig-profile.svg" download="sitespot-logo-ig-profile.svg" class="btn-primary">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Stáhnout SVG
+        </a>
+        <a href="/a/logoPics/logo-ig-profile.svg" target="_blank" class="btn-outline">Otevřít</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Size preview -->
+  <div class="sizes-section">
+    <h2>Náhled — profilová fotka v různých velikostech</h2>
+    <p>Instagram zobrazuje profilovou fotku jako kruh. Takto vypadá logo v reálných velikostech.</p>
+    <div class="size-strip">
+      <div class="size-item">
+        <div class="size-circle" style="width:168px;height:168px">
+          <img src="/a/logoPics/logo-ig-profile.svg" width="168" height="168"/>
+        </div>
+        <div class="size-label">Profil stránky<br/>168 px</div>
+      </div>
+      <div class="size-item">
+        <div class="size-circle" style="width:110px;height:110px">
+          <img src="/a/logoPics/logo-ig-profile.svg" width="110" height="110"/>
+        </div>
+        <div class="size-label">Profilová stránka<br/>110 px</div>
+      </div>
+      <div class="size-item">
+        <div class="size-circle" style="width:56px;height:56px">
+          <img src="/a/logoPics/logo-ig-profile.svg" width="56" height="56"/>
+        </div>
+        <div class="size-label">Feed<br/>56 px</div>
+      </div>
+      <div class="size-item">
+        <div class="size-circle" style="width:32px;height:32px">
+          <img src="/a/logoPics/logo-ig-profile.svg" width="32" height="32"/>
+        </div>
+        <div class="size-label">Miniatura<br/>32 px</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Usage notes -->
+  <div class="usage">
+    <h3>Jak exportovat do PNG pro nahrání na Instagram</h3>
+    <ul>
+      <li>Otevři SVG v prohlížeči → pravý klik → "Uložit obrázek jako" (Chrome/Edge)</li>
+      <li>Nebo: otevři SVG → stiskni F12 → v konzoli spusť: <code style="color:var(--accent-2);font-size:.8em">document.querySelector('svg').setAttribute('width','1080')</code>, pak screenshot</li>
+      <li>Nebo nainstaluj Inkscape / Figma a importuj SVG → exportuj jako PNG 1080×1080</li>
+    </ul>
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">Site<span>Spot</span> Central</div>
+    <div class="footer-copy">© 2026 SiteSpot — Interní použití</div>
+  </div>
+</footer>
+
+</body>
+</html>

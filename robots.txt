@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+Disallow: /a
+Disallow: /a-login
+
+Sitemap: https://sitespot.cz/sitemap.xml

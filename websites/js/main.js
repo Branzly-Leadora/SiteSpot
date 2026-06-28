@@ -162,30 +162,45 @@
         Odesílám…
       `;
 
-      await new Promise(r => setTimeout(r, 1400));
+      const msgEl = $('#message') || $('textarea', form);
+      const message = msgEl ? msgEl.value.trim() : '';
 
-      form.innerHTML = `
-        <div style="
-          padding: 3rem 2rem;
-          text-align: center;
-          border: 1px solid rgba(39,183,165,0.25);
-          border-radius: 8px;
-          background: rgba(39,183,165,0.05);
-        ">
-          <svg viewBox="0 0 48 48" fill="none" width="48" height="48"
-            style="margin: 0 auto 1.5rem; display:block;">
-            <circle cx="24" cy="24" r="22" stroke="#27b7a5" stroke-width="1.5"/>
-            <path d="M14 24l7 7 13-13" stroke="#27b7a5" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          <p style="font-size:1.1rem; font-weight:700; color:#eef2f7; margin-bottom:0.5rem;">
-            Zpráva odeslána!
-          </p>
-          <p style="color:#7da8c4; font-size:0.95rem;">
-            Ozvu se vám do 24 hodin. Díky, ${escapeHTML(name)}!
-          </p>
-        </div>
-      `;
+      try {
+        const res = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, message }),
+        });
+
+        if (!res.ok) throw new Error('server');
+
+        form.innerHTML = `
+          <div style="
+            padding: 3rem 2rem;
+            text-align: center;
+            border: 1px solid rgba(39,183,165,0.25);
+            border-radius: 8px;
+            background: rgba(39,183,165,0.05);
+          ">
+            <svg viewBox="0 0 48 48" fill="none" width="48" height="48"
+              style="margin: 0 auto 1.5rem; display:block;">
+              <circle cx="24" cy="24" r="22" stroke="#27b7a5" stroke-width="1.5"/>
+              <path d="M14 24l7 7 13-13" stroke="#27b7a5" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <p style="font-size:1.1rem; font-weight:700; color:#eef2f7; margin-bottom:0.5rem;">
+              Zpráva odeslána!
+            </p>
+            <p style="color:#7da8c4; font-size:0.95rem;">
+              Ozvu se vám do 24 hodin. Díky, ${escapeHTML(name)}!
+            </p>
+          </div>
+        `;
+      } catch {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = orig;
+        alert('Chyba při odesílání. Zkuste prosím znovu nebo napište na email.');
+      }
     });
   }
 

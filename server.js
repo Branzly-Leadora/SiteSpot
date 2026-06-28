@@ -30,7 +30,7 @@ app.get('/index.html', (req, res) => res.redirect('/websites/'));
 app.get('/automatizace.html', (req, res) => res.redirect('/websites/automatizace.html'));
 app.get('/templates.html', (req, res) => res.redirect('/websites/templates.html'));
 
-// ── Internal Central (/a) ─────────────────────────────────
+// ── Internal Central (/a) ────────────────────────────────
 app.get('/a', (req, res) => res.sendFile(path.join(__dirname, 'a.html')));
 // ── Nodemailer transporter ────────────────────────────────
 // Funguje s jakýmkoliv SMTP (Gmail, Outlook, Wedos, Forpsi…)

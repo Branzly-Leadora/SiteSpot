@@ -11,12 +11,19 @@
     { "src": "content.html", "use": "@vercel/static" },
     { "src": "a.html", "use": "@vercel/static" },
     { "src": "telemarkclub.html", "use": "@vercel/static" },
-    { "src": "websites/**", "use": "@vercel/static" }
+    { "src": "a/pricing.html", "use": "@vercel/static" },
+    { "src": "websites/**", "use": "@vercel/static" },
+    { "src": "robots.txt", "use": "@vercel/static" },
+    { "src": "sitemap.xml", "use": "@vercel/static" }
   ],
   "routes": [
     { "src": "/api/(.*)", "dest": "/server.js" },
+    { "src": "/a-login", "dest": "/server.js" },
+    { "src": "/a", "dest": "/server.js" },
+    { "src": "/a/pricing", "dest": "/server.js" },
+    { "src": "/robots.txt", "dest": "/robots.txt" },
+    { "src": "/sitemap.xml", "dest": "/sitemap.xml" },
     { "src": "/websites/(.*)", "dest": "/websites/$1" },
-    { "src": "/a", "dest": "/a.html" },
     { "src": "/leads.html", "dest": "/leads.html" },
     { "src": "/automation.html", "dest": "/automation.html" },
     { "src": "/marketing.html", "dest": "/marketing.html" },
@@ -24,5 +31,16 @@
     { "src": "/content.html", "dest": "/content.html" },
     { "src": "/telemarkclub", "dest": "/telemarkclub.html" },
     { "src": "/(.*)", "dest": "/index.html" }
-  ]
+  ],
+  "env": {
+    "SMTP_HOST": "@smtp_host",
+    "SMTP_PORT": "@smtp_port",
+    "SMTP_USER": "@smtp_user",
+    "SMTP_PASS": "@smtp_pass",
+    "MAIL_TO": "@mail_to",
+    "ANTHROPIC_API_KEY": "@anthropic_api_key",
+    "CENTRAL_USER": "@central_user",
+    "CENTRAL_PASS": "@central_pass",
+    "CENTRAL_TOKEN": "@central_token"
+  }
 }

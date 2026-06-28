@@ -44,14 +44,14 @@ a { color: inherit; }
 /* placeholders */
 .ph { position: relative; overflow: hidden; background: #2a1c10; }
 .ph::after { content:''; position:absolute; inset:0; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.5'/%3E%3C/svg%3E"); opacity:.16; mix-blend-mode:overlay; }
-.ph-1 { background: radial-gradient(120% 120% at 30% 20%, #4a3216, #1c1409 70%); }
-.ph-2 { background: linear-gradient(150deg, #7a4a26, #2a1a0e 75%); }
-.ph-3 { background: radial-gradient(120% 120% at 70% 30%, #6e2233, #1d0f12 72%); }
-.ph-4 { background: linear-gradient(160deg, #b5852e, #4a2f12 82%); }
-.ph-5 { background: linear-gradient(150deg, #2a1f14, #6b4826 130%); }
-.ph-6 { background: radial-gradient(110% 110% at 40% 60%, #8a5a2c, #20140a 70%); }
-.ph-7 { background: linear-gradient(140deg, #3a2a1a, #b5852e 160%); }
-.ph-8 { background: radial-gradient(120% 120% at 60% 40%, #5a1f2c, #160c0a 72%); }
+.ph-1 { background: url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=900&auto=format&q=80') center/cover no-repeat; }
+.ph-2 { background: url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=900&auto=format&q=80') center/cover no-repeat; }
+.ph-3 { background: url('https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=900&auto=format&q=80') center/cover no-repeat; }
+.ph-4 { background: url('https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=900&auto=format&q=80') center/cover no-repeat; }
+.ph-5 { background: url('https://images.unsplash.com/photo-1581299894007-aaa50297cf16?w=900&auto=format&q=80') center/cover no-repeat; }
+.ph-6 { background: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=900&auto=format&q=80') center/cover no-repeat; }
+.ph-7 { background: url('https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=900&auto=format&q=80') center/cover no-repeat; }
+.ph-8 { background: url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=900&auto=format&q=80') center/cover no-repeat; }
 
 /* ============================================================
    NAV — serif wordmark vlevo, lístek odkazů vpravo
