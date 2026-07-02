@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
 import Lenis from 'lenis'
 import SpaceHero from './SpaceHero'
-import { FramerLogo, ClaudeLogo, OpenAILogo, N8nLogo, GeminiLogo } from './BrandLogos'
+import { FramerLogo, ClaudeLogo, OpenAILogo, N8nLogo, GeminiLogo, BRANDS } from './BrandLogos'
 import { SplineScene } from './SplineScene'
 import {
   Mail, Phone, MapPin, ArrowRight, Star,
@@ -494,6 +494,62 @@ function BenefitCenter() {
 // first submission sends an activation e-mail there that must be confirmed once)
 const CONTACT_EMAIL = 'hello@sitespot.cz'
 
+// trust bar — technology logos drifting under the hero
+function TrustBar() {
+  const half = (k) => (
+    <div className="tbar-half" key={k}>
+      {BRANDS.map((b) => (
+        <span className="tbar-item" key={b.name} title={b.name}>{b.logo || <i>{b.name}</i>}</span>
+      ))}
+    </div>
+  )
+  return (
+    <section className="tbar" aria-label="Technologie, na kterých stavíme">
+      <div className="tbar-cap">Stavíme na špičkových technologiích</div>
+      <div className="tbar-mask">
+        <div className="tbar-track">{[0, 1].map(half)}</div>
+      </div>
+    </section>
+  )
+}
+
+// privacy modal — GDPR basics for the contact form
+function LegalModal({ open, onClose }) {
+  useEffect(() => {
+    if (!open) return
+    const onKey = (e) => { if (e.key === 'Escape') onClose() }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [open, onClose])
+  return (
+    <AnimatePresence>
+      {open && (
+        <motion.div className="cmodal-backdrop" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose}>
+          <motion.div
+            className="cmodal legal" role="dialog" aria-modal="true" aria-label="Ochrana osobních údajů"
+            initial={{ opacity: 0, y: 34, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 20, scale: 0.97 }}
+            transition={{ type: 'spring', stiffness: 260, damping: 26 }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button className="cmodal-x" aria-label="Zavřít" onClick={onClose}><X size={17} strokeWidth={2.2} /></button>
+            <div className="cmodal-head">
+              <h3>Ochrana osobních údajů</h3>
+            </div>
+            <div className="legal-body">
+              <p><b>Správce údajů:</b> SiteSpot s.r.o., Praha. Kontakt: {CONTACT_EMAIL}.</p>
+              <p><b>Jaké údaje zpracováváme:</b> jméno, e-mail a obsah zprávy, které nám pošlete přes kontaktní formulář nebo e-mailem.</p>
+              <p><b>Účel a právní základ:</b> odpověď na vaši poptávku a jednání o spolupráci (plnění smlouvy, oprávněný zájem). Údaje nevyužíváme k marketingu bez vašeho souhlasu a nepředáváme je třetím stranám mimo zpracovatele nezbytné pro provoz (e-mailová služba, hosting).</p>
+              <p><b>Doba uchování:</b> po dobu jednání o zakázce, nejdéle 3 roky od poslední komunikace.</p>
+              <p><b>Vaše práva:</b> přístup, oprava, výmaz, omezení zpracování a přenositelnost údajů — stačí napsat na {CONTACT_EMAIL}. Stížnost lze podat u Úřadu pro ochranu osobních údajů (uoou.cz).</p>
+              <p>Web neukládá sledovací cookies.</p>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  )
+}
+
 // contact modal — glassy dialog with a 3-field form, sent via FormSubmit AJAX (no backend needed)
 function ContactModal({ open, onClose }) {
   const [state, setState] = useState('idle') // idle | sending | ok | err
@@ -572,7 +628,10 @@ function useNumberFormat() {
 function LazySpline({ scene }) {
   const ref = useRef(null)
   const [on, setOn] = useState(false)
+  // phones get a lightweight static poster instead of the ~2MB WebGL runtime
+  const [isMob] = useState(() => typeof window !== 'undefined' && window.matchMedia('(max-width: 860px)').matches)
   useEffect(() => {
+    if (isMob) return
     const el = ref.current
     if (!el) return
     // only mount while the Spline section itself is on screen — never while merely near it,
@@ -580,7 +639,18 @@ function LazySpline({ scene }) {
     const io = new IntersectionObserver(([e]) => setOn(e.isIntersecting), { rootMargin: '-18% 0px -18% 0px' })
     io.observe(el)
     return () => io.disconnect()
-  }, [])
+  }, [isMob])
+  if (isMob) {
+    return (
+      <div className="spline-stage">
+        <div className="spline-poster" aria-hidden>
+          <span className="sp-glow" />
+          <span className="sp-ring r1" /><span className="sp-ring r2" />
+          <span className="sp-core"><Bot size={34} strokeWidth={1.6} /></span>
+        </div>
+      </div>
+    )
+  }
   return (
     <div className="spline-stage" ref={ref}>
       {on ? <SplineScene scene={scene} className="spline-canvas" /> : <div className="spline-fallback"><span className="loader" /></div>}
@@ -609,7 +679,29 @@ function InViewVideo({ src, className, poster }) {
 export default function App() {
   const [navOpen, setNavOpen] = useState(false)
   const [contactOpen, setContactOpen] = useState(false)
+  const [legalOpen, setLegalOpen] = useState(false)
+  const [fab, setFab] = useState(false)
   const openContact = (e) => { e.preventDefault(); e.stopPropagation(); setContactOpen(true) }
+
+  // --- scroll chrome: progress bar, auto-hiding nav, floating CTA ---
+  useEffect(() => {
+    const bar = document.querySelector('.scroll-progress')
+    const wrap = document.querySelector('.nav-wrap')
+    let last = 0, tick = false
+    const apply = () => {
+      tick = false
+      const y = window.scrollY
+      const max = document.documentElement.scrollHeight - window.innerHeight
+      if (bar) bar.style.transform = `scaleX(${max > 0 ? Math.min(1, y / max) : 0})`
+      if (wrap) wrap.classList.toggle('hide', y > 320 && y > last)
+      setFab(y > window.innerHeight * 0.9)
+      last = y
+    }
+    const onScroll = () => { if (tick) return; tick = true; requestAnimationFrame(apply) }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    apply()
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
   const [isMobile, setIsMobile] = useState(false)
   const [active, setActive] = useState('')
   const [tIndex, setTIndex] = useState(0)
@@ -998,6 +1090,7 @@ export default function App() {
   return (
     <div className="page">
       <Preloader />
+      <div className="scroll-progress" aria-hidden />
       <div className="grain" aria-hidden />
       <div className="cursor-spot" ref={spotRef} aria-hidden />
       <div className="cur-dot" ref={curDot} aria-hidden />
@@ -1093,6 +1186,8 @@ export default function App() {
           </div>
         </motion.div>
       </section>
+
+      <TrustBar />
 
       {/* ===== BIG NUMBER HEADLINE ===== */}
       <section className="bignum">
@@ -1401,7 +1496,7 @@ export default function App() {
               <a href="mailto:hello@sitespot.cz"><Mail size={15} strokeWidth={1.7} /> hello@sitespot.cz</a>
               <a href="tel:+420777123456"><Phone size={15} strokeWidth={1.7} /> +420 777 123 456</a>
               <span style={{ color: 'var(--muted)', fontSize: '14.5px', display: 'inline-flex', alignItems: 'center', gap: 8 }}><MapPin size={15} strokeWidth={1.7} /> Praha · pracujeme po celé ČR</span>
-              <div className="footer-social"><a href="#hero">LinkedIn</a><a href="#hero">Instagram</a><a href="#hero">X</a></div>
+              <button className="footer-legal" onClick={() => setLegalOpen(true)}>Ochrana osobních údajů</button>
             </div>
             <div className="footer-col">
               <div className="footer-head">Newsletter</div>
@@ -1416,7 +1511,20 @@ export default function App() {
         </div>
       </footer>
 
+      <AnimatePresence>
+        {fab && !contactOpen && (
+          <motion.button
+            className="fab" onClick={() => setContactOpen(true)}
+            initial={{ opacity: 0, y: 24, scale: 0.9 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 24, scale: 0.9 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 24 }}
+          >
+            <Zap size={15} strokeWidth={2.2} fill="currentColor" /> Konzultace zdarma
+          </motion.button>
+        )}
+      </AnimatePresence>
+
       <ContactModal open={contactOpen} onClose={() => setContactOpen(false)} />
+      <LegalModal open={legalOpen} onClose={() => setLegalOpen(false)} />
     </div>
   )
 }
