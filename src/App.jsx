@@ -227,37 +227,68 @@ const FAQ = [
   { q: 'Pracujete i s menšími firmami?', a: 'Ano — většina našich klientů má 2 až 50 zaměstnanců. Řešení stavíme tak, aby dávalo smysl vašemu rozpočtu, ne našemu portfoliu.' },
 ]
 
-// process cards — own animated mini-scenes: audit scan · assembling · growth
+// process cards — browser-window mini-scenes: page audit · live coding · growing chart
 function ProcScene({ i }) {
   if (i === 0) {
-    const bars = [34, 52, 40, 66, 48, 72, 58, 44, 62, 50]
+    const rows = [88, 64, 76, 52]
+    const chips = [['SEO', 92], ['UX', 88], ['Rychlost', 96]]
     return (
       <div className="proc-scene">
-        <div className="mini proc-scan">
-          <div className="proc-chart">{bars.map((h, j) => <span key={j} style={{ height: h + '%' }} />)}</div>
-          <div className="proc-scanline" />
+        <div className="pwin">
+          <div className="pwin-bar"><span className="d r" /><span className="d y" /><span className="d g" /><i>vas-web.cz/audit</i></div>
+          <div className="pwin-body">
+            <div className="pw-rows">{rows.map((w, j) => <span key={j} style={{ width: w + '%' }} />)}</div>
+            <span className="pw-beam" aria-hidden />
+            <div className="pw-chips">{chips.map(([l, v], j) => <b key={j} style={{ animationDelay: j * 0.7 + 's' }}>{l} <em>{v}</em></b>)}</div>
+          </div>
         </div>
-        <div className="proc-cap"><span className="proc-cap-dot" />Audit dat a konkurence běží…</div>
+        <div className="proc-cap"><span className="proc-cap-dot" />Analyzujeme web a konkurenci…</div>
       </div>
     )
   }
   if (i === 1) {
+    const lines = [[26, 44, 18], [12, 30, 52, 14], [20, 16, 38], [34, 22, 28, 12], [16, 46, 20]]
+    const cols = ['#7AA0FF', '#C77DF3', '#3FCF8E', '#9CA1AC', '#E0A93E']
     return (
       <div className="proc-scene">
-        <div className="mini proc-build">
-          <span className="proc-block b1" /><span className="proc-block b2" /><span className="proc-block b3" /><span className="proc-block b4" />
+        <div className="pwin">
+          <div className="pwin-bar"><span className="d r" /><span className="d y" /><span className="d g" /><i>novy-web.jsx</i></div>
+          <div className="pwin-body">
+            <div className="pw-code">
+              {lines.map((toks, li) => (
+                <div className="pw-line" key={li} style={{ paddingLeft: (li % 3) * 14 }}>
+                  {toks.map((tw, ti) => (
+                    <span className="pw-tok" key={ti} style={{ width: tw, background: cols[(li + ti * 2) % cols.length], animationDelay: (li * 0.55 + ti * 0.18) + 's' }} />
+                  ))}
+                </div>
+              ))}
+            </div>
+            <span className="pw-toast"><Check size={11} strokeWidth={3} /> Nasazeno</span>
+          </div>
         </div>
-        <div className="proc-cap"><span className="proc-cap-dot" />Stavíme a nasazujeme web…</div>
+        <div className="proc-cap"><span className="proc-cap-dot" />Programujeme a nasazujeme…</div>
       </div>
     )
   }
-  const bars = [28, 40, 34, 52, 46, 62, 56, 74, 68, 100]
+  const pts = [6, 14, 10, 22, 18, 30, 26, 40, 36, 52]
+  const w = 150, h = 56, max = 56
+  const xy = pts.map((v, j) => [(j / (pts.length - 1)) * w, h - (v / max) * h])
+  const line = xy.map((p) => p.join(',')).join(' ')
+  const area = `0,${h} ${line} ${w},${h}`
   return (
     <div className="proc-scene">
-      <div className="mini proc-grow">
-        <div className="proc-bars">{bars.map((h, j) => <span key={j} className={j === bars.length - 1 ? 'peak' : ''} style={{ height: h + '%' }} />)}</div>
+      <div className="pwin">
+        <div className="pwin-bar"><span className="d r" /><span className="d y" /><span className="d g" /><i>vysledky.sitespot.cz</i></div>
+        <div className="pwin-body chart">
+          <svg className="pg-svg" viewBox={`0 0 ${w} ${h}`} preserveAspectRatio="none" aria-hidden>
+            <defs><linearGradient id="pgg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#fff" stopOpacity="0.3" /><stop offset="1" stopColor="#fff" stopOpacity="0" /></linearGradient></defs>
+            <polygon className="pg-area" points={area} fill="url(#pgg)" />
+            <polyline className="pg-line" points={line} pathLength="1" />
+          </svg>
+          <span className="pg-badge"><TrendingUp size={11} strokeWidth={2.4} /> +34 %</span>
+        </div>
       </div>
-      <div className="proc-cap"><span className="proc-cap-dot" />Konverze tento měsíc +34 %</div>
+      <div className="proc-cap"><span className="proc-cap-dot" />Výsledky rostou každý měsíc</div>
     </div>
   )
 }
