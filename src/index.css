@@ -236,13 +236,16 @@ a { color: inherit; }
 .mini { margin-top: 24px; padding: 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.06); background: rgba(5,5,8,0.5); }
 
 /* process mini-scenes */
-.mini.proc-scan, .mini.proc-grow { position: relative; overflow: hidden; height: 96px; display: flex; align-items: flex-end; }
-.mini.proc-build { position: relative; overflow: hidden; height: 96px; display: flex; align-items: center; justify-content: center; gap: 9px; }
-.proc-chart, .proc-bars { display: flex; align-items: flex-end; gap: 7px; width: 100%; height: 64px; }
+.proc-scene { margin-top: 24px; }
+.proc-cap { display: flex; align-items: center; gap: 8px; margin-top: 12px; font-size: 12.5px; color: #9CA1AC; }
+.proc-cap-dot { flex: none; width: 7px; height: 7px; border-radius: 50%; background: #3FCF8E; box-shadow: 0 0 8px #3FCF8E; animation: liveDot 1.6s ease-in-out infinite; }
+.mini.proc-scan, .mini.proc-grow { position: relative; overflow: hidden; height: 132px; display: flex; align-items: flex-end; }
+.mini.proc-build { position: relative; overflow: hidden; height: 132px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+.proc-chart, .proc-bars { display: flex; align-items: flex-end; gap: 7px; width: 100%; height: 100%; }
 .proc-chart span { flex: 1; border-radius: 3px 3px 0 0; background: rgba(255,255,255,0.10); }
 .proc-scanline { position: absolute; top: 8px; bottom: 8px; left: 0; width: 34%; border-radius: 8px; background: linear-gradient(90deg, transparent, color-mix(in oklab, var(--acc) 30%, transparent), transparent); animation: scanSweep 2.8s ease-in-out infinite; }
 @keyframes scanSweep { 0% { transform: translateX(-110%); } 100% { transform: translateX(315%); } }
-.proc-block { width: 32px; height: 32px; border-radius: 9px; background: color-mix(in oklab, var(--acc) 30%, transparent); border: 1px solid color-mix(in oklab, var(--acc) 48%, transparent); opacity: 0; animation: assemble 2.6s ease-in-out infinite; }
+.proc-block { width: 42px; height: 42px; border-radius: 12px; background: color-mix(in oklab, var(--acc) 30%, transparent); border: 1px solid color-mix(in oklab, var(--acc) 48%, transparent); opacity: 0; animation: assemble 2.6s ease-in-out infinite; }
 .proc-block.b2 { animation-delay: 0.22s; }
 .proc-block.b3 { animation-delay: 0.44s; }
 .proc-block.b4 { animation-delay: 0.66s; }

@@ -227,8 +227,40 @@ const FAQ = [
   { q: 'Pracujete i s menšími firmami?', a: 'Ano — většina našich klientů má 2 až 50 zaměstnanců. Řešení stavíme tak, aby dávalo smysl vašemu rozpočtu, ne našemu portfoliu.' },
 ]
 
-// process cards — thematic free stock loops (Mixkit): analysis · building · growth
-const PROC_VIDEOS = [5410, 1728, 18143]
+// process cards — own animated mini-scenes: audit scan · assembling · growth
+function ProcScene({ i }) {
+  if (i === 0) {
+    const bars = [34, 52, 40, 66, 48, 72, 58, 44, 62, 50]
+    return (
+      <div className="proc-scene">
+        <div className="mini proc-scan">
+          <div className="proc-chart">{bars.map((h, j) => <span key={j} style={{ height: h + '%' }} />)}</div>
+          <div className="proc-scanline" />
+        </div>
+        <div className="proc-cap"><span className="proc-cap-dot" />Audit dat a konkurence běží…</div>
+      </div>
+    )
+  }
+  if (i === 1) {
+    return (
+      <div className="proc-scene">
+        <div className="mini proc-build">
+          <span className="proc-block b1" /><span className="proc-block b2" /><span className="proc-block b3" /><span className="proc-block b4" />
+        </div>
+        <div className="proc-cap"><span className="proc-cap-dot" />Stavíme a nasazujeme web…</div>
+      </div>
+    )
+  }
+  const bars = [28, 40, 34, 52, 46, 62, 56, 74, 68, 100]
+  return (
+    <div className="proc-scene">
+      <div className="mini proc-grow">
+        <div className="proc-bars">{bars.map((h, j) => <span key={j} className={j === bars.length - 1 ? 'peak' : ''} style={{ height: h + '%' }} />)}</div>
+      </div>
+      <div className="proc-cap"><span className="proc-cap-dot" />Konverze tento měsíc +34 %</div>
+    </div>
+  )
+}
 
 // original mini-UI mockups for the Solutions bento — own design, generic dashboard widgets
 function SolutionMockup({ type }) {
@@ -1059,7 +1091,7 @@ export default function App() {
                 </div>
                 <h3>{s.h}</h3>
                 <p>{s.p}</p>
-                <div className="proc-media"><InViewVideo className="proc-media-el" src={mixkit(PROC_VIDEOS[i])} /></div>
+                <ProcScene i={i} />
               </div>
             ))}
           </div>
