@@ -492,7 +492,7 @@ function BenefitCenter() {
 
 // where contact-form submissions land (FormSubmit.co relays to this inbox —
 // first submission sends an activation e-mail there that must be confirmed once)
-const CONTACT_EMAIL = 'hello@sitespot.cz'
+const CONTACT_EMAIL = 'business@sitespot.cz'
 
 // trust bar — technology logos drifting under the hero
 function TrustBar() {
@@ -1400,6 +1400,37 @@ export default function App() {
         </div>
       </section>
 
+      {/* ===== TEAM / FOUNDER ===== */}
+      <section id="tym" className="section">
+        <div className="wrap team-wrap">
+          <div className="team-copy">
+            <div className="eyebrow" data-reveal="0"><span className="dot" />Kdo za tím stojí</div>
+            <h2 data-split="1">Žádná anonymní agentura</h2>
+            <p data-reveal="100">SiteSpot vznikl s jednoduchou myšlenkou: malé a střední firmy si zaslouží stejně chytré weby a automatizace jako korporace — bez korporátních cen a nekonečných procesů.</p>
+            <p data-reveal="160">Každý projekt vedeme osobně od první schůzky po spuštění. Píšeme si napřímo, mluvíme česky a výsledky měříme v číslech, ne v pocitech.</p>
+            <div className="team-cta" data-reveal="220">
+              <Btn href="#kontakt" className="btn-light" onClick={openContact}>Napište nám</Btn>
+            </div>
+          </div>
+          <div className="team-card spot-card" data-reveal="120">
+            <div className="team-photo">
+              {/* drop a real photo into public/media/max.jpg and it replaces the initials automatically */}
+              <img src="/media/max.jpg" alt="Max Hrubý" loading="lazy" onError={(e) => { e.currentTarget.style.display = 'none' }} />
+              <span className="team-init">MH</span>
+            </div>
+            <div className="team-meta">
+              <b>Max Hrubý</b>
+              <span>Zakladatel &amp; stratég</span>
+            </div>
+            <div className="team-chips">
+              <span><Globe size={13} strokeWidth={2} /> Weby</span>
+              <span><Bot size={13} strokeWidth={2} /> AI agenti</span>
+              <span><Megaphone size={13} strokeWidth={2} /> Marketing</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <Marquee reverse />
 
       {/* ===== PRICING ===== */}
@@ -1493,7 +1524,7 @@ export default function App() {
             </div>
             <div className="footer-col">
               <div className="footer-head">Kontakt</div>
-              <a href="mailto:hello@sitespot.cz"><Mail size={15} strokeWidth={1.7} /> hello@sitespot.cz</a>
+              <a href="mailto:business@sitespot.cz"><Mail size={15} strokeWidth={1.7} /> business@sitespot.cz</a>
               <a href="tel:+420777123456"><Phone size={15} strokeWidth={1.7} /> +420 777 123 456</a>
               <span style={{ color: 'var(--muted)', fontSize: '14.5px', display: 'inline-flex', alignItems: 'center', gap: 8 }}><MapPin size={15} strokeWidth={1.7} /> Praha · pracujeme po celé ČR</span>
               <button className="footer-legal" onClick={() => setLegalOpen(true)}>Ochrana osobních údajů</button>
