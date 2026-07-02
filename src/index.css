@@ -376,7 +376,7 @@ a { color: inherit; }
 /* case studies — 3D coverflow carousel */
 .case3d { position: relative; margin-top: 56px; perspective: 1800px; }
 .case3d-stage { position: relative; height: 430px; transform-style: preserve-3d; }
-.case3d-card { position: absolute; top: 0; left: 50%; width: min(400px, 88vw); height: 430px; margin-left: calc(min(400px, 88vw) / -2); transform-style: preserve-3d; transition: transform 0.85s cubic-bezier(0.16,1,0.3,1), opacity 0.85s ease, filter 0.85s ease, border-color 0.5s ease, box-shadow 0.5s ease; will-change: transform, opacity; cursor: pointer; }
+.case3d-card { position: absolute; top: 0; left: 50%; width: min(400px, 88vw); height: 430px; margin-left: calc(min(400px, 88vw) / -2); background: linear-gradient(180deg, #14161C, #0B0C10); transform-style: preserve-3d; transition: transform 0.85s cubic-bezier(0.16,1,0.3,1), opacity 0.85s ease, filter 0.85s ease, border-color 0.5s ease, box-shadow 0.5s ease; will-change: transform, opacity; cursor: pointer; }
 .case3d-card.is-active { cursor: default; border-color: color-mix(in oklab, var(--acc) 48%, transparent); box-shadow: 0 44px 100px -44px color-mix(in oklab, var(--acc) 65%, transparent); }
 .case3d-card .case-glow { opacity: 0; }
 .case3d-card.is-active .case-glow { opacity: 0.95; }
@@ -530,7 +530,7 @@ a { color: inherit; }
 /* testimonials — depth blur 3D carousel */
 .dbc { position: relative; margin-top: 8px; perspective: 1400px; }
 .dbc-stage { position: relative; height: 300px; transform-style: preserve-3d; }
-.dbc-card { position: absolute; top: 0; left: 50%; width: min(460px, 86vw); height: 300px; margin-left: calc(min(460px, 86vw) / -2); padding: 30px 34px; display: flex; flex-direction: column; border-radius: 22px; border: 1px solid rgba(255,255,255,0.09); background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02)); transition: transform 0.8s cubic-bezier(0.16,1,0.3,1), opacity 0.8s ease, filter 0.8s ease, border-color 0.5s ease, box-shadow 0.5s ease; cursor: pointer; will-change: transform, opacity, filter; }
+.dbc-card { position: absolute; top: 0; left: 50%; width: min(460px, 86vw); height: 300px; margin-left: calc(min(460px, 86vw) / -2); padding: 30px 34px; display: flex; flex-direction: column; border-radius: 22px; border: 1px solid rgba(255,255,255,0.09); background: linear-gradient(180deg, #15171E, #0C0D12); transition: transform 0.8s cubic-bezier(0.16,1,0.3,1), opacity 0.8s ease, filter 0.8s ease, border-color 0.5s ease, box-shadow 0.5s ease; cursor: pointer; will-change: transform, opacity, filter; }
 .dbc-card.is-active { cursor: default; border-color: color-mix(in oklab, var(--acc) 42%, transparent); box-shadow: 0 40px 90px -46px color-mix(in oklab, var(--acc) 62%, transparent); }
 .dbc-card .t-stars { display: inline-flex; gap: 3px; color: var(--acc); }
 .dbc-card blockquote { margin: 16px 0 0; flex: 1; font-size: clamp(16px, 2vw, 19px); font-weight: 500; line-height: 1.5; letter-spacing: -0.01em; color: var(--text); text-wrap: balance; overflow: hidden; }

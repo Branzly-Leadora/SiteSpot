@@ -1190,10 +1190,10 @@ export default function App() {
                 const abs = Math.abs(off)
                 const style = {
                   transform: `translateX(${off * 58}%) translateZ(${-abs * 170}px) rotateY(${off * -34}deg) scale(${1 - abs * 0.1})`,
-                  opacity: abs > 1 ? 0 : 1 - abs * 0.04,
+                  opacity: abs > 1 ? 0 : 1,
                   zIndex: 10 - abs,
                   pointerEvents: abs > 1 ? 'none' : 'auto',
-                  filter: abs > 0 ? 'brightness(0.94)' : 'none',
+                  filter: abs > 0 ? 'brightness(0.9)' : 'none',
                 }
                 return (
                   <div className={`case3d-card card case spot-card trend-${c.trend}${off === 0 ? ' is-active' : ''}`} style={style} key={i} onClick={() => setCaseIdx(i)}>
@@ -1270,8 +1270,8 @@ export default function App() {
                 const abs = Math.abs(off)
                 const style = {
                   transform: `translateX(${off * 300}px) translateZ(${-abs * 220}px) rotateY(${Math.sign(off) * Math.min(abs * 35, 60)}deg) scale(${1 - abs * 0.14})`,
-                  opacity: abs > 2 ? 0 : 1 - abs * 0.22,
-                  filter: `blur(${abs * 3.2}px)`,
+                  opacity: abs > 2 ? 0 : 1 - abs * 0.06,
+                  filter: `blur(${abs * 1.1}px)`,
                   zIndex: 10 - abs,
                   pointerEvents: abs > 1 ? 'none' : 'auto',
                 }
