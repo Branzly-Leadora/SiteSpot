@@ -163,13 +163,19 @@ function BenMini({ type }) {
   return null
 }
 
-// marquee band — outline type slowly drifting between sections
-const MARQ = ['Weby', 'AI agenti', 'Automatizace', 'Marketing', 'Datové přehledy', 'Chatboti']
+// marquee band — outline slogans drifting between sections, split by a spinning star
+const MARQ = ['Weby, které prodávají', 'AI, která pracuje za vás', 'Automatizace bez chyb', 'Výsledky v číslech']
 function Marquee({ reverse = false }) {
-  const half = MARQ.join('  ·  ') + '  ·  '
+  const seq = (k) => (
+    <div className="marq-seq" key={k}>
+      {MARQ.map((t, i) => (
+        <span className="marq-item" key={i}>{t}<i className="marq-star">✦</i></span>
+      ))}
+    </div>
+  )
   return (
     <div className={`marq${reverse ? ' rev' : ''}`} aria-hidden>
-      <div className="marq-track"><span>{half}</span><span>{half}</span></div>
+      <div className="marq-track">{[0, 1].map(seq)}</div>
     </div>
   )
 }
@@ -1096,59 +1102,56 @@ export default function App() {
       <div className="cur-dot" ref={curDot} aria-hidden />
       <div className="cur-ring" ref={curRing} aria-hidden />
 
-      {/* ===== NAV — dynamic island ===== */}
+      {/* ===== NAV — dynamic island (floating iPhone-style pill) ===== */}
       <div className="nav-wrap">
         <motion.div
           ref={navRef}
           className="nav-island"
           layout
           transition={ISLAND_SPRING}
-          onMouseEnter={() => setNavOpen(true)}
-          onMouseLeave={() => setNavOpen(false)}
         >
-          <div className="nav-corner left" aria-hidden />
-          <div className="nav-corner right" aria-hidden />
-          <motion.nav className="nav" layout transition={ISLAND_SPRING}>
-            <a href="#hero" className="nav-logo" onClick={closeNav}>
-              <span className="mark">S</span>
-              <AnimatePresence initial={false}>
-                {navOpen && !isMobile && (
-                  <motion.span
-                    className="name"
-                    initial={{ opacity: 0, width: 0, marginLeft: 0 }}
-                    animate={{ opacity: 1, width: 'auto', marginLeft: 9 }}
-                    exit={{ opacity: 0, width: 0, marginLeft: 0 }}
-                    transition={ISLAND_SPRING}
-                  >SiteSpot</motion.span>
-                )}
-              </AnimatePresence>
-            </a>
-            <AnimatePresence initial={false}>
-              {navOpen && (
-                <motion.div
-                  className={`nav-links${isMobile ? ' mobile' : ''}`}
-                  layout
-                  initial={{ width: 0, opacity: 0 }}
-                  animate={{ width: 'auto', opacity: 1 }}
-                  exit={{ width: 0, opacity: 0 }}
-                  transition={ISLAND_SPRING}
-                >
-                  {NAV.map((l, i) => (
-                    <motion.a
-                      key={l.id} href={l.href} onClick={closeNav}
-                      className={`nav-link${active === l.id ? ' active' : ''}`}
-                      initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }}
-                      transition={{ ...ISLAND_SPRING, delay: 0.02 * i }}
-                    >{l.label}</motion.a>
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
+          <a href="#hero" className="nav-logo" onClick={closeNav}>
+            <span className="mark">S</span>
+            <span className="name">SiteSpot</span>
+          </a>
+          {!isMobile && (
+            <nav className="nav-links desktop">
+              {NAV.map((l) => (
+                <a
+                  key={l.id} href={l.href} onClick={closeNav}
+                  className={`nav-link${active === l.id ? ' active' : ''}`}
+                >{l.label}</a>
+              ))}
+            </nav>
+          )}
+          {!isMobile && (
+            <a href="#kontakt" className="nav-cta" onClick={openContact}>Domluvit schůzku</a>
+          )}
+          {isMobile && (
             <button className="nav-burger" aria-label="Menu" onClick={(e) => { e.stopPropagation(); setNavOpen((o) => !o) }}>
               <motion.span animate={{ rotate: navOpen ? 45 : 0, y: navOpen ? 3 : 0 }} transition={ISLAND_SPRING} />
               <motion.span animate={{ rotate: navOpen ? -45 : 0, y: navOpen ? -3 : 0 }} transition={ISLAND_SPRING} />
             </button>
-          </motion.nav>
+          )}
+          <AnimatePresence initial={false}>
+            {isMobile && navOpen && (
+              <motion.div
+                className="nav-links mobile"
+                initial={{ opacity: 0, y: -10, scale: 0.97 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -10, scale: 0.97 }}
+                transition={ISLAND_SPRING}
+              >
+                {NAV.map((l) => (
+                  <a
+                    key={l.id} href={l.href} onClick={closeNav}
+                    className={`nav-link${active === l.id ? ' active' : ''}`}
+                  >{l.label}</a>
+                ))}
+                <a href="#kontakt" className="nav-cta" onClick={openContact}>Domluvit schůzku</a>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </motion.div>
       </div>
 
