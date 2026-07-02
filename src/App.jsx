@@ -450,7 +450,7 @@ export default function App() {
         const r = el.getBoundingClientRect()
         if (r.top < window.innerHeight * 0.88) return
         const d = parseInt(el.getAttribute('data-reveal') || '0', 10)
-        el.style.opacity = '0'; el.style.transform = 'translateY(28px) scale(0.96)'; el.style.filter = 'blur(8px)'
+        el.style.opacity = '0'; el.style.transform = 'translateY(28px) scale(0.94)'; el.style.filter = 'blur(8px)'
         el.style.transition = `opacity 0.7s ease ${d}ms, transform 0.8s cubic-bezier(0.22,1,0.36,1) ${d}ms, filter 0.7s ease ${d}ms`
         io.observe(el)
       })
@@ -591,6 +591,28 @@ export default function App() {
     return () => { window.removeEventListener('mousemove', onMove); window.removeEventListener('scroll', onScroll) }
   }, [])
 
+  // magnetic CTA buttons — main CTAs gently pull toward the cursor while hovered,
+  // spring back via the .magnetic CSS transition on leave (pointer devices only)
+  useEffect(() => {
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return
+    const els = [...document.querySelectorAll('.btn-light, .notch-cta, .plan-cta.primary, .cta .go')]
+    const cleanups = els.map((el) => {
+      el.classList.add('magnetic')
+      const move = (e) => {
+        const r = el.getBoundingClientRect()
+        const dx = e.clientX - (r.left + r.width / 2)
+        const dy = e.clientY - (r.top + r.height / 2)
+        el.style.setProperty('--magx', dx * 0.22 + 'px')
+        el.style.setProperty('--magy', dy * 0.3 + 'px')
+      }
+      const leave = () => { el.style.setProperty('--magx', '0px'); el.style.setProperty('--magy', '0px') }
+      el.addEventListener('mousemove', move, { passive: true })
+      el.addEventListener('mouseleave', leave)
+      return () => { el.removeEventListener('mousemove', move); el.removeEventListener('mouseleave', leave) }
+    })
+    return () => cleanups.forEach((fn) => fn())
+  }, [])
+
   // per-card cursor spotlight — lights up whichever card the pointer is over
   // (rAF-throttled, only touches CSS custom props, no re-render)
   useEffect(() => {
@@ -720,12 +742,15 @@ export default function App() {
       {/* ===== PROCESS ===== */}
       <section id="proces" className="section dark">
         <div className="blob" data-parallax="-0.05" aria-hidden style={{ top: -200, left: -160, width: 520, height: 520, background: 'radial-gradient(closest-side, color-mix(in oklab, var(--acc) 18%, transparent), transparent 70%)', filter: 'blur(60px)' }} />
-        <div className="wrap" style={{ maxWidth: 1160 }}>
-          <div className="head">
-            <h2 data-split="1">Tři kroky od poptávky k růstu</h2>
-            <p className="sub" data-reveal="120">Žádné nekonečné schůzky. Jasný proces, jasné termíny, měřitelné výsledky.</p>
+        <div className="wrap proc-pin">
+          <div className="proc-sticky">
+            <div className="head">
+              <div className="eyebrow" data-reveal="0"><span className="dot" />Jak pracujeme</div>
+              <h2 data-split="1">Tři kroky od poptávky k růstu</h2>
+              <p className="sub" data-reveal="120">Žádné nekonečné schůzky. Jasný proces, jasné termíny, měřitelné výsledky.</p>
+            </div>
           </div>
-          <div className="grid g3">
+          <div className="proc-steps">
             {PROCESS.map((s, i) => (
               <div className="card hoverable pad spot-card" data-reveal={i * 100} key={i}>
                 <div className="step-head">
@@ -744,7 +769,7 @@ export default function App() {
       {/* ===== SERVICES ===== */}
       <section id="sluzby" className="section clip">
         <div className="blob" data-parallax="0.05" aria-hidden style={{ top: 120, right: -200, width: 560, height: 560, background: 'radial-gradient(closest-side, color-mix(in oklab, var(--acc) 16%, transparent), transparent 70%)', filter: 'blur(70px)' }} />
-        <div className="wrap" style={{ maxWidth: 1160 }}>
+        <div className="wrap">
           <div className="head">
             <div className="eyebrow" data-reveal="0"><span className="dot" />Služby</div>
             <h2 data-split="1">Vše, co váš růst potřebuje. Pod jednou střechou.</h2>
@@ -773,11 +798,10 @@ export default function App() {
 
       {/* ===== AI SHOWCASE (Spline 3D) ===== */}
       <section id="ai-agent" className="section clip">
-        <div className="wrap" style={{ maxWidth: 1160 }}>
+        <div className="wrap">
           <div className="spline-card" data-reveal="0">
             <div className="spline-spot" aria-hidden />
             <div className="spline-copy">
-              <div className="eyebrow"><span className="dot" />AI agenti na míru</div>
               <h2>Živý AI agent,<br />který pracuje za vás.</h2>
               <p>Postavíme vám vlastní AI systém napojený na vaše nástroje — vyřizuje dotazy, třídí poptávky a jedná sám. Nonstop, bez přestávek, bez chyb z únavy.</p>
               <Btn href="#kontakt" className="btn-light">Chci svého AI agenta</Btn>
@@ -790,9 +814,8 @@ export default function App() {
       {/* ===== CASE STUDIES ===== */}
       <section id="reference" className="section dark">
         <div className="blob" data-parallax="-0.04" aria-hidden style={{ bottom: -220, left: '35%', width: 560, height: 520, background: 'radial-gradient(closest-side, color-mix(in oklab, var(--acc) 16%, transparent), transparent 70%)', filter: 'blur(70px)' }} />
-        <div className="wrap" style={{ maxWidth: 1160 }}>
+        <div className="wrap">
           <div className="head">
-            <div className="eyebrow" data-reveal="0"><span className="dot" />Případové studie</div>
             <h2 data-split="1">Výsledky, které se dají změřit</h2>
           </div>
           <div className="case3d" data-reveal="0" onMouseEnter={() => (cHover.current = true)} onMouseLeave={() => (cHover.current = false)}>
@@ -845,9 +868,8 @@ export default function App() {
 
       {/* ===== BENEFITS ===== */}
       <section id="benefity" className="section">
-        <div className="wrap" style={{ maxWidth: 1160 }}>
+        <div className="wrap">
           <div className="head">
-            <div className="eyebrow" data-reveal="0"><span className="dot" />Proč SiteSpot</div>
             <h2 data-split="1">Partner, ne dodavatel</h2>
           </div>
           <div className="grid g-ben-bento">
@@ -865,7 +887,7 @@ export default function App() {
 
       {/* ===== TESTIMONIALS — depth blur carousel ===== */}
       <section id="ohlasy" className="section">
-        <div className="wrap" style={{ maxWidth: 1160 }}>
+        <div className="wrap">
           <div className="head" style={{ marginBottom: 44 }}>
             <h2 data-split="1">Co říkají naši klienti</h2>
           </div>
@@ -917,7 +939,7 @@ export default function App() {
       {/* ===== PRICING ===== */}
       <section id="cenik" className="section dark">
         <div className="blob" data-parallax="0.04" aria-hidden style={{ top: 80, left: '50%', marginLeft: -300, width: 600, height: 420, background: 'radial-gradient(closest-side, color-mix(in oklab, var(--acc) 16%, transparent), transparent 72%)', filter: 'blur(70px)' }} />
-        <div className="wrap" style={{ maxWidth: 1160 }}>
+        <div className="wrap">
           <div className="head">
             <div className="eyebrow" data-reveal="0"><span className="dot" />Ceník</div>
             <h2 data-split="1">Férové ceny, žádná překvapení</h2>
@@ -944,9 +966,8 @@ export default function App() {
 
       {/* ===== COMPARISON ===== */}
       <section id="srovnani" className="section">
-        <div className="wrap" style={{ maxWidth: 940 }}>
+        <div className="wrap">
           <div className="head">
-            <div className="eyebrow" data-reveal="0"><span className="dot" />Srovnání</div>
             <h2 data-split="1">Tradiční způsob vs<br />AI automatizace</h2>
           </div>
           <div className="cmp-bar" data-reveal="0">
