@@ -234,6 +234,68 @@ function SolutionMockup({ type }) {
   return null
 }
 
+// benefits chart card — area chart draws itself in when scrolled into view
+function BenChart() {
+  const ref = useRef(null)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { el.classList.add('draw'); io.disconnect() } }, { threshold: 0.4 })
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+  const pts = [5, 11, 8, 15, 13, 21, 18, 27, 25, 34]
+  const w = 150, h = 54, max = 38
+  const xy = pts.map((v, i) => [(i / (pts.length - 1)) * w, h - (v / max) * h])
+  const line = xy.map((p) => p.join(',')).join(' ')
+  const area = `0,${h} ${line} ${w},${h}`
+  const [ex, ey] = xy[xy.length - 1]
+  return (
+    <div className="benefit ben-chart spot-card" data-reveal="60" ref={ref}>
+      <div className="ben-top">
+        <span className="chart-badge"><TrendingUp size={13} strokeWidth={2.2} /> +47 % za kvartál</span>
+      </div>
+      <h3>Růst poptávek</h3>
+      <svg className="ben-chart-svg" viewBox={`0 0 ${w} ${h}`} preserveAspectRatio="none" aria-hidden>
+        <polygon className="bc-area" points={area} />
+        <polyline className="bc-line" points={line} pathLength="1" />
+        <circle className="bc-dot" cx={ex} cy={ey} r="3" />
+      </svg>
+    </div>
+  )
+}
+
+// benefits live-activity card — automations "running" with a cycling task log
+const LIVE_LOGS = ['Faktura odeslána', 'Lead zapsán do CRM', 'Report vygenerován', 'Schůzka naplánována', 'Dotaz zodpovězen AI']
+function BenLive() {
+  const [i, setI] = useState(0)
+  useEffect(() => {
+    const id = setInterval(() => setI((v) => (v + 1) % LIVE_LOGS.length), 2400)
+    return () => clearInterval(id)
+  }, [])
+  return (
+    <div className="benefit ben-live spot-card" data-reveal="120">
+      <div className="ben-top">
+        <span className="live-pill"><span className="live-dot" />Živě</span>
+      </div>
+      <h3>Automatizace běží</h3>
+      <div className="live-rows">
+        <AnimatePresence mode="popLayout" initial={false}>
+          <motion.div
+            className="live-row" key={i}
+            initial={{ opacity: 0, y: 12, filter: 'blur(4px)' }}
+            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            exit={{ opacity: 0, y: -12, filter: 'blur(4px)' }}
+            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <CheckCircle2 size={14} strokeWidth={2} /> {LIVE_LOGS[i]}
+          </motion.div>
+        </AnimatePresence>
+      </div>
+    </div>
+  )
+}
+
 // benefits center feature card — interactive: 3D tilt toward the cursor,
 // two counter-rotating orbit rings with service icons circling the brand mark
 const ORBIT_IN = [Bot, Zap, LineChart]
@@ -995,6 +1057,8 @@ export default function App() {
                 <p>{b.p}</p>
               </div>
             ))}
+            <BenChart />
+            <BenLive />
             <BenefitCenter />
           </div>
         </div>
