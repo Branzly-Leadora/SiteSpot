@@ -115,13 +115,92 @@ function CaseSpark({ dir }) {
 }
 
 const BENEFITS = [
-  { h: 'Výsledky v číslech', p: 'Měřitelné, každý měsíc.', stat: '+212 %' },
-  { h: 'Rychlost', p: 'První výstupy do 14 dnů.', stat: '14 dní' },
-  { h: 'Jeden partner', p: 'Vše pod jednou střechou.', stat: '1 tým' },
+  { h: 'Výsledky v číslech', p: 'Měřitelné, každý měsíc.', stat: '+212 %', mini: 'finance' },
+  { h: 'Rychlost', p: 'První výstupy do 14 dnů.', stat: '14 dní', mini: 'timeline' },
+  { h: 'Jeden partner', p: 'Vše pod jednou střechou.', stat: '1 tým', mini: 'team' },
   { h: 'Bez závazků', p: 'Zůstanete, protože to funguje.', stat: '0 smluv' },
   { h: 'Technologie 2026', p: 'AI, co konkurence nemá.', stat: '24/7' },
   { h: 'Lidský přístup', p: 'Mluvíme česky, ne buzzwordy.', stat: '100 %' },
 ]
+
+// mini dashboard visuals inside the benefits bento — Notch-style card fillings
+function BenMini({ type }) {
+  if (type === 'finance') {
+    const rows = [['Poptávky', 74], ['Ušetřené hodiny', 62], ['Konverze', 45]]
+    return (
+      <div className="bmini bmini-fin">
+        <div className="bfin-head"><span>Získané leady</span><b data-count="3800" data-suffix="+">0</b></div>
+        {rows.map(([l, v], i) => (
+          <div className="bfin-row" key={i}><span>{l}</span><span className="bfin-bar"><span style={{ width: v + '%' }} /></span></div>
+        ))}
+      </div>
+    )
+  }
+  if (type === 'timeline') {
+    const steps = ['Analýza hotová', 'Návrh schválen', 'Web spuštěn']
+    return (
+      <div className="bmini bmini-tl">
+        {steps.map((s, i) => (
+          <div className="btl-row" key={i}><span className="btl-ic"><CheckCircle2 size={14} strokeWidth={2} /></span>{s}</div>
+        ))}
+      </div>
+    )
+  }
+  if (type === 'team') {
+    const team = [['MK', 'Marek', 'Strategie', '#3FCF8E'], ['LT', 'Lucie', 'Design', '#5B9BFF'], ['PV', 'Petr', 'Vývoj', '#E0A93E']]
+    return (
+      <div className="bmini bmini-team">
+        {team.map(([ini, n, r, c], i) => (
+          <div className="btm-row" key={i}>
+            <span className="btm-av">{ini}</span>
+            <span className="btm-meta"><b>{n}</b><i>{r}</i></span>
+            <span className="btm-dot" style={{ background: c, boxShadow: `0 0 8px ${c}` }} />
+          </div>
+        ))}
+      </div>
+    )
+  }
+  return null
+}
+
+// marquee band — outline type slowly drifting between sections
+const MARQ = ['Weby', 'AI agenti', 'Automatizace', 'Marketing', 'Datové přehledy', 'Chatboti']
+function Marquee({ reverse = false }) {
+  const half = MARQ.join('  ·  ') + '  ·  '
+  return (
+    <div className={`marq${reverse ? ' rev' : ''}`} aria-hidden>
+      <div className="marq-track"><span>{half}</span><span>{half}</span></div>
+    </div>
+  )
+}
+
+// intro preloader — logo + 0→100 % count, then the curtain lifts
+function Preloader() {
+  const [n, setN] = useState(0)
+  const [done, setDone] = useState(false)
+  useEffect(() => {
+    const t0 = performance.now(), dur = 1300
+    let raf
+    const tick = (t) => {
+      const p = Math.min(1, (t - t0) / dur)
+      setN(Math.round((1 - Math.pow(1 - p, 2)) * 100))
+      if (p < 1) raf = requestAnimationFrame(tick)
+      else setTimeout(() => setDone(true), 220)
+    }
+    raf = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf)
+  }, [])
+  return (
+    <AnimatePresence>
+      {!done && (
+        <motion.div className="preloader" exit={{ y: '-100%' }} transition={{ duration: 0.75, ease: [0.76, 0, 0.24, 1] }}>
+          <span className="pre-mark">S</span>
+          <span className="pre-num">{n} %</span>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  )
+}
 
 const TESTIMONIALS = [
   { quote: 'Do tří měsíců se nám poptávky zdvojnásobily. Poprvé máme agenturu, která mluví v číslech, ne ve slibech.', name: 'Martin Dvořák', role: 'jednatel, TZB Systémy' },
@@ -257,7 +336,8 @@ function BenChart() {
       </div>
       <h3>Růst poptávek</h3>
       <svg className="ben-chart-svg" viewBox={`0 0 ${w} ${h}`} preserveAspectRatio="none" aria-hidden>
-        <polygon className="bc-area" points={area} />
+        <defs><linearGradient id="bcg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#FFFFFF" stopOpacity="0.32" /><stop offset="1" stopColor="#FFFFFF" stopOpacity="0.02" /></linearGradient></defs>
+        <polygon className="bc-area" points={area} fill="url(#bcg)" />
         <polyline className="bc-line" points={line} pathLength="1" />
         <circle className="bc-dot" cx={ex} cy={ey} r="3" />
       </svg>
@@ -279,6 +359,11 @@ function BenLive() {
         <span className="live-pill"><span className="live-dot" />Živě</span>
       </div>
       <h3>Automatizace běží</h3>
+      <div className="live-chain" aria-hidden>
+        <span className="lc-node n1"><Bot size={13} strokeWidth={2} /></span><span className="lc-line l1" />
+        <span className="lc-node n2"><Zap size={13} strokeWidth={2} /></span><span className="lc-line l2" />
+        <span className="lc-node n3"><Check size={13} strokeWidth={2.4} /></span>
+      </div>
       <div className="live-rows">
         <AnimatePresence mode="popLayout" initial={false}>
           <motion.div
@@ -591,11 +676,12 @@ export default function App() {
         if (!en.isIntersecting) return
         wio.unobserve(en.target)
         en.target.querySelectorAll('.ss-w').forEach((w) => {
-          w.style.opacity = '1'; w.style.transform = 'translateY(0)'; w.style.filter = 'blur(0px)'
+          w.style.transform = 'translateY(0)'
         })
       })
     }, { threshold: 0.35 })
 
+    // wrap each word in an overflow-hidden mask so headings rise from behind a clip line
     const splitWords = (el) => {
       [...el.childNodes].forEach((n) => {
         if (n.nodeType === 3 && n.textContent.trim()) {
@@ -603,14 +689,21 @@ export default function App() {
           n.textContent.split(/(\s+)/).forEach((w) => {
             if (!w) return
             if (/^\s+$/.test(w)) { frag.appendChild(document.createTextNode(w)); return }
+            const m = document.createElement('span')
+            m.className = 'ss-m'
             const s = document.createElement('span')
-            s.textContent = w; s.className = 'ss-w'; s.style.display = 'inline-block'
-            frag.appendChild(s)
+            s.textContent = w; s.className = 'ss-w'
+            m.appendChild(s)
+            frag.appendChild(m)
           })
           el.replaceChild(frag, n)
-        } else if (n.nodeType === 1 && n.tagName !== 'BR' && !n.classList.contains('ss-w')) {
+        } else if (n.nodeType === 1 && n.tagName !== 'BR' && !n.classList.contains('ss-w') && !n.classList.contains('ss-m')) {
+          const m = document.createElement('span')
+          m.className = 'ss-m'
+          el.replaceChild(m, n)
           n.classList.add('ss-w')
           if (getComputedStyle(n).display === 'inline') n.style.display = 'inline-block'
+          m.appendChild(n)
         }
       })
     }
@@ -636,8 +729,8 @@ export default function App() {
         if (r.top < window.innerHeight * 0.85) return
         splitWords(el)
         el.querySelectorAll('.ss-w').forEach((w, i) => {
-          w.style.opacity = '0'; w.style.transform = 'translateY(1.05em)'; w.style.filter = 'blur(12px)'
-          w.style.transition = `opacity 0.6s ease ${i * 70}ms, transform 0.85s cubic-bezier(0.16,1,0.3,1) ${i * 70}ms, filter 0.6s ease ${i * 70}ms`
+          w.style.transform = 'translateY(112%)'
+          w.style.transition = `transform 0.9s cubic-bezier(0.16,1,0.3,1) ${i * 60}ms`
         })
         wio.observe(el)
       })
@@ -765,6 +858,34 @@ export default function App() {
     return () => { window.removeEventListener('mousemove', onMove); window.removeEventListener('scroll', onScroll) }
   }, [])
 
+  // custom cursor — dot follows instantly, ring trails with lerp and grows over interactives
+  const curDot = useRef(null)
+  const curRing = useRef(null)
+  useEffect(() => {
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return
+    const dot = curDot.current, ring = curRing.current
+    if (!dot || !ring) return
+    document.documentElement.classList.add('has-cursor')
+    let mx = window.innerWidth / 2, my = window.innerHeight / 2, rx = mx, ry = my, raf = 0
+    const onMove = (e) => {
+      mx = e.clientX; my = e.clientY
+      dot.style.transform = `translate(${mx}px, ${my}px)`
+      ring.classList.toggle('big', !!e.target.closest?.('a, button, .spot-card'))
+    }
+    const loop = () => {
+      rx += (mx - rx) * 0.16; ry += (my - ry) * 0.16
+      ring.style.transform = `translate(${rx}px, ${ry}px)`
+      raf = requestAnimationFrame(loop)
+    }
+    window.addEventListener('mousemove', onMove, { passive: true })
+    raf = requestAnimationFrame(loop)
+    return () => {
+      window.removeEventListener('mousemove', onMove)
+      cancelAnimationFrame(raf)
+      document.documentElement.classList.remove('has-cursor')
+    }
+  }, [])
+
   // magnetic CTA buttons — main CTAs gently pull toward the cursor while hovered,
   // spring back via the .magnetic CSS transition on leave (pointer devices only)
   useEffect(() => {
@@ -813,8 +934,11 @@ export default function App() {
 
   return (
     <div className="page">
+      <Preloader />
       <div className="grain" aria-hidden />
       <div className="cursor-spot" ref={spotRef} aria-hidden />
+      <div className="cur-dot" ref={curDot} aria-hidden />
+      <div className="cur-ring" ref={curRing} aria-hidden />
 
       {/* ===== NAV — dynamic island ===== */}
       <div className="nav-wrap">
@@ -912,6 +1036,8 @@ export default function App() {
         <div className="bignum-ghost" aria-hidden>14K</div>
         <h2 className="bignum-head" data-scrub="1">Šetříme firmám přes 14 000 hodin<br />práce každý rok.</h2>
       </section>
+
+      <Marquee />
 
       {/* ===== PROCESS ===== */}
       <section id="proces" className="section dark">
@@ -1055,6 +1181,7 @@ export default function App() {
                 </div>
                 <h3>{b.h}</h3>
                 <p>{b.p}</p>
+                {b.mini && <BenMini type={b.mini} />}
               </div>
             ))}
             <BenChart />
@@ -1115,6 +1242,8 @@ export default function App() {
         </div>
       </section>
 
+      <Marquee reverse />
+
       {/* ===== PRICING ===== */}
       <section id="cenik" className="section dark">
         <div className="blob" data-parallax="0.04" aria-hidden style={{ top: 80, left: '50%', marginLeft: -300, width: 600, height: 420, background: 'radial-gradient(closest-side, color-mix(in oklab, var(--acc) 16%, transparent), transparent 72%)', filter: 'blur(70px)' }} />
@@ -1151,15 +1280,15 @@ export default function App() {
           </div>
           <div className="cmp-bar" data-reveal="0">
             <div className="cmp-bar-side left"><Clock3 size={15} strokeWidth={2} /> Tradiční způsob</div>
-            <div className="cmp-bar-side right"><Zap size={15} strokeWidth={2} fill="currentColor" /> SiteSpot automatizace</div>
             <span className="cmp-bar-vs">VS</span>
+            <div className="cmp-bar-side right"><Zap size={15} strokeWidth={2} fill="currentColor" /> SiteSpot automatizace</div>
           </div>
           <div className="grid g-cmp">
-            <div className="cmp bad" data-reveal="60">
-              <div className="list">{CMP_BAD.map((r, i) => <div className="row" key={i}><span className="cdot bad" />{r}</div>)}</div>
+            <div className="cmp bad">
+              <div className="list">{CMP_BAD.map((r, i) => <div className="row" data-reveal={i * 55} key={i}><span className="cdot bad" />{r}</div>)}</div>
             </div>
-            <div className="cmp good" data-reveal="120">
-              <div className="list">{CMP_GOOD.map((r, i) => <div className="row" key={i}><span className="cdot good" />{r}</div>)}</div>
+            <div className="cmp good">
+              <div className="list">{CMP_GOOD.map((r, i) => <div className="row" data-reveal={i * 55} key={i}><span className="cdot good" />{r}</div>)}</div>
             </div>
           </div>
         </div>
