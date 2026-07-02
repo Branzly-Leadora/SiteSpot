@@ -1402,31 +1402,33 @@ export default function App() {
 
       {/* ===== TEAM / FOUNDER ===== */}
       <section id="tym" className="section">
-        <div className="wrap team-wrap">
-          <div className="team-copy">
+        <div className="wrap">
+          <div className="head">
             <div className="eyebrow" data-reveal="0"><span className="dot" />Kdo za tím stojí</div>
-            <h2 data-split="1">Žádná anonymní agentura</h2>
-            <p data-reveal="100">SiteSpot vznikl s jednoduchou myšlenkou: malé a střední firmy si zaslouží stejně chytré weby a automatizace jako korporace — bez korporátních cen a nekonečných procesů.</p>
-            <p data-reveal="160">Každý projekt vedeme osobně od první schůzky po spuštění. Píšeme si napřímo, mluvíme česky a výsledky měříme v číslech, ne v pocitech.</p>
-            <div className="team-cta" data-reveal="220">
-              <Btn href="#kontakt" className="btn-light" onClick={openContact}>Napište nám</Btn>
-            </div>
+            <h2 data-split="1">Mladý tým, měřitelné výsledky</h2>
+            <p className="sub" data-reveal="120">SiteSpot jsme založili ve třech s jednoduchou myšlenkou: malé a střední firmy si zaslouží stejně chytré weby a automatizace jako korporace — bez korporátních cen a nekonečných procesů. Píšeme si napřímo, mluvíme česky a výsledky měříme v číslech.</p>
           </div>
-          <div className="team-card spot-card" data-reveal="120">
-            <div className="team-photo">
-              {/* drop a real photo into public/media/max.jpg and it replaces the initials automatically */}
-              <img src="/media/max.jpg" alt="Max Hrubý" loading="lazy" onError={(e) => { e.currentTarget.style.display = 'none' }} />
-              <span className="team-init">MH</span>
-            </div>
-            <div className="team-meta">
-              <b>Max Hrubý</b>
-              <span>Zakladatel &amp; stratég</span>
-            </div>
-            <div className="team-chips">
-              <span><Globe size={13} strokeWidth={2} /> Weby</span>
-              <span><Bot size={13} strokeWidth={2} /> AI agenti</span>
-              <span><Megaphone size={13} strokeWidth={2} /> Marketing</span>
-            </div>
+          <div className="grid g3 team-grid">
+            {/* real photos: drop public/media/oliver.jpg, david.jpg, max.jpg and they replace the initials automatically */}
+            {[
+              { n: 'Oliver Žaigla', img: '/media/oliver.jpg' },
+              { n: 'David Sak', img: '/media/david.jpg' },
+              { n: 'Max Hrubý', img: '/media/max.jpg' },
+            ].map((t, i) => (
+              <div className="team-card spot-card" data-reveal={i * 100} key={t.n}>
+                <div className="team-photo">
+                  <img src={t.img} alt={t.n} loading="lazy" onError={(e) => { e.currentTarget.style.display = 'none' }} />
+                  <span className="team-init">{t.n.split(' ').map((w) => w[0]).join('')}</span>
+                </div>
+                <div className="team-meta">
+                  <b>{t.n}</b>
+                  <span>Spoluzakladatel</span>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="team-cta" data-reveal="200">
+            <Btn href="#kontakt" className="btn-light" onClick={openContact}>Napište nám</Btn>
           </div>
         </div>
       </section>
