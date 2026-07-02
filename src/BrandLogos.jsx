@@ -47,6 +47,7 @@ export const BRANDS = [
   { name: 'Claude', logo: <ClaudeLogo /> },
   { name: 'Framer', logo: <FramerLogo /> },
   { name: 'Webflow', logo: <WebflowLogo /> },
+  { name: 'Gemini', logo: <GeminiLogo h={18} /> },
   { name: 'Make', word: 'Make' },
   { name: 'Zapier', word: 'Zapier' },
   { name: 'HubSpot', word: 'HubSpot' },

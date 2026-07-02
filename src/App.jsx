@@ -500,12 +500,13 @@ function BenefitCenter() {
 // first submission sends an activation e-mail there that must be confirmed once)
 const CONTACT_EMAIL = 'business@sitespot.cz'
 
-// trust bar — technology logos drifting under the hero
+// trust bar — real technology logo marks only (no text wordmarks) drifting under the hero
 function TrustBar() {
+  const logos = BRANDS.filter((b) => b.logo)
   const half = (k) => (
     <div className="tbar-half" key={k}>
-      {BRANDS.map((b) => (
-        <span className="tbar-item" key={b.name} title={b.name}>{b.logo || <i>{b.name}</i>}</span>
+      {logos.map((b) => (
+        <span className="tbar-item" key={b.name} title={b.name}>{b.logo}</span>
       ))}
     </div>
   )
@@ -1102,37 +1103,52 @@ export default function App() {
       <div className="cur-dot" ref={curDot} aria-hidden />
       <div className="cur-ring" ref={curRing} aria-hidden />
 
-      {/* ===== NAV — dynamic island (floating iPhone-style pill) ===== */}
+      {/* ===== NAV — dynamic island: attached to the top edge, expands into a nav bar on hover ===== */}
       <div className="nav-wrap">
         <motion.div
           ref={navRef}
           className="nav-island"
           layout
           transition={ISLAND_SPRING}
+          onMouseEnter={() => { if (!isMobile) setNavOpen(true) }}
+          onMouseLeave={() => { if (!isMobile) setNavOpen(false) }}
         >
-          <a href="#hero" className="nav-logo" onClick={closeNav}>
-            <span className="mark">S</span>
-            <span className="name">SiteSpot</span>
-          </a>
-          {!isMobile && (
-            <nav className="nav-links desktop">
-              {NAV.map((l) => (
-                <a
-                  key={l.id} href={l.href} onClick={closeNav}
-                  className={`nav-link${active === l.id ? ' active' : ''}`}
-                >{l.label}</a>
-              ))}
-            </nav>
-          )}
-          {!isMobile && (
-            <a href="#kontakt" className="nav-cta" onClick={openContact}>Domluvit schůzku</a>
-          )}
-          {isMobile && (
-            <button className="nav-burger" aria-label="Menu" onClick={(e) => { e.stopPropagation(); setNavOpen((o) => !o) }}>
-              <motion.span animate={{ rotate: navOpen ? 45 : 0, y: navOpen ? 3 : 0 }} transition={ISLAND_SPRING} />
-              <motion.span animate={{ rotate: navOpen ? -45 : 0, y: navOpen ? -3 : 0 }} transition={ISLAND_SPRING} />
-            </button>
-          )}
+          <div className="nav-corner left" aria-hidden />
+          <div className="nav-corner right" aria-hidden />
+          <motion.nav className="nav" layout transition={ISLAND_SPRING}>
+            <a href="#hero" className="nav-logo" onClick={closeNav}>
+              <span className="mark">S</span>
+              <span className="name">SiteSpot</span>
+            </a>
+            <AnimatePresence initial={false}>
+              {navOpen && !isMobile && (
+                <motion.div
+                  className="nav-links"
+                  layout
+                  initial={{ width: 0, opacity: 0 }}
+                  animate={{ width: 'auto', opacity: 1 }}
+                  exit={{ width: 0, opacity: 0 }}
+                  transition={ISLAND_SPRING}
+                >
+                  {NAV.map((l, i) => (
+                    <motion.a
+                      key={l.id} href={l.href} onClick={closeNav}
+                      className={`nav-link${active === l.id ? ' active' : ''}`}
+                      initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }}
+                      transition={{ ...ISLAND_SPRING, delay: 0.02 * i }}
+                    >{l.label}</motion.a>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
+            {!isMobile && <a href="#kontakt" className="nav-cta" onClick={openContact}>Domluvit schůzku</a>}
+            {isMobile && (
+              <button className="nav-burger" aria-label="Menu" onClick={(e) => { e.stopPropagation(); setNavOpen((o) => !o) }}>
+                <motion.span animate={{ rotate: navOpen ? 45 : 0, y: navOpen ? 3 : 0 }} transition={ISLAND_SPRING} />
+                <motion.span animate={{ rotate: navOpen ? -45 : 0, y: navOpen ? -3 : 0 }} transition={ISLAND_SPRING} />
+              </button>
+            )}
+          </motion.nav>
           <AnimatePresence initial={false}>
             {isMobile && navOpen && (
               <motion.div

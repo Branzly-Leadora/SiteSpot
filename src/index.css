@@ -41,32 +41,29 @@ a { color: inherit; }
 /* global cursor spotlight — follows the mouse across the whole site (except hero) */
 .cursor-spot { position: fixed; top: 0; left: 0; width: 760px; height: 760px; margin: -380px 0 0 -380px; z-index: 4; pointer-events: none; opacity: 0; will-change: transform, opacity; transition: opacity 0.5s ease; background: radial-gradient(circle, color-mix(in oklab, var(--acc) 17%, transparent), transparent 62%); transform: translate(var(--sx, 50vw), var(--sy, 50vh)); }
 
-/* ===== NAV / dynamic island — floating iPhone-style pill ===== */
-.nav-wrap { position: fixed; top: 14px; left: 0; right: 0; z-index: 100; display: flex; justify-content: center; padding: 0 20px; pointer-events: none; }
-.nav-island {
-  pointer-events: auto; position: relative; display: flex; align-items: center; gap: 8px;
-  width: min(760px, 100%); padding: 7px 7px 7px 16px; border-radius: 999px;
-  background: rgba(10,11,15,0.7);
-  border: 1px solid rgba(255,255,255,0.1);
-  backdrop-filter: blur(22px) saturate(1.5); -webkit-backdrop-filter: blur(22px) saturate(1.5);
-  box-shadow: 0 14px 44px -14px rgba(0,0,0,0.85), inset 0 1px 0 rgba(255,255,255,0.06);
-}
-.nav-logo { display: flex; align-items: center; gap: 9px; text-decoration: none; color: var(--text); flex: none; }
-.nav-logo .mark { width: 28px; height: 28px; border-radius: 9px; background: #fff; display: grid; place-items: center; font-size: 14px; font-weight: 800; color: #0B0C10; box-shadow: 0 0 16px rgba(255,255,255,0.25); }
-.nav-logo .name { font-weight: 700; font-size: 15px; letter-spacing: -0.01em; }
-.nav-links.desktop { display: flex; align-items: center; justify-content: center; gap: 2px; flex: 1; }
+/* ===== NAV / dynamic island — attached to the top edge, expands on hover ===== */
+.nav-wrap { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: center; pointer-events: none; }
+.nav-island { pointer-events: auto; position: relative; max-width: calc(100vw - 56px); transform-origin: top center; }
+.nav-corner { position: absolute; top: 0; width: 22px; height: 22px; }
+.nav-corner.left { left: -22px; background: radial-gradient(circle 22px at 0 100%, transparent 21.5px, var(--bg) 22px); }
+.nav-corner.right { right: -22px; background: radial-gradient(circle 22px at 100% 100%, transparent 21.5px, var(--bg) 22px); }
+.nav { display: flex; align-items: center; flex-wrap: nowrap; justify-content: center; gap: 6px; padding: 8px 34px 12px; border-radius: 0 0 24px 24px; background: var(--bg); }
+.nav-logo { display: flex; align-items: center; gap: 9px; text-decoration: none; padding: 4px 4px; color: var(--text); flex: none; }
+.nav-logo .mark { width: 27px; height: 27px; border-radius: 9px; background: #fff; display: grid; place-items: center; font-size: 14px; font-weight: 800; color: #0B0C10; box-shadow: 0 0 16px rgba(255,255,255,0.25); }
+.nav-logo .name { font-weight: 700; font-size: 15px; letter-spacing: -0.01em; white-space: nowrap; }
+.nav-links { display: flex; align-items: center; justify-content: center; gap: 2px; overflow: hidden; flex-wrap: nowrap; white-space: nowrap; }
 .nav-link { white-space: nowrap; text-decoration: none; font-size: 14px; font-weight: 500; padding: 8px 14px; border-radius: 999px; color: var(--muted); background: transparent; transition: color 0.25s ease, background 0.25s ease; }
 .nav-link:hover { color: #fff; }
 .nav-link.active { color: #fff; background: rgba(255,255,255,0.09); }
-.nav-cta { white-space: nowrap; text-decoration: none; font-size: 13.5px; font-weight: 600; padding: 9px 20px; border-radius: 999px; color: #0B0C10; background: var(--text); flex: none; transition: transform 0.25s ease, box-shadow 0.25s ease; }
+.nav-cta { white-space: nowrap; text-decoration: none; font-size: 13.5px; font-weight: 600; padding: 9px 20px; margin-left: 10px; border-radius: 999px; color: #0B0C10; background: var(--text); flex: none; transition: transform 0.25s ease, box-shadow 0.25s ease; }
 .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 6px 24px -6px rgba(255,255,255,0.5); }
-.nav-burger { display: grid; place-items: center; gap: 3px; width: 38px; height: 38px; margin-left: auto; border-radius: 50%; border: 1px solid rgba(255,255,255,0.09); background: rgba(255,255,255,0.05); cursor: pointer; padding: 0; transition: background 0.25s ease; }
+.nav-burger { display: grid; place-items: center; gap: 3px; width: 36px; height: 36px; margin-left: 8px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.09); background: rgba(255,255,255,0.05); cursor: pointer; padding: 0; transition: background 0.25s ease; }
 .nav-burger:hover { background: rgba(255,255,255,0.1); }
 .nav-burger span { display: block; width: 14px; height: 1.5px; background: #C9C9CE; border-radius: 2px; }
 .nav-links.mobile {
   position: absolute; top: calc(100% + 8px); left: 0; right: 0; z-index: 5; transform-origin: top center;
-  display: flex; flex-direction: column; align-items: stretch; gap: 4px;
-  padding: 10px; border-radius: 22px; background: rgba(10,11,15,0.92);
+  display: flex; flex-direction: column; align-items: stretch; gap: 4px; overflow: visible; white-space: normal;
+  padding: 10px; border-radius: 22px; background: rgba(10,11,15,0.94);
   border: 1px solid rgba(255,255,255,0.09); box-shadow: 0 24px 60px -20px rgba(0,0,0,0.85);
   backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px);
 }
@@ -648,9 +645,9 @@ a { color: inherit; }
 .tbar-mask { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
 .tbar-track { display: flex; width: max-content; animation: marquee 32s linear infinite; }
 .tbar-half { display: flex; align-items: center; }
-.tbar-item { display: inline-flex; align-items: center; padding: 0 34px; filter: grayscale(1); opacity: 0.45; transition: filter 0.35s ease, opacity 0.35s ease; }
+.tbar-item { display: inline-flex; align-items: center; padding: 0 42px; filter: grayscale(1); opacity: 0.45; transition: filter 0.35s ease, opacity 0.35s ease; }
 .tbar-item:hover { filter: grayscale(0); opacity: 1; }
-.tbar-item i { font-style: normal; font-size: 17px; font-weight: 700; letter-spacing: -0.01em; color: #C9C9CE; }
+.tbar-item svg { height: 26px !important; }
 
 /* ===== floating CTA ===== */
 .fab { position: fixed; right: 22px; bottom: 22px; z-index: 180; display: inline-flex; align-items: center; gap: 8px; padding: 13px 22px; border-radius: 999px; border: none; background: #fff; color: #0B0C10; font-size: 14px; font-weight: 600; font-family: inherit; cursor: pointer; box-shadow: 0 14px 44px -10px rgba(255,255,255,0.4), 0 6px 18px rgba(0,0,0,0.5); transition: transform 0.25s ease, box-shadow 0.25s ease; }
