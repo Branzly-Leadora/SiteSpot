@@ -27,6 +27,13 @@ export const FramerLogo = ({ h = 20 }) => (
   </svg>
 )
 
+export const GeminiLogo = ({ h = 16 }) => (
+  <svg viewBox="0 0 24 24" style={{ height: h, width: 'auto', display: 'block' }} xmlns="http://www.w3.org/2000/svg" aria-hidden>
+    <defs><linearGradient id="gemg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#4E8DF6" /><stop offset="1" stopColor="#9B72CB" /></linearGradient></defs>
+    <path fill="url(#gemg)" d="M12 24C12 17.373 6.627 12 0 12 6.627 12 12 6.627 12 0c0 6.627 5.373 12 12 12-6.627 0-12 5.373-12 12Z" />
+  </svg>
+)
+
 export const WebflowLogo = ({ h = 14 }) => (
   <svg viewBox="0 0 1080 674" style={{ height: h, width: 'auto', display: 'block' }} xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden>
     <path fill="#4b7bff" fillRule="evenodd" d="M1080 0 735.386 673.684H411.695l144.221-279.203h-6.471C430.464 548.934 252.942 650.61-.0005 673.684v-275.34s161.8135-9.557 256.9385-109.568H-.0005V.0053H288.771V237.515l6.481-.026L413.254.0053h218.39V236.009l6.482-.01L760.555 0H1080Z" clipRule="evenodd" />

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
 import Lenis from 'lenis'
 import SpaceHero from './SpaceHero'
-import { FramerLogo, ClaudeLogo, OpenAILogo, N8nLogo } from './BrandLogos'
+import { FramerLogo, ClaudeLogo, OpenAILogo, N8nLogo, GeminiLogo } from './BrandLogos'
 import { SplineScene } from './SplineScene'
 import {
   Mail, Phone, MapPin, ArrowRight, Star,
@@ -115,12 +115,12 @@ function CaseSpark({ dir }) {
 }
 
 const BENEFITS = [
-  { h: 'Výsledky v číslech', p: 'Měřitelné, každý měsíc.' },
-  { h: 'Rychlost', p: 'První výstupy do 14 dnů.' },
-  { h: 'Jeden partner', p: 'Vše pod jednou střechou.' },
-  { h: 'Bez závazků', p: 'Zůstanete, protože to funguje.' },
-  { h: 'Technologie 2026', p: 'AI, co konkurence nemá.' },
-  { h: 'Lidský přístup', p: 'Mluvíme česky, ne buzzwordy.' },
+  { h: 'Výsledky v číslech', p: 'Měřitelné, každý měsíc.', stat: '+212 %' },
+  { h: 'Rychlost', p: 'První výstupy do 14 dnů.', stat: '14 dní' },
+  { h: 'Jeden partner', p: 'Vše pod jednou střechou.', stat: '1 tým' },
+  { h: 'Bez závazků', p: 'Zůstanete, protože to funguje.', stat: '0 smluv' },
+  { h: 'Technologie 2026', p: 'AI, co konkurence nemá.', stat: '24/7' },
+  { h: 'Lidský přístup', p: 'Mluvíme česky, ne buzzwordy.', stat: '100 %' },
 ]
 
 const TESTIMONIALS = [
@@ -201,6 +201,8 @@ function SolutionMockup({ type }) {
       { name: 'OpenAI', el: <OpenAILogo h={15} /> },
       { name: 'Claude', el: <ClaudeLogo h={16} /> },
       { name: 'n8n', el: <N8nLogo h={12} /> },
+      { name: 'Gemini', el: <GeminiLogo h={15} /> },
+      { name: 'Make', el: <span className="mock-word">Make</span> },
     ]
     return (
       <div className="mock mock-team">
@@ -232,14 +234,122 @@ function SolutionMockup({ type }) {
   return null
 }
 
-// benefits center feature card — original composition, brand mark
+// benefits center feature card — interactive: 3D tilt toward the cursor,
+// two counter-rotating orbit rings with service icons circling the brand mark
+const ORBIT_IN = [Bot, Zap, LineChart]
+const ORBIT_OUT = [Globe, Megaphone, MessageSquare, Target]
 function BenefitCenter() {
+  const ref = useRef(null)
+  const onMove = (e) => {
+    const el = ref.current
+    if (!el) return
+    const r = el.getBoundingClientRect()
+    const px = (e.clientX - r.left) / r.width - 0.5
+    const py = (e.clientY - r.top) / r.height - 0.5
+    el.style.setProperty('--tx', py * -10 + 'deg')
+    el.style.setProperty('--ty', px * 12 + 'deg')
+  }
+  const onLeave = () => {
+    const el = ref.current
+    if (!el) return
+    el.style.setProperty('--tx', '0deg'); el.style.setProperty('--ty', '0deg')
+  }
   return (
-    <div className="ben-center" data-reveal="0">
-      <InViewVideo className="ben-center-video" src={mixkit(34690)} />
-      <span className="ben-center-glow" aria-hidden />
-      <span className="ben-center-mark">S</span>
+    <div className="ben-center" data-reveal="0" ref={ref} onMouseMove={onMove} onMouseLeave={onLeave}>
+      <div className="ben-center-tilt">
+        <InViewVideo className="ben-center-video" src={mixkit(34690)} />
+        <span className="ben-center-glow" aria-hidden />
+        <span className="orbit-ring r1" aria-hidden>
+          {ORBIT_IN.map((C, i) => (
+            <span className="orbit-hold" key={i} style={{ transform: `rotate(${(360 / ORBIT_IN.length) * i}deg)` }}>
+              <span className="orbit-ic" style={{ '--r': `${(360 / ORBIT_IN.length) * i}deg` }}><C size={14} strokeWidth={1.9} /></span>
+            </span>
+          ))}
+        </span>
+        <span className="orbit-ring r2" aria-hidden>
+          {ORBIT_OUT.map((C, i) => (
+            <span className="orbit-hold" key={i} style={{ transform: `rotate(${(360 / ORBIT_OUT.length) * i}deg)` }}>
+              <span className="orbit-ic out" style={{ '--r': `${(360 / ORBIT_OUT.length) * i}deg` }}><C size={14} strokeWidth={1.9} /></span>
+            </span>
+          ))}
+        </span>
+        <span className="ben-center-mark">S</span>
+        <span className="ben-center-cap">Jedno AI jádro,<br />všechny kanály</span>
+      </div>
     </div>
+  )
+}
+
+// where contact-form submissions land (FormSubmit.co relays to this inbox —
+// first submission sends an activation e-mail there that must be confirmed once)
+const CONTACT_EMAIL = 'hello@sitespot.cz'
+
+// contact modal — glassy dialog with a 3-field form, sent via FormSubmit AJAX (no backend needed)
+function ContactModal({ open, onClose }) {
+  const [state, setState] = useState('idle') // idle | sending | ok | err
+  useEffect(() => {
+    if (!open) return
+    const onKey = (e) => { if (e.key === 'Escape') onClose() }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [open, onClose])
+  useEffect(() => { if (open) setState('idle') }, [open])
+  const submit = async (e) => {
+    e.preventDefault()
+    const data = Object.fromEntries(new FormData(e.target))
+    setState('sending')
+    try {
+      const res = await fetch(`https://formsubmit.co/ajax/${CONTACT_EMAIL}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({ ...data, _subject: 'Nová poptávka ze sitespot.cz', _captcha: 'false', _template: 'table' }),
+      })
+      if (!res.ok) throw new Error()
+      setState('ok')
+    } catch {
+      setState('err')
+    }
+  }
+  return (
+    <AnimatePresence>
+      {open && (
+        <motion.div className="cmodal-backdrop" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose}>
+          <motion.div
+            className="cmodal" role="dialog" aria-modal="true" aria-label="Domluvit schůzku"
+            initial={{ opacity: 0, y: 34, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 20, scale: 0.97 }}
+            transition={{ type: 'spring', stiffness: 260, damping: 26 }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button className="cmodal-x" aria-label="Zavřít" onClick={onClose}><X size={17} strokeWidth={2.2} /></button>
+            {state === 'ok' ? (
+              <div className="cmodal-ok">
+                <span className="cmodal-ok-ic"><CheckCircle2 size={44} strokeWidth={1.6} /></span>
+                <h3>Díky, zpráva je u nás!</h3>
+                <p>Ozveme se vám do 24 hodin a domluvíme termín konzultace.</p>
+                <button className="cmodal-send" onClick={onClose}>Zavřít</button>
+              </div>
+            ) : (
+              <>
+                <div className="cmodal-head">
+                  <span className="mark">S</span>
+                  <h3>Domluvit schůzku</h3>
+                  <p>30 minut zdarma. Napište nám, co řešíte, a ozveme se do 24 hodin.</p>
+                </div>
+                <form className="cmodal-form" onSubmit={submit}>
+                  <label>Jméno<input name="name" required placeholder="Jan Novák" autoComplete="name" /></label>
+                  <label>E-mail<input name="email" type="email" required placeholder="jan@firma.cz" autoComplete="email" /></label>
+                  <label>Co potřebujete?<textarea name="message" required rows={4} placeholder="Např. potřebujeme nový web a automatizovat zpracování poptávek…" /></label>
+                  <button className="cmodal-send" type="submit" disabled={state === 'sending'}>
+                    {state === 'sending' ? 'Odesílám…' : 'Odeslat poptávku'} {state !== 'sending' && <ArrowRight size={16} strokeWidth={2.2} />}
+                  </button>
+                  {state === 'err' && <p className="cmodal-err">Odeslání se nepovedlo. Napište nám přímo na <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.</p>}
+                </form>
+              </>
+            )}
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   )
 }
 
@@ -288,6 +398,8 @@ function InViewVideo({ src, className, poster }) {
 
 export default function App() {
   const [navOpen, setNavOpen] = useState(false)
+  const [contactOpen, setContactOpen] = useState(false)
+  const openContact = (e) => { e.preventDefault(); e.stopPropagation(); setContactOpen(true) }
   const [isMobile, setIsMobile] = useState(false)
   const [active, setActive] = useState('')
   const [tIndex, setTIndex] = useState(0)
@@ -718,7 +830,7 @@ export default function App() {
             <h1>Proměníme váš web<br />ve stroj na zákazníky.</h1>
             <p>Stavíme weby, které prodávají, a AI automatizace, které šetří čas a peníze — bez zbytečné složitosti.</p>
             <div className="hero-actions">
-              <Btn href="#kontakt" className="btn-light">Nezávazná konzultace</Btn>
+              <Btn href="#kontakt" className="btn-light" onClick={openContact}>Nezávazná konzultace</Btn>
               <Btn href="#sluzby" className="btn-ghost">Naše služby</Btn>
             </div>
           </div>
@@ -726,7 +838,7 @@ export default function App() {
             <div className="corner left" aria-hidden /><div className="corner right" aria-hidden />
             <div className="notch-inner">
               <span className="brand" title="Framer" aria-label="Framer"><FramerLogo h={18} /></span>
-              <Btn href="#kontakt" className="notch-cta">Domluvit schůzku</Btn>
+              <Btn href="#kontakt" className="notch-cta" onClick={openContact}>Domluvit schůzku</Btn>
               <span className="brand" title="Claude" aria-label="Claude"><ClaudeLogo h={20} /></span>
             </div>
           </div>
@@ -804,7 +916,7 @@ export default function App() {
             <div className="spline-copy">
               <h2>Živý AI agent,<br />který pracuje za vás.</h2>
               <p>Postavíme vám vlastní AI systém napojený na vaše nástroje — vyřizuje dotazy, třídí poptávky a jedná sám. Nonstop, bez přestávek, bez chyb z únavy.</p>
-              <Btn href="#kontakt" className="btn-light">Chci svého AI agenta</Btn>
+              <Btn href="#kontakt" className="btn-light" onClick={openContact}>Chci svého AI agenta</Btn>
             </div>
             <LazySpline scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode" />
           </div>
@@ -827,10 +939,10 @@ export default function App() {
                 const abs = Math.abs(off)
                 const style = {
                   transform: `translateX(${off * 58}%) translateZ(${-abs * 170}px) rotateY(${off * -34}deg) scale(${1 - abs * 0.1})`,
-                  opacity: abs > 1 ? 0 : 1 - abs * 0.12,
+                  opacity: abs > 1 ? 0 : 1 - abs * 0.04,
                   zIndex: 10 - abs,
                   pointerEvents: abs > 1 ? 'none' : 'auto',
-                  filter: abs > 0 ? 'brightness(0.82)' : 'none',
+                  filter: abs > 0 ? 'brightness(0.94)' : 'none',
                 }
                 return (
                   <div className={`case3d-card card case spot-card trend-${c.trend}${off === 0 ? ' is-active' : ''}`} style={style} key={i} onClick={() => setCaseIdx(i)}>
@@ -875,7 +987,10 @@ export default function App() {
           <div className="grid g-ben-bento">
             {BENEFITS.map((b, i) => (
               <div className={`benefit bento-pos-${i} spot-card`} data-reveal={(i % 3) * 60} key={i}>
-                <div className="ben-ic"><KIcon C={BENEFIT_ICONS[i]} size={20} color="#fff" /></div>
+                <div className="ben-top">
+                  <div className="ben-ic"><KIcon C={BENEFIT_ICONS[i]} size={20} color="#fff" /></div>
+                  <span className="ben-stat">{b.stat}</span>
+                </div>
                 <h3>{b.h}</h3>
                 <p>{b.p}</p>
               </div>
@@ -957,7 +1072,7 @@ export default function App() {
                 <div className="feat-list">
                   {pl.feats.map((f, j) => <div className="row" key={j}><span className="ok"><Check size={13} strokeWidth={3} /></span>{f}</div>)}
                 </div>
-                <Btn href="#kontakt" className={`plan-cta mt-auto${pl.featured ? ' primary' : ''}`}>{pl.cta}</Btn>
+                <Btn href="#kontakt" className={`plan-cta mt-auto${pl.featured ? ' primary' : ''}`} onClick={openContact}>{pl.cta}</Btn>
               </div>
             ))}
           </div>
@@ -1009,7 +1124,7 @@ export default function App() {
         <div className="inner">
           <h2 data-split="1">Přestaňte web jen mít.<br />Nechte ho <span className="grad">vydělávat</span>.</h2>
           <p data-reveal="150">30 minut, konkrétní doporučení pro váš byznys, žádné závazky. Nejhorší, co se může stát? Odnesete si nápady zdarma.</p>
-          <a className="go hbtn" href="mailto:hello@sitespot.cz" data-reveal="250"><span className="hbtn-label">Domluvit konzultaci zdarma</span><span className="hbtn-arrow" aria-hidden><ArrowRight size={18} strokeWidth={2} /></span></a>
+          <a className="go hbtn" href="#kontakt" onClick={openContact} data-reveal="250"><span className="hbtn-label">Domluvit konzultaci zdarma</span><span className="hbtn-arrow" aria-hidden><ArrowRight size={18} strokeWidth={2} /></span></a>
         </div>
       </section>
 
@@ -1044,6 +1159,8 @@ export default function App() {
           <div className="footer-note"><span>© 2026 SiteSpot s.r.o. Všechna práva vyhrazena.</span><span>Vyrobeno v Praze ⚡</span></div>
         </div>
       </footer>
+
+      <ContactModal open={contactOpen} onClose={() => setContactOpen(false)} />
     </div>
   )
 }
