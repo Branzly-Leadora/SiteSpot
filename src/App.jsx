@@ -223,10 +223,13 @@ const TESTIMONIALS = [
   { quote: 'Nový web se zaplatil za šest týdnů. Konečně přesně vím, kam jde každá koruna z marketingu a co mi vrací.', name: 'Petr Novotný', role: 'CEO, Fitbox.cz' },
 ]
 
+// Published prices are the small-firm "od" (starting-at) floor only.
+// The full price matrix (larger client bands) stays internal — final fixed
+// price is always given by a human after a short brief, never auto-generated.
 const PLANS = [
-  { tier: 'Start', price: 'od 29 000 Kč', per: 'jednorázově', desc: 'Pro firmy, které potřebují web, co konečně prodává.', feats: ['Landing page nebo firemní web', 'Texty a copywriting v ceně', 'SEO základ a analytika', 'Spuštění do 3 týdnů', '30 dní podpory zdarma'], cta: 'Chci začít' },
-  { tier: 'Růst', price: 'od 19 000 Kč', per: 'měsíčně, bez závazku', desc: 'Pro firmy, které chtějí předvídatelný přísun poptávek.', feats: ['Vše z tarifu Start', 'Správa kampaní (Google + Meta)', '2 AI automatizace na míru', 'Průběžná optimalizace webu', 'Měsíční report + konzultace'], cta: 'Chci růst', featured: true },
-  { tier: 'Scale', price: 'individuálně', per: 'dle rozsahu', desc: 'Pro firmy, kde je online hlavní růstový kanál.', feats: ['Dedikovaný tým', 'Neomezené automatizace', 'Kompletní marketing na klíč', 'Garantovaná SLA odezva', 'Čtvrtletní strategická roadmapa'], cta: 'Domluvit se' },
+  { tier: 'Starter', price: 'od 16 000 Kč', per: 'jednorázově', brief: 'finální cena po krátkém briefu', desc: 'Pro živnostníky a malé firmy, co potřebují web, který konečně přivádí zákazníky.', feats: ['Landing page nebo malý firemní web', 'Texty a copywriting v ceně', 'SEO základ a analytika', 'Spuštění do 3 týdnů', '30 dní podpory zdarma'], cta: 'Chci web' },
+  { tier: 'Business', price: 'od 29 000 Kč', per: 'jednorázově', brief: 'finální cena po krátkém briefu', desc: 'Web na míru s prvními automatizacemi a marketingovým základem.', feats: ['Vícestránkový web na míru', 'Napojení na rezervace nebo CRM', '1 AI automatizace nebo chatbot', 'SEO a měření konverzí', 'Onboarding a zaškolení'], cta: 'Chci víc', featured: true },
+  { tier: 'Full Stack', price: 'od 19 000 Kč', per: 'měsíčně, bez závazku', brief: 'finální cena po krátkém briefu', desc: 'Web, kampaně i automatizace pod jednou střechou — pro firmy, kde je online hlavní růstový kanál.', feats: ['Vše z tarifu Business', 'Správa kampaní (Google + Meta)', 'AI automatizace na míru', 'Průběžná optimalizace a A/B testy', 'Měsíční report + konzultace'], cta: 'Chci růst' },
 ]
 
 const CMP_BAD = ['Pomalé, ruční procesy', 'Náchylné k lidským chybám', 'Vyžaduje více lidí', 'Těžko škáluje bez náboru', 'Omezené na pracovní dobu', 'Rozhodování od oka a s prodlevami', 'Rutina zpomaluje tým', 'Vícekrokové ruční předávky', 'Pomalejší reakční doby', 'Ruční follow-upy a evidence']
@@ -1502,7 +1505,7 @@ export default function App() {
           <div className="head">
             <div className="eyebrow" data-reveal="0"><span className="dot" />Ceník</div>
             <h2 data-split="1">Férové ceny, žádná překvapení</h2>
-            <p className="sub" data-reveal="120">Cenu znáte vždy předem. Fixně, písemně a bez skrytých položek.</p>
+            <p className="sub" data-reveal="120">Ceny startují na férové úrovni pro malé firmy. Finální pevnou cenu dostanete po krátkém briefu — písemně a bez skrytých položek.</p>
           </div>
           <div className="grid g-price">
             {PLANS.map((pl, i) => (
@@ -1511,6 +1514,7 @@ export default function App() {
                 <div className="tier"><KIcon C={TIER_ICONS[i]} size={20} color={pl.featured ? '#E8EAED' : '#C9C9CE'} /> {pl.tier}</div>
                 <div className="price">{pl.price}</div>
                 <div className="per">{pl.per}</div>
+                {pl.brief && <div className="brief">{pl.brief}</div>}
                 <p className="desc">{pl.desc}</p>
                 <hr />
                 <div className="feat-list">
@@ -1520,6 +1524,7 @@ export default function App() {
               </div>
             ))}
           </div>
+          <p className="price-note" data-reveal="120">Uvedené ceny jsou orientační od-ceny pro malé firmy. Podle rozsahu a velikosti projektu vám po krátkém briefu pošleme pevnou nabídku — písemně, bez skrytých položek a bez závazku.</p>
         </div>
       </section>
 
