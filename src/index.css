@@ -58,9 +58,6 @@ a { color: inherit; }
 .nav-cta { white-space: nowrap; text-decoration: none; font-size: 13.5px; font-weight: 600; padding: 9px 20px; margin-left: 10px; border-radius: 999px; color: #0B0C10; background: var(--text); flex: none; transition: transform 0.25s ease, box-shadow 0.25s ease; }
 .nav-links .nav-cta { margin-right: 2px; }
 .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 6px 24px -6px rgba(255,255,255,0.5); }
-.nav-burger { display: grid; place-items: center; gap: 3px; width: 36px; height: 36px; margin-left: 8px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.09); background: rgba(255,255,255,0.05); cursor: pointer; padding: 0; transition: background 0.25s ease; }
-.nav-burger:hover { background: rgba(255,255,255,0.1); }
-.nav-burger span { display: block; width: 14px; height: 1.5px; background: #C9C9CE; border-radius: 2px; }
 .nav-links.mobile {
   position: absolute; top: calc(100% + 8px); left: 0; right: 0; z-index: 5; transform-origin: top center;
   display: flex; flex-direction: column; align-items: stretch; gap: 4px; overflow: visible; white-space: normal;
@@ -123,7 +120,13 @@ a { color: inherit; }
 .notch-cta { justify-self: center; display: inline-flex; align-items: center; padding: 9px 22px; border-radius: 999px; background: var(--text); color: #0B0C10; font-size: 13.5px; font-weight: 600; text-decoration: none; white-space: nowrap; transition: transform 0.25s ease, box-shadow 0.25s ease; }
 .notch-cta:hover { transform: translateY(-1px); box-shadow: 0 6px 22px -6px rgba(255,255,255,0.5); }
 @media (max-width: 640px) {
-  .notch-inner { padding: 0 18px; }
+  /* let the bottom banner fit fully on narrow screens — it used to run off
+     the right edge (Prozkoumat link + separator got clipped) */
+  .hero-notch { height: auto; max-width: calc(100% - 24px); }
+  .notch-inner { flex-wrap: wrap; justify-content: center; gap: 6px 12px; padding: 9px 18px; }
+  .notch-live { font-size: 12px; }
+  .notch-sep { display: none; }
+  .notch-scroll { font-size: 12px; }
   .notch-cta { padding: 8px 16px; font-size: 12.5px; }
 }
 

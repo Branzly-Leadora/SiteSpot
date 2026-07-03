@@ -1116,7 +1116,16 @@ export default function App() {
           <div className="nav-corner left" aria-hidden />
           <div className="nav-corner right" aria-hidden />
           <motion.nav className="nav" layout transition={ISLAND_SPRING}>
-            <a href="#hero" className="nav-logo" onClick={closeNav}>
+            <a
+              href="#hero"
+              className="nav-logo"
+              onClick={(e) => {
+                // on mobile the logo IS the menu toggle — stop the global
+                // anchor-scroll handler from hijacking the click and closing it
+                if (isMobile) { e.preventDefault(); e.stopPropagation(); setNavOpen((o) => !o) }
+                else closeNav()
+              }}
+            >
               <span className="mark">S</span>
               <AnimatePresence initial={false}>
                 {navOpen && !isMobile && (
@@ -1152,12 +1161,6 @@ export default function App() {
                 </motion.div>
               )}
             </AnimatePresence>
-            {isMobile && (
-              <button className="nav-burger" aria-label="Menu" onClick={(e) => { e.stopPropagation(); setNavOpen((o) => !o) }}>
-                <motion.span animate={{ rotate: navOpen ? 45 : 0, y: navOpen ? 3 : 0 }} transition={ISLAND_SPRING} />
-                <motion.span animate={{ rotate: navOpen ? -45 : 0, y: navOpen ? -3 : 0 }} transition={ISLAND_SPRING} />
-              </button>
-            )}
           </motion.nav>
           <AnimatePresence initial={false}>
             {isMobile && navOpen && (
