@@ -147,7 +147,7 @@ function BenMini({ type }) {
     )
   }
   if (type === 'team') {
-    const team = [['MK', 'Marek', 'Strategie', '#3FCF8E'], ['LT', 'Lucie', 'Design', '#5B9BFF'], ['PV', 'Petr', 'Vývoj', '#E0A93E']]
+    const team = [['OŽ', 'Oliver', 'Strategie', '#3FCF8E'], ['DS', 'David', 'Design', '#5B9BFF'], ['MH', 'Max', 'Vývoj', '#E0A93E']]
     return (
       <div className="bmini bmini-team">
         {team.map(([ini, n, r, c], i) => (
