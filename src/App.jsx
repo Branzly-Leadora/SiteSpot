@@ -1208,7 +1208,8 @@ export default function App() {
           <div className="hero-notch">
             <div className="corner left" aria-hidden /><div className="corner right" aria-hidden />
             <div className="notch-inner">
-              <span className="notch-live"><span className="live-dot" />Volné kapacity — přijímáme projekty na Q3</span>
+              {/* current quarter computed from the visitor's date — never goes stale */}
+              <span className="notch-live"><span className="live-dot" />Volné kapacity — přijímáme projekty na Q{Math.floor(new Date().getMonth() / 3) + 1}</span>
               <span className="notch-sep" aria-hidden />
               <a className="notch-scroll" href="#sluzby" aria-label="Scrollovat na služby">
                 Prozkoumat <span className="notch-chev" aria-hidden>↓</span>
