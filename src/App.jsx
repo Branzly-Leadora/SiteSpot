@@ -1118,7 +1118,17 @@ export default function App() {
           <motion.nav className="nav" layout transition={ISLAND_SPRING}>
             <a href="#hero" className="nav-logo" onClick={closeNav}>
               <span className="mark">S</span>
-              <span className="name">SiteSpot</span>
+              <AnimatePresence initial={false}>
+                {navOpen && !isMobile && (
+                  <motion.span
+                    className="name"
+                    initial={{ opacity: 0, width: 0, marginLeft: 0 }}
+                    animate={{ opacity: 1, width: 'auto', marginLeft: 9 }}
+                    exit={{ opacity: 0, width: 0, marginLeft: 0 }}
+                    transition={ISLAND_SPRING}
+                  >SiteSpot</motion.span>
+                )}
+              </AnimatePresence>
             </a>
             <AnimatePresence initial={false}>
               {navOpen && !isMobile && (
@@ -1138,10 +1148,10 @@ export default function App() {
                       transition={{ ...ISLAND_SPRING, delay: 0.02 * i }}
                     >{l.label}</motion.a>
                   ))}
+                  <a href="#kontakt" className="nav-cta" onClick={openContact}>Domluvit schůzku</a>
                 </motion.div>
               )}
             </AnimatePresence>
-            {!isMobile && <a href="#kontakt" className="nav-cta" onClick={openContact}>Domluvit schůzku</a>}
             {isMobile && (
               <button className="nav-burger" aria-label="Menu" onClick={(e) => { e.stopPropagation(); setNavOpen((o) => !o) }}>
                 <motion.span animate={{ rotate: navOpen ? 45 : 0, y: navOpen ? 3 : 0 }} transition={ISLAND_SPRING} />
@@ -1198,9 +1208,11 @@ export default function App() {
           <div className="hero-notch">
             <div className="corner left" aria-hidden /><div className="corner right" aria-hidden />
             <div className="notch-inner">
-              <span className="brand" title="Framer" aria-label="Framer"><FramerLogo h={18} /></span>
-              <Btn href="#kontakt" className="notch-cta" onClick={openContact}>Domluvit schůzku</Btn>
-              <span className="brand" title="Claude" aria-label="Claude"><ClaudeLogo h={20} /></span>
+              <span className="notch-live"><span className="live-dot" />Volné kapacity — přijímáme projekty na Q3</span>
+              <span className="notch-sep" aria-hidden />
+              <a className="notch-scroll" href="#sluzby" aria-label="Scrollovat na služby">
+                Prozkoumat <span className="notch-chev" aria-hidden>↓</span>
+              </a>
             </div>
           </div>
         </motion.div>

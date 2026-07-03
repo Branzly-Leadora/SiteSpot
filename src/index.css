@@ -47,15 +47,16 @@ a { color: inherit; }
 .nav-corner { position: absolute; top: 0; width: 22px; height: 22px; }
 .nav-corner.left { left: -22px; background: radial-gradient(circle 22px at 0 100%, transparent 21.5px, var(--bg) 22px); }
 .nav-corner.right { right: -22px; background: radial-gradient(circle 22px at 100% 100%, transparent 21.5px, var(--bg) 22px); }
-.nav { display: flex; align-items: center; flex-wrap: nowrap; justify-content: center; gap: 6px; padding: 8px 34px 12px; border-radius: 0 0 24px 24px; background: var(--bg); }
-.nav-logo { display: flex; align-items: center; gap: 9px; text-decoration: none; padding: 4px 4px; color: var(--text); flex: none; }
+.nav { display: flex; align-items: center; flex-wrap: nowrap; justify-content: center; gap: 6px; padding: 8px 30px 12px; border-radius: 0 0 24px 24px; background: var(--bg); }
+.nav-logo { display: flex; align-items: center; gap: 0; text-decoration: none; padding: 4px 4px; color: var(--text); flex: none; }
 .nav-logo .mark { width: 27px; height: 27px; border-radius: 9px; background: #fff; display: grid; place-items: center; font-size: 14px; font-weight: 800; color: #0B0C10; box-shadow: 0 0 16px rgba(255,255,255,0.25); }
-.nav-logo .name { font-weight: 700; font-size: 15px; letter-spacing: -0.01em; white-space: nowrap; }
+.nav-logo .name { font-weight: 700; font-size: 15px; letter-spacing: -0.01em; white-space: nowrap; overflow: hidden; display: inline-block; }
 .nav-links { display: flex; align-items: center; justify-content: center; gap: 2px; overflow: hidden; flex-wrap: nowrap; white-space: nowrap; }
 .nav-link { white-space: nowrap; text-decoration: none; font-size: 14px; font-weight: 500; padding: 8px 14px; border-radius: 999px; color: var(--muted); background: transparent; transition: color 0.25s ease, background 0.25s ease; }
 .nav-link:hover { color: #fff; }
 .nav-link.active { color: #fff; background: rgba(255,255,255,0.09); }
 .nav-cta { white-space: nowrap; text-decoration: none; font-size: 13.5px; font-weight: 600; padding: 9px 20px; margin-left: 10px; border-radius: 999px; color: #0B0C10; background: var(--text); flex: none; transition: transform 0.25s ease, box-shadow 0.25s ease; }
+.nav-links .nav-cta { margin-right: 2px; }
 .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 6px 24px -6px rgba(255,255,255,0.5); }
 .nav-burger { display: grid; place-items: center; gap: 3px; width: 36px; height: 36px; margin-left: 8px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.09); background: rgba(255,255,255,0.05); cursor: pointer; padding: 0; transition: background 0.25s ease; }
 .nav-burger:hover { background: rgba(255,255,255,0.1); }
@@ -110,7 +111,13 @@ a { color: inherit; }
 .hero-notch .corner { position: absolute; bottom: 0; width: 20px; height: 20px; }
 .hero-notch .corner.left { left: -20px; background: radial-gradient(circle 20px at 0 0, transparent 19.5px, var(--bg) 20px); }
 .hero-notch .corner.right { right: -20px; background: radial-gradient(circle 20px at 100% 0, transparent 19.5px, var(--bg) 20px); }
-.notch-inner { display: flex; align-items: center; justify-content: center; gap: 15px; padding: 0 20px; }
+.notch-inner { display: flex; align-items: center; justify-content: center; gap: 16px; padding: 0 26px; }
+.notch-live { display: inline-flex; align-items: center; gap: 9px; font-size: 13px; font-weight: 500; color: #C6CAD3; white-space: nowrap; }
+.notch-sep { width: 1px; height: 18px; background: rgba(255,255,255,0.12); }
+.notch-scroll { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 600; color: var(--text); text-decoration: none; white-space: nowrap; transition: color 0.25s ease; }
+.notch-scroll:hover { color: #fff; }
+.notch-chev { display: inline-block; animation: chevBounce 1.8s ease-in-out infinite; }
+@keyframes chevBounce { 0%, 100% { transform: translateY(-1px); } 50% { transform: translateY(3px); } }
 .brand { display: inline-flex; align-items: center; filter: grayscale(1); opacity: 0.5; transition: filter 0.35s ease, opacity 0.35s ease; }
 .brand:hover { filter: grayscale(0); opacity: 1; }
 .notch-cta { justify-self: center; display: inline-flex; align-items: center; padding: 9px 22px; border-radius: 999px; background: var(--text); color: #0B0C10; font-size: 13.5px; font-weight: 600; text-decoration: none; white-space: nowrap; transition: transform 0.25s ease, box-shadow 0.25s ease; }
