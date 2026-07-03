@@ -34,11 +34,29 @@ function Btn({ className = '', children, ...rest }) {
   )
 }
 
-// LinkedIn glyph — inline so we don't depend on the icon set shipping one
-function LinkedinIcon({ size = 15 }) {
+// Brand glyphs — inline so we don't depend on the icon set shipping them
+function LinkedinIcon({ size = 16 }) {
   return (
     <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor" aria-hidden="true">
       <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z" />
+    </svg>
+  )
+}
+
+function InstagramIcon({ size = 16 }) {
+  return (
+    <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="2" y="2" width="20" height="20" rx="5.5" />
+      <circle cx="12" cy="12" r="4.2" />
+      <circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none" />
+    </svg>
+  )
+}
+
+function XIcon({ size = 15 }) {
+  return (
+    <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor" aria-hidden="true">
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
     </svg>
   )
 }
@@ -1457,13 +1475,17 @@ export default function App() {
           </div>
           <div className="grid g3 team-grid">
             {/* real photos live in public/media/*.jpg; they replace the initials automatically.
-                li: LinkedIn profile URL — '#' renders a disabled placeholder until a real link is set. */}
+                socials: profile URLs — '#' renders a disabled placeholder until a real link is set. */}
             {[
-              { n: 'Oliver Žaigla', img: '/media/oliver.jpg', role: 'Spoluzakladatel · Strategie', bio: 'Vede strategii, akvizici a vztahy s klienty.', chips: ['Strategie', 'Leady', 'Growth'], li: '#' },
-              { n: 'David Šák', img: '/media/david.jpg', role: 'Spoluzakladatel · Design', bio: 'Navrhuje weby a značky, které prodávají.', chips: ['Web design', 'UX/UI', 'Brand'], li: '#' },
-              { n: 'Max Hrubý', img: '/media/max.jpg', role: 'Spoluzakladatel · Vývoj & AI', bio: 'Staví weby, AI agenty a automatizace.', chips: ['Vývoj', 'AI agenti', 'Automatizace'], li: '#' },
+              { n: 'Oliver Žaigla', img: '/media/oliver.jpg', role: 'Strategie', bio: 'Vede strategii, akvizici a vztahy s klienty.', chips: ['Strategie', 'Leady', 'Growth'], li: '#', ig: '#', x: '#' },
+              { n: 'David Sak', img: '/media/david.jpg', role: 'Design', bio: 'Navrhuje weby a značky, které prodávají.', chips: ['Web design', 'UX/UI', 'Brand'], li: '#', ig: '#', x: '#' },
+              { n: 'Max Hrubý', img: '/media/max.jpg', role: 'Vývoj & AI', bio: 'Staví weby, AI agenty a automatizace.', chips: ['Vývoj', 'AI agenti', 'Automatizace'], li: '#', ig: '#', x: '#' },
             ].map((t, i) => {
-              const hasLink = t.li && t.li !== '#'
+              const socials = [
+                { key: 'li', label: 'LinkedIn', url: t.li, Icon: LinkedinIcon },
+                { key: 'ig', label: 'Instagram', url: t.ig, Icon: InstagramIcon },
+                { key: 'x', label: 'X', url: t.x, Icon: XIcon },
+              ]
               return (
                 <div className="team-card spot-card" data-reveal={i * 100} key={t.n}>
                   <div className="team-photo">
@@ -1472,20 +1494,28 @@ export default function App() {
                   </div>
                   <div className="team-meta">
                     <b>{t.n}</b>
-                    <span className="team-role">{t.role}</span>
+                    <span className="team-role">Spoluzakladatel · {t.role}</span>
                     <span className="team-sub">{t.bio}</span>
                   </div>
                   <div className="team-chips">
                     {t.chips.map((c) => <span key={c}>{c}</span>)}
                   </div>
-                  <a
-                    className={`team-link${hasLink ? '' : ' is-disabled'}`}
-                    href={t.li}
-                    {...(hasLink ? { target: '_blank', rel: 'noopener noreferrer' } : { 'aria-disabled': true, tabIndex: -1, onClick: (e) => e.preventDefault() })}
-                    aria-label={`${t.n} na LinkedIn`}
-                  >
-                    <LinkedinIcon /> LinkedIn
-                  </a>
+                  <div className="team-social">
+                    {socials.map(({ key, label, url, Icon }) => {
+                      const active = url && url !== '#'
+                      return (
+                        <a
+                          key={key}
+                          className={`tsoc${active ? '' : ' is-disabled'}`}
+                          href={url}
+                          {...(active ? { target: '_blank', rel: 'noopener noreferrer' } : { 'aria-disabled': true, tabIndex: -1, onClick: (e) => e.preventDefault() })}
+                          aria-label={`${t.n} — ${label}`}
+                        >
+                          <Icon />
+                        </a>
+                      )
+                    })}
+                  </div>
                 </div>
               )
             })}
