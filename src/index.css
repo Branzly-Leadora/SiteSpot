@@ -640,13 +640,21 @@ a { color: inherit; }
 .team-photo { position: relative; width: 148px; height: 148px; border-radius: 50%; padding: 3px; background: conic-gradient(from 140deg, rgba(255,255,255,0.55), rgba(255,255,255,0.12), rgba(255,255,255,0.55)); }
 .team-photo img { position: absolute; inset: 3px; z-index: 1; width: calc(100% - 6px); height: calc(100% - 6px); border-radius: 50%; object-fit: cover; }
 .team-init { display: grid; place-items: center; width: 100%; height: 100%; border-radius: 50%; background: #0E1015; font-size: 42px; font-weight: 700; letter-spacing: 0.02em; color: #EAF0FF; }
-.team-meta { margin-top: 22px; display: flex; flex-direction: column; gap: 4px; }
+.team-meta { margin-top: 20px; display: flex; flex-direction: column; align-items: center; gap: 3px; }
 .team-meta b { font-size: 21px; font-weight: 600; letter-spacing: -0.01em; }
-.team-meta span { font-size: 14px; color: #8A8E99; }
-.team-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 22px; }
+.team-meta .team-role { font-size: 14px; font-weight: 600; color: var(--acc); letter-spacing: 0.01em; }
+.team-meta .team-sub { font-size: 13px; font-weight: 400; color: #8A8E99; line-height: 1.45; max-width: 240px; margin-top: 4px; }
+.team-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 18px; }
 .team-chips span { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 999px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.11); font-size: 12.5px; font-weight: 600; color: #C9C9CE; }
+.team-link { margin-top: 20px; display: inline-flex; align-items: center; gap: 8px; padding: 9px 17px; border-radius: 999px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); color: #EAF0FF; font-size: 13px; font-weight: 600; text-decoration: none; transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease; }
+.team-link svg { color: #9CA1AC; transition: color 0.25s ease; }
+.team-link:hover { background: rgba(255,255,255,0.09); border-color: rgba(255,255,255,0.28); transform: translateY(-1px); }
+.team-link:hover svg { color: #EAF0FF; }
+.team-link.is-disabled { opacity: 0.55; cursor: default; }
+.team-link.is-disabled:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.12); transform: none; }
 @media (max-width: 860px) {
-  .team-card { max-width: 380px; margin: 0 auto; width: 100%; }
+  .team-card { max-width: 400px; margin: 0 auto; width: 100%; padding: 34px 22px 30px; }
+  .team-photo { width: 128px; height: 128px; }
 }
 
 /* ===== scroll progress ===== */
