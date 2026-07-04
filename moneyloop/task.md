@@ -34,6 +34,10 @@ You have NO permission to send email, publish to prod, or spend paid APIs. Draft
 
 3b. **QA gate — every check MUST pass before deploying** (the 2026-07-01 run failed all four
    and its demos had to be repaired by hand):
+   From the repo root run `node moneyloop/scripts/qa-check.mjs <slug>` — it must print PASS
+   (exit 0). It automates the checks below (leftovers, placeholders, dead links, images,
+   review labels, draft rules). Fix every ✗ and re-run until PASS; treat ⚠ warnings as
+   judgment calls you must resolve honestly. The manual spec:
    - Zero template leftovers: grep the whole copy for the template's original business name,
      phone, e-mail and Instagram handle (e.g. "Aurea", "glowbar"). 0 matches required.
    - Subpages: either fully personalize menu/o-nas/galerie/kontakt.html too, or convert the
