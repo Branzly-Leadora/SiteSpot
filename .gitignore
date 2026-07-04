@@ -12,3 +12,15 @@ npm-debug.log*
 # OS
 .DS_Store
 Thumbs.db
+
+moneyloop/.env
+moneyloop/previews/
+moneyloop/leads-input.csv
+moneyloop/queue/leads.jsonl
+moneyloop/queue/drafts/
+
+# Local tooling / session artifacts
+_screenshots/
+.playwright-mcp/
+graphify-out/
+osm.json
