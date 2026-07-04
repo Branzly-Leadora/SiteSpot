@@ -67,6 +67,25 @@ function esc(str = '') {
     .slice(0, 1000); // max délka pole
 }
 
+// ── Forward leadu do AI Business System (engine.zaigla.com) ─
+// Veřejný inquiry endpoint enginu — lead se objeví v operator dashboardu.
+// Fire-and-forget: selhání enginu nikdy neblokuje odeslání e-mailů.
+const ENGINE_URL     = process.env.ENGINE_URL || 'https://engine.zaigla.com';
+const ENGINE_SITE_ID = process.env.ENGINE_SITE_ID || 'sitespot-inbound';
+
+async function forwardToEngine({ name, email, phone, message, meta }) {
+  try {
+    await fetch(`${ENGINE_URL}/api/sites/${ENGINE_SITE_ID}/inquiry`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ name, email, phone: phone || '', message: message || '', meta: meta || {} }),
+      signal: AbortSignal.timeout(5000),
+    });
+  } catch (err) {
+    console.warn('Engine forward failed:', err.message);
+  }
+}
+
 // ── GET /api/locale ──────────────────────────────────────
 // Vrátí zemi uživatele podle jeho IP adresy
 app.get('/api/locale', async (req, res) => {
@@ -95,7 +114,8 @@ app.post('/api/contact', async (req, res) => {
     return res.status(429).json({ ok: false, message: 'Příliš mnoho zpráv. Zkuste to za hodinu.' });
   }
 
-  const { name, email, company, message } = req.body;
+  const { name, email, company, message, website, type } = req.body;
+  const isDemoLead = type === 'free-demo';
 
   // Validace
   if (!name?.trim() || !email?.trim()) {
@@ -106,12 +126,26 @@ app.post('/api/contact', async (req, res) => {
     return res.status(400).json({ ok: false, message: 'Neplatný e-mail.' });
   }
 
+  // Mirror do AIBS enginu — await kvůli Vercel serverless (jinak se
+  // request může zmrazit před dokončením); timeout 5 s to shora omezuje.
+  await forwardToEngine({
+    name, email,
+    message: message || (isDemoLead ? 'Chce ukázkový web zdarma' : ''),
+    meta: {
+      source: isDemoLead ? 'sitespot-free-demo' : 'sitespot-contact',
+      company: company || '',
+      website: website || '',
+    },
+  });
+
   // E-mail vám (notifikace)
   const toYou = {
     from:    `"SiteSpot Web" <${process.env.SMTP_USER}>`,
     to:      process.env.MAIL_TO || process.env.SMTP_USER,
     replyTo: email,
-    subject: `Nová zpráva od ${esc(name)} — SiteSpot`,
+    subject: isDemoLead
+      ? `🔥 LEAD: ukázkový web zdarma — ${esc(name)}`
+      : `Nová zpráva od ${esc(name)} — SiteSpot`,
     html: `
       <div style="font-family:sans-serif;max-width:560px;color:#111">
         <h2 style="color:#27b7a5;margin-bottom:4px">Nová zpráva z webu</h2>
@@ -119,6 +153,7 @@ app.post('/api/contact', async (req, res) => {
         <p><strong>Jméno:</strong> ${esc(name)}</p>
         <p><strong>E-mail:</strong> <a href="mailto:${esc(email)}">${esc(email)}</a></p>
         ${company ? `<p><strong>Firma:</strong> ${esc(company)}</p>` : ''}
+        ${website ? `<p><strong>Web:</strong> ${esc(website)}</p>` : ''}
         <p><strong>Zpráva:</strong></p>
         <blockquote style="border-left:3px solid #27b7a5;margin:0;padding:8px 16px;color:#333">
           ${esc(message).replace(/\n/g, '<br/>')}
@@ -133,11 +168,13 @@ app.post('/api/contact', async (req, res) => {
   const toSender = {
     from:    `"SiteSpot" <${process.env.SMTP_USER}>`,
     to:      email,
-    subject: 'Vaši zprávu jsme dostali — SiteSpot',
+    subject: isDemoLead ? 'Vaše ukázka je v přípravě — SiteSpot' : 'Vaši zprávu jsme dostali — SiteSpot',
     html: `
       <div style="font-family:sans-serif;max-width:560px;color:#111">
         <h2 style="color:#27b7a5">Díky, ${esc(name)}!</h2>
-        <p>Vaši zprávu jsme obdrželi a ozveme se do 24 hodin.</p>
+        <p>${isDemoLead
+          ? 'Pustili jsme se do práce — do 48 hodin vám pošleme funkční ukázku vašeho nového webu. Zdarma a bez závazků.'
+          : 'Vaši zprávu jsme obdrželi a ozveme se do 24 hodin.'}</p>
         <p style="color:#666;font-size:14px">
           Pokud máte urgentní dotaz, napište přímo na
           <a href="mailto:hello@sitespot.cz">hello@sitespot.cz</a>.

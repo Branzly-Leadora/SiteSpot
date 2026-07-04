@@ -11,6 +11,7 @@
     { "src": "content.html", "use": "@vercel/static" },
     { "src": "a.html", "use": "@vercel/static" },
     { "src": "telemarkclub.html", "use": "@vercel/static" },
+    { "src": "privacy.html", "use": "@vercel/static" },
     { "src": "a/pricing.html", "use": "@vercel/static" },
     { "src": "websites/**", "use": "@vercel/static" },
     { "src": "robots.txt", "use": "@vercel/static" },
@@ -30,6 +31,7 @@
     { "src": "/brand.html", "dest": "/brand.html" },
     { "src": "/content.html", "dest": "/content.html" },
     { "src": "/telemarkclub", "dest": "/telemarkclub.html" },
+    { "src": "/privacy(\\.html)?", "dest": "/privacy.html" },
     { "src": "/(.*)", "dest": "/index.html" }
   ],
   "env": {

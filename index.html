@@ -278,6 +278,17 @@ button{cursor:pointer;font-family:inherit}
 .form-field input::placeholder,.form-field textarea::placeholder{color:var(--gray-2)}
 .form .btn-primary{width:100%;justify-content:center;margin-top:.5rem}
 
+/* Demo web band (lead magnet) */
+.demo-band{padding:5.5rem 0;background:var(--bg-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.demo-form{display:flex;flex-wrap:wrap;gap:.75rem;justify-content:center;max-width:680px;margin:0 auto}
+.demo-form input{
+  flex:1 1 170px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:4px;
+  padding:.85rem 1rem;color:var(--white);font-family:var(--font-sans);font-size:.9rem;
+  transition:border-color .2s,background .2s;outline:none;
+}
+.demo-form input:focus{border-color:var(--accent);background:rgba(39,183,165,.04)}
+.demo-form input::placeholder{color:var(--gray-2)}
+
 /* ══════════════════════════════════════════════════════════
    FOOTER
 ════════════════════════════════════════════════════════════ */
@@ -609,6 +620,22 @@ footer{border-top:1px solid var(--border);padding:4rem 0 2rem}
   </div>
 </section>
 
+<!-- FREE DEMO WEB (lead magnet) -->
+<section class="demo-band" id="demo-web">
+  <div class="container" style="text-align:center">
+    <span class="eyebrow reveal">Ukázka zdarma</span>
+    <h2 class="reveal" style="font-family:var(--font-serif);font-size:clamp(1.9rem,3.5vw,3rem);font-weight:700;line-height:1.05;letter-spacing:-.03em;margin-bottom:1rem">Nový web uvidíte,<br/><em style="color:var(--accent)">než zaplatíte korunu.</em></h2>
+    <p class="reveal reveal-d1" style="color:var(--gray);font-size:.95rem;line-height:1.8;max-width:520px;margin:0 auto 2.25rem">Napište nám firmu a kontakt — do 48 hodin dostanete funkční ukázku svého nového webu. Zdarma, bez závazků. Platíte, jen když se vám bude líbit.</p>
+    <form class="demo-form reveal reveal-d1" id="demo-form">
+      <input type="text" id="demo-name" placeholder="Vaše jméno" required/>
+      <input type="text" id="demo-company" placeholder="Firma nebo web (firma.cz)" required/>
+      <input type="email" id="demo-email" placeholder="E-mail" required/>
+      <button type="submit" class="btn-primary" style="flex:0 0 auto">Chci ukázku zdarma<svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+    </form>
+    <p style="font-size:.72rem;color:var(--gray-2);margin-top:1.1rem">Odesláním souhlasíte se <a href="privacy.html" target="_blank" style="color:var(--gray)">zpracováním osobních údajů</a>. Žádný spam — jen jedna ukázka.</p>
+  </div>
+</section>
+
 <!-- CONTACT -->
 <section class="contact" id="contact">
   <div class="container">
@@ -711,6 +738,39 @@ if(form){
       let errEl=form.querySelector('.form-error');
       if(!errEl){errEl=document.createElement('p');errEl.className='form-error';errEl.style.cssText='color:#ff6b6b;font-size:.85rem;margin-top:.75rem;text-align:center';form.appendChild(errEl);}
       errEl.textContent='Chyba sítě. Zkuste to znovu nebo napište přímo na hello@sitespot.cz';
+    }
+  });
+}
+
+/* Free demo form (lead magnet) */
+const demoForm=document.getElementById('demo-form');
+if(demoForm){
+  demoForm.addEventListener('submit',async e=>{
+    e.preventDefault();
+    const name=document.getElementById('demo-name')?.value.trim();
+    const company=document.getElementById('demo-company')?.value.trim();
+    const email=document.getElementById('demo-email')?.value.trim();
+    if(!name||!company||!email) return;
+
+    const btn=demoForm.querySelector('[type=submit]');
+    const origHTML=btn.innerHTML;
+    btn.disabled=true;
+    btn.textContent='Odesílám…';
+
+    try{
+      const res=await fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+        name,email,company,website:company,type:'free-demo',message:'Chce ukázkový web zdarma'
+      })});
+      const json=await res.json();
+      if(json.ok){
+        demoForm.outerHTML=`<div style="max-width:520px;margin:0 auto;padding:2.5rem 2rem;border:1px solid rgba(39,183,165,.25);border-radius:8px;background:rgba(39,183,165,.05)"><p style="font-size:1.05rem;font-weight:700;color:var(--white);margin-bottom:.4rem">Jdeme na to! 🚀</p><p style="color:var(--gray);font-size:.9rem">Do 48 hodin vám na ${email} pošleme ukázku nového webu.</p></div>`;
+      } else {
+        btn.disabled=false;btn.innerHTML=origHTML;
+        alert(json.message||'Něco se pokazilo. Zkuste to znovu.');
+      }
+    }catch(err){
+      btn.disabled=false;btn.innerHTML=origHTML;
+      alert('Chyba sítě. Zkuste to znovu nebo napište na hello@sitespot.cz');
     }
   });
 }
