@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
 import Lenis from 'lenis'
 import SpaceHero from './SpaceHero'
+import { LogoMark } from './Logo'
 import { FramerLogo, ClaudeLogo, OpenAILogo, N8nLogo, GeminiLogo, BRANDS } from './BrandLogos'
 import { SplineScene } from './SplineScene'
 import {
@@ -227,7 +228,7 @@ function Preloader() {
     <AnimatePresence>
       {!done && (
         <motion.div className="preloader" exit={{ y: '-100%' }} transition={{ duration: 0.75, ease: [0.76, 0, 0.24, 1] }}>
-          <span className="pre-mark">S</span>
+          <span className="pre-mark"><LogoMark size={42} /></span>
           <span className="pre-num">{n} %</span>
         </motion.div>
       )}
@@ -254,12 +255,14 @@ const CMP_BAD = ['Pomalé, ruční procesy', 'Náchylné k lidským chybám', 'V
 const CMP_GOOD = ['Úkoly hotové okamžitě', 'Vysoká přesnost, konzistentní výsledky', 'Nižší provozní náklady', 'Škáluje bez námahy', 'Běží 24/7 nonstop', 'Data a přehledy v reálném čase', 'Automatizuje rutinu pro vyšší výstup', 'Plynulý, automatický tok', 'Okamžité odpovědi přes chat i hlas', 'Automatický nurturing a připomínky']
 
 const FAQ = [
-  { q: 'Za jak dlouho bude web hotový?', a: 'Landing page spouštíme do 3 týdnů, rozsáhlejší weby do 4–8 týdnů. Přesný harmonogram dostanete po úvodní analýze — a platí to, co si domluvíme.' },
-  { q: 'Kolik spolupráce stojí?', a: 'Jednorázové projekty začínají na 29 000 Kč, průběžná spolupráce na 19 000 Kč měsíčně. Cenu znáte vždy předem, fixně a bez skrytých položek.' },
+  { q: 'Za jak dlouho bude web hotový?', a: 'Web v tarifu Starter spouštíme do 3 týdnů, rozsáhlejší weby na míru do 4–8 týdnů. Přesný harmonogram dostanete po úvodní analýze — a platí to, co si domluvíme.' },
+  { q: 'Kolik spolupráce stojí?', a: 'Menší web (Starter) pořídíte od 16 000 Kč, web na míru s automatizacemi (Business) od 29 000 Kč — obojí jednorázově. Průběžná spolupráce Full Stack začíná na 19 000 Kč měsíčně, bez závazku.' },
+  { q: 'Proč jsou ceny uvedené „od“?', a: 'Uvedené částky jsou startovní ceny pro malé firmy — každý projekt má jiný rozsah. Finální pevnou cenu dostanete po krátkém briefu, písemně a bez skrytých položek. A ta pak platí, žádné vícepráce navíc.' },
+  { q: 'Co je v ceně a co se děje po spuštění?', a: 'U Starteru texty, SEO základ, analytika a 30 dní podpory zdarma. Business přidává napojení na CRM či rezervace, jednu AI automatizaci a zaškolení. Kdo chce průběžnou péči, kampaně a optimalizaci, přechází na Full Stack.' },
   { q: 'Už web mám. Má smysl se ozvat?', a: 'Určitě. Uděláme vám audit zdarma — často stačí stávající web optimalizovat a napojit na automatizace, místo stavění od nuly.' },
   { q: 'Jak vypadají AI automatizace v praxi?', a: 'Propojíme nástroje, které už používáte — e-mail, CRM, fakturaci, tabulky. Poptávky se samy třídí, faktury odesílají, reporty generují. Klientům běžně šetříme 30 a více hodin měsíčně.' },
-  { q: 'Musím podepsat dlouhodobý závazek?', a: 'Ne. Spolupráce běží po měsících s měsíční výpovědní lhůtou. Klienty si držíme výsledky, ne smlouvami.' },
-  { q: 'Jak poznám, že to funguje?', a: 'Každý měsíc dostanete srozumitelný report: kolik přišlo poptávek, co stály a kolik hodin ušetřily automatizace. Žádná hausnumera.' },
+  { q: 'Musím podepsat dlouhodobý závazek?', a: 'Ne. Starter a Business zaplatíte jednorázově a web je váš. Full Stack běží po měsících s měsíční výpovědní lhůtou — klienty si držíme výsledky, ne smlouvami.' },
+  { q: 'Jak poznám, že to funguje?', a: 'V tarifu Full Stack dostanete každý měsíc srozumitelný report a konzultaci: kolik přišlo poptávek, co stály a kolik hodin ušetřily automatizace. Žádná hausnumera.' },
   { q: 'Pracujete i s menšími firmami?', a: 'Ano — většina našich klientů má 2 až 50 zaměstnanců. Řešení stavíme tak, aby dávalo smysl vašemu rozpočtu, ne našemu portfoliu.' },
 ]
 
@@ -519,7 +522,7 @@ function BenefitCenter() {
             </span>
           ))}
         </span>
-        <span className="ben-center-mark">S</span>
+        <span className="ben-center-mark"><LogoMark size={50} /></span>
         <span className="ben-center-cap">Jedno AI jádro,<br />všechny kanály</span>
       </div>
     </div>
@@ -634,7 +637,7 @@ function ContactModal({ open, onClose }) {
             ) : (
               <>
                 <div className="cmodal-head">
-                  <span className="mark">S</span>
+                  <span className="mark"><LogoMark size={24} /></span>
                   <h3>Domluvit schůzku</h3>
                   <p>30 minut zdarma. Napište nám, co řešíte, a ozveme se do 24 hodin.</p>
                 </div>
@@ -1156,7 +1159,7 @@ export default function App() {
                 else closeNav()
               }}
             >
-              <span className="mark">S</span>
+              <span className="mark"><LogoMark size={17} /></span>
               <AnimatePresence initial={false}>
                 {navOpen && !isMobile && (
                   <motion.span
@@ -1612,7 +1615,7 @@ export default function App() {
         <div className="footer-inner">
           <div className="footer-grid">
             <div className="footer-col brand">
-              <div className="footer-brand"><span className="mark">S</span><span className="name">SiteSpot</span></div>
+              <div className="footer-brand"><span className="mark"><LogoMark size={16} /></span><span className="name">SiteSpot</span></div>
               <p>Digitální agentura pro firmy, které chtějí růst. Weby, AI automatizace, leady a marketing.</p>
             </div>
             <div className="footer-col">
