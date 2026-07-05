@@ -24,11 +24,12 @@ class SplineBoundary extends Component {
 }
 
 // Lazy-loaded Spline 3D scene with a graceful loading + error fallback.
-export function SplineScene({ scene, className }) {
+// onLoad hands back the Spline application so the caller can pause/resume it.
+export function SplineScene({ scene, className, onLoad }) {
   return (
     <SplineBoundary fallback={<SplinePoster />}>
       <Suspense fallback={<SplinePoster loading />}>
-        <Spline scene={scene} className={className} />
+        <Spline scene={scene} className={className} onLoad={onLoad} />
       </Suspense>
     </SplineBoundary>
   )

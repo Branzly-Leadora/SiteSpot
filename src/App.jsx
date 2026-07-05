@@ -692,6 +692,7 @@ function LazySpline({ scene }) {
     return () => { (window.cancelIdleCallback || clearTimeout)(id) }
   }, [isMob, scene])
 
+  const appRef = useRef(null)
   useEffect(() => {
     if (isMob) return
     const el = ref.current
@@ -703,6 +704,21 @@ function LazySpline({ scene }) {
     io.observe(el)
     return () => io.disconnect()
   }, [isMob])
+
+  // pause the robot's render loop while it's scrolled off screen — the scene stays
+  // mounted (instant on return) but stops taxing the GPU everywhere else on the page
+  useEffect(() => {
+    if (isMob || !on) return
+    const el = ref.current
+    if (!el) return
+    const io = new IntersectionObserver(([e]) => {
+      const app = appRef.current
+      if (!app) return
+      try { e.isIntersecting ? app.play?.() : app.stop?.() } catch { /* older runtime */ }
+    }, { rootMargin: '150px 0px 150px 0px' })
+    io.observe(el)
+    return () => io.disconnect()
+  }, [isMob, on])
   if (isMob) {
     return (
       <div className="spline-stage">
@@ -716,7 +732,7 @@ function LazySpline({ scene }) {
   }
   return (
     <div className="spline-stage" ref={ref}>
-      {on ? <SplineScene scene={scene} className="spline-canvas" /> : <div className="spline-fallback"><span className="loader" /></div>}
+      {on ? <SplineScene scene={scene} className="spline-canvas" onLoad={(app) => { appRef.current = app }} /> : <div className="spline-fallback"><span className="loader" /></div>}
     </div>
   )
 }
@@ -728,10 +744,11 @@ export default function App() {
   const [fab, setFab] = useState(false)
   const openContact = (e) => { e.preventDefault(); e.stopPropagation(); setContactOpen(true) }
 
-  // --- scroll chrome: progress bar, auto-hiding nav, floating CTA ---
+  // --- scroll chrome: progress bar, auto-hiding nav, floating CTA, wall-light fade ---
   useEffect(() => {
     const bar = document.querySelector('.scroll-progress')
     const wrap = document.querySelector('.nav-wrap')
+    const spot = document.querySelector('.cursor-spot')
     let last = 0, tick = false
     const apply = () => {
       tick = false
@@ -739,6 +756,7 @@ export default function App() {
       const max = document.documentElement.scrollHeight - window.innerHeight
       if (bar) bar.style.transform = `scaleX(${max > 0 ? Math.min(1, y / max) : 0})`
       if (wrap) wrap.classList.toggle('hide', y > 320 && y > last)
+      if (spot) spot.style.opacity = y > window.innerHeight * 0.72 ? '1' : '0'
       setFab(y > window.innerHeight * 0.9)
       last = y
     }
@@ -771,7 +789,7 @@ export default function App() {
     const cv = document.getElementById('ss-stars')
     if (!panel || !cv) return
     const ctx = cv.getContext('2d')
-    const dpr = Math.min(2, window.devicePixelRatio || 1)
+    const dpr = Math.min(1.5, window.devicePixelRatio || 1)
     let stars = [], W = 0, H = 0, raf = 0
     const resize = () => {
       W = panel.clientWidth; H = panel.clientHeight
@@ -1038,52 +1056,42 @@ export default function App() {
 
   const closeNav = () => setNavOpen(false)
 
-  // global cursor spotlight ("wall light") — follows the mouse across the whole site except the hero.
-  // Moved via transform (GPU-cheap) and rAF-throttled; hidden while the hero is on screen.
+  // One pointer loop drives every cursor effect (wall-light, custom cursor, per-card
+  // spotlight). Previously these were three separate mousemove listeners, one with a
+  // permanent rAF and one calling document.elementFromPoint() every frame (a forced
+  // layout). Now: a single mousemove + an rAF that runs only while the ring is still
+  // catching up to the cursor, and e.target.closest instead of elementFromPoint.
   const spotRef = useRef(null)
-  useEffect(() => {
-    const el = spotRef.current
-    if (!el) return
-    let tick = false, mx = 0, my = 0
-    const onMove = (e) => {
-      mx = e.clientX; my = e.clientY
-      if (tick) return
-      tick = true
-      requestAnimationFrame(() => { el.style.setProperty('--sx', mx + 'px'); el.style.setProperty('--sy', my + 'px'); tick = false })
-    }
-    const onScroll = () => { el.style.opacity = window.scrollY > window.innerHeight * 0.72 ? '1' : '0' }
-    window.addEventListener('mousemove', onMove, { passive: true })
-    window.addEventListener('scroll', onScroll, { passive: true })
-    onScroll()
-    return () => { window.removeEventListener('mousemove', onMove); window.removeEventListener('scroll', onScroll) }
-  }, [])
-
-  // custom cursor — dot follows instantly, ring trails with lerp and grows over interactives
   const curDot = useRef(null)
   const curRing = useRef(null)
   useEffect(() => {
     if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return
-    const dot = curDot.current, ring = curRing.current
-    if (!dot || !ring) return
+    const spot = spotRef.current, dot = curDot.current, ring = curRing.current
     document.documentElement.classList.add('has-cursor')
-    let mx = window.innerWidth / 2, my = window.innerHeight / 2, rx = mx, ry = my, raf = 0
-    const onMove = (e) => {
-      mx = e.clientX; my = e.clientY
-      dot.style.transform = `translate(${mx}px, ${my}px)`
-      ring.classList.toggle('big', !!e.target.closest?.('a, button, .spot-card'))
-    }
-    const loop = () => {
+    let mx = window.innerWidth / 2, my = window.innerHeight / 2, rx = mx, ry = my
+    let target = null, curCard = null, raf = 0
+    const frame = () => {
+      if (spot) { spot.style.setProperty('--sx', mx + 'px'); spot.style.setProperty('--sy', my + 'px') }
+      if (dot) dot.style.transform = `translate(${mx}px, ${my}px)`
       rx += (mx - rx) * 0.16; ry += (my - ry) * 0.16
-      ring.style.transform = `translate(${rx}px, ${ry}px)`
-      raf = requestAnimationFrame(loop)
+      if (ring) {
+        ring.style.transform = `translate(${rx}px, ${ry}px)`
+        ring.classList.toggle('big', !!target?.closest?.('a, button, .spot-card'))
+      }
+      const card = target?.closest?.('.spot-card') || null
+      if (card) {
+        const r = card.getBoundingClientRect()
+        card.style.setProperty('--mx', ((mx - r.left) / r.width) * 100 + '%')
+        card.style.setProperty('--my', ((my - r.top) / r.height) * 100 + '%')
+      }
+      if (curCard && curCard !== card) curCard.style.removeProperty('--mx')
+      curCard = card
+      // keep ticking only while the trailing ring is still settling toward the cursor
+      raf = (Math.abs(mx - rx) > 0.4 || Math.abs(my - ry) > 0.4) ? requestAnimationFrame(frame) : 0
     }
+    const onMove = (e) => { mx = e.clientX; my = e.clientY; target = e.target; if (!raf) raf = requestAnimationFrame(frame) }
     window.addEventListener('mousemove', onMove, { passive: true })
-    raf = requestAnimationFrame(loop)
-    return () => {
-      window.removeEventListener('mousemove', onMove)
-      cancelAnimationFrame(raf)
-      document.documentElement.classList.remove('has-cursor')
-    }
+    return () => { window.removeEventListener('mousemove', onMove); cancelAnimationFrame(raf); document.documentElement.classList.remove('has-cursor') }
   }, [])
 
   // magnetic CTA buttons — main CTAs gently pull toward the cursor while hovered,
@@ -1108,29 +1116,6 @@ export default function App() {
     return () => cleanups.forEach((fn) => fn())
   }, [])
 
-  // per-card cursor spotlight — lights up whichever card the pointer is over
-  // (rAF-throttled, only touches CSS custom props, no re-render)
-  useEffect(() => {
-    let tick = false, cx = 0, cy = 0, current = null
-    const onMove = (e) => {
-      cx = e.clientX; cy = e.clientY
-      if (tick) return
-      tick = true
-      requestAnimationFrame(() => {
-        const card = document.elementFromPoint(cx, cy)?.closest('.spot-card')
-        if (card) {
-          const r = card.getBoundingClientRect()
-          card.style.setProperty('--mx', ((cx - r.left) / r.width) * 100 + '%')
-          card.style.setProperty('--my', ((cy - r.top) / r.height) * 100 + '%')
-        }
-        if (current && current !== card) current.style.removeProperty('--mx')
-        current = card || null
-        tick = false
-      })
-    }
-    window.addEventListener('mousemove', onMove, { passive: true })
-    return () => window.removeEventListener('mousemove', onMove)
-  }, [])
 
   return (
     <div className="page">
