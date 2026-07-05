@@ -98,8 +98,8 @@ function Avatar({ name, size = 48 }) {
 const NAV = [
   { label: 'Služby', href: '#sluzby', id: 'sluzby' },
   { label: 'Jak pracujeme', href: '#proces', id: 'proces' },
-  { label: 'Šablony', href: '#sablony', id: 'sablony' },
   { label: 'Dema', href: '#dema', id: 'dema' },
+  { label: 'Šablony', href: '#sablony', id: 'sablony' },
   { label: 'Ceník', href: '#cenik', id: 'cenik' },
   { label: 'FAQ', href: '#faq', id: 'faq' },
 ]
@@ -987,7 +987,7 @@ export default function App() {
   // --- scroll: shrink, active section, hero + glow parallax ---
   useEffect(() => {
     const reduce = false // animations always on (OS reduced-motion used to blank the whole site)
-    const ids = ['sluzby', 'proces', 'sablony', 'dema', 'cenik', 'faq']
+    const ids = ['sluzby', 'proces', 'dema', 'sablony', 'cenik', 'faq']
     const sio = new IntersectionObserver((entries) => {
       entries.forEach((en) => { if (en.isIntersecting) setActive(en.target.id) })
     }, { rootMargin: '-30% 0px -60% 0px' })
@@ -1342,6 +1342,9 @@ export default function App() {
         </div>
       </section>
 
+      {/* ===== AUTOMATION DEMOS — live proof right after the AI-agent pitch ===== */}
+      <Demos />
+
       {/* ===== CASE STUDIES ===== */}
       <section id="reference" className="section dark">
         <div className="blob" data-parallax="-0.04" aria-hidden style={{ bottom: -220, left: '35%', width: 560, height: 520, background: 'radial-gradient(closest-side, color-mix(in oklab, var(--acc) 16%, transparent), transparent 70%)', filter: 'blur(70px)' }} />
@@ -1399,9 +1402,6 @@ export default function App() {
 
       {/* ===== TEMPLATES ===== */}
       <Templates />
-
-      {/* ===== AUTOMATION DEMOS ===== */}
-      <Demos />
 
       {/* ===== BENEFITS ===== */}
       <section id="benefity" className="section">
