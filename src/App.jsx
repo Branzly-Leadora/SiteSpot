@@ -97,7 +97,6 @@ function Avatar({ name, size = 48 }) {
 const NAV = [
   { label: 'Služby', href: '#sluzby', id: 'sluzby' },
   { label: 'Jak pracujeme', href: '#proces', id: 'proces' },
-  { label: 'Reference', href: '#reference', id: 'reference' },
   { label: 'Šablony', href: '#sablony', id: 'sablony' },
   { label: 'Ceník', href: '#cenik', id: 'cenik' },
   { label: 'FAQ', href: '#faq', id: 'faq' },
@@ -986,7 +985,7 @@ export default function App() {
   // --- scroll: shrink, active section, hero + glow parallax ---
   useEffect(() => {
     const reduce = false // animations always on (OS reduced-motion used to blank the whole site)
-    const ids = ['sluzby', 'proces', 'reference', 'sablony', 'cenik', 'faq']
+    const ids = ['sluzby', 'proces', 'sablony', 'cenik', 'faq']
     const sio = new IntersectionObserver((entries) => {
       entries.forEach((en) => { if (en.isIntersecting) setActive(en.target.id) })
     }, { rootMargin: '-30% 0px -60% 0px' })
@@ -1628,7 +1627,7 @@ export default function App() {
             </div>
             <div className="footer-col">
               <div className="footer-head">Navigace</div>
-              <a href="#sluzby">Služby</a><a href="#proces">Jak pracujeme</a><a href="#reference">Reference</a><a href="#sablony">Šablony</a><a href="#cenik">Ceník</a><a href="#faq">FAQ</a>
+              <a href="#sluzby">Služby</a><a href="#proces">Jak pracujeme</a><a href="#sablony">Šablony</a><a href="#cenik">Ceník</a><a href="#faq">FAQ</a>
             </div>
             <div className="footer-col">
               <div className="footer-head">Kontakt</div>
