@@ -488,7 +488,19 @@ a { color: inherit; }
 }
 @keyframes bcSpin { to { --bcang: 360deg; } }
 .ben-center-tilt { position: absolute; inset: 0; border-radius: inherit; overflow: hidden; display: grid; place-items: center; transform: rotateX(var(--tx, 0deg)) rotateY(var(--ty, 0deg)); transition: transform 0.35s cubic-bezier(0.22,1,0.36,1); transform-style: preserve-3d; }
-.ben-center-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.3; z-index: 0; }
+/* self-contained animated "AI core" field — replaces the old stock video.
+   Calm continuous rotation only (no scaling), so nothing grows/shrinks or shifts layout. */
+.ben-center-field {
+  position: absolute; inset: -45%; z-index: 0; pointer-events: none; border-radius: 50%;
+  background:
+    radial-gradient(38% 38% at 32% 30%, color-mix(in oklab, var(--acc) 26%, transparent), transparent 68%),
+    radial-gradient(42% 42% at 70% 66%, color-mix(in oklab, #7AA0FF 24%, transparent), transparent 70%),
+    conic-gradient(from 0deg at 50% 50%, transparent 0 66%, color-mix(in oklab, var(--acc) 16%, transparent) 82%, transparent 92%);
+  filter: blur(26px);
+  animation: benField 26s linear infinite;
+  will-change: transform;
+}
+@keyframes benField { to { transform: rotate(360deg); } }
 .ben-center-tilt::before { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(circle at 50% 42%, color-mix(in oklab, var(--acc) 22%, transparent), rgba(4,6,12,0.78) 80%); }
 /* orbiting service icons around the brand mark */
 .orbit-ring { position: absolute; z-index: 2; top: 50%; left: 50%; border: 1px dashed rgba(255,255,255,0.14); border-radius: 50%; animation: orbitSpin 26s linear infinite; pointer-events: none; }
@@ -502,7 +514,7 @@ a { color: inherit; }
 .ben-center-cap { position: absolute; z-index: 2; bottom: 18px; left: 0; right: 0; text-align: center; font-size: 12.5px; line-height: 1.45; font-weight: 500; letter-spacing: 0.02em; color: #B9BEC9; text-shadow: 0 2px 12px rgba(0,0,0,0.8); }
 .ben-center-glow { position: absolute; inset: -30%; z-index: 1; background: radial-gradient(circle, color-mix(in oklab, var(--acc) 55%, transparent), transparent 65%); filter: blur(34px); animation: benGlow 5s ease-in-out infinite; }
 .ben-center-mark { position: relative; z-index: 2; width: 92px; height: 92px; border-radius: 22px; background: #0A0B0F; border: 1px solid rgba(255,255,255,0.12); display: grid; place-items: center; font-size: 44px; font-weight: 800; color: #fff; box-shadow: 0 0 46px rgba(255,255,255,0.14), inset 0 1px 0 rgba(255,255,255,0.08); animation: benFloat 5s ease-in-out infinite; }
-@keyframes benGlow { 0%, 100% { opacity: 0.7; transform: scale(1); } 50% { opacity: 1; transform: scale(1.08); } }
+@keyframes benGlow { 0%, 100% { opacity: 0.72; transform: scale(1); } 50% { opacity: 0.92; transform: scale(1.035); } }
 @keyframes benFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
 .ben-ic { transition: transform 0.35s cubic-bezier(0.22,1,0.36,1); }
 .benefit:hover .ben-ic { transform: translateY(-2px) scale(1.07); }

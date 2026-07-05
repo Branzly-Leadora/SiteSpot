@@ -508,7 +508,7 @@ function BenefitCenter() {
   return (
     <div className="ben-center" data-reveal="0" ref={ref} onMouseMove={onMove} onMouseLeave={onLeave}>
       <div className="ben-center-tilt">
-        <InViewVideo className="ben-center-video" src={mixkit(34690)} />
+        <span className="ben-center-field" aria-hidden />
         <span className="ben-center-glow" aria-hidden />
         <span className="orbit-ring r1" aria-hidden>
           {ORBIT_IN.map((C, i) => (
@@ -698,24 +698,6 @@ function LazySpline({ scene }) {
       {on ? <SplineScene scene={scene} className="spline-canvas" /> : <div className="spline-fallback"><span className="loader" /></div>}
     </div>
   )
-}
-
-// free Mixkit stock loop by numeric id (verified hotlink-friendly)
-const mixkit = (id) => `https://assets.mixkit.co/videos/${id}/${id}-720.mp4`
-
-// Muted looping video that only plays while on screen — keeps offscreen media from taxing the CPU/GPU.
-function InViewVideo({ src, className, poster }) {
-  const ref = useRef(null)
-  const [failed, setFailed] = useState(false)
-  useEffect(() => {
-    const v = ref.current
-    if (!v) return
-    const io = new IntersectionObserver(([e]) => { e.isIntersecting ? v.play().catch(() => {}) : v.pause() }, { threshold: 0.2 })
-    io.observe(v)
-    return () => io.disconnect()
-  }, [])
-  if (failed) return <div className={`media-fallback ${className || ''}`} aria-hidden />
-  return <video ref={ref} className={className} src={src} poster={poster} muted loop playsInline preload="none" onError={() => setFailed(true)} aria-hidden />
 }
 
 export default function App() {
