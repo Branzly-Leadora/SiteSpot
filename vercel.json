@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/rostlinka", "destination": "/rostlinka.html" }
+  ]
+}

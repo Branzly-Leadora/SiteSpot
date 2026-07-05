@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<title>SiteSpot — shrnutí nabídky pro Rostlinku</title>
+<style>
+  :root{
+    --bg:#0f1210;
+    --card:#171b18;
+    --accent:#7fd858;
+    --accent-soft:#294224;
+    --text:#eef2ec;
+    --text-dim:#a9b3a4;
+    --border:#2a2f27;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Segoe UI',Helvetica,Arial,sans-serif;
+    line-height:1.55;
+    padding:40px 20px;
+  }
+  .wrap{max-width:820px;margin:0 auto;}
+  h1{
+    font-size:1.9rem;
+    margin-bottom:4px;
+    letter-spacing:-0.02em;
+  }
+  .subtitle{color:var(--text-dim);margin-bottom:36px;font-size:1.02rem;}
+  h2{
+    font-size:1.2rem;
+    margin:40px 0 14px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  h2::before{
+    content:"";
+    width:8px;height:8px;
+    background:var(--accent);
+    border-radius:50%;
+    display:inline-block;
+  }
+  .cards{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:16px;
+    margin-top:8px;
+  }
+  @media (max-width:720px){ .cards{grid-template-columns:1fr;} }
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:20px;
+    position:relative;
+  }
+  .card.highlight{border-color:var(--accent);}
+  .badge{
+    position:absolute;top:-11px;left:16px;
+    background:var(--accent);color:#0f1210;
+    font-size:0.7rem;font-weight:700;
+    padding:3px 10px;border-radius:20px;
+    letter-spacing:.02em;
+  }
+  .card h3{margin:6px 0 2px;font-size:1.05rem;}
+  .price{font-size:1.5rem;font-weight:700;color:var(--accent);margin:6px 0 0;}
+  .price small{font-size:.8rem;color:var(--text-dim);font-weight:400;display:block;margin-top:2px;}
+  .card p.desc{color:var(--text-dim);font-size:.9rem;margin:10px 0 14px;}
+  .card ul{padding-left:18px;margin:0;font-size:.9rem;}
+  .card ul li{margin-bottom:6px;}
+  .note{
+    background:var(--accent-soft);
+    border:1px solid var(--accent);
+    border-radius:12px;
+    padding:14px 16px;
+    font-size:.88rem;
+    color:var(--text);
+    margin-top:14px;
+  }
+  .qa{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:16px 18px;
+    margin-bottom:12px;
+  }
+  .qa .q{color:var(--accent);font-weight:600;font-size:.92rem;margin-bottom:6px;}
+  .qa .a{font-size:.92rem;color:var(--text);}
+  .flag{
+    display:inline-block;
+    background:#3a2c1a;
+    color:#e8c07a;
+    font-size:.72rem;
+    font-weight:600;
+    padding:2px 8px;
+    border-radius:6px;
+    margin-left:6px;
+    vertical-align:middle;
+  }
+  .flow{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+    font-size:.85rem;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:14px 16px;
+    margin-top:8px;
+  }
+  .flow span{
+    background:var(--accent-soft);
+    padding:5px 10px;
+    border-radius:8px;
+    white-space:nowrap;
+  }
+  .flow .arrow{color:var(--text-dim);}
+  .deliverables{
+    list-style:none;
+    padding:0;
+    margin:0;
+    display:grid;
+    gap:10px;
+  }
+  .deliverables li{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:14px 16px;
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    font-size:.92rem;
+  }
+  .deliverables li .ico{
+    color:var(--accent);
+    font-weight:700;
+    flex-shrink:0;
+  }
+  .deliverables li.confirmed{border-color:var(--accent);}
+  .why-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:14px;
+    margin-top:8px;
+  }
+  @media (max-width:720px){ .why-grid{grid-template-columns:1fr;} }
+  .why-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:16px;
+    font-size:.88rem;
+  }
+  .why-card .num{
+    color:var(--accent);
+    font-weight:700;
+    font-size:1.3rem;
+    display:block;
+    margin-bottom:4px;
+  }
+  .cta-final{
+    margin-top:36px;
+    background:var(--accent-soft);
+    border:1px solid var(--accent);
+    border-radius:14px;
+    padding:20px 22px;
+    text-align:center;
+  }
+  .cta-final .headline{
+    font-size:1.1rem;
+    font-weight:700;
+    margin-bottom:6px;
+  }
+  footer{
+    margin-top:44px;
+    padding-top:20px;
+    border-top:1px solid var(--border);
+    color:var(--text-dim);
+    font-size:.82rem;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Shrnutí nabídky — SiteSpot</h1>
+  <div class="subtitle">Navazuje na naši dřívější zprávu (orientační rozmezí 12–35 tis. Kč) a odpovídá na konkrétní dotazy z vaší hlasové zprávy.</div>
+
+  <h2>Co přesně dostanete</h2>
+  <ul class="deliverables">
+    <li><span class="ico">✓</span> Web/e-shop postavený na míru vaší značce — ne šablona, design i texty v ceně</li>
+    <li><span class="ico">✓</span> SEO základ a měření konverzí</li>
+    <li><span class="ico">✓</span> Napojení na CRM/rezervace, případně přímo na objednávky a fakturaci</li>
+    <li class="confirmed"><span class="ico">✓</span> <strong>Napojení na Zásilkovnu a další dopravce</strong> — běžně řešíme přes API/widget, je to standardní součást e-shopu na míru</li>
+    <li><span class="ico">✓</span> 1 AI automatizace nebo chatbot (např. poptávka → zápis do CRM → odeslání faktury)</li>
+    <li><span class="ico">✓</span> Onboarding a zaškolení, ať to po spuštění zvládáte sama</li>
+    <li><span class="ico">✓</span> Podpora po spuštění, u vyššího tarifu i měsíční report a průběžná optimalizace</li>
+  </ul>
+
+  <h2>Odpovědi na vaše konkrétní otázky</h2>
+
+  <div class="qa">
+    <div class="q">Napojení na Zásilkovnu / dopravce</div>
+    <div class="a">Ano, umíme — je to standardní součást e-shopu na míru, řešíme to přes API nebo widget dopravce.</div>
+  </div>
+
+  <div class="qa">
+    <div class="q">Napojení na stav zásob/skladu <span class="flag">upřesnit osobně</span></div>
+    <div class="a">Tohle je specifičtější podle toho, jaký systém evidence používáte — potřebujeme probrat na krátkém hovoru, ať vám řekneme přesně, co a jak zvládneme.</div>
+  </div>
+
+  <div class="qa">
+    <div class="q">Proč zvažovat přechod od Shoptetu / zůstat u Shoptetu <span class="flag">upřesnit osobně</span></div>
+    <div class="a">Náš e-shop na míru dokáže totéž, co dnes řeší Shoptet (platby, dopravci), plus navíc AI automatizace a marketingový výkon navíc. Konkrétní srovnání pro váš případ raději probereme na hovoru.</div>
+  </div>
+
+  <div class="qa">
+    <div class="q">Nahradit, nebo doplnit rozjetou práci kamaráda <span class="flag">upřesnit osobně</span></div>
+    <div class="a">Záleží na fázi, ve které je jeho práce na Shoptetu. Můžeme to probrat, aniž byste cokoliv měnila hned teď.</div>
+  </div>
+
+  <div class="qa">
+    <div class="q">Splátky / individuální dohoda</div>
+    <div class="a">Jednáme individuálně podle situace. Tarif Full Stack je navíc měsíční bez dlouhodobého závazku — nemusela byste platit celou částku najednou.</div>
+  </div>
+
+  <h2>Proč si za to říkáme tolik</h2>
+  <p style="color:var(--text-dim);font-size:.92rem;margin-top:-6px;">Neděláme šablony za pár tisíc — stavíme weby na míru, kde je za cenou reálný čas a práce celého týmu, ne jen hotový vzhled.</p>
+  <div class="why-grid">
+    <div class="why-card">
+      <span class="num">3</span>
+      Lidé v týmu na každém projektu — strategie, design, vývoj/AI. Ne jeden freelancer, ale kompletní zázemí.
+    </div>
+    <div class="why-card">
+      <span class="num">14 dní</span>
+      Do prvních výstupů. Jasný proces bez nekonečných schůzek a průtahů.
+    </div>
+    <div class="why-card">
+      <span class="num">4 000+</span>
+      Hodin zkušeností s AI a automatizacemi — víme, co reálně funguje a šetří čas, ne jen teorie z internetu.
+    </div>
+  </div>
+  <div class="note" style="margin-top:14px;">
+    Žádné dlouhodobé smlouvy — zůstáváte u nás, protože to funguje, ne protože musíte.
+  </div>
+
+  <h2>Balíček a ceny</h2>
+  <div class="cards">
+    <div class="card">
+      <h3>Starter</h3>
+      <div class="price">od 16 000 Kč<small>jednorázově</small></div>
+      <p class="desc">Pro menší start — web, který přivádí zákazníky.</p>
+      <ul>
+        <li>Landing page nebo malý firemní web</li>
+        <li>Texty a copywriting v ceně</li>
+        <li>SEO základ a analytika</li>
+        <li>Spuštění do 3 týdnů</li>
+        <li>30 dní podpory zdarma</li>
+      </ul>
+    </div>
+    <div class="card highlight">
+      <span class="badge">Doporučeno pro váš e-shop</span>
+      <h3>Business</h3>
+      <div class="price">od 29 000 Kč<small>jednorázově</small></div>
+      <p class="desc">Web/e-shop na míru s automatizací a napojením na Zásilkovnu.</p>
+      <ul>
+        <li>Vícestránkový web/e-shop na míru</li>
+        <li>Napojení na rezervace/CRM/objednávky</li>
+        <li>Napojení na Zásilkovnu a dopravce</li>
+        <li>1 AI automatizace nebo chatbot</li>
+        <li>SEO a měření konverzí</li>
+        <li>Onboarding a zaškolení</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Full Stack</h3>
+      <div class="price">od 19 000 Kč<small>měsíčně, bez závazku</small></div>
+      <p class="desc">Vše z Business + běžící marketing a optimalizace — bez placení vše najednou.</p>
+      <ul>
+        <li>Vše z tarifu Business</li>
+        <li>Správa kampaní (Google + Meta)</li>
+        <li>AI automatizace na míru</li>
+        <li>Průběžná optimalizace a A/B testy</li>
+        <li>Měsíční report + konzultace</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="cta-final">
+    <div class="headline">Odpovídá to rozmezí 12–35 tis. Kč, které jsme zmiňovali dříve</div>
+    Vzhledem k tomu, že teď nemáte volný budget (certifikace produktů, okurková sezóna), klidně počkáme, až budete mít prostor. Full Stack navíc umožňuje měsíční platby bez závazku — nemusí to být „vše najednou".<br><br>
+    Finální pevnou cenu vám dáme po krátkém briefu, písemně, bez skrytých položek.
+  </div>
+
+  <footer>
+    Body označené „upřesnit osobně" nejsou popsané do detailu a probereme je individuálně, ať nedostanete nepřesnou informaci.
+  </footer>
+</div>
+</body>
+</html>
