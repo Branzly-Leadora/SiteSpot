@@ -63,9 +63,11 @@ function XIcon({ size = 15 }) {
   )
 }
 
-// fluid dynamic-island spring — near-critical damping (no overshoot/snap), tuned
-// a touch crisper than before so the island responds promptly without feeling floaty
-const ISLAND_SPRING = { type: 'spring', stiffness: 230, damping: 30, mass: 0.9 }
+// fluid dynamic-island spring — critically damped (no overshoot), fast settle (~0.2s)
+const ISLAND_SPRING = { type: 'spring', stiffness: 300, damping: 32, mass: 0.85 }
+// the island resize (open + close) runs on a fixed-duration tween, not a spring —
+// a spring's asymptotic tail made the close drag on; a tween finishes crisply
+const ISLAND_LAYOUT = { duration: 0.18, ease: [0.22, 1, 0.36, 1] }
 
 // gradient-ring avatar with initials — original, no third-party artwork
 const AVATAR_HUES = {
@@ -1137,20 +1139,20 @@ export default function App() {
         >
           <div className="nav-corner left" aria-hidden />
           <div className="nav-corner right" aria-hidden />
-          <motion.nav className="nav" layout transition={ISLAND_SPRING}>
+          <motion.nav className="nav" layout transition={ISLAND_LAYOUT}>
             {/* left half of the sections — slides out to the left of the centered logo */}
             <AnimatePresence initial={false}>
               {navOpen && !isMobile && (
                 <motion.div
                   className="nav-links left"
-                  initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                  initial={{ opacity: 0 }} animate={{ opacity: 1 }}
                   transition={ISLAND_SPRING}
                 >
                   {NAV.slice(0, 3).map((l, i) => (
                     <motion.a
                       key={l.id} href={l.href} onClick={closeNav}
                       className={`nav-link${active === l.id ? ' active' : ''}`}
-                      initial={{ opacity: 0, x: 14 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 14 }}
+                      initial={{ opacity: 0, x: 14 }} animate={{ opacity: 1, x: 0 }}
                       transition={{ ...ISLAND_SPRING, delay: 0.03 * (NAV.slice(0, 3).length - 1 - i) }}
                     >{l.label}</motion.a>
                   ))}
@@ -1177,14 +1179,14 @@ export default function App() {
               {navOpen && !isMobile && (
                 <motion.div
                   className="nav-links right"
-                  initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                  initial={{ opacity: 0 }} animate={{ opacity: 1 }}
                   transition={ISLAND_SPRING}
                 >
                   {NAV.slice(3).map((l, i) => (
                     <motion.a
                       key={l.id} href={l.href} onClick={closeNav}
                       className={`nav-link${active === l.id ? ' active' : ''}`}
-                      initial={{ opacity: 0, x: -14 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -14 }}
+                      initial={{ opacity: 0, x: -14 }} animate={{ opacity: 1, x: 0 }}
                       transition={{ ...ISLAND_SPRING, delay: 0.03 * i }}
                     >{l.label}</motion.a>
                   ))}
