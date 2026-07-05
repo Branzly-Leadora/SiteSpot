@@ -110,9 +110,8 @@ export default function Templates() {
     return () => window.removeEventListener('keydown', onKey)
   }, [idx])
 
-  // autoplay — pauses on hover / while dragging / reduced-motion
+  // autoplay — always on (pauses only on hover / while dragging)
   useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     const id = setInterval(() => { if (!hover.current && !drag.current.active) setIdx((i) => (i + 1) % N) }, 4600)
     return () => clearInterval(id)
   }, [N])

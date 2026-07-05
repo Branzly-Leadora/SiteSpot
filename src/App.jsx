@@ -1238,10 +1238,14 @@ export default function App() {
         <motion.div id="ss-hero-panel" className="hero-panel" style={{ scale: heroScale, borderRadius: heroRadius }}>
           <motion.div className="hero-media" style={{ y: heroMediaY }} aria-hidden>
             <SpaceHero />
-            {/* drop any loop into public/media/hero.mp4 and it overlays the shader automatically */}
-            <video className="hero-video" muted loop playsInline preload="metadata"
+            {/* drop any loop into public/media/hero.mp4 and it overlays the shader automatically.
+                autoPlay + muted + playsInline makes every browser start it natively (not only via JS);
+                the .ready class (added on the first of loadeddata/canplay/playing to fire) fades it in. */}
+            <video className="hero-video" autoPlay muted loop playsInline preload="auto"
               onError={(e) => { e.currentTarget.style.display = 'none' }}
-              onLoadedData={(e) => { e.currentTarget.classList.add('ready') }}>
+              onLoadedData={(e) => { e.currentTarget.classList.add('ready') }}
+              onCanPlay={(e) => { e.currentTarget.classList.add('ready'); e.currentTarget.play().catch(() => {}) }}
+              onPlaying={(e) => { e.currentTarget.classList.add('ready') }}>
               <source src="/media/hero.mp4" type="video/mp4" />
             </video>
           </motion.div>
