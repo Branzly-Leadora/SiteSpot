@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Demo: Recenze na autopilota — SiteSpot</title>
+  <meta name="description" content="Živá ukázka: nová Google recenze, AI navrhne odpověď ve vašem tónu — poděkování i profesionální reakci na kritiku."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&f[]=switzer@400,500,600,700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="demos.css"/>
+<style>
+.rev-layout{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;align-items:start}
+.review{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.3rem;opacity:0;transform:translateY(12px);transition:opacity .5s var(--ease),transform .5s var(--ease)}
+.review.on{opacity:1;transform:translateY(0)}
+.rev-head{display:flex;align-items:center;gap:.8rem;margin-bottom:.7rem}
+.avatar{width:40px;height:40px;border-radius:50%;background:var(--surface-2);border:1px solid var(--border-2);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--accent);flex-shrink:0}
+.rev-name{font-weight:600;font-size:.9rem;color:var(--white)}
+.rev-meta{font-size:.7rem;color:var(--gray-2)}
+.stars{color:var(--amber);letter-spacing:.1em;font-size:.85rem}
+.stars .off{color:var(--gray-2)}
+.rev-text{font-size:.85rem;color:var(--gray);line-height:1.75}
+.reply{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.3rem}
+.reply h4{font-size:.72rem;font-weight:600;color:var(--gray);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem}
+.tone-pill{font-family:var(--font-mono);font-size:.62rem;color:var(--accent-2);border:1px solid rgba(63,207,142,.35);border-radius:100px;padding:.1rem .55rem;letter-spacing:.05em}
+.reply-draft{background:#05070b;border:1px solid var(--border);border-radius:6px;padding:1rem;font-size:.83rem;color:var(--gray);line-height:1.8;min-height:170px;white-space:pre-wrap}
+.reply-actions{display:flex;gap:.6rem;margin-top:.9rem;flex-wrap:wrap;align-items:center}
+.pub-note{font-size:.75rem;color:var(--accent-2);opacity:0;transition:opacity .3s}
+.pub-note.show{opacity:1}
+.star-picker{display:flex;gap:.3rem}
+.star-picker button{background:none;border:none;font-size:1.5rem;color:var(--gray-2);transition:color .15s,transform .15s;padding:.1rem}
+.star-picker button:hover{transform:scale(1.15)}
+.star-picker button.lit{color:var(--amber)}
+.alert-strip{margin-top:1.25rem;background:rgba(255,95,87,.07);border:1px solid rgba(255,95,87,.3);border-radius:8px;padding:.8rem 1rem;font-size:.8rem;color:var(--gray);opacity:0;transform:translateY(8px);transition:opacity .4s,transform .4s var(--ease)}
+.alert-strip.on{opacity:1;transform:translateY(0)}
+.alert-strip b{color:var(--red)}
+@media(max-width:1024px){.rev-layout{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="/" class="nav-logo">Site<span>Spot</span></a>
+  <a href="/#dema" class="nav-back">← Všechna dema</a>
+  <a href="/#kontakt" class="nav-cta">Chci to taky</a>
+</nav>
+
+<section class="demo-hero">
+  <span class="eyebrow">Demo 04 — Recenze na autopilota</span>
+  <h1>Na každou recenzi <em>do hodiny</em></h1>
+  <p>Firmy, které odpovídají na recenze, působí důvěryhodně — ale kdo na to má čas? AI hlídá váš Google profil a na každou recenzi připraví odpověď ve vašem tónu. Vyberte počet hvězd a sledujte.</p>
+</section>
+
+<section class="container">
+  <div class="controls">
+    <div class="control">
+      <label>Kolik hvězd dá zákazník?</label>
+      <div class="star-picker" id="picker">
+        <button data-s="1">★</button><button data-s="2">★</button><button data-s="3">★</button><button data-s="4">★</button><button data-s="5">★</button>
+      </div>
+    </div>
+    <button id="run" class="btn-primary">Nová recenze
+      <svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M7 2v10M2 7h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+
+  <div class="stage">
+    <div class="stage-bar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="stage-title">sitespot / recenze-autopilot</span>
+      <span class="stage-live" id="live" style="visibility:hidden">LIVE</span>
+    </div>
+    <div class="stage-body">
+      <div class="rev-layout">
+        <div>
+          <div class="review" id="review">
+            <div class="rev-head">
+              <div class="avatar" id="rAvatar">?</div>
+              <div>
+                <div class="rev-name" id="rName">—</div>
+                <div class="rev-meta">Google recenze · právě teď</div>
+              </div>
+              <div class="stars" id="rStars" style="margin-left:auto"></div>
+            </div>
+            <div class="rev-text" id="rText">Vyberte hvězdy a klikněte na „Nová recenze“.</div>
+          </div>
+          <div class="alert-strip" id="alert">
+            <b>⚠ SMS majiteli:</b> Přišla kritická recenze. Odpověď je připravená ke schválení — nezveřejní se bez vás.
+          </div>
+        </div>
+        <div class="reply">
+          <h4>Návrh odpovědi <span class="tone-pill" id="tone">tón: —</span></h4>
+          <div class="reply-draft" id="draft"><span style="color:var(--gray-2)">Čeká na recenzi…</span></div>
+          <div class="reply-actions">
+            <button class="btn-primary" id="pub" style="padding:.6rem 1.2rem;font-size:.8rem" disabled>Schválit & zveřejnit</button>
+            <span class="pub-note" id="pubNote">✓ Zveřejněno na Google profilu.</span>
+          </div>
+        </div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><b id="mCount">0</b><span>zpracovaných recenzí</span></div>
+        <div class="metric"><b id="mAvgT">—</b><span>čas do návrhu odpovědi</span></div>
+        <div class="metric"><b>100 %</b><span>recenzí s odpovědí</span></div>
+        <div class="metric"><b id="mAlerts">0</b><span>eskalací k majiteli</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="explain container">
+  <div class="explain-grid" style="padding:3.5rem 0 0">
+    <div class="explain-card reveal">
+      <span class="num">JAK TO BĚŽÍ 01</span>
+      <h3>Hlídání profilu</h3>
+      <p>Systém sleduje Google, Firmy.cz i Facebook. Nová recenze = do pár minut připravený návrh odpovědi.</p>
+    </div>
+    <div class="explain-card reveal">
+      <span class="num">JAK TO BĚŽÍ 02</span>
+      <h3>Váš tón, ne robotina</h3>
+      <p>AI se naučí, jak mluvíte se zákazníky. Pochvala dostane lidské díky, kritika věcnou a slušnou reakci.</p>
+    </div>
+    <div class="explain-card reveal">
+      <span class="num">JAK TO BĚŽÍ 03</span>
+      <h3>Kritika jde k vám</h3>
+      <p>1–2 hvězdy se nikdy nezveřejní automaticky — dostanete SMS a odpověď schválíte. Reputaci držíte v ruce vy.</p>
+    </div>
+  </div>
+</section>
+
+<section class="container">
+  <div class="cta-band reveal">
+    <h2 class="cta-title">Kdy jste naposledy<br/><em>odpověděli na recenzi?</em></h2>
+    <div class="cta-actions">
+      <a href="/#kontakt" class="btn-primary">Chci to taky<svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
+      <a href="/#dema" class="btn-outline">Další dema</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">Site<span>Spot</span></div>
+    <nav class="footer-nav" aria-label="Footer navigation">
+      <a href="/">Úvod</a><a href="/#dema">Dema</a><a href="/#sluzby">Služby</a><a href="/#kontakt">Kontakt</a>
+    </nav>
+    <div class="footer-copy">© 2025 SiteSpot · Data v demu jsou smyšlená</div>
+  </div>
+</footer>
+
+<script src="embed.js"></script>
+<script>
+(function(){
+  const obs=new IntersectionObserver(en=>{en.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}})},{threshold:.1});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+  const REVIEWS={
+    5:[{n:'Veronika S.',t:'Naprostá spokojenost! Rychlé jednání, férová cena a výsledek předčil očekávání. Doporučuju všem.'},
+       {n:'Karel N.',t:'Profesionální přístup od začátku do konce. Všechno dodali včas a komunikace byla skvělá.'}],
+    4:[{n:'Michal P.',t:'Dobrá zkušenost, drobné zdržení u termínu, ale výsledek stojí za to. Příště zase.'}],
+    3:[{n:'Alena K.',t:'Průměr. Služba v pořádku, ale čekala jsem trochu víc komunikace v průběhu zakázky.'}],
+    2:[{n:'Radek V.',t:'Bohužel se opozdila dodávka o týden a nikdo mi nedal vědět. Výsledek nakonec dobrý, ale ta komunikace…'}],
+    1:[{n:'Jiří H.',t:'Špatná zkušenost. Objednal jsem servis, termín dvakrát přesunuli a nakonec přijeli bez náhradního dílu.'}]
+  };
+  const REPLIES={
+    5:{tone:'vděčný',text:'Dobrý den, {N},\n\nmoc děkujeme za krásná slova! Radost z dobře odvedené práce je dvojnásobná, když ji vidí i zákazník. Budeme se těšit zase příště.\n\nTým {F}'},
+    4:{tone:'vděčný + omluva',text:'Dobrý den, {N},\n\nděkujeme za hodnocení i upřímnost ohledně termínu — bereme si to k srdci a na plánování zapracujeme. Jsme rádi, že výsledek stojí za to!\n\nTým {F}'},
+    3:{tone:'věcný',text:'Dobrý den, {N},\n\nděkujeme za zpětnou vazbu. Máte pravdu, že jsme mohli v průběhu zakázky komunikovat častěji — nastavujeme proto pravidelné informování o stavu. Budeme rádi za další šanci.\n\nTým {F}'},
+    2:{tone:'omluvný, řešící',text:'Dobrý den, {N},\n\nomlouváme se za zpoždění a hlavně za to, že jsme vám nedali včas vědět — to se stát nemělo. Rádi bychom si situaci prošli osobně, ozveme se vám telefonicky. Děkujeme, že jste nám dal vědět.\n\nPetr Dvořák, majitel'},
+    1:{tone:'omluvný, eskalace',text:'Dobrý den, {N},\n\ntohle od nás nebylo v pořádku a upřímně se omlouváme. Přesunuté termíny i nepřipravený díl jsou naše chyba. Zavolám vám osobně, ať to dáme do pořádku — servis dokončíme přednostně a na naše náklady.\n\nPetr Dvořák, majitel'}
+  };
+  const FIRM='Autoservis Dvořák';
+  let stars=5,count=0,alerts=0,busy=false;
+  const picker=document.getElementById('picker');
+  function paint(){[...picker.children].forEach(b=>b.classList.toggle('lit',+b.dataset.s<=stars));}
+  picker.addEventListener('click',e=>{if(e.target.dataset.s){stars=+e.target.dataset.s;paint();}});
+  paint();
+
+  const run=document.getElementById('run'),live=document.getElementById('live'),pub=document.getElementById('pub');
+  run.addEventListener('click',()=>{
+    if(busy)return;busy=true;run.disabled=true;pub.disabled=true;
+    document.getElementById('pubNote').classList.remove('show');
+    document.getElementById('alert').classList.remove('on');
+    const pool=REVIEWS[stars];const r=pool[count%pool.length];
+    const rev=document.getElementById('review');
+    rev.classList.remove('on');
+    live.style.visibility='visible';
+    setTimeout(()=>{
+      document.getElementById('rAvatar').textContent=r.n[0];
+      document.getElementById('rName').textContent=r.n;
+      document.getElementById('rStars').innerHTML='★'.repeat(stars)+'<span class="off">'+'★'.repeat(5-stars)+'</span>';
+      document.getElementById('rText').textContent=r.t;
+      rev.classList.add('on');
+    },300);
+
+    const rep=REPLIES[stars];
+    document.getElementById('tone').textContent='tón: '+rep.tone;
+    const draft=document.getElementById('draft');
+    draft.innerHTML='<span style="color:var(--gray-2)">AI čte recenzi…</span>';
+    setTimeout(()=>{
+      const full=rep.text.replace(/\{N\}/g,r.n.split(' ')[0]).replace(/\{F\}/g,FIRM);
+      draft.textContent='';draft.classList.add('caret');
+      let i=0;const t=setInterval(()=>{
+        draft.textContent=full.slice(0,i+=2);
+        if(i>=full.length){
+          clearInterval(t);draft.classList.remove('caret');
+          count++;
+          document.getElementById('mCount').textContent=count;
+          document.getElementById('mAvgT').textContent='4 min';
+          if(stars<=2){alerts++;document.getElementById('alert').classList.add('on');}
+          document.getElementById('mAlerts').textContent=alerts;
+          pub.disabled=false;run.disabled=false;busy=false;
+          live.style.visibility='hidden';
+        }
+      },16);
+    },1400);
+  });
+
+  pub.addEventListener('click',()=>{
+    pub.disabled=true;
+    document.getElementById('pubNote').classList.add('show');
+  });
+})();
+</script>
+
+</body>
+</html>

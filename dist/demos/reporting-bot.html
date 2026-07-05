@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Demo: Reporting Bot — SiteSpot</title>
+  <meta name="description" content="Živá ukázka: každé pondělí v 8:00 přistane v e-mailu srozumitelný report — tržby, návštěvnost, leady. Bez tabulek, bez ruční práce."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&f[]=switzer@400,500,600,700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="demos.css"/>
+<style>
+.rep-layout{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;align-items:start}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.3rem}
+.panel h4{font-size:.72rem;font-weight:600;color:var(--gray);letter-spacing:.12em;text-transform:uppercase;margin-bottom:1rem}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin-bottom:1.4rem}
+.kpi{background:var(--bg-2);border:1px solid var(--border);border-radius:8px;padding:.9rem 1rem}
+.kpi b{display:block;font-family:var(--font-serif);font-size:1.55rem;font-weight:700;color:var(--white);line-height:1.25}
+.kpi span{font-size:.68rem;color:var(--gray);letter-spacing:.04em}
+.kpi .delta{font-family:var(--font-mono);font-size:.66rem;margin-left:.4rem}
+.delta.up{color:var(--accent-2)}.delta.down{color:var(--red)}
+.chart{display:flex;align-items:flex-end;gap:.55rem;height:130px;padding:0 .2rem}
+.bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:.4rem;height:100%;justify-content:flex-end}
+.bar{width:100%;max-width:44px;border-radius:4px 4px 0 0;background:linear-gradient(180deg,var(--accent),rgba(63,207,142,.35));height:0;transition:height 1s var(--ease)}
+.bar.muted{background:linear-gradient(180deg,var(--gray-2),rgba(107,111,120,.3))}
+.bar-label{font-family:var(--font-mono);font-size:.62rem;color:var(--gray-2)}
+.mail-preview{background:#05070b;border:1px solid var(--border);border-radius:6px;padding:1.1rem;font-size:.82rem;color:var(--gray);line-height:1.85;min-height:300px;white-space:pre-wrap}
+.mail-meta{font-family:var(--font-mono);font-size:.68rem;color:var(--gray-2);border-bottom:1px dashed var(--border);padding-bottom:.6rem;margin-bottom:.8rem}
+.mail-meta b{color:var(--accent-2);font-weight:600}
+.clock{font-family:var(--font-mono);font-size:.72rem;color:var(--gray);display:inline-flex;align-items:center;gap:.5rem}
+.clock b{color:var(--accent-2);font-weight:600}
+@media(max-width:1024px){.rep-layout{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="/" class="nav-logo">Site<span>Spot</span></a>
+  <a href="/#dema" class="nav-back">← Všechna dema</a>
+  <a href="/#kontakt" class="nav-cta">Chci to taky</a>
+</nav>
+
+<section class="demo-hero">
+  <span class="eyebrow">Demo 05 — Reporting Bot</span>
+  <h1>Pondělí 8:00, report <em>v mailu</em></h1>
+  <p>Žádné přihlašování do pěti systémů. Bot v noci posbírá data z webu, e-shopu a kampaní, dá je dohromady a ráno vám pošle tři odstavce lidskou řečí: co se povedlo, co kleslo a co s tím. Zkuste si pondělní ráno spustit.</p>
+</section>
+
+<section class="container">
+  <div class="controls">
+    <button id="run" class="btn-primary">Spustit pondělí 8:00
+      <svg width="14" height="14" fill="none" viewBox="0 0 14 14"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.5"/><path d="M7 4.5V7l2 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </button>
+    <span class="clock" id="clock" style="visibility:hidden">⏱ <b id="clockVal">Ne 23:00</b> — <span id="clockLabel">čekám na plán</span></span>
+  </div>
+
+  <div class="stage">
+    <div class="stage-bar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="stage-title">sitespot / reporting-bot</span>
+      <span class="stage-live" id="live" style="visibility:hidden">LIVE</span>
+    </div>
+    <div class="stage-body">
+      <div class="rep-layout">
+        <div class="panel">
+          <h4>Data posbíraná přes noc</h4>
+          <div class="kpis">
+            <div class="kpi"><b><span id="k0">—</span><span class="delta up" id="d0"></span></b><span>tržby za týden</span></div>
+            <div class="kpi"><b><span id="k1">—</span><span class="delta up" id="d1"></span></b><span>návštěv webu</span></div>
+            <div class="kpi"><b><span id="k2">—</span><span class="delta up" id="d2"></span></b><span>nových poptávek</span></div>
+            <div class="kpi"><b><span id="k3">—</span><span class="delta down" id="d3"></span></b><span>cena za poptávku</span></div>
+          </div>
+          <h4>Poptávky po dnech</h4>
+          <div class="chart" id="chart"></div>
+        </div>
+        <div class="panel">
+          <h4>E-mail pro majitele</h4>
+          <div class="mail-preview">
+            <div class="mail-meta">od: <b>report@sitespot.cz</b> · komu: majitel · po 8:00<br/>předmět: Váš týden v kostce — 23.–29. 6.</div>
+            <div id="mailBody"><span style="color:var(--gray-2)">Report se vygeneruje po nočním sběru dat…</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><b>5</b><span>napojených zdrojů dat</span></div>
+        <div class="metric"><b id="mTime">—</b><span>doba sestavení reportu</span></div>
+        <div class="metric"><b>0</b><span>otevřených tabulek</span></div>
+        <div class="metric"><b id="mRead">—</b><span>čtení reportu</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="explain container">
+  <div class="explain-grid" style="padding:3.5rem 0 0">
+    <div class="explain-card reveal">
+      <span class="num">JAK TO BĚŽÍ 01</span>
+      <h3>Sběr ze všech zdrojů</h3>
+      <p>Google Analytics, e-shop, reklamy, rezervační systém, banka. Bot si data stáhne sám, každou neděli v noci.</p>
+    </div>
+    <div class="explain-card reveal">
+      <span class="num">JAK TO BĚŽÍ 02</span>
+      <h3>AI napíše souhrn</h3>
+      <p>Ne tabulka, ale tři odstavce: co rostlo, co kleslo, co doporučujeme. Přečtete za minutu u kafe.</p>
+    </div>
+    <div class="explain-card reveal">
+      <span class="num">JAK TO BĚŽÍ 03</span>
+      <h3>Alarmy mezi reporty</h3>
+      <p>Když něco spadne — web, kampaň, tržby pod limit — nedozvíte se to až v pondělí. Přijde SMS hned.</p>
+    </div>
+  </div>
+</section>
+
+<section class="container">
+  <div class="cta-band reveal">
+    <h2 class="cta-title">Víte, jaký byl<br/><em>minulý týden?</em></h2>
+    <div class="cta-actions">
+      <a href="/#kontakt" class="btn-primary">Chci to taky<svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
+      <a href="/#dema" class="btn-outline">Další dema</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">Site<span>Spot</span></div>
+    <nav class="footer-nav" aria-label="Footer navigation">
+      <a href="/">Úvod</a><a href="/#dema">Dema</a><a href="/#sluzby">Služby</a><a href="/#kontakt">Kontakt</a>
+    </nav>
+    <div class="footer-copy">© 2025 SiteSpot · Data v demu jsou smyšlená</div>
+  </div>
+</footer>
+
+<script src="embed.js"></script>
+<script>
+(function(){
+  const obs=new IntersectionObserver(en=>{en.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}})},{threshold:.1});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+  const DAYS=['Po','Út','St','Čt','Pá','So','Ne'];
+  const LEADS=[4,6,5,9,7,3,2];
+  const chart=document.getElementById('chart');
+  DAYS.forEach((d,i)=>{
+    const w=document.createElement('div');w.className='bar-wrap';
+    w.innerHTML='<div class="bar'+(i>4?' muted':'')+'" data-v="'+LEADS[i]+'"></div><span class="bar-label">'+d+'</span>';
+    chart.appendChild(w);
+  });
+
+  function count(el,to,suffix,dur){
+    const t0=performance.now();
+    function tick(now){
+      const p=Math.min((now-t0)/dur,1);
+      const eased=1-Math.pow(1-p,3);
+      el.textContent=Math.round(to*eased).toLocaleString('cs-CZ')+(suffix||'');
+      if(p<1)requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  const MAIL='Dobré ráno,\n\ntady je váš týden 23.–29. 6. v kostce:\n\n📈 Silný týden. Tržby 148 500 Kč (+12 % proti minulému týdnu), hlavně díky čtvrtku — 9 poptávek za jediný den, nejvíc za měsíc.\n\n📉 Jediné mínus: víkendová návštěvnost klesla o 8 %. Kampaň na sobotu doporučujeme posílit o 200 Kč/den, cena za poptávku je teď příznivá (312 Kč, −15 %).\n\n✅ Web běžel celý týden bez výpadku, rychlost v normě. Žádná akce z vaší strany není potřeba.\n\nHezké pondělí!\nVáš reporting bot';
+
+  const run=document.getElementById('run'),live=document.getElementById('live');
+  const clock=document.getElementById('clock'),clockVal=document.getElementById('clockVal'),clockLabel=document.getElementById('clockLabel');
+  let busy=false;
+  run.addEventListener('click',()=>{
+    if(busy)return;busy=true;run.disabled=true;
+    live.style.visibility='visible';clock.style.visibility='visible';
+    document.getElementById('mailBody').innerHTML='<span style="color:var(--gray-2)">Report se vygeneruje po nočním sběru dat…</span>';
+    document.querySelectorAll('.bar').forEach(b=>b.style.height='0');
+    ['k0','k1','k2','k3'].forEach(id=>document.getElementById(id).textContent='—');
+    ['d0','d1','d2','d3'].forEach(id=>document.getElementById(id).textContent='');
+
+    // 1) noční sběr
+    clockVal.textContent='Ne 23:00';clockLabel.textContent='noční sběr dat běží…';
+    setTimeout(()=>{
+      clockVal.textContent='Po 7:58';clockLabel.textContent='sestavuji report…';
+      count(document.getElementById('k0'),148500,' Kč',1200);
+      count(document.getElementById('k1'),3240,'',1200);
+      count(document.getElementById('k2'),36,'',1200);
+      count(document.getElementById('k3'),312,' Kč',1200);
+      setTimeout(()=>{
+        document.getElementById('d0').textContent='+12 %';
+        document.getElementById('d1').textContent='+6 %';
+        document.getElementById('d2').textContent='+9 %';
+        document.getElementById('d3').textContent='−15 %';
+      },1250);
+      document.querySelectorAll('.bar').forEach(b=>{b.style.height=(b.dataset.v/9*100)+'%';});
+    },1500);
+
+    // 2) e-mail se napíše
+    setTimeout(()=>{
+      clockVal.textContent='Po 8:00';clockLabel.textContent='odesílám e-mail majiteli';
+      const body=document.getElementById('mailBody');
+      body.textContent='';body.classList.add('caret');
+      let i=0;const t=setInterval(()=>{
+        body.textContent=MAIL.slice(0,i+=4);
+        if(i>=MAIL.length){
+          clearInterval(t);body.classList.remove('caret');
+          clockLabel.textContent='hotovo, další report za týden';
+          document.getElementById('mTime').textContent='38 s';
+          document.getElementById('mRead').textContent='~1 min';
+          live.style.visibility='hidden';run.disabled=false;busy=false;
+        }
+      },18);
+    },3400);
+  });
+})();
+</script>
+
+</body>
+</html>

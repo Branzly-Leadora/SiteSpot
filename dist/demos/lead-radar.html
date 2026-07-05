@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Demo: Lead Radar — SiteSpot</title>
+  <meta name="description" content="Živá ukázka: automatický sběr firem z veřejných zdrojů a AI scoring. Vyzkoušejte si, jak vzniká seznam leadů."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&f[]=switzer@400,500,600,700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="demos.css"/>
+<style>
+.radar-layout{display:grid;grid-template-columns:1fr 340px;gap:1.25rem;align-items:stretch}
+.lead-table{width:100%;border-collapse:collapse;font-size:.82rem}
+.lead-table th{text-align:left;font-size:.66rem;font-weight:600;color:var(--gray-2);letter-spacing:.12em;text-transform:uppercase;padding:.5rem .75rem;border-bottom:1px solid var(--border)}
+.lead-table td{padding:.65rem .75rem;border-bottom:1px solid var(--border);color:var(--gray);vertical-align:middle}
+.lead-table td:first-child{color:var(--white);font-weight:500}
+.lead-row{opacity:0;transform:translateX(-12px);animation:rowIn .45s var(--ease) forwards}
+@keyframes rowIn{to{opacity:1;transform:translateX(0)}}
+.score-wrap{display:flex;align-items:center;gap:.55rem}
+.score-bar{width:64px;height:5px;border-radius:100px;background:rgba(255,255,255,.06);overflow:hidden;flex-shrink:0}
+.score-bar i{display:block;height:100%;width:0;border-radius:100px;background:var(--accent);transition:width .9s var(--ease)}
+.score-bar.warm i{background:var(--amber)}
+.score-bar.cold i{background:var(--gray-2)}
+.score-num{font-family:var(--font-mono);font-size:.74rem;color:var(--white);min-width:2ch}
+.lead-empty td{text-align:center;padding:3rem 1rem;color:var(--gray-2);font-size:.85rem}
+@media(max-width:1024px){.radar-layout{grid-template-columns:1fr}.konsole{height:180px}}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="/" class="nav-logo">Site<span>Spot</span></a>
+  <a href="/#dema" class="nav-back">← Všechna dema</a>
+  <a href="/#kontakt" class="nav-cta">Chci to taky</a>
+</nav>
+
+<section class="demo-hero">
+  <span class="eyebrow">Demo 01 — Lead Radar</span>
+  <h1>Leady se najdou <em>samy</em></h1>
+  <p>Robot projde veřejné zdroje, najde firmy podle vašich kritérií a AI každou oboduje podle toho, jak moc se hodí jako váš zákazník. Zkuste si to — vyberte obor a spusťte sken.</p>
+</section>
+
+<section class="container">
+  <div class="controls">
+    <div class="control">
+      <label for="obor">Obor</label>
+      <select id="obor">
+        <option value="gastro">Restaurace & kavárny</option>
+        <option value="fitness">Fitness & sport</option>
+        <option value="remesla">Řemeslníci & stavebnictví</option>
+        <option value="krasa">Kadeřnictví & kosmetika</option>
+      </select>
+    </div>
+    <div class="control">
+      <label for="mesto">Region</label>
+      <select id="mesto">
+        <option>Plzeň</option>
+        <option>Praha</option>
+        <option>Brno</option>
+        <option>České Budějovice</option>
+      </select>
+    </div>
+    <button id="run" class="btn-primary">Spustit sken
+      <svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M3 2l9 5-9 5V2z" fill="currentColor"/></svg>
+    </button>
+    <button id="crm" class="btn-outline" disabled>Odeslat do CRM</button>
+  </div>
+
+  <div class="stage">
+    <div class="stage-bar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="stage-title">sitespot / lead-radar</span>
+      <span class="stage-live" id="live" style="visibility:hidden">LIVE</span>
+    </div>
+    <div class="stage-body">
+      <div class="radar-layout">
+        <div style="overflow-x:auto">
+          <table class="lead-table">
+            <thead><tr><th>Firma</th><th>Web</th><th>Kontakt</th><th>AI skóre</th><th></th></tr></thead>
+            <tbody id="rows">
+              <tr class="lead-empty"><td colspan="5">Zatím prázdno. Vyberte obor a spusťte sken ↑</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="konsole" id="log"><span class="k-dim">// průběh skenu se zobrazí tady</span></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><b id="mFound">0</b><span>nalezených firem</span></div>
+        <div class="metric"><b id="mHot">0</b><span>horkých leadů (80+)</span></div>
+        <div class="metric"><b id="mMail">0</b><span>ověřených e-mailů</span></div>
+        <div class="metric"><b id="mTime">0 min</b><span>ušetřené práce</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="explain container">
+  <div class="explain-grid" style="padding:3.5rem 0 0">
+    <div class="explain-card reveal">
+      <span class="num">JAK TO BĚŽÍ 01</span>
+      <h3>Sběr z veřejných zdrojů</h3>
+      <p>Mapy, katalogy firem, rejstříky. Robot najde firmy podle oboru a regionu a doplní web, telefon i e-mail.</p>
+    </div>
+    <div class="explain-card reveal">
+      <span class="num">JAK TO BĚŽÍ 02</span>
+      <h3>AI scoring</h3>
+      <p>Každý lead dostane skóre 0–100 podle kritérií, která si určíte: velikost, stav webu, recenze, aktivita na sítích.</p>
+    </div>
+    <div class="explain-card reveal">
+      <span class="num">JAK TO BĚŽÍ 03</span>
+      <h3>Rovnou do CRM</h3>
+      <p>Hotový seznam přistane ve vašem CRM nebo tabulce — seřazený, odduplikovaný a připravený k oslovení.</p>
+    </div>
+  </div>
+</section>
+
+<section class="container">
+  <div class="cta-band reveal">
+    <h2 class="cta-title">Tohle může běžet<br/><em>i pro vás.</em></h2>
+    <div class="cta-actions">
+      <a href="/#kontakt" class="btn-primary">Chci to taky<svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
+      <a href="/#dema" class="btn-outline">Další dema</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">Site<span>Spot</span></div>
+    <nav class="footer-nav" aria-label="Footer navigation">
+      <a href="/">Úvod</a><a href="/#dema">Dema</a><a href="/#sluzby">Služby</a><a href="/#kontakt">Kontakt</a>
+    </nav>
+    <div class="footer-copy">© 2025 SiteSpot · Data v demu jsou smyšlená</div>
+  </div>
+</footer>
+
+<script src="embed.js"></script>
+<script>
+(function(){
+  // reveal on scroll
+  const obs=new IntersectionObserver(en=>{en.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}})},{threshold:.1});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+  // smyšlená demo data — vygenerují se podle výběru
+  const DATA={
+    gastro:{names:['Bistro U Kohouta','Kavárna Mlsná','Pizzerie Fornetto','Restaurace Na Rohu','Café Ateliér','Hospůdka U Splavu','Sushi Kaito','Vinárna Réva','Burger Dvůr','Cukrárna Vanilka'],domains:['bistroukohouta','kavarnamlsna','fornetto','narohu','cafeatelier','usplavu','sushikaito','vinarnareva','burgerdvur','vanilka']},
+    fitness:{names:['FitZone Gym','Studio Balanc','CrossFit Ocelárna','Yoga Prostor','SportHala Sever','BodyLab','Pilates Room','KickBox Aréna','SwimAcademy','Gym 24/7 Centrum'],domains:['fitzone','studiobalanc','cfocelarna','yogaprostor','sporthala','bodylab','pilatesroom','kickboxarena','swimacademy','gym247']},
+    remesla:{names:['Elektro Novák','Instalatérství Beran','Truhlářství Dub','Zednictví Kámen','Malby Šíma','Podlahy Procházka','Střechy Vrána','Zámečnictví Klíč','Topenářství Vaněk','Sádrokartony Zeman'],domains:['elektronovak','instalberan','truhlarstvidub','zednictvikamen','malbysima','podlahyprochazka','strechyvrana','zamecnictviklic','topenarstvivanek','sadrokartonyzeman']},
+    krasa:{names:['Salon Andrea','Barber Bros','Studio Lash & Brow','Kosmetika Pure','Nehty Lumi','Kadeřnictví Vlna','Beauty Room 7','Masáže Harmonie','Solárium Sun','Studio Glow'],domains:['salonandrea','barberbros','lashbrow','kosmetikapure','nehtylumi','kadernictvivlna','beautyroom7','masazeharmonie','solariumsun','studioglow']}
+  };
+  const rows=document.getElementById('rows'),log=document.getElementById('log');
+  const run=document.getElementById('run'),crm=document.getElementById('crm'),live=document.getElementById('live');
+  let counters={found:0,hot:0,mail:0};
+  let running=false;
+
+  function klog(text,cls){
+    const l=document.createElement('div');l.className='k-line'+(cls?' '+cls:'');l.textContent=text;
+    log.appendChild(l);log.scrollTop=log.scrollHeight;
+  }
+  function setM(id,v){document.getElementById(id).textContent=v;}
+  // deterministický pseudo-random, ať demo vypadá živě ale stabilně
+  let seed=42;function rnd(){seed=(seed*9301+49297)%233280;return seed/233280;}
+
+  run.addEventListener('click',()=>{
+    if(running)return;running=true;
+    const obor=document.getElementById('obor');
+    const mesto=document.getElementById('mesto').value;
+    const d=DATA[obor.value];
+    rows.innerHTML='';log.innerHTML='';
+    counters={found:0,hot:0,mail:0};
+    setM('mFound',0);setM('mHot',0);setM('mMail',0);setM('mTime','0 min');
+    live.style.visibility='visible';
+    run.disabled=true;crm.disabled=true;
+    klog('$ radar --obor "'+obor.options[obor.selectedIndex].text+'" --region '+mesto,'k-dim');
+    klog('Připojuji zdroje: mapy, katalogy, rejstřík…');
+
+    const order=[...d.names.keys()].sort(()=>rnd()-.5);
+    order.forEach((idx,i)=>{
+      setTimeout(()=>{
+        const name=d.names[idx],dom=d.domains[idx];
+        const score=Math.round(35+rnd()*63);
+        const hasMail=rnd()>0.25;
+        const tier=score>=80?'hot':score>=60?'warm':'cold';
+        const tr=document.createElement('tr');tr.className='lead-row';
+        tr.innerHTML='<td>'+name+'</td>'+
+          '<td style="font-family:var(--font-mono);font-size:.72rem">'+dom+'.cz</td>'+
+          '<td>'+(hasMail?'info@'+dom+'.cz':'<span style="color:var(--gray-2)">jen telefon</span>')+'</td>'+
+          '<td><div class="score-wrap"><div class="score-bar '+tier+'"><i></i></div><span class="score-num">'+score+'</span></div></td>'+
+          '<td>'+(tier==='hot'?'<span class="badge badge-hot">Horký lead</span>':tier==='warm'?'<span class="badge badge-warm">Sledovat</span>':'<span class="badge badge-cold">Nízká priorita</span>')+'</td>';
+        rows.appendChild(tr);
+        requestAnimationFrame(()=>requestAnimationFrame(()=>{tr.querySelector('.score-bar i').style.width=score+'%';}));
+        klog('✓ '+name+' — skóre '+score+(hasMail?', e-mail ověřen':''), score>=80?'k-ok':'');
+        counters.found++;if(score>=80)counters.hot++;if(hasMail)counters.mail++;
+        setM('mFound',counters.found);setM('mHot',counters.hot);setM('mMail',counters.mail);
+        setM('mTime',Math.round(counters.found*4.5)+' min');
+        if(i===order.length-1){
+          setTimeout(()=>{
+            klog('Sken dokončen. '+counters.hot+' leadů připraveno k oslovení.','k-ok');
+            live.style.visibility='hidden';run.disabled=false;crm.disabled=false;running=false;
+          },500);
+        }
+      },600+i*550);
+    });
+  });
+
+  crm.addEventListener('click',()=>{
+    crm.disabled=true;
+    klog('$ export --target crm','k-dim');
+    setTimeout(()=>klog('→ '+counters.found+' záznamů zapsáno do CRM (deduplikace: OK)','k-ok'),500);
+    setTimeout(()=>klog('→ Majiteli odeslán souhrn na e-mail.','k-ok'),1100);
+  });
+})();
+</script>
+
+</body>
+</html>

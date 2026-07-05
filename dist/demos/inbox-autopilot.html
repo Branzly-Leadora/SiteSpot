@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Demo: Inbox Autopilot — SiteSpot</title>
+  <meta name="description" content="Živá ukázka: AI třídění odpovědí na outreach a automatické návrhy follow-upů. Napište vlastní odpověď a sledujte, kam ji AI zařadí."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&f[]=switzer@400,500,600,700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="demos.css"/>
+<style>
+.inbox-layout{display:grid;grid-template-columns:1.1fr .9fr;gap:1.25rem;align-items:start}
+.mail-list{display:flex;flex-direction:column;gap:.6rem;min-height:340px}
+.mail{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.9rem 1rem;cursor:pointer;opacity:0;transform:translateY(10px);animation:mailIn .5s var(--ease) forwards;transition:border-color .2s,background .2s}
+.mail:hover{border-color:var(--border-2)}
+.mail.sel{border-color:var(--accent);background:var(--surface-2)}
+@keyframes mailIn{to{opacity:1;transform:translateY(0)}}
+.mail-top{display:flex;align-items:center;justify-content:space-between;gap:.75rem;margin-bottom:.3rem}
+.mail-from{font-weight:600;font-size:.85rem;color:var(--white)}
+.mail-snippet{font-size:.78rem;color:var(--gray);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.mail-badge-wrap{min-width:110px;display:flex;justify-content:flex-end}
+.thinking{font-family:var(--font-mono);font-size:.66rem;color:var(--gray-2);letter-spacing:.05em}
+.thinking::after{content:'…';animation:caretBlink 1s steps(1) infinite}
+.detail{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.2rem;position:sticky;top:90px}
+.detail h4{font-size:.72rem;font-weight:600;color:var(--gray);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.75rem}
+.draft{background:#05070b;border:1px solid var(--border);border-radius:6px;padding:1rem;font-size:.82rem;color:var(--gray);line-height:1.8;min-height:150px;white-space:pre-wrap}
+.detail-actions{display:flex;gap:.6rem;margin-top:.9rem;flex-wrap:wrap}
+.detail-empty{color:var(--gray-2);font-size:.82rem;padding:2rem 0;text-align:center}
+.try-box{margin:2rem 0 1.25rem;display:flex;gap:1rem;align-items:flex-end;flex-wrap:wrap}
+.try-box .control{flex:1;min-width:260px}
+.try-box input{width:100%}
+.sent-note{font-size:.75rem;color:var(--accent-2);margin-top:.5rem;opacity:0;transition:opacity .3s}
+.sent-note.show{opacity:1}
+@media(max-width:1024px){.inbox-layout{grid-template-columns:1fr}.detail{position:static}}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="/" class="nav-logo">Site<span>Spot</span></a>
+  <a href="/#dema" class="nav-back">← Všechna dema</a>
+  <a href="/#kontakt" class="nav-cta">Chci to taky</a>
+</nav>
+
+<section class="demo-hero">
+  <span class="eyebrow">Demo 02 — Inbox Autopilot</span>
+  <h1>Odpovědi se třídí <em>samy</em></h1>
+  <p>Po rozeslání kampaně přijdou desítky odpovědí. AI každou přečte, zařadí — zájem, otázka, odmítnutí — a k těm nadějným rovnou připraví follow-up. Spusťte příjem, nebo napište vlastní odpověď a uvidíte, kam ji AI dá.</p>
+</section>
+
+<section class="container">
+  <div class="controls">
+    <button id="run" class="btn-primary">Spustit příjem odpovědí
+      <svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M3 2l9 5-9 5V2z" fill="currentColor"/></svg>
+    </button>
+    <span class="embed-hide" style="font-size:.8rem;color:var(--gray-2);align-self:center">…nebo napište vlastní odpověď dole pod inboxem</span>
+  </div>
+
+  <div class="stage">
+    <div class="stage-bar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="stage-title">sitespot / inbox-autopilot</span>
+      <span class="stage-live" id="live" style="visibility:hidden">LIVE</span>
+    </div>
+    <div class="stage-body">
+      <div class="inbox-layout">
+        <div class="mail-list" id="list">
+          <div class="detail-empty" id="listEmpty">Inbox je prázdný. Spusťte příjem odpovědí ↑</div>
+        </div>
+        <div class="detail" id="detail">
+          <h4>Návrh follow-upu</h4>
+          <div class="detail-empty" id="detailEmpty">Klikněte na e-mail se štítkem <span class="badge badge-hot" style="margin:0 .2rem">Zájem</span> a AI ukáže připravenou odpověď.</div>
+          <div id="draftWrap" style="display:none">
+            <div class="draft" id="draft"></div>
+            <div class="detail-actions">
+              <button class="btn-primary" id="send" style="padding:.6rem 1.2rem;font-size:.8rem">Schválit & odeslat</button>
+            </div>
+            <div class="sent-note" id="sentNote">✓ Odesláno. Lead posunut v CRM do fáze „Jednání“.</div>
+          </div>
+        </div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><b id="mIn">0</b><span>příchozích odpovědí</span></div>
+        <div class="metric"><b id="mHot">0</b><span>projevů zájmu</span></div>
+        <div class="metric"><b id="mQ">0</b><span>otázek k zodpovězení</span></div>
+        <div class="metric"><b id="mAuto">0</b><span>vyřízeno bez vás</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="try-box">
+    <div class="control">
+      <label for="tryInput">Vyzkoušejte AI: napište, co by vám zákazník odepsal</label>
+      <input type="text" id="tryInput" placeholder="Např.: Zní to zajímavě, kolik to stojí?" maxlength="160"/>
+    </div>
+    <button id="tryBtn" class="btn-outline">Zařadit odpověď</button>
+  </div>
+</section>
+
+<section class="explain container">
+  <div class="explain-grid" style="padding:2rem 0 0">
+    <div class="explain-card reveal">
+      <span class="num">JAK TO BĚŽÍ 01</span>
+      <h3>Čtení a klasifikace</h3>
+      <p>Každá příchozí odpověď se zařadí do kategorie: zájem, otázka, odmítnutí, „ozvěte se později“, mimo kancelář.</p>
+    </div>
+    <div class="explain-card reveal">
+      <span class="num">JAK TO BĚŽÍ 02</span>
+      <h3>Návrh odpovědi</h3>
+      <p>K nadějným odpovědím AI připraví follow-up ve vašem tónu. Vy jen schválíte — nebo necháte odeslat automaticky.</p>
+    </div>
+    <div class="explain-card reveal">
+      <span class="num">JAK TO BĚŽÍ 03</span>
+      <h3>CRM se aktualizuje samo</h3>
+      <p>Zájem = nová příležitost v pipeline. Odmítnutí = uzavřeno. „Později“ = připomínka za 3 měsíce. Nic nepropadne.</p>
+    </div>
+  </div>
+</section>
+
+<section class="container">
+  <div class="cta-band reveal">
+    <h2 class="cta-title">Váš inbox to zvládne<br/><em>bez vás.</em></h2>
+    <div class="cta-actions">
+      <a href="/#kontakt" class="btn-primary">Chci to taky<svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
+      <a href="/#dema" class="btn-outline">Další dema</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">Site<span>Spot</span></div>
+    <nav class="footer-nav" aria-label="Footer navigation">
+      <a href="/">Úvod</a><a href="/#dema">Dema</a><a href="/#sluzby">Služby</a><a href="/#kontakt">Kontakt</a>
+    </nav>
+    <div class="footer-copy">© 2025 SiteSpot · Data v demu jsou smyšlená</div>
+  </div>
+</footer>
+
+<script src="embed.js"></script>
+<script>
+(function(){
+  const obs=new IntersectionObserver(en=>{en.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}})},{threshold:.1});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+  const MAILS=[
+    {from:'Petr Dvořák — Autoservis Dvořák',text:'Dobrý den, zní to zajímavě. Můžete poslat víc informací a cenu?',cat:'hot'},
+    {from:'Jana Malá — Květiny Jasmína',text:'Děkuji, ale momentálně nic takového neřešíme.',cat:'no'},
+    {from:'Tomáš Beneš — Pekárna Beneš',text:'A funguje to i pro malou pekárnu? Kolik času tomu musím věnovat já?',cat:'q'},
+    {from:'Lucie Horáková — Studio Pilates',text:'Teď před sezónou nemám kapacitu, ozvěte se prosím v září.',cat:'later'},
+    {from:'automat — Kovo Šindelář',text:'Jsem mimo kancelář do 14. 7., v urgentních případech volejte kolegu.',cat:'ooo'},
+    {from:'Martin Krejčí — KM Elektro',text:'Volal jsem vám, nedovolal se. Zavolejte mi prosím zítra dopoledne, tohle by nás zajímalo.',cat:'hot'}
+  ];
+  const BADGE={hot:'<span class="badge badge-hot">Zájem</span>',q:'<span class="badge badge-warm">Otázka</span>',no:'<span class="badge badge-red">Odmítnutí</span>',later:'<span class="badge badge-cold">Ozvat se později</span>',ooo:'<span class="badge badge-cold">Mimo kancelář</span>'};
+  const DRAFTS={
+    hot:'Dobrý den,\n\nděkuji za rychlou reakci! Posílám shrnutí v příloze — v kostce: první výsledky do 14 dnů, bez vstupních nákladů.\n\nHodilo by se vám krátké zavolání ve čtvrtek v 10:00, nebo raději v pátek odpoledne?\n\nS pozdravem\nMax, SiteSpot',
+    q:'Dobrý den,\n\nskvělá otázka — ano, funguje to i pro menší provozy. Z vaší strany to zabere ~30 minut úvodního nastavení, zbytek běží sám.\n\nMůžu vám to ukázat na 15minutové ukázce?\n\nS pozdravem\nMax, SiteSpot'
+  };
+  const list=document.getElementById('list'),live=document.getElementById('live');
+  const run=document.getElementById('run');
+  let m={in:0,hot:0,q:0,auto:0},running=false,selected=null;
+  function setM(){document.getElementById('mIn').textContent=m.in;document.getElementById('mHot').textContent=m.hot;document.getElementById('mQ').textContent=m.q;document.getElementById('mAuto').textContent=m.auto;}
+
+  function addMail(mail){
+    const el=document.createElement('div');el.className='mail';
+    el.innerHTML='<div class="mail-top"><span class="mail-from">'+mail.from+'</span><span class="mail-badge-wrap"><span class="thinking">AI čte</span></span></div><div class="mail-snippet">'+mail.text+'</div>';
+    list.appendChild(el);
+    m.in++;setM();
+    setTimeout(()=>{
+      el.querySelector('.mail-badge-wrap').innerHTML=BADGE[mail.cat];
+      if(mail.cat==='hot')m.hot++;
+      if(mail.cat==='q')m.q++;
+      if(mail.cat==='no'||mail.cat==='later'||mail.cat==='ooo')m.auto++;
+      setM();
+    },900+Math.random()*600);
+    el.addEventListener('click',()=>select(el,mail));
+    return el;
+  }
+
+  function select(el,mail){
+    document.querySelectorAll('.mail').forEach(x=>x.classList.remove('sel'));
+    el.classList.add('sel');selected=mail;
+    const wrap=document.getElementById('draftWrap'),empty=document.getElementById('detailEmpty'),draft=document.getElementById('draft');
+    document.getElementById('sentNote').classList.remove('show');
+    if(mail.cat==='hot'||mail.cat==='q'){
+      empty.style.display='none';wrap.style.display='block';
+      // typewriter
+      const full=DRAFTS[mail.cat];draft.textContent='';draft.classList.add('caret');
+      let i=0;clearInterval(draft._t);
+      draft._t=setInterval(()=>{
+        draft.textContent=full.slice(0,i+=3);
+        if(i>=full.length){clearInterval(draft._t);draft.classList.remove('caret');}
+      },14);
+    }else{
+      wrap.style.display='none';empty.style.display='block';
+      empty.innerHTML='Tahle odpověď nepotřebuje vaši pozornost — systém ji vyřídil sám ('+
+        (mail.cat==='no'?'lead uzavřen v CRM':mail.cat==='later'?'připomínka nastavena na září':'follow-up odložen po návratu')+').';
+    }
+  }
+
+  document.getElementById('send').addEventListener('click',()=>{
+    document.getElementById('sentNote').classList.add('show');
+  });
+
+  run.addEventListener('click',()=>{
+    if(running)return;running=true;run.disabled=true;
+    document.getElementById('listEmpty').style.display='none';
+    list.querySelectorAll('.mail').forEach(x=>x.remove());
+    m={in:0,hot:0,q:0,auto:0};setM();
+    live.style.visibility='visible';
+    MAILS.forEach((mail,i)=>{
+      setTimeout(()=>{
+        addMail(mail);
+        if(i===MAILS.length-1){setTimeout(()=>{live.style.visibility='hidden';run.disabled=false;running=false;},1600);}
+      },400+i*1300);
+    });
+  });
+
+  // vlastní odpověď — jednoduchý klientský klasifikátor (jen pro demo)
+  function classify(t){
+    t=t.toLowerCase();
+    if(/(ne[zs]ájem|nemáme zájem|neřešíme|nechceme|nezajímá|děkuji,? ale|ne,? d[ěe]kuji)/.test(t))return'no';
+    if(/(později|za m[ěe]síc|v z[áa]ří|po l[ée]t[ěe]|te[ďd] ne|nem[áa]m čas|ozv[ěe]te se)/.test(t))return'later';
+    if(/(dovolen|mimo kancel|out of office)/.test(t))return'ooo';
+    if(/(\?|kolik|jak |co |funguje|cena|stoj[íi])/.test(t))return'q';
+    return'hot';
+  }
+  document.getElementById('tryBtn').addEventListener('click',()=>{
+    const inp=document.getElementById('tryInput');
+    const val=inp.value.trim();if(!val)return;
+    document.getElementById('listEmpty').style.display='none';
+    const el=addMail({from:'Vy — vlastní test',text:val,cat:classify(val)});
+    el.scrollIntoView({behavior:'smooth',block:'nearest'});
+    inp.value='';
+  });
+  document.getElementById('tryInput').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('tryBtn').click();});
+})();
+</script>
+
+</body>
+</html>

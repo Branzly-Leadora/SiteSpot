@@ -4,6 +4,7 @@ import Lenis from 'lenis'
 import SpaceHero from './SpaceHero'
 import { LogoMark } from './Logo'
 import Templates from './Templates'
+import Demos from './Demos'
 import { FramerLogo, ClaudeLogo, OpenAILogo, N8nLogo, GeminiLogo, BRANDS } from './BrandLogos'
 import { SplineScene } from './SplineScene'
 import {
@@ -98,6 +99,7 @@ const NAV = [
   { label: 'Služby', href: '#sluzby', id: 'sluzby' },
   { label: 'Jak pracujeme', href: '#proces', id: 'proces' },
   { label: 'Šablony', href: '#sablony', id: 'sablony' },
+  { label: 'Dema', href: '#dema', id: 'dema' },
   { label: 'Ceník', href: '#cenik', id: 'cenik' },
   { label: 'FAQ', href: '#faq', id: 'faq' },
 ]
@@ -985,7 +987,7 @@ export default function App() {
   // --- scroll: shrink, active section, hero + glow parallax ---
   useEffect(() => {
     const reduce = false // animations always on (OS reduced-motion used to blank the whole site)
-    const ids = ['sluzby', 'proces', 'sablony', 'cenik', 'faq']
+    const ids = ['sluzby', 'proces', 'sablony', 'dema', 'cenik', 'faq']
     const sio = new IntersectionObserver((entries) => {
       entries.forEach((en) => { if (en.isIntersecting) setActive(en.target.id) })
     }, { rootMargin: '-30% 0px -60% 0px' })
@@ -1397,6 +1399,9 @@ export default function App() {
 
       {/* ===== TEMPLATES ===== */}
       <Templates />
+
+      {/* ===== AUTOMATION DEMOS ===== */}
+      <Demos />
 
       {/* ===== BENEFITS ===== */}
       <section id="benefity" className="section">
