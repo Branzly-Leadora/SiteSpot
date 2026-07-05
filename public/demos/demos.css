@@ -69,7 +69,8 @@ button{cursor:pointer;font-family:inherit}
 .metric span{font-size:.72rem;color:var(--gray);letter-spacing:.05em}
 
 /* explainer under demo */
-.explain{padding:3.5rem 0 3rem}
+/* ponytail: top/bottom only — nechat horizontální padding z .container (jinak karty čouhají mimo panel a v modalu se ořežou) */
+.explain{padding-top:3.5rem;padding-bottom:3rem}
 .explain-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
 .explain-card{padding:1.8rem 1.5rem;background:var(--surface);border:1px solid var(--border);border-radius:16px}
 .explain-card .num{font-size:.7rem;color:var(--accent);letter-spacing:.15em;font-weight:600;display:block;margin-bottom:.5rem}
