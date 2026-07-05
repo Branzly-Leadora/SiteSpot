@@ -63,8 +63,9 @@ function XIcon({ size = 15 }) {
   )
 }
 
-// soft, fluid dynamic-island spring — slow settle, no snap (near-critical damping)
-const ISLAND_SPRING = { type: 'spring', stiffness: 190, damping: 30, mass: 1.05 }
+// fluid dynamic-island spring — near-critical damping (no overshoot/snap), tuned
+// a touch crisper than before so the island responds promptly without feeling floaty
+const ISLAND_SPRING = { type: 'spring', stiffness: 230, damping: 30, mass: 0.9 }
 
 // gradient-ring avatar with initials — original, no third-party artwork
 const AVATAR_HUES = {
@@ -230,7 +231,7 @@ function Preloader() {
     <AnimatePresence>
       {!done && (
         <motion.div className="preloader" exit={{ y: '-100%' }} transition={{ duration: 0.75, ease: [0.76, 0, 0.24, 1] }}>
-          <span className="pre-mark"><LogoMark size={42} /></span>
+          <span className="pre-mark"><LogoMark size={46} /></span>
           <span className="pre-num">{n} %</span>
         </motion.div>
       )}
@@ -524,7 +525,7 @@ function BenefitCenter() {
             </span>
           ))}
         </span>
-        <span className="ben-center-mark"><LogoMark size={50} /></span>
+        <span className="ben-center-mark"><LogoMark size={54} /></span>
         <span className="ben-center-cap">Jedno AI jádro,<br />všechny kanály</span>
       </div>
     </div>
@@ -639,7 +640,7 @@ function ContactModal({ open, onClose }) {
             ) : (
               <>
                 <div className="cmodal-head">
-                  <span className="mark"><LogoMark size={24} /></span>
+                  <span className="mark"><LogoMark size={26} /></span>
                   <h3>Domluvit schůzku</h3>
                   <p>30 minut zdarma. Napište nám, co řešíte, a ozveme se do 24 hodin.</p>
                 </div>
@@ -1128,11 +1129,9 @@ export default function App() {
 
       {/* ===== NAV — dynamic island: attached to the top edge, expands into a nav bar on hover ===== */}
       <div className="nav-wrap">
-        <motion.div
+        <div
           ref={navRef}
           className="nav-island"
-          layout
-          transition={ISLAND_SPRING}
           onMouseEnter={() => { if (!isMobile) setNavOpen(true) }}
           onMouseLeave={() => { if (!isMobile) setNavOpen(false) }}
         >
@@ -1144,7 +1143,6 @@ export default function App() {
               {navOpen && !isMobile && (
                 <motion.div
                   className="nav-links left"
-                  layout
                   initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                   transition={ISLAND_SPRING}
                 >
@@ -1171,7 +1169,7 @@ export default function App() {
                 else closeNav()
               }}
             >
-              <span className="mark"><LogoMark size={17} /></span>
+              <span className="mark"><LogoMark size={19} /></span>
             </a>
 
             {/* right half of the sections + CTA — slides out to the right of the logo */}
@@ -1179,7 +1177,6 @@ export default function App() {
               {navOpen && !isMobile && (
                 <motion.div
                   className="nav-links right"
-                  layout
                   initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                   transition={ISLAND_SPRING}
                 >
@@ -1215,7 +1212,7 @@ export default function App() {
               </motion.div>
             )}
           </AnimatePresence>
-        </motion.div>
+        </div>
       </div>
 
       {/* ===== HERO ===== */}
@@ -1623,7 +1620,7 @@ export default function App() {
         <div className="footer-inner">
           <div className="footer-grid">
             <div className="footer-col brand">
-              <div className="footer-brand"><span className="mark"><LogoMark size={16} /></span><span className="name">SiteSpot</span></div>
+              <div className="footer-brand"><span className="mark"><LogoMark size={18} /></span><span className="name">SiteSpot</span></div>
               <p>Digitální agentura pro firmy, které chtějí růst. Weby, AI automatizace, leady a marketing.</p>
             </div>
             <div className="footer-col">
