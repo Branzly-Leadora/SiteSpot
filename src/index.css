@@ -51,7 +51,12 @@ a { color: inherit; }
 .nav-logo { display: flex; align-items: center; gap: 0; text-decoration: none; padding: 4px 4px; color: var(--text); flex: none; }
 .nav-logo .mark { width: 27px; height: 27px; border-radius: 9px; background: #fff; display: grid; place-items: center; font-size: 14px; font-weight: 800; color: #0B0C10; box-shadow: 0 0 16px rgba(255,255,255,0.25); }
 .nav-logo .name { font-weight: 700; font-size: 15px; letter-spacing: -0.01em; white-space: nowrap; overflow: hidden; display: inline-block; }
-.nav-links { display: flex; align-items: center; justify-content: center; gap: 2px; overflow: hidden; flex-wrap: nowrap; white-space: nowrap; }
+/* section links open symmetrically around the centred logo — no width/overflow
+   animation (that used to clip the text mid-open); framer's layout spring sizes
+   the island and each link just fades + slides out from behind the logo */
+.nav-links { display: flex; align-items: center; gap: 2px; flex-wrap: nowrap; white-space: nowrap; }
+.nav-links.left { margin-right: 4px; }
+.nav-links.right { margin-left: 4px; }
 .nav-link { white-space: nowrap; text-decoration: none; font-size: 14px; font-weight: 500; padding: 8px 14px; border-radius: 999px; color: var(--muted); background: transparent; transition: color 0.25s ease, background 0.25s ease; }
 .nav-link:hover { color: #fff; }
 .nav-link.active { color: #fff; background: rgba(255,255,255,0.09); }

@@ -665,20 +665,41 @@ function useNumberFormat() {
   return useRef(new Intl.NumberFormat('cs-CZ')).current
 }
 
-// Mounts the heavy Spline WebGL scene only while its section is near the viewport,
-// and unmounts it when scrolled far away — so it never runs alongside the hero shader.
+// Mounts the heavy Spline WebGL scene. To make the robot appear fast and never
+// re-load: (1) warm the runtime chunk + the .splinecode asset during idle time,
+// (2) mount a full viewport early so it has time to initialise before it's in
+// view, (3) latch it mounted once shown — scrolling away never tears down the
+// WebGL, so returning is instant with no stutter.
 function LazySpline({ scene }) {
   const ref = useRef(null)
   const [on, setOn] = useState(false)
   // phones get a lightweight static poster instead of the ~2MB WebGL runtime
   const [isMob] = useState(() => typeof window !== 'undefined' && window.matchMedia('(max-width: 860px)').matches)
+
+  // prefetch during idle so both the JS runtime and the scene file are cached
+  // before the user ever reaches the section
+  useEffect(() => {
+    if (isMob) return
+    let done = false
+    const warm = () => {
+      if (done) return
+      done = true
+      import('@splinetool/react-spline').catch(() => {})
+      fetch(scene, { mode: 'cors', cache: 'force-cache' }).catch(() => {})
+    }
+    const ric = window.requestIdleCallback
+    const id = ric ? ric(warm, { timeout: 2500 }) : setTimeout(warm, 1200)
+    return () => { (window.cancelIdleCallback || clearTimeout)(id) }
+  }, [isMob, scene])
+
   useEffect(() => {
     if (isMob) return
     const el = ref.current
     if (!el) return
-    // only mount while the Spline section itself is on screen — never while merely near it,
-    // so the heavy WebGL never runs during the neighbouring Services / Case-studies sections
-    const io = new IntersectionObserver(([e]) => setOn(e.isIntersecting), { rootMargin: '-18% 0px -18% 0px' })
+    // start mounting a viewport early, then latch — once shown it stays mounted
+    const io = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { setOn(true); io.disconnect() }
+    }, { rootMargin: '700px 0px 700px 0px' })
     io.observe(el)
     return () => io.disconnect()
   }, [isMob])
@@ -1133,6 +1154,28 @@ export default function App() {
           <div className="nav-corner left" aria-hidden />
           <div className="nav-corner right" aria-hidden />
           <motion.nav className="nav" layout transition={ISLAND_SPRING}>
+            {/* left half of the sections — slides out to the left of the centered logo */}
+            <AnimatePresence initial={false}>
+              {navOpen && !isMobile && (
+                <motion.div
+                  className="nav-links left"
+                  layout
+                  initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                  transition={ISLAND_SPRING}
+                >
+                  {NAV.slice(0, 3).map((l, i) => (
+                    <motion.a
+                      key={l.id} href={l.href} onClick={closeNav}
+                      className={`nav-link${active === l.id ? ' active' : ''}`}
+                      initial={{ opacity: 0, x: 14 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 14 }}
+                      transition={{ ...ISLAND_SPRING, delay: 0.03 * (NAV.slice(0, 3).length - 1 - i) }}
+                    >{l.label}</motion.a>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* logo — stays centred at all times, it's the anchor the sections open around */}
             <a
               href="#hero"
               className="nav-logo"
@@ -1144,34 +1187,23 @@ export default function App() {
               }}
             >
               <span className="mark"><LogoMark size={17} /></span>
-              <AnimatePresence initial={false}>
-                {navOpen && !isMobile && (
-                  <motion.span
-                    className="name"
-                    initial={{ opacity: 0, width: 0, marginLeft: 0 }}
-                    animate={{ opacity: 1, width: 'auto', marginLeft: 9 }}
-                    exit={{ opacity: 0, width: 0, marginLeft: 0 }}
-                    transition={ISLAND_SPRING}
-                  >SiteSpot</motion.span>
-                )}
-              </AnimatePresence>
             </a>
+
+            {/* right half of the sections + CTA — slides out to the right of the logo */}
             <AnimatePresence initial={false}>
               {navOpen && !isMobile && (
                 <motion.div
-                  className="nav-links"
+                  className="nav-links right"
                   layout
-                  initial={{ width: 0, opacity: 0 }}
-                  animate={{ width: 'auto', opacity: 1 }}
-                  exit={{ width: 0, opacity: 0 }}
+                  initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                   transition={ISLAND_SPRING}
                 >
-                  {NAV.map((l, i) => (
+                  {NAV.slice(3).map((l, i) => (
                     <motion.a
                       key={l.id} href={l.href} onClick={closeNav}
                       className={`nav-link${active === l.id ? ' active' : ''}`}
-                      initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }}
-                      transition={{ ...ISLAND_SPRING, delay: 0.02 * i }}
+                      initial={{ opacity: 0, x: -14 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -14 }}
+                      transition={{ ...ISLAND_SPRING, delay: 0.03 * i }}
                     >{l.label}</motion.a>
                   ))}
                   <a href="#kontakt" className="nav-cta" onClick={openContact}>Domluvit schůzku</a>
