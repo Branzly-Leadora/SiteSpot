@@ -1490,17 +1490,17 @@ export default function App() {
           </div>
           <div className="grid g3 team-grid">
             {/* real photos live in public/media/*.jpg; they replace the initials automatically.
-                socials: profile URLs — '#' renders a disabled placeholder until a real link is set. */}
+                socials: real URL → clickable; '#' → disabled placeholder; null/omitted → hidden (e.g. no X yet). */}
             {[
-              { n: 'Oliver Žaigla', img: '/media/oliver.jpg', role: 'Strategie', bio: 'Vede strategii, akvizici a vztahy s klienty.', chips: ['Strategie', 'Leady', 'Growth'], li: '#', ig: '#', x: '#' },
-              { n: 'David Sak', img: '/media/david.jpg', role: 'Design', bio: 'Navrhuje weby a značky, které prodávají.', chips: ['Web design', 'UX/UI', 'Brand'], li: '#', ig: '#', x: '#' },
-              { n: 'Max Hrubý', img: '/media/max.jpg', role: 'Vývoj & AI', bio: 'Staví weby, AI agenty a automatizace.', chips: ['Vývoj', 'AI agenti', 'Automatizace'], li: '#', ig: '#', x: '#' },
+              { n: 'Oliver Žaigla', img: '/media/oliver.jpg', role: 'Strategie', bio: 'Vede strategii, akvizici a vztahy s klienty.', chips: ['Strategie', 'Leady', 'Growth'], li: 'https://www.linkedin.com/in/zaigla/', ig: 'https://www.instagram.com/oliksmd/', x: null },
+              { n: 'David Sak', img: '/media/david.jpg', role: 'Design', bio: 'Navrhuje weby a značky, které prodávají.', chips: ['Web design', 'UX/UI', 'Brand'], li: 'https://www.linkedin.com/in/david-sak-141601246/', ig: 'https://www.instagram.com/dejvyq/', x: null },
+              { n: 'Max Hrubý', img: '/media/max.jpg', role: 'Vývoj & AI', bio: 'Staví weby, AI agenty a automatizace.', chips: ['Vývoj', 'AI agenti', 'Automatizace'], li: 'https://www.linkedin.com/in/hrub%C3%BD/', ig: 'https://www.instagram.com/maxmilian_hruby/', x: null },
             ].map((t, i) => {
               const socials = [
                 { key: 'li', label: 'LinkedIn', url: t.li, Icon: LinkedinIcon },
                 { key: 'ig', label: 'Instagram', url: t.ig, Icon: InstagramIcon },
                 { key: 'x', label: 'X', url: t.x, Icon: XIcon },
-              ]
+              ].filter((s) => s.url)
               return (
                 <div className="team-card spot-card" data-reveal={i * 100} key={t.n}>
                   <div className="team-photo">
