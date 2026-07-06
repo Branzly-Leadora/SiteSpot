@@ -99,7 +99,7 @@ const NAV = [
   { label: 'Služby', href: '#sluzby', id: 'sluzby' },
   { label: 'Jak pracujeme', href: '#proces', id: 'proces' },
   { label: 'Dema', href: '#dema', id: 'dema' },
-  { label: 'Šablony', href: '#sablony', id: 'sablony' },
+  { label: 'Naše práce', href: '#sablony', id: 'sablony' },
   { label: 'Ceník', href: '#cenik', id: 'cenik' },
   { label: 'FAQ', href: '#faq', id: 'faq' },
 ]
@@ -1634,7 +1634,7 @@ export default function App() {
             </div>
             <div className="footer-col">
               <div className="footer-head">Navigace</div>
-              <a href="#sluzby">Služby</a><a href="#proces">Jak pracujeme</a><a href="#sablony">Šablony</a><a href="#cenik">Ceník</a><a href="#faq">FAQ</a>
+              <a href="#sluzby">Služby</a><a href="#proces">Jak pracujeme</a><a href="#sablony">Naše práce</a><a href="#cenik">Ceník</a><a href="#faq">FAQ</a>
             </div>
             <div className="footer-col">
               <div className="footer-head">Kontakt</div>

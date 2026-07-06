@@ -157,7 +157,7 @@ export default function Templates() {
     <section id="sablony" className="section">
       <div className="wrap">
         <div className="head">
-          <div className="eyebrow" data-reveal="0"><span className="dot" />Šablony webů</div>
+          <div className="eyebrow" data-reveal="0"><span className="dot" />Naše práce</div>
           <h2 data-split="1">Prohlédněte si weby, které umíme postavit</h2>
           <p className="sub" data-reveal="120">Připravené šablony pro váš obor — každou dopracujeme na míru vaší značce. Projeďte si je a otevřete živý náhled.</p>
         </div>
