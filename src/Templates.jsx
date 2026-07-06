@@ -12,6 +12,7 @@ const TEMPLATES = [
   { type: 'ai', cls: 't-book', tag: 'SaaS / AI produkt', name: 'Nexora', url: 'https://nexora-red-nu.vercel.app', host: 'nexora-red-nu.vercel.app', img: '/media/templates/nexora.jpg', desc: 'Produktový web pro AI agenta, od hero po ceník.' },
   { type: 'ai', cls: 't-saas', tag: 'AI / Tech', name: 'Branzly', url: 'https://branzly-asci.vercel.app', host: 'branzly-asci.vercel.app', img: '/media/templates/branzlyasci.jpg', desc: 'Světlý minimalistický web s ASCII vizuálem.' },
   { type: 'studio', cls: 't-studio', tag: 'Kreativní studio', name: 'Vrstva', url: 'https://vrstva.vercel.app', host: 'vrstva.vercel.app', img: '/media/templates/vrstva.jpg', desc: 'Studio pro tech značky — strategie, design, vývoj.' },
+  { type: 'studio', cls: 't-b2b', tag: 'Design & portfolio', name: 'Synapse', url: 'https://synapse-sepia-nine.vercel.app/', host: 'synapse-sepia-nine.vercel.app', img: '/media/templates/synapse.jpg', desc: 'Studio pro UI/UX, branding, ilustraci a weby.' },
 ]
 
 // Per-template CSS mockup — a generic mini-website that shows behind a screenshot
