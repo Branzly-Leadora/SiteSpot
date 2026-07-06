@@ -858,9 +858,14 @@ a { color: inherit; }
 .tlive.is-disabled { opacity: 0.5; cursor: default; }
 .tlive.is-disabled:hover { background: rgba(255,255,255,0.06); color: var(--text); transform: none; box-shadow: none; }
 
-.tcar-edge { position: absolute; top: 0; bottom: 78px; width: 15%; z-index: 6; pointer-events: none; }
-.tcar-edge.left { left: 0; background: linear-gradient(to right, var(--bg), transparent); }
-.tcar-edge.right { right: 0; background: linear-gradient(to left, var(--bg), transparent); }
+/* Full-bleed edge masks: fade the depth side-slides into the page background so
+   they melt into black at the screen edges instead of jutting out as hard-edged
+   rectangles. Anchored to the viewport (not the centered .wrap) and wide enough
+   to stop just short of the centred active card. z-index sits above the whole
+   3D stage — width keeps them clear of the active card so it stays crisp. */
+.tcar-edge { position: absolute; top: 0; bottom: 78px; width: max(0px, calc(50vw - 400px)); z-index: 99; pointer-events: none; }
+.tcar-edge.left { left: 50%; margin-left: -50vw; background: linear-gradient(to right, var(--bg), var(--bg) 14%, transparent); }
+.tcar-edge.right { right: 50%; margin-right: -50vw; background: linear-gradient(to left, var(--bg), var(--bg) 14%, transparent); }
 
 .tcar-nav { position: relative; z-index: 7; display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 34px; }
 .tcar-nav .t-arrow { display: grid; place-items: center; }

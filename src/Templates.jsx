@@ -53,7 +53,9 @@ export default function Templates() {
       const o = off + liveOffset
       const a = Math.abs(o)
       s.style.transform = `translateX(${o * 54}%) translateZ(${-a * 260}px) rotateY(${o * -32}deg) scale(${1 - a * 0.12})`
-      s.style.opacity = a > 2.2 ? '0' : '1'
+      // fade side slides smoothly into the background with depth so the far
+      // cards melt into black instead of jutting out as hard-edged rectangles
+      s.style.opacity = String(Math.max(0, Math.min(1, (2.25 - a) / 1.1)))
       s.style.filter = a > 0.05 ? `brightness(${1 - Math.min(a * 0.16, 0.4)})` : 'none'
       s.style.zIndex = String(100 - Math.round(a * 10))
       s.style.pointerEvents = a > 1.5 ? 'none' : 'auto'
