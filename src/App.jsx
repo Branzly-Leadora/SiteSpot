@@ -537,7 +537,7 @@ function BenefitCenter() {
 
 // where contact-form submissions land (FormSubmit.co relays to this inbox —
 // first submission sends an activation e-mail there that must be confirmed once)
-const CONTACT_EMAIL = 'business@sitespot.cz'
+const CONTACT_EMAIL = 'max@sitespot.cz'
 
 // trust bar — real technology logo marks only (no text wordmarks) drifting under the hero
 function TrustBar() {
@@ -1654,7 +1654,7 @@ export default function App() {
             </div>
             <div className="footer-col">
               <div className="footer-head">Kontakt</div>
-              <a href="mailto:business@sitespot.cz"><Mail size={15} strokeWidth={1.7} /> business@sitespot.cz</a>
+              <a href={`mailto:${CONTACT_EMAIL}`}><Mail size={15} strokeWidth={1.7} /> {CONTACT_EMAIL}</a>
               <a href="tel:+420777123456"><Phone size={15} strokeWidth={1.7} /> +420 777 123 456</a>
               <span style={{ color: 'var(--muted)', fontSize: '14.5px', display: 'inline-flex', alignItems: 'center', gap: 8 }}><MapPin size={15} strokeWidth={1.7} /> Praha · pracujeme po celé ČR</span>
               <button className="footer-legal" onClick={() => setLegalOpen(true)}>Ochrana osobních údajů</button>
