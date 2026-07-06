@@ -777,6 +777,8 @@ a { color: inherit; }
 
 /* ===== TEMPLATES — 3D depth carousel (shares the case3d transform language) ===== */
 .tcar { position: relative; margin-top: clamp(40px, 6vw, 68px); perspective: 2000px; }
+/* soft halo behind the always-centered active card — makes it float in a pool of light */
+.tcar::before { content: ''; position: absolute; left: 50%; top: 46%; width: min(680px, 88vw); height: 76%; transform: translate(-50%, -50%); background: radial-gradient(closest-side, color-mix(in oklab, var(--acc) 13%, transparent), transparent 74%); filter: blur(56px); border-radius: 50%; z-index: 0; pointer-events: none; }
 .tcar-stage { position: relative; height: min(56vw, 440px); transform-style: preserve-3d; touch-action: pan-y; cursor: grab; }
 .tcar-stage.dragging { cursor: grabbing; }
 .tcar-slide { position: absolute; top: 0; left: 50%; width: min(720px, 86vw); height: 100%; margin-left: calc(min(720px, 86vw) / -2); transform-style: preserve-3d; cursor: pointer; transition: transform 0.85s cubic-bezier(0.16,1,0.3,1), opacity 0.85s ease, filter 0.7s ease; will-change: transform, opacity; }
@@ -867,9 +869,13 @@ a { color: inherit; }
 .tcar-count { font-variant-numeric: tabular-nums; font-size: 13px; color: var(--muted); min-width: 52px; text-align: center; }
 
 @media (max-width: 600px) {
+  .tcar-stage { height: min(128vw, 460px); }   /* portrait frame so the live demo stays legible on phones */
   .tcar-slide { width: 88vw; margin-left: -44vw; }
   .tmeta { flex-direction: column; align-items: flex-start; }
   .tm-row, .tm-stats, .tm-gal { display: none; }
+  .tcar::before { top: 44%; height: 82%; filter: blur(44px); }
+  .t-arrow { width: 44px; height: 44px; }       /* comfortable touch target */
+  .tcar-nav { gap: 13px; margin-top: 26px; }
 }
 
 /* ========== AUTOMATION DEMOS (#dema) — live carousel + on-site preview modal ========== */
@@ -879,7 +885,8 @@ a { color: inherit; }
 .dlive.on { opacity: 1; }
 
 .dmodal-backdrop { position: fixed; inset: 0; z-index: 300; display: flex; align-items: center; justify-content: center; padding: 3vh 3vw; background: rgba(0,0,0,0.78); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
-.dmodal { display: flex; flex-direction: column; width: min(1180px, 94vw); height: min(86vh, 820px); border-radius: 20px; overflow: hidden; background: linear-gradient(180deg, #14161C, #0B0C10); border: 1px solid rgba(255,255,255,0.12); box-shadow: 0 60px 140px -40px rgba(0,0,0,0.85); }
+.dmodal { position: relative; display: flex; flex-direction: column; width: min(1180px, 94vw); height: min(86vh, 820px); border-radius: 20px; overflow: hidden; background: linear-gradient(180deg, #14161C, #0B0C10); border: 1px solid rgba(255,255,255,0.12); box-shadow: 0 60px 140px -40px rgba(0,0,0,0.85); }
+.dmodal-load { position: absolute; inset: 0; z-index: 1; display: grid; place-items: center; background: linear-gradient(180deg, #14161C, #0B0C10); }
 .dmodal-bar { display: flex; align-items: center; gap: 14px; padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.09); background: rgba(255,255,255,0.02); flex-shrink: 0; }
 .dmodal-lights { display: flex; gap: 6px; flex-shrink: 0; }
 .dmodal-lights i { width: 11px; height: 11px; border-radius: 50%; display: block; }
@@ -889,9 +896,11 @@ a { color: inherit; }
 .dmodal-url { flex: 1; min-width: 0; font-size: 12px; color: #6B6F78; background: rgba(255,255,255,0.04); padding: 6px 12px; border-radius: 8px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-variant-numeric: tabular-nums; }
 .dmodal-x { flex-shrink: 0; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.04); color: #C9C9CE; cursor: pointer; transition: border-color 0.25s ease, background 0.25s ease, color 0.25s ease; }
 .dmodal-x:hover { color: #fff; background: rgba(255,255,255,0.1); }
-.dmodal-frame { flex: 1; width: 100%; border: 0; display: block; background: #0B0C10; }
+.dmodal-frame { position: relative; z-index: 2; flex: 1; width: 100%; border: 0; display: block; background: #0B0C10; opacity: 0; transition: opacity 0.5s ease; }
+.dmodal-frame.on { opacity: 1; }
 @media (max-width: 640px) {
   .dmodal-backdrop { padding: 0; }
   .dmodal { width: 100vw; height: 100dvh; border-radius: 0; border: none; }
+  .dmodal-bar { padding-top: max(10px, env(safe-area-inset-top)); }
   .dmodal-bar .tlive { display: none; }
 }

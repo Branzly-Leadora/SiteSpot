@@ -64,6 +64,8 @@ function Preview({ type, name }) {
 
 // on-site preview modal — browser-framed iframe with the fully interactive demo
 function DemoModal({ demo, onClose }) {
+  const [ready, setReady] = useState(false)
+  useEffect(() => { setReady(false) }, [demo]) // reset shimmer when a new demo opens
   useEffect(() => {
     if (!demo) return
     const onKey = (e) => { if (e.key === 'Escape') onClose() }
@@ -88,9 +90,11 @@ function DemoModal({ demo, onClose }) {
               <a className="tlive" href={demo.url} target="_blank" rel="noopener noreferrer">Celá stránka <ArrowUpRight size={14} strokeWidth={2.4} /></a>
               <button className="dmodal-x" aria-label="Zavřít náhled" onClick={onClose}><X size={17} strokeWidth={2.2} /></button>
             </div>
+            {!ready && <div className="dmodal-load"><span className="loader" /></div>}
             <iframe
-              className="dmodal-frame" src={demo.url} title={`Živý náhled — ${demo.name}`}
+              className={`dmodal-frame${ready ? ' on' : ''}`} src={demo.url} title={`Živý náhled — ${demo.name}`}
               onLoad={(e) => {
+                setReady(true)
                 try {
                   const doc = e.currentTarget.contentWindow.document
                   // Escape must close the modal even when the demo inside has focus (same-origin)
