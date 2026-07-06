@@ -1,74 +1,35 @@
 import { useEffect, useRef, useState } from 'react'
 import { ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react'
 
-// Website templates shown in a 3D depth carousel (same transform math as the
-// case-study / testimonial carousels, so it ties into the existing design).
-// `img` is an optional real screenshot path in /public — it overlays the CSS
+// Real websites we built, shown in a 3D depth carousel (same transform math as
+// the case-study / testimonial carousels, so it ties into the existing design).
+// `img` is a real screenshot in /public/media/templates that overlays the CSS
 // mockup and gracefully falls back to it via onError (like the team photos).
-// `url` is the live-preview link; '#' renders a disabled placeholder button.
+// `url` is the live site; `host` is the domain shown in the browser-frame bar.
 const TEMPLATES = [
-  { type: 'shop', cls: 't-shop', tag: 'E-shop', name: 'Aurora', url: '#', img: '/media/templates/aurora.webp', desc: 'Doplňky stravy, kosmetika, rychlý košík.' },
-  { type: 'saas', cls: 't-saas', tag: 'SaaS / Landing', name: 'Lumen', url: '#', img: '/media/templates/lumen.webp', desc: 'Produktová landing page s CTA a funkcemi.' },
-  { type: 'food', cls: 't-food', tag: 'Restaurace', name: 'Terra', url: '#', img: '/media/templates/terra.webp', desc: 'Menu, fotky, rezervace stolu online.' },
-  { type: 'studio', cls: 't-studio', tag: 'Portfolio', name: 'Studio', url: '#', img: '/media/templates/studio.webp', desc: 'Kreativní portfolio, galerie prací.' },
-  { type: 'b2b', cls: 't-b2b', tag: 'B2B / Firemní', name: 'Meridian', url: '#', img: '/media/templates/meridian.webp', desc: 'Korporátní web, důvěryhodnost, čísla.' },
-  { type: 'book', cls: 't-book', tag: 'Rezervace', name: 'Bloom', url: '#', img: '/media/templates/bloom.webp', desc: 'Služby, ceník a online objednání.' },
+  { type: 'studio', cls: 't-food', tag: 'Designové studio', name: 'Lynx Studio', url: 'https://lynx-studio-delta.vercel.app', host: 'lynx-studio-delta.vercel.app', img: '/media/templates/lynxstudio.jpg', desc: 'Kreativní studio pro startupy i značky.' },
+  { type: 'ai', cls: 't-b2b', tag: 'AI agentura', name: 'Synthetix', url: 'https://synthetix-seven.vercel.app', host: 'synthetix-seven.vercel.app', img: '/media/templates/synthetix.jpg', desc: 'Landing pro AI automatizaci a integrace.' },
+  { type: 'ai', cls: 't-book', tag: 'SaaS / AI produkt', name: 'Nexora', url: 'https://nexora-red-nu.vercel.app', host: 'nexora-red-nu.vercel.app', img: '/media/templates/nexora.jpg', desc: 'Produktový web pro AI agenta, od hero po ceník.' },
+  { type: 'ai', cls: 't-saas', tag: 'AI / Tech', name: 'Branzly', url: 'https://branzly-asci.vercel.app', host: 'branzly-asci.vercel.app', img: '/media/templates/branzlyasci.jpg', desc: 'Světlý minimalistický web s ASCII vizuálem.' },
+  { type: 'studio', cls: 't-studio', tag: 'Kreativní studio', name: 'Vrstva', url: 'https://branzly.vercel.app', host: 'branzly.vercel.app', desc: 'Studio pro tech značky — strategie, design, vývoj.' },
 ]
 
-// per-template CSS mockup — abstract mini-website, stays until a real screenshot lands
+// Per-template CSS mockup — a generic mini-website that shows behind a screenshot
+// and stays visible for entries without one (or if a screenshot fails to load).
+// Name-agnostic on purpose: the real site name is always shown in the meta bar.
 function Preview({ type }) {
-  if (type === 'shop') return (
+  if (type === 'ai') return (
     <div className="tmini">
-      <div className="tm-head"><span className="tm-logo">aurora<em>.</em></span><span className="tm-nav"><i /><i /><i /></span></div>
-      <div className="tm-hero"><span className="tm-title" /><span className="tm-sub" /><span className="tm-btn" /></div>
-      <div className="tm-row">
-        {['499 Kč', '890 Kč', '1 290 Kč'].map((p) => (
-          <div className="tm-card" key={p}><span className="tm-thumb" /><span className="tm-bar" /><span className="tm-price">{p}</span></div>
-        ))}
-      </div>
-    </div>
-  )
-  if (type === 'saas') return (
-    <div className="tmini">
-      <div className="tm-head"><span className="tm-logo">Lumen<em>▲</em></span><span className="tm-nav"><i /><i /><i /></span></div>
+      <div className="tm-head"><span className="tm-logo">AI<em>▲</em></span><span className="tm-nav"><i /><i /><i /></span></div>
       <div className="tm-hero center"><span className="tm-title w86" /><span className="tm-title w54" /><span className="tm-sub" /><span className="tm-btn" /></div>
       <div className="tm-row">{[0, 1, 2].map((i) => <div className="tm-card" key={i}><span className="tm-thumb" /><span className="tm-bar" /></div>)}</div>
     </div>
   )
-  if (type === 'food') return (
-    <>
-      <div className="tm-fullimg" />
-      <div className="tm-food">
-        <span className="tm-logo big">TERRA <em>bistro</em></span>
-        <span className="tm-spacer" />
-        <span className="tm-title h18 w60" /><span className="tm-sub w44" />
-        <span className="tm-btnrow"><span className="tm-btn" /><span className="tm-btn ghost" /></span>
-      </div>
-    </>
-  )
   if (type === 'studio') return (
     <div className="tmini">
-      <div className="tm-head"><span className="tm-logo">STUDIO<em>°</em></span><span className="tm-nav"><i /><i /></span></div>
+      <div className="tm-head"><span className="tm-logo">Studio<em>°</em></span><span className="tm-nav"><i /><i /></span></div>
       <span className="tm-title h20 w70" />
       <div className="tm-gal">{[0, 1, 2, 3, 4, 5].map((i) => <span key={i} />)}</div>
-    </div>
-  )
-  if (type === 'b2b') return (
-    <div className="tmini">
-      <div className="tm-head"><span className="tm-logo">Meridian<em>_</em></span><span className="tm-nav"><i /><i /><i /><i /></span></div>
-      <div className="tm-hero"><span className="tm-title" /><span className="tm-sub" /><span className="tm-btn" /></div>
-      <div className="tm-stats">
-        {[['+212%'], ['9×'], ['24/7']].map(([v], i) => <div className="tm-stat" key={i}><b>{v}</b><i /></div>)}
-      </div>
-    </div>
-  )
-  if (type === 'book') return (
-    <div className="tmini">
-      <div className="tm-head"><span className="tm-logo">Bloom<em>✦</em></span><span className="tm-nav"><i /><i /><i /></span></div>
-      <div className="tm-cal">{Array.from({ length: 14 }, (_, i) => <span key={i} className={[2, 8, 12].includes(i) ? 'on' : ''} />)}</div>
-      <div className="tm-slist">
-        {['od 690 Kč', 'od 1 200 Kč', 'od 450 Kč'].map((p) => <div key={p}><b /><i>{p}</i></div>)}
-      </div>
     </div>
   )
   return null
@@ -159,7 +120,7 @@ export default function Templates() {
         <div className="head">
           <div className="eyebrow" data-reveal="0"><span className="dot" />Naše práce</div>
           <h2 data-split="1">Prohlédněte si weby, které umíme postavit</h2>
-          <p className="sub" data-reveal="120">Připravené šablony pro váš obor — každou dopracujeme na míru vaší značce. Projeďte si je a otevřete živý náhled.</p>
+          <p className="sub" data-reveal="120">Vybrané weby z naší dílny — každý postavený na míru značce. Projeďte si je a otevřete živý náhled.</p>
         </div>
 
         <div className="tcar" data-reveal="0" onMouseEnter={() => (hover.current = true)} onMouseLeave={() => (hover.current = false)}>
@@ -169,7 +130,7 @@ export default function Templates() {
               return (
                 <div className="tcar-slide" key={t.name} ref={(el) => (slideRefs.current[i] = el)} onClick={() => { if (i !== idx) go(i) }}>
                   <div className="tframe">
-                    <div className="tbar"><span className="tlights"><i /><i /><i /></span><span className="turl">{t.name.toLowerCase()}.sitespot.cz</span></div>
+                    <div className="tbar"><span className="tlights"><i /><i /><i /></span><span className="turl">{t.host || `${t.name.toLowerCase()}.sitespot.cz`}</span></div>
                     <div className={`tprev ${t.cls}`}>
                       <Preview type={t.type} />
                       {t.img && <img className="tshot" src={t.img} alt={`Šablona ${t.name}`} loading="lazy" onError={(e) => { e.currentTarget.style.display = 'none' }} />}
