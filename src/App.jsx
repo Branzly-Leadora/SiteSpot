@@ -1239,7 +1239,9 @@ export default function App() {
           <div className="hero-glow b" data-parallax="0.04" aria-hidden />
           <div id="ss-hero-content" className="hero-content">
             <div className="hero-badge"><span className="tag">Nové</span><span className="label">AI agenti na míru</span></div>
-            <h1>Proměníme váš web<br />ve stroj na zákazníky.</h1>
+            {/* responsive line breaks: desktop keeps "Proměníme váš web / ve stroj na zákazníky.",
+                phones (<=640px) get "Proměníme váš / web ve stroj / na zákazníky." — br-d/br-m toggle in CSS */}
+            <h1>Proměníme váš <br className="br-m" />web <br className="br-d" />ve stroj <br className="br-m" />na zákazníky.</h1>
             <p>Stavíme weby, které prodávají, a AI automatizace, které šetří čas a peníze — bez zbytečné složitosti.</p>
             <div className="hero-actions">
               <Btn href="#kontakt" className="btn-light" onClick={openContact}>Nezávazná konzultace</Btn>

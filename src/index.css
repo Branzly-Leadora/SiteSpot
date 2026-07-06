@@ -104,6 +104,7 @@ a { color: inherit; }
 .hero-badge .tag { padding: 4px 11px; border-radius: 999px; background: #fff; color: #0B0C10; font-size: 12.5px; font-weight: 600; }
 .hero-badge .label { font-size: 13.5px; color: #C6CAD3; font-weight: 500; }
 .hero h1 { animation: heroIn 1s cubic-bezier(0.22,1,0.36,1) 0.28s both; margin: 30px 0 0; font-size: clamp(42px,6.8vw,88px); font-weight: 600; letter-spacing: -0.04em; line-height: 1.05; max-width: 980px; text-wrap: balance; }
+.hero h1 .br-m { display: none; } /* mobile-only break — off on desktop (see 640px media query) */
 .hero p { animation: heroIn 1s cubic-bezier(0.22,1,0.36,1) 0.42s both; margin: 24px 0 0; font-size: clamp(16px,1.9vw,18.5px); line-height: 1.6; color: var(--muted); max-width: 560px; }
 .hero-actions { animation: heroIn 1s cubic-bezier(0.22,1,0.36,1) 0.56s both; display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 36px; }
 .btn-light { display: inline-flex; align-items: center; padding: 13px 27px; border-radius: 999px; background: var(--text); color: #0B0C10; font-weight: 600; font-size: 15.5px; text-decoration: none; transition: transform 0.3s ease, box-shadow 0.3s ease; }
@@ -128,10 +129,16 @@ a { color: inherit; }
 .notch-cta { justify-self: center; display: inline-flex; align-items: center; padding: 9px 22px; border-radius: 999px; background: var(--text); color: #0B0C10; font-size: 13.5px; font-weight: 600; text-decoration: none; white-space: nowrap; transition: transform 0.25s ease, box-shadow 0.25s ease; }
 .notch-cta:hover { transform: translateY(-1px); box-shadow: 0 6px 22px -6px rgba(255,255,255,0.5); }
 @media (max-width: 640px) {
-  /* headline wraps to 3–4 lines on phones; the desktop leading/tracking (tuned for
-     the 88px two-line version) then made lines run together. Loosen both for the
-     small size only — desktop keeps 1.05 / -0.04em. */
-  .hero h1 { line-height: 1.16; letter-spacing: -0.02em; }
+  /* phones: force the headline to "Proměníme váš / web ve stroj / na zákazníky."
+     (swap which <br> is active) and loosen the desktop leading/tracking — tuned for
+     the 88px two-line version — so the smaller wrapped lines don't run together.
+     Desktop keeps its own breaks and 1.05 / -0.04em. Everything stays centered
+     via .hero-content (align-items:center + text-align:center). */
+  /* size down just enough that the longest line ("Proměníme váš") always fits on
+     one line so the 3-line break holds; fluid so bigger phones keep it larger. */
+  .hero h1 { width: 100%; font-size: clamp(30px, 9.5vw, 42px); line-height: 1.16; letter-spacing: -0.02em; text-wrap: wrap; } /* width:100% so the flex item doesn't shrink-wrap and re-break lines; fluid size so the longest line ("Proměníme váš") fits the ~287px content width; wrap (not balance) so only our <br> breaks */
+  .hero h1 .br-d { display: none; }
+  .hero h1 .br-m { display: inline; }
   /* let the bottom banner fit fully on narrow screens — it used to run off
      the right edge (Prozkoumat link + separator got clipped) */
   .hero-notch { height: auto; max-width: calc(100% - 24px); }
