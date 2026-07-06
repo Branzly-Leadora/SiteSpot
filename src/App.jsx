@@ -608,17 +608,33 @@ function ContactModal({ open, onClose }) {
   useEffect(() => { if (open) setState('idle') }, [open])
   const submit = async (e) => {
     e.preventDefault()
-    const data = Object.fromEntries(new FormData(e.target))
     setState('sending')
     try {
+      // Send as multipart FormData (a native form post), NOT application/json.
+      // A JSON content-type makes the browser fire a CORS preflight OPTIONS to
+      // formsubmit.co; when that preflight is rejected the whole request fails
+      // every time. FormData is a CORS "simple" request (no preflight) and is
+      // exactly what FormSubmit expects, so it works on any domain.
+      const fd = new FormData(e.target)
+      fd.append('_subject', 'Nová poptávka ze sitespot.cz')
+      fd.append('_captcha', 'false')
+      fd.append('_template', 'table')
       const res = await fetch(`https://formsubmit.co/ajax/${CONTACT_EMAIL}`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ ...data, _subject: 'Nová poptávka ze sitespot.cz', _captcha: 'false', _template: 'table' }),
+        headers: { Accept: 'application/json' },
+        body: fd,
       })
-      if (!res.ok) throw new Error()
+      let data = null
+      try { data = await res.json() } catch { /* non-JSON response */ }
+      // FormSubmit returns { success: "true" }. success:"false" (e.g. e-mail not
+      // yet confirmed) comes back with HTTP 200, so check the payload too.
+      if (!res.ok || (data && String(data.success) !== 'true')) {
+        console.error('Kontaktní formulář – FormSubmit odmítl odeslání:', res.status, data)
+        throw new Error(data?.message || `HTTP ${res.status}`)
+      }
       setState('ok')
-    } catch {
+    } catch (err) {
+      console.error('Kontaktní formulář – odeslání selhalo:', err)
       setState('err')
     }
   }
