@@ -10,7 +10,7 @@
 export function LogoMark({ size = 18, ...rest }) {
   return (
     <img
-      src="/media/logo-crystal.webp"
+      src="/media/logo-crystal.webp?v=2"
       width={size}
       height={size}
       alt=""
