@@ -1,37 +1,54 @@
-// SiteSpot brand mark — a faceted geometric "S" crystal: an upper and a lower
-// diamond facet that pinch together at a central node, giving an angular S /
-// hourglass. Pure line art in currentColor (no fill, no background), so it
-// inverts cleanly on light nav tiles and dark cards alike.
-const L = [
-  // upper diamond (top peak leans left, right vertex reaches out)
-  [40, 6, 72, 30], [16, 28, 40, 6],
-  // lower diamond (bottom peak leans right, left vertex reaches out)
-  [68, 56, 44, 80], [44, 80, 12, 54],
-  // facets crossing each diamond
-  [72, 30, 16, 28], [68, 56, 12, 54],
-  // long weave diagonals through the waist
-  [40, 6, 68, 56], [44, 80, 16, 28],
-  // spokes converging on the centre node (vertex → node edge)
-  [40, 6, 41.5, 37.1], [44, 80, 42.5, 46.9],
-  [72, 30, 46.8, 40.0], [12, 54, 37.2, 44.0],
-  [16, 28, 37.4, 39.7], [68, 56, 46.6, 44.3],
+// SiteSpot brand mark — a faceted 3D wireframe crystal: an elongated prism body
+// capped by a point at top and bottom, laced with facet diagonals and lit by a
+// glowing core node at its centre. Pure line art in currentColor (no fill, no
+// background) so it inverts cleanly on light nav tiles and dark cards alike.
+//
+// Two levels of detail share one viewBox (so the layout never shifts): the full
+// lattice reads best at large sizes, while a decluttered variant stays legible
+// down to the 18 px nav / footer marks. LogoMark picks by `size` automatically.
+const FULL = [
+  // four vertical prism edges
+  [8, 36.9, 8, 91.46], [53.48, 31.23, 53.48, 85.79], [78.69, 41.46, 78.69, 96.02], [33.21, 47.13, 33.21, 101.7],
+  // top facet ring
+  [8, 36.9, 53.48, 31.23], [53.48, 31.23, 78.69, 41.46], [78.69, 41.46, 33.21, 47.13], [33.21, 47.13, 8, 36.9],
+  // bottom facet ring
+  [8, 91.46, 53.48, 85.79], [53.48, 85.79, 78.69, 96.02], [78.69, 96.02, 33.21, 101.7], [33.21, 101.7, 8, 91.46],
+  // spokes to the top and bottom points
+  [43.35, 8, 8, 36.9], [43.35, 8, 53.48, 31.23], [43.35, 8, 78.69, 41.46], [43.35, 8, 33.21, 47.13],
+  [43.35, 124.92, 8, 91.46], [43.35, 124.92, 53.48, 85.79], [43.35, 124.92, 78.69, 96.02], [43.35, 124.92, 33.21, 101.7],
+  // face diagonals weaving through the body
+  [8, 36.9, 53.48, 85.79], [53.48, 31.23, 8, 91.46], [53.48, 31.23, 78.69, 96.02], [78.69, 41.46, 53.48, 85.79],
+  [78.69, 41.46, 33.21, 101.7], [33.21, 47.13, 78.69, 96.02], [33.21, 47.13, 8, 91.46], [8, 36.9, 33.21, 101.7],
+]
+const MINI = [
+  // four vertical prism edges
+  [8, 36.9, 8, 91.46], [53.48, 31.23, 53.48, 85.79], [78.69, 41.46, 78.69, 96.02], [33.21, 47.13, 33.21, 101.7],
+  // top + bottom facet rings
+  [8, 36.9, 53.48, 31.23], [53.48, 31.23, 78.69, 41.46], [78.69, 41.46, 33.21, 47.13], [33.21, 47.13, 8, 36.9],
+  [8, 91.46, 53.48, 85.79], [53.48, 85.79, 78.69, 96.02], [78.69, 96.02, 33.21, 101.7], [33.21, 101.7, 8, 91.46],
+  // spokes to the top and bottom points
+  [43.35, 8, 8, 36.9], [43.35, 8, 53.48, 31.23], [43.35, 8, 78.69, 41.46], [43.35, 8, 33.21, 47.13],
+  [43.35, 124.92, 8, 91.46], [43.35, 124.92, 53.48, 85.79], [43.35, 124.92, 78.69, 96.02], [43.35, 124.92, 33.21, 101.7],
+  // two long diagonals crossing over the core
+  [8, 36.9, 78.69, 96.02], [78.69, 41.46, 8, 91.46],
 ]
 export function LogoMark({ size = 18, ...rest }) {
+  const L = size >= 40 ? FULL : MINI
   return (
     <svg
-      viewBox="0 0 84 86"
+      viewBox="0 0 86.69 132.92"
       width={size}
       height={size}
       fill="none"
       stroke="currentColor"
-      strokeWidth="2.5"
+      strokeWidth={size >= 40 ? 2.4 : 3}
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
       {...rest}
     >
       {L.map(([x1, y1, x2, y2], i) => <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} />)}
-      <circle cx="42" cy="43" r="5" />
+      <circle cx="43.35" cy="66.46" r="6.2" fill="currentColor" stroke="none" />
     </svg>
   )
 }
