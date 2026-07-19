@@ -82,6 +82,18 @@ for gi, group in enumerate(GROUPS):
         events.append((1, w_start, w_end,
                        "{" + TEXT + rf"\fad({fad_in},{fad_out})}}" + line))
 
+# Scroll-stopper hook: first frame, pop-in, gone by 2.1s
+HOOK_POS = r"\an5\pos(540,430)"
+HOOK_ANIM = r"\fscx132\fscy132\t(0,150,\fscx100\fscy100)\fad(40,140)"
+HOOK_TEXT = (r"{\fnMontserrat ExtraBold\fs88\1c&HFFFFFF&}Tenhle web\N"
+             r"{\fs96" + GOLD + "}ODHÁNÍ HOSTY")
+hook_glow = ("{" + HOOK_POS + HOOK_ANIM
+             + r"\bord16\blur20\1a&HFF&\3c&H000000&\3a&H30&\shad0\fnMontserrat ExtraBold\fs88}"
+             + r"Tenhle web\N{\fs96}ODHÁNÍ HOSTY")
+hook_top = "{" + HOOK_POS + HOOK_ANIM + r"\bord4\3c&H141414&\3a&H6E&\blur1\shad0\fsp1}" + HOOK_TEXT
+events.append((2, 0.00, 2.05, hook_glow))
+events.append((3, 0.00, 2.05, hook_top))
+
 header = """[Script Info]
 ScriptType: v4.00+
 PlayResX: 1080

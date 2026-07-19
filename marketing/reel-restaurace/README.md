@@ -1,6 +1,6 @@
 # Reel — redesign webu restaurace (U Staré Pošty)
 
-- `Reel_1_final.mp4` — finální video s vypálenými titulky a upraveným hlasem (−1 půltón, formanty zachovány, hudba beze změny)
+- `Reel_1_final.mp4` — finální video s vypálenými titulky, vyhlazeným hlasem (původní výška, highpass + de-esser + jemná komprese, hudba beze změny) a úvodním hookem „Tenhle web ODHÁNÍ HOSTY" (0–2 s, pop-in + zoom punch)
 - `captions.ass` — zdrojové animované titulky (Montserrat, bílá + zlatá `#DCBC7E` podle designu webu, slovo po slově, pozice v prostřední třetině)
 - `titulky.srt` — jednoduchá SRT verze (např. pro nahrání do IG jako nativní titulky)
 - `make_ass.py` — generátor `.ass` titulků z časování slov (Whisper large-v3 na oddělené hlasové stopě přes Demucs)

@@ -103,3 +103,5 @@ Dialogue: 1,0:00:21.22,0:00:21.36,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H1414
 Dialogue: 0,0:00:21.36,0:00:22.40,Cap,,0,0,0,,{\an5\pos(540,1180)\bord13\blur16\1a&HFF&\3c&H000000&\3a&H38&\shad0\fad(90,70)}ukázku zdarma.
 Dialogue: 1,0:00:21.36,0:00:21.78,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(90,0)}{\1c&H7EBCDC&}ukázku {\1c&HFFFFFF&}zdarma.
 Dialogue: 1,0:00:21.78,0:00:22.40,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,70)}{\1c&HFFFFFF&}ukázku {\1c&H7EBCDC&}zdarma.
+Dialogue: 2,0:00:00.00,0:00:02.05,Cap,,0,0,0,,{\an5\pos(540,430)\fscx132\fscy132\t(0,150,\fscx100\fscy100)\fad(40,140)\bord16\blur20\1a&HFF&\3c&H000000&\3a&H30&\shad0\fnMontserrat ExtraBold\fs88}Tenhle web\N{\fs96}ODHÁNÍ HOSTY
+Dialogue: 3,0:00:00.00,0:00:02.05,Cap,,0,0,0,,{\an5\pos(540,430)\fscx132\fscy132\t(0,150,\fscx100\fscy100)\fad(40,140)\bord4\3c&H141414&\3a&H6E&\blur1\shad0\fsp1}{\fnMontserrat ExtraBold\fs88\1c&HFFFFFF&}Tenhle web\N{\fs96\1c&H7EBCDC&}ODHÁNÍ HOSTY
