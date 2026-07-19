@@ -1,0 +1,105 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+ScaledBorderAndShadow: yes
+WrapStyle: 2
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Cap,Montserrat SemiBold,64,&H00FFFFFF,&H00FFFFFF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,0,0,5,40,40,40,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0:00:01.16,Cap,,0,0,0,,{\an5\pos(540,1180)\bord13\blur16\1a&HFF&\3c&H000000&\3a&H38&\shad0\fad(90,70)}Tohle je web\Njedné restaurace
+Dialogue: 1,0:00:00.00,0:00:00.20,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(90,0)}{\1c&H7EBCDC&}Tohle {\1c&HFFFFFF&}je {\1c&HFFFFFF&}web\N{\1c&HFFFFFF&}jedné {\1c&HFFFFFF&}restaurace
+Dialogue: 1,0:00:00.20,0:00:00.28,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,0)}{\1c&HFFFFFF&}Tohle {\1c&H7EBCDC&}je {\1c&HFFFFFF&}web\N{\1c&HFFFFFF&}jedné {\1c&HFFFFFF&}restaurace
+Dialogue: 1,0:00:00.28,0:00:00.40,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,0)}{\1c&HFFFFFF&}Tohle {\1c&HFFFFFF&}je {\1c&H7EBCDC&}web\N{\1c&HFFFFFF&}jedné {\1c&HFFFFFF&}restaurace
+Dialogue: 1,0:00:00.40,0:00:00.66,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,0)}{\1c&HFFFFFF&}Tohle {\1c&HFFFFFF&}je {\1c&HFFFFFF&}web\N{\1c&H7EBCDC&}jedné {\1c&HFFFFFF&}restaurace
+Dialogue: 1,0:00:00.66,0:00:01.16,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,70)}{\1c&HFFFFFF&}Tohle {\1c&HFFFFFF&}je {\1c&HFFFFFF&}web\N{\1c&HFFFFFF&}jedné {\1c&H7EBCDC&}restaurace
+Dialogue: 0,0:00:01.16,0:00:01.96,Cap,,0,0,0,,{\an5\pos(540,1180)\bord13\blur16\1a&HFF&\3c&H000000&\3a&H38&\shad0\fad(90,70)}v centru Prahy.
+Dialogue: 1,0:00:01.16,0:00:01.26,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(90,0)}{\1c&H7EBCDC&}v {\1c&HFFFFFF&}centru {\1c&HFFFFFF&}Prahy.
+Dialogue: 1,0:00:01.26,0:00:01.58,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,0)}{\1c&HFFFFFF&}v {\1c&H7EBCDC&}centru {\1c&HFFFFFF&}Prahy.
+Dialogue: 1,0:00:01.58,0:00:01.96,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,70)}{\1c&HFFFFFF&}v {\1c&HFFFFFF&}centru {\1c&H7EBCDC&}Prahy.
+Dialogue: 0,0:00:01.96,0:00:03.04,Cap,,0,0,0,,{\an5\pos(540,1180)\bord13\blur16\1a&HFF&\3c&H000000&\3a&H38&\shad0\fad(90,70)}Skvělá kuchyně,
+Dialogue: 1,0:00:01.96,0:00:02.52,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(90,0)}{\1c&H7EBCDC&}Skvělá {\1c&HFFFFFF&}kuchyně,
+Dialogue: 1,0:00:02.52,0:00:03.04,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,70)}{\1c&HFFFFFF&}Skvělá {\1c&H7EBCDC&}kuchyně,
+Dialogue: 0,0:00:03.04,0:00:04.10,Cap,,0,0,0,,{\an5\pos(540,1180)\bord13\blur16\1a&HFF&\3c&H000000&\3a&H38&\shad0\fad(90,70)}tankový Pilsner,
+Dialogue: 1,0:00:03.04,0:00:03.54,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(90,0)}{\1c&H7EBCDC&}tankový {\1c&HFFFFFF&}Pilsner,
+Dialogue: 1,0:00:03.54,0:00:04.10,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,70)}{\1c&HFFFFFF&}tankový {\1c&H7EBCDC&}Pilsner,
+Dialogue: 0,0:00:04.10,0:00:04.66,Cap,,0,0,0,,{\an5\pos(540,1180)\bord13\blur16\1a&HFF&\3c&H000000&\3a&H38&\shad0\fad(90,70)}zvěřina.
+Dialogue: 1,0:00:04.10,0:00:04.66,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(90,70)}{\1c&H7EBCDC&}zvěřina.
+Dialogue: 0,0:00:04.70,0:00:05.78,Cap,,0,0,0,,{\an5\pos(540,1180)\bord13\blur16\1a&HFF&\3c&H000000&\3a&H38&\shad0\fad(90,70)}Ale vypadá jako
+Dialogue: 1,0:00:04.70,0:00:05.16,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(90,0)}{\1c&H7EBCDC&}Ale {\1c&HFFFFFF&}vypadá {\1c&HFFFFFF&}jako
+Dialogue: 1,0:00:05.16,0:00:05.66,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,0)}{\1c&HFFFFFF&}Ale {\1c&H7EBCDC&}vypadá {\1c&HFFFFFF&}jako
+Dialogue: 1,0:00:05.66,0:00:05.78,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,70)}{\1c&HFFFFFF&}Ale {\1c&HFFFFFF&}vypadá {\1c&H7EBCDC&}jako
+Dialogue: 0,0:00:05.78,0:00:06.90,Cap,,0,0,0,,{\an5\pos(540,1180)\bord13\blur16\1a&HFF&\3c&H000000&\3a&H38&\shad0\fad(90,70)}z roku 2008.
+Dialogue: 1,0:00:05.78,0:00:05.92,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(90,0)}{\1c&H7EBCDC&}z {\1c&HFFFFFF&}roku {\1c&HFFFFFF&}2008.
+Dialogue: 1,0:00:05.92,0:00:06.08,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,0)}{\1c&HFFFFFF&}z {\1c&H7EBCDC&}roku {\1c&HFFFFFF&}2008.
+Dialogue: 1,0:00:06.08,0:00:06.90,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,70)}{\1c&HFFFFFF&}z {\1c&HFFFFFF&}roku {\1c&H7EBCDC&}2008.
+Dialogue: 0,0:00:07.04,0:00:07.94,Cap,,0,0,0,,{\an5\pos(540,1180)\bord13\blur16\1a&HFF&\3c&H000000&\3a&H38&\shad0\fad(90,70)}Na mobilu
+Dialogue: 1,0:00:07.04,0:00:07.56,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(90,0)}{\1c&H7EBCDC&}Na {\1c&HFFFFFF&}mobilu
+Dialogue: 1,0:00:07.56,0:00:07.94,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,70)}{\1c&HFFFFFF&}Na {\1c&H7EBCDC&}mobilu
+Dialogue: 0,0:00:07.94,0:00:08.60,Cap,,0,0,0,,{\an5\pos(540,1180)\bord13\blur16\1a&HFF&\3c&H000000&\3a&H38&\shad0\fad(90,70)}se špatně čte
+Dialogue: 1,0:00:07.94,0:00:08.00,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(90,0)}{\1c&H7EBCDC&}se {\1c&HFFFFFF&}špatně {\1c&HFFFFFF&}čte
+Dialogue: 1,0:00:08.00,0:00:08.36,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,0)}{\1c&HFFFFFF&}se {\1c&H7EBCDC&}špatně {\1c&HFFFFFF&}čte
+Dialogue: 1,0:00:08.36,0:00:08.60,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,70)}{\1c&HFFFFFF&}se {\1c&HFFFFFF&}špatně {\1c&H7EBCDC&}čte
+Dialogue: 0,0:00:08.60,0:00:09.64,Cap,,0,0,0,,{\an5\pos(540,1180)\bord13\blur16\1a&HFF&\3c&H000000&\3a&H38&\shad0\fad(90,70)}a zarezervovat stůl
+Dialogue: 1,0:00:08.60,0:00:08.72,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(90,0)}{\1c&H7EBCDC&}a {\1c&HFFFFFF&}zarezervovat {\1c&HFFFFFF&}stůl
+Dialogue: 1,0:00:08.72,0:00:09.40,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,0)}{\1c&HFFFFFF&}a {\1c&H7EBCDC&}zarezervovat {\1c&HFFFFFF&}stůl
+Dialogue: 1,0:00:09.40,0:00:09.64,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,70)}{\1c&HFFFFFF&}a {\1c&HFFFFFF&}zarezervovat {\1c&H7EBCDC&}stůl
+Dialogue: 0,0:00:09.64,0:00:10.55,Cap,,0,0,0,,{\an5\pos(540,1180)\bord13\blur16\1a&HFF&\3c&H000000&\3a&H38&\shad0\fad(90,70)}skoro nejde.
+Dialogue: 1,0:00:09.64,0:00:09.98,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(90,0)}{\1c&H7EBCDC&}skoro {\1c&HFFFFFF&}nejde.
+Dialogue: 1,0:00:09.98,0:00:10.55,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,70)}{\1c&HFFFFFF&}skoro {\1c&H7EBCDC&}nejde.
+Dialogue: 0,0:00:10.84,0:00:11.32,Cap,,0,0,0,,{\an5\pos(540,1180)\bord13\blur16\1a&HFF&\3c&H000000&\3a&H38&\shad0\fad(90,70)}Tak jsem jim
+Dialogue: 1,0:00:10.84,0:00:11.00,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(90,0)}{\1c&H7EBCDC&}Tak {\1c&HFFFFFF&}jsem {\1c&HFFFFFF&}jim
+Dialogue: 1,0:00:11.00,0:00:11.08,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,0)}{\1c&HFFFFFF&}Tak {\1c&H7EBCDC&}jsem {\1c&HFFFFFF&}jim
+Dialogue: 1,0:00:11.08,0:00:11.32,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,70)}{\1c&HFFFFFF&}Tak {\1c&HFFFFFF&}jsem {\1c&H7EBCDC&}jim
+Dialogue: 0,0:00:11.32,0:00:11.74,Cap,,0,0,0,,{\an5\pos(540,1180)\bord13\blur16\1a&HFF&\3c&H000000&\3a&H38&\shad0\fad(90,70)}za jeden večer
+Dialogue: 1,0:00:11.32,0:00:11.40,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(90,0)}{\1c&H7EBCDC&}za {\1c&HFFFFFF&}jeden {\1c&HFFFFFF&}večer
+Dialogue: 1,0:00:11.40,0:00:11.52,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,0)}{\1c&HFFFFFF&}za {\1c&H7EBCDC&}jeden {\1c&HFFFFFF&}večer
+Dialogue: 1,0:00:11.52,0:00:11.74,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,70)}{\1c&HFFFFFF&}za {\1c&HFFFFFF&}jeden {\1c&H7EBCDC&}večer
+Dialogue: 0,0:00:11.74,0:00:12.55,Cap,,0,0,0,,{\an5\pos(540,1180)\bord13\blur16\1a&HFF&\3c&H000000&\3a&H38&\shad0\fad(90,70)}udělal nový.
+Dialogue: 1,0:00:11.74,0:00:12.06,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(90,0)}{\1c&H7EBCDC&}udělal {\1c&HFFFFFF&}nový.
+Dialogue: 1,0:00:12.06,0:00:12.55,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,70)}{\1c&HFFFFFF&}udělal {\1c&H7EBCDC&}nový.
+Dialogue: 0,0:00:12.76,0:00:13.78,Cap,,0,0,0,,{\an5\pos(540,1180)\bord13\blur16\1a&HFF&\3c&H000000&\3a&H38&\shad0\fad(90,70)}Poctivé fotky jídla,
+Dialogue: 1,0:00:12.76,0:00:13.26,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(90,0)}{\1c&H7EBCDC&}Poctivé {\1c&HFFFFFF&}fotky {\1c&HFFFFFF&}jídla,
+Dialogue: 1,0:00:13.26,0:00:13.54,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,0)}{\1c&HFFFFFF&}Poctivé {\1c&H7EBCDC&}fotky {\1c&HFFFFFF&}jídla,
+Dialogue: 1,0:00:13.54,0:00:13.78,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,70)}{\1c&HFFFFFF&}Poctivé {\1c&HFFFFFF&}fotky {\1c&H7EBCDC&}jídla,
+Dialogue: 0,0:00:13.78,0:00:14.70,Cap,,0,0,0,,{\an5\pos(540,1180)\bord13\blur16\1a&HFF&\3c&H000000&\3a&H38&\shad0\fad(90,70)}menu s cenami,
+Dialogue: 1,0:00:13.78,0:00:14.16,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(90,0)}{\1c&H7EBCDC&}menu {\1c&HFFFFFF&}s {\1c&HFFFFFF&}cenami,
+Dialogue: 1,0:00:14.16,0:00:14.34,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,0)}{\1c&HFFFFFF&}menu {\1c&H7EBCDC&}s {\1c&HFFFFFF&}cenami,
+Dialogue: 1,0:00:14.34,0:00:14.70,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,70)}{\1c&HFFFFFF&}menu {\1c&HFFFFFF&}s {\1c&H7EBCDC&}cenami,
+Dialogue: 0,0:00:14.74,0:00:16.05,Cap,,0,0,0,,{\an5\pos(540,1180)\bord13\blur16\1a&HFF&\3c&H000000&\3a&H38&\shad0\fad(90,70)}rezervace na jeden klik
+Dialogue: 1,0:00:14.74,0:00:15.40,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(90,0)}{\1c&H7EBCDC&}rezervace {\1c&HFFFFFF&}na {\1c&HFFFFFF&}jeden {\1c&HFFFFFF&}klik
+Dialogue: 1,0:00:15.40,0:00:15.52,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,0)}{\1c&HFFFFFF&}rezervace {\1c&H7EBCDC&}na {\1c&HFFFFFF&}jeden {\1c&HFFFFFF&}klik
+Dialogue: 1,0:00:15.52,0:00:15.78,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,0)}{\1c&HFFFFFF&}rezervace {\1c&HFFFFFF&}na {\1c&H7EBCDC&}jeden {\1c&HFFFFFF&}klik
+Dialogue: 1,0:00:15.78,0:00:16.05,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,70)}{\1c&HFFFFFF&}rezervace {\1c&HFFFFFF&}na {\1c&HFFFFFF&}jeden {\1c&H7EBCDC&}klik
+Dialogue: 0,0:00:16.05,0:00:17.40,Cap,,0,0,0,,{\an5\pos(540,1180)\bord13\blur16\1a&HFF&\3c&H000000&\3a&H38&\shad0\fad(90,70)}a na mobilu to lítá.
+Dialogue: 1,0:00:16.05,0:00:16.24,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(90,0)}{\1c&H7EBCDC&}a {\1c&HFFFFFF&}na {\1c&HFFFFFF&}mobilu {\1c&HFFFFFF&}to {\1c&HFFFFFF&}lítá.
+Dialogue: 1,0:00:16.24,0:00:16.40,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,0)}{\1c&HFFFFFF&}a {\1c&H7EBCDC&}na {\1c&HFFFFFF&}mobilu {\1c&HFFFFFF&}to {\1c&HFFFFFF&}lítá.
+Dialogue: 1,0:00:16.40,0:00:16.78,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,0)}{\1c&HFFFFFF&}a {\1c&HFFFFFF&}na {\1c&H7EBCDC&}mobilu {\1c&HFFFFFF&}to {\1c&HFFFFFF&}lítá.
+Dialogue: 1,0:00:16.78,0:00:16.86,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,0)}{\1c&HFFFFFF&}a {\1c&HFFFFFF&}na {\1c&HFFFFFF&}mobilu {\1c&H7EBCDC&}to {\1c&HFFFFFF&}lítá.
+Dialogue: 1,0:00:16.86,0:00:17.40,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,70)}{\1c&HFFFFFF&}a {\1c&HFFFFFF&}na {\1c&HFFFFFF&}mobilu {\1c&HFFFFFF&}to {\1c&H7EBCDC&}lítá.
+Dialogue: 0,0:00:17.54,0:00:18.34,Cap,,0,0,0,,{\an5\pos(540,1180)\bord13\blur16\1a&HFF&\3c&H000000&\3a&H38&\shad0\fad(90,70)}Máš podnik
+Dialogue: 1,0:00:17.54,0:00:18.04,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(90,0)}{\1c&H7EBCDC&}Máš {\1c&HFFFFFF&}podnik
+Dialogue: 1,0:00:18.04,0:00:18.34,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,70)}{\1c&HFFFFFF&}Máš {\1c&H7EBCDC&}podnik
+Dialogue: 0,0:00:18.34,0:00:19.22,Cap,,0,0,0,,{\an5\pos(540,1180)\bord13\blur16\1a&HFF&\3c&H000000&\3a&H38&\shad0\fad(90,70)}s podobným webem?
+Dialogue: 1,0:00:18.34,0:00:18.42,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(90,0)}{\1c&H7EBCDC&}s {\1c&HFFFFFF&}podobným {\1c&HFFFFFF&}webem?
+Dialogue: 1,0:00:18.42,0:00:18.74,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,0)}{\1c&HFFFFFF&}s {\1c&H7EBCDC&}podobným {\1c&HFFFFFF&}webem?
+Dialogue: 1,0:00:18.74,0:00:19.22,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,70)}{\1c&HFFFFFF&}s {\1c&HFFFFFF&}podobným {\1c&H7EBCDC&}webem?
+Dialogue: 0,0:00:19.30,0:00:20.30,Cap,,0,0,0,,{\an5\pos(540,1180)\bord13\blur16\1a&HFF&\3c&H000000&\3a&H38&\shad0\fad(90,70)}Napiš mi do zprávy
+Dialogue: 1,0:00:19.30,0:00:19.76,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(90,0)}{\1c&H7EBCDC&}Napiš {\1c&HFFFFFF&}mi {\1c&HFFFFFF&}do {\1c&HFFFFFF&}zprávy
+Dialogue: 1,0:00:19.76,0:00:19.84,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,0)}{\1c&HFFFFFF&}Napiš {\1c&H7EBCDC&}mi {\1c&HFFFFFF&}do {\1c&HFFFFFF&}zprávy
+Dialogue: 1,0:00:19.84,0:00:19.94,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,0)}{\1c&HFFFFFF&}Napiš {\1c&HFFFFFF&}mi {\1c&H7EBCDC&}do {\1c&HFFFFFF&}zprávy
+Dialogue: 1,0:00:19.94,0:00:20.30,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,70)}{\1c&HFFFFFF&}Napiš {\1c&HFFFFFF&}mi {\1c&HFFFFFF&}do {\1c&H7EBCDC&}zprávy
+Dialogue: 0,0:00:20.30,0:00:20.78,Cap,,0,0,0,,{\an5\pos(540,1180)\bord13\blur16\1a&HFF&\3c&H000000&\3a&H38&\shad0\fad(90,70)}slovo WEB
+Dialogue: 1,0:00:20.30,0:00:20.55,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(90,0)}{\1c&H7EBCDC&}slovo {\fnMontserrat ExtraBold\fs72\1c&H7EBCDC&}WEB{\fnMontserrat SemiBold\fs64}
+Dialogue: 1,0:00:20.55,0:00:20.78,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,70)}{\1c&HFFFFFF&}slovo {\fnMontserrat ExtraBold\fs72\1c&H7EBCDC&}WEB{\fnMontserrat SemiBold\fs64}
+Dialogue: 0,0:00:20.78,0:00:21.36,Cap,,0,0,0,,{\an5\pos(540,1180)\bord13\blur16\1a&HFF&\3c&H000000&\3a&H38&\shad0\fad(90,70)}a udělám ti
+Dialogue: 1,0:00:20.78,0:00:20.90,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(90,0)}{\1c&H7EBCDC&}a {\1c&HFFFFFF&}udělám {\1c&HFFFFFF&}ti
+Dialogue: 1,0:00:20.90,0:00:21.22,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,0)}{\1c&HFFFFFF&}a {\1c&H7EBCDC&}udělám {\1c&HFFFFFF&}ti
+Dialogue: 1,0:00:21.22,0:00:21.36,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,70)}{\1c&HFFFFFF&}a {\1c&HFFFFFF&}udělám {\1c&H7EBCDC&}ti
+Dialogue: 0,0:00:21.36,0:00:22.40,Cap,,0,0,0,,{\an5\pos(540,1180)\bord13\blur16\1a&HFF&\3c&H000000&\3a&H38&\shad0\fad(90,70)}ukázku zdarma.
+Dialogue: 1,0:00:21.36,0:00:21.78,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(90,0)}{\1c&H7EBCDC&}ukázku {\1c&HFFFFFF&}zdarma.
+Dialogue: 1,0:00:21.78,0:00:22.40,Cap,,0,0,0,,{\an5\pos(540,1180)\bord3\3c&H141414&\3a&H78&\blur1\shad0\fsp1\fad(0,70)}{\1c&HFFFFFF&}ukázku {\1c&H7EBCDC&}zdarma.
