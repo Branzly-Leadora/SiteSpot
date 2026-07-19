@@ -49,7 +49,7 @@ a { color: inherit; }
 .nav-corner.right { right: -22px; background: radial-gradient(circle 22px at 100% 100%, transparent 21.5px, var(--bg) 22px); }
 .nav { display: flex; align-items: center; flex-wrap: nowrap; justify-content: center; gap: 6px; padding: 8px 30px 12px; border-radius: 0 0 24px 24px; background: var(--bg); }
 .nav-logo { display: flex; align-items: center; gap: 0; text-decoration: none; padding: 4px 4px; color: var(--text); flex: none; }
-.nav-logo .mark { width: 27px; height: 27px; border-radius: 9px; background: #fff; display: grid; place-items: center; font-size: 14px; font-weight: 800; color: #0B0C10; box-shadow: 0 0 16px rgba(255,255,255,0.25); }
+.nav-logo .mark { box-sizing: border-box; width: 27px; height: 27px; border-radius: 9px; background: radial-gradient(120% 120% at 50% 38%, #0e1f45 0%, #07122e 55%, #03071a 100%); border: 1px solid rgba(120,150,255,0.20); display: grid; place-items: center; overflow: hidden; box-shadow: 0 0 18px rgba(90,130,255,0.28), inset 0 1px 0 rgba(255,255,255,0.06); }
 .nav-logo .name { font-weight: 700; font-size: 15px; letter-spacing: -0.01em; white-space: nowrap; overflow: hidden; display: inline-block; }
 /* section links open symmetrically around the centred logo — no width/overflow
    animation (that used to clip the text mid-open); framer's layout spring sizes
@@ -201,7 +201,7 @@ a { color: inherit; }
 
 /* ===== preloader ===== */
 .preloader { position: fixed; inset: 0; z-index: 600; background: #000; display: grid; place-items: center; }
-.pre-mark { width: 74px; height: 74px; border-radius: 20px; background: #fff; display: grid; place-items: center; font-size: 36px; font-weight: 700; color: #0B0C10; box-shadow: 0 0 60px rgba(255,255,255,0.25); animation: benFloat 2.2s ease-in-out infinite; }
+.pre-mark { box-sizing: border-box; width: 74px; height: 74px; border-radius: 20px; background: radial-gradient(120% 120% at 50% 38%, #0e1f45 0%, #07122e 55%, #03071a 100%); border: 1px solid rgba(120,150,255,0.20); display: grid; place-items: center; overflow: hidden; box-shadow: 0 0 60px rgba(90,130,255,0.32), inset 0 1px 0 rgba(255,255,255,0.06); animation: benFloat 2.2s ease-in-out infinite; }
 .pre-num { position: absolute; bottom: 26px; right: 36px; font-size: clamp(56px, 9vw, 110px); font-weight: 600; letter-spacing: -0.04em; line-height: 1; color: #fff; font-variant-numeric: tabular-nums; }
 
 /* ===== custom cursor ===== */
@@ -529,7 +529,7 @@ a { color: inherit; }
 @keyframes orbitCounter { from { transform: rotate(calc(-1 * var(--r, 0deg))); } to { transform: rotate(calc(-1 * var(--r, 0deg) - 360deg)); } }
 .ben-center-cap { position: absolute; z-index: 2; bottom: 18px; left: 0; right: 0; text-align: center; font-size: 12.5px; line-height: 1.45; font-weight: 500; letter-spacing: 0.02em; color: #B9BEC9; text-shadow: 0 2px 12px rgba(0,0,0,0.8); }
 .ben-center-glow { position: absolute; inset: -30%; z-index: 1; background: radial-gradient(circle, color-mix(in oklab, var(--acc) 55%, transparent), transparent 65%); filter: blur(34px); animation: benGlow 5s ease-in-out infinite; }
-.ben-center-mark { position: relative; z-index: 2; width: 92px; height: 92px; border-radius: 22px; background: #0A0B0F; border: 1px solid rgba(255,255,255,0.12); display: grid; place-items: center; font-size: 44px; font-weight: 800; color: #fff; box-shadow: 0 0 46px rgba(255,255,255,0.14), inset 0 1px 0 rgba(255,255,255,0.08); animation: benFloat 5s ease-in-out infinite; }
+.ben-center-mark { position: relative; z-index: 2; box-sizing: border-box; width: 92px; height: 92px; border-radius: 22px; background: radial-gradient(120% 120% at 50% 38%, #0e1f45 0%, #07122e 55%, #03071a 100%); border: 1px solid rgba(120,150,255,0.20); display: grid; place-items: center; overflow: hidden; box-shadow: 0 0 46px rgba(90,130,255,0.30), inset 0 1px 0 rgba(255,255,255,0.08); animation: benFloat 5s ease-in-out infinite; }
 @keyframes benGlow { 0%, 100% { opacity: 0.72; transform: scale(1); } 50% { opacity: 0.92; transform: scale(1.035); } }
 @keyframes benFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
 .ben-ic { transition: transform 0.35s cubic-bezier(0.22,1,0.36,1); }
@@ -736,7 +736,7 @@ a { color: inherit; }
 .cmodal { position: relative; width: min(480px, 100%); max-height: calc(100vh - 40px); overflow-y: auto; padding: 34px 32px 30px; border-radius: 22px; border: 1px solid rgba(255,255,255,0.12); background: linear-gradient(180deg, #101218, #0A0B10); box-shadow: 0 40px 120px -30px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.06); }
 .cmodal-x { position: absolute; top: 16px; right: 16px; width: 34px; height: 34px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.05); color: #C9C9CE; cursor: pointer; display: grid; place-items: center; transition: background 0.25s ease, color 0.25s ease; }
 .cmodal-x:hover { background: rgba(255,255,255,0.1); color: #fff; }
-.cmodal-head .mark { width: 40px; height: 40px; border-radius: 12px; background: #fff; display: grid; place-items: center; font-size: 19px; font-weight: 800; color: #0B0C10; box-shadow: 0 0 22px rgba(255,255,255,0.2); }
+.cmodal-head .mark { box-sizing: border-box; width: 40px; height: 40px; border-radius: 12px; background: radial-gradient(120% 120% at 50% 38%, #0e1f45 0%, #07122e 55%, #03071a 100%); border: 1px solid rgba(120,150,255,0.20); display: grid; place-items: center; overflow: hidden; box-shadow: 0 0 22px rgba(90,130,255,0.28), inset 0 1px 0 rgba(255,255,255,0.06); }
 .cmodal-head h3 { margin: 18px 0 0; font-size: 24px; font-weight: 600; letter-spacing: -0.02em; }
 .cmodal-head p { margin: 8px 0 0; font-size: 14.5px; line-height: 1.6; color: var(--muted); }
 .cmodal-form { display: flex; flex-direction: column; gap: 14px; margin-top: 24px; }
@@ -760,7 +760,7 @@ a { color: inherit; }
 .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 40px; }
 .footer-col { display: flex; flex-direction: column; gap: 11px; }
 .footer-brand { display: flex; align-items: center; gap: 9px; }
-.footer-brand .mark { width: 26px; height: 26px; border-radius: 8px; background: #fff; display: grid; place-items: center; font-size: 14px; font-weight: 800; color: #0B0C10; }
+.footer-brand .mark { box-sizing: border-box; width: 26px; height: 26px; border-radius: 8px; background: radial-gradient(120% 120% at 50% 38%, #0e1f45 0%, #07122e 55%, #03071a 100%); border: 1px solid rgba(120,150,255,0.20); display: grid; place-items: center; overflow: hidden; box-shadow: 0 0 14px rgba(90,130,255,0.25), inset 0 1px 0 rgba(255,255,255,0.06); }
 .footer-brand .name { font-weight: 700; font-size: 16px; }
 .footer-col.brand { gap: 14px; }
 .footer-col.brand p { margin: 0; font-size: 14px; line-height: 1.65; color: #8A8E99; max-width: 260px; }
