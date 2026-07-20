@@ -1,0 +1,586 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SiteSpot — Týdenní campaign plán (20.–26. 7. 2026)</title>
+<meta name="description" content="Týdenní plán obsahu pro SiteSpot: viral videa, denní kalendář, konverzní funnel a follower tahy." />
+</head>
+<body>
+<style>
+  :root{
+    --bg:#05081c; --bg-2:#070b24;
+    --panel:#0c1130; --panel-2:#111739; --panel-3:#161d47;
+    --line:rgba(255,255,255,.09); --line-2:rgba(255,255,255,.14);
+    --text:#eaeefb; --muted:#98a1c4; --faint:#6a7398;
+    --accent:#8a6bff; --accent-2:#a98cff; --accent-soft:rgba(138,107,255,.16);
+    --cyan:#33e1d0; --growth:#57cf93; --gold:#ffcf6b;
+    --shadow:0 18px 50px -24px rgba(0,0,0,.7);
+    --font-display:"Space Grotesk",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --font-body:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --font-mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+    --maxw:1120px;
+  }
+  @media (prefers-color-scheme: light){
+    :root{
+      --bg:#f4f5fb; --bg-2:#eef0f9;
+      --panel:#ffffff; --panel-2:#f6f7fd; --panel-3:#eef0fa;
+      --line:rgba(16,20,46,.10); --line-2:rgba(16,20,46,.16);
+      --text:#0f1430; --muted:#535d80; --faint:#7a83a4;
+      --accent:#6a45ee; --accent-2:#8462f5; --accent-soft:rgba(106,69,238,.10);
+      --cyan:#0fae9e; --growth:#1f9d63; --gold:#c98a12;
+      --shadow:0 18px 44px -26px rgba(28,32,80,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#05081c; --bg-2:#070b24; --panel:#0c1130; --panel-2:#111739; --panel-3:#161d47;
+    --line:rgba(255,255,255,.09); --line-2:rgba(255,255,255,.14);
+    --text:#eaeefb; --muted:#98a1c4; --faint:#6a7398;
+    --accent:#8a6bff; --accent-2:#a98cff; --accent-soft:rgba(138,107,255,.16);
+    --cyan:#33e1d0; --growth:#57cf93; --gold:#ffcf6b; --shadow:0 18px 50px -24px rgba(0,0,0,.7);
+  }
+  :root[data-theme="light"]{
+    --bg:#f4f5fb; --bg-2:#eef0f9; --panel:#ffffff; --panel-2:#f6f7fd; --panel-3:#eef0fa;
+    --line:rgba(16,20,46,.10); --line-2:rgba(16,20,46,.16);
+    --text:#0f1430; --muted:#535d80; --faint:#7a83a4;
+    --accent:#6a45ee; --accent-2:#8462f5; --accent-soft:rgba(106,69,238,.10);
+    --cyan:#0fae9e; --growth:#1f9d63; --gold:#c98a12; --shadow:0 18px 44px -26px rgba(28,32,80,.35);
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:
+      radial-gradient(1200px 620px at 78% -8%, var(--accent-soft), transparent 60%),
+      radial-gradient(900px 520px at 0% 4%, rgba(51,225,208,.07), transparent 55%),
+      var(--bg);
+    color:var(--text); font-family:var(--font-body);
+    line-height:1.55; -webkit-font-smoothing:antialiased; letter-spacing:.1px;
+  }
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:clamp(20px,4vw,52px) clamp(16px,4vw,40px) 80px;}
+
+  /* ---------- type ---------- */
+  .eyebrow{font-family:var(--font-mono); font-size:.72rem; letter-spacing:.28em; text-transform:uppercase; color:var(--accent-2); font-weight:600;}
+  h1{font-family:var(--font-display); font-weight:700; letter-spacing:-.02em; line-height:1.02; text-wrap:balance;
+     font-size:clamp(2.1rem,6vw,4rem); margin:.32em 0 .18em;}
+  h2{font-family:var(--font-display); font-weight:700; letter-spacing:-.015em; font-size:clamp(1.3rem,2.6vw,1.85rem); margin:0; text-wrap:balance;}
+  h3{font-family:var(--font-display); font-weight:600; letter-spacing:-.01em; font-size:1.06rem; margin:0;}
+  p{margin:0}
+  a{color:var(--accent-2); text-decoration:none}
+  .lead{font-size:clamp(1.02rem,1.7vw,1.2rem); color:var(--muted); max-width:62ch; text-wrap:pretty;}
+  .label{font-family:var(--font-mono); font-size:.66rem; letter-spacing:.2em; text-transform:uppercase; color:var(--faint); font-weight:600;}
+  .mono{font-family:var(--font-mono); font-variant-numeric:tabular-nums;}
+
+  /* ---------- masthead ---------- */
+  .mast{position:relative; padding:8px 0 30px; border-bottom:1px solid var(--line); margin-bottom:38px;}
+  .mast .row{display:flex; flex-wrap:wrap; gap:14px 22px; align-items:center; margin-top:20px;}
+  .brand{display:inline-flex; align-items:center; gap:11px; font-family:var(--font-display); font-weight:700; letter-spacing:-.01em; font-size:1.05rem;}
+  .brand .dot{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;
+    background:linear-gradient(150deg,var(--accent),var(--cyan)); box-shadow:0 6px 18px -6px var(--accent);}
+  .brand .dot svg{width:15px;height:15px;display:block}
+  .chip{display:inline-flex; align-items:center; gap:8px; font-family:var(--font-mono); font-size:.76rem; letter-spacing:.02em;
+    padding:7px 12px; border:1px solid var(--line-2); border-radius:999px; color:var(--muted); background:var(--panel);}
+  .chip b{color:var(--text); font-weight:600}
+
+  /* ---------- section head ---------- */
+  .sec{margin-top:54px}
+  .sec-head{display:flex; align-items:baseline; gap:14px; margin-bottom:20px; flex-wrap:wrap}
+  .sec-head .n{font-family:var(--font-mono); color:var(--accent); font-weight:600; font-size:.82rem; letter-spacing:.1em;}
+  .sec-head .sub{color:var(--muted); font-size:.92rem; margin-left:auto}
+
+  /* ---------- cards / grid ---------- */
+  .grid{display:grid; gap:16px}
+  .g4{grid-template-columns:repeat(4,1fr)}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g2{grid-template-columns:repeat(2,1fr)}
+  @media (max-width:880px){.g4{grid-template-columns:repeat(2,1fr)} .g3{grid-template-columns:1fr}}
+  @media (max-width:620px){.g4,.g2{grid-template-columns:1fr}}
+
+  .card{background:linear-gradient(180deg,var(--panel),var(--panel-2)); border:1px solid var(--line);
+    border-radius:16px; padding:20px; box-shadow:var(--shadow);}
+  .card.plain{background:var(--panel); box-shadow:none}
+
+  /* KPI tiles */
+  .kpi{padding:18px 18px 16px; display:flex; flex-direction:column; gap:6px;}
+  .kpi .big{font-family:var(--font-display); font-weight:700; font-variant-numeric:tabular-nums; letter-spacing:-.02em;
+    font-size:clamp(1.7rem,3.4vw,2.3rem); line-height:1;}
+  .kpi .k{font-size:.86rem; color:var(--muted)}
+  .kpi .t{font-family:var(--font-mono); font-size:.66rem; letter-spacing:.16em; text-transform:uppercase; color:var(--faint)}
+  .kpi.a .big{color:var(--accent-2)} .kpi.c .big{color:var(--cyan)} .kpi.g .big{color:var(--growth)} .kpi.o .big{color:var(--gold)}
+
+  /* funnel */
+  .funnel{display:flex; flex-direction:column; gap:7px}
+  .fstep{display:flex; align-items:center; gap:12px}
+  .fbar{height:38px; border-radius:9px; display:flex; align-items:center; padding:0 14px; gap:10px; color:#08122b; font-weight:600; font-size:.9rem;
+    background:linear-gradient(90deg,var(--accent),var(--accent-2)); border:1px solid rgba(255,255,255,.14);}
+  .fstep:nth-child(1) .fbar{width:100%}
+  .fstep:nth-child(2) .fbar{width:80%; background:linear-gradient(90deg,#6f7bff,#33e1d0)}
+  .fstep:nth-child(3) .fbar{width:60%; background:linear-gradient(90deg,#33e1d0,#57cf93)}
+  .fstep:nth-child(4) .fbar{width:42%; background:linear-gradient(90deg,#57cf93,#ffcf6b); color:#1a1305}
+  .fstep .fn{font-family:var(--font-mono); font-size:.72rem; color:var(--faint); width:78px; text-align:right; flex:none}
+  .fstep .fm{color:var(--muted); font-size:.82rem}
+
+  /* pillars */
+  .pillar{padding:16px 16px; display:flex; gap:13px; align-items:flex-start}
+  .pillar .ic{width:34px;height:34px;border-radius:9px;flex:none;display:grid;place-items:center;background:var(--accent-soft);border:1px solid var(--line-2)}
+  .pillar .ic svg{width:17px;height:17px;stroke:var(--accent-2)}
+  .pillar p{color:var(--muted); font-size:.88rem; margin-top:3px}
+
+  /* hero scripts */
+  .hero{position:relative; overflow:hidden}
+  .hero::before{content:""; position:absolute; inset:0 auto 0 0; width:4px; background:linear-gradient(180deg,var(--accent),var(--cyan))}
+  .hero .htop{display:flex; align-items:flex-start; gap:14px; padding-left:8px}
+  .hero .idx{font-family:var(--font-display); font-weight:700; font-size:2rem; line-height:.9; color:var(--accent); font-variant-numeric:tabular-nums; flex:none}
+  .hook{margin:14px 0 4px; padding:13px 15px; border-radius:12px; background:var(--panel-3); border:1px solid var(--line-2);
+    font-family:var(--font-display); font-weight:600; font-size:1.02rem; letter-spacing:-.01em; color:var(--text)}
+  .hook .label{display:block; margin-bottom:5px; color:var(--gold)}
+  .beats{list-style:none; padding:0; margin:12px 0 0; display:flex; flex-direction:column; gap:8px}
+  .beats li{display:flex; gap:12px; align-items:flex-start; font-size:.9rem; color:var(--muted)}
+  .beats .ts{font-family:var(--font-mono); font-size:.74rem; color:var(--cyan); flex:none; width:52px; padding-top:1px; font-variant-numeric:tabular-nums}
+  .beats b{color:var(--text); font-weight:600}
+  .metaline{display:flex; flex-wrap:wrap; gap:8px; margin-top:14px}
+  .tag{font-family:var(--font-mono); font-size:.7rem; letter-spacing:.04em; padding:4px 9px; border-radius:7px; border:1px solid var(--line-2); color:var(--muted); background:var(--panel)}
+  .tag.p{color:var(--cyan); border-color:rgba(51,225,208,.32)}
+
+  /* ---------- day cards ---------- */
+  .day{display:grid; grid-template-columns:120px 1fr; gap:0; overflow:hidden; padding:0}
+  @media (max-width:720px){.day{grid-template-columns:1fr}}
+  .day .rail{background:linear-gradient(180deg,var(--panel-3),var(--panel-2)); border-right:1px solid var(--line);
+    padding:18px 16px; display:flex; flex-direction:column; gap:2px;}
+  @media (max-width:720px){.day .rail{border-right:none; border-bottom:1px solid var(--line); flex-direction:row; align-items:center; gap:12px}}
+  .day .rail .dn{font-family:var(--font-display); font-weight:700; font-size:1.05rem; letter-spacing:-.01em}
+  .day .rail .dd{font-family:var(--font-mono); font-size:.8rem; color:var(--muted); font-variant-numeric:tabular-nums}
+  .day .rail .di{margin-top:auto; font-family:var(--font-mono); font-size:.64rem; letter-spacing:.16em; text-transform:uppercase; color:var(--accent-2); font-weight:600}
+  @media (max-width:720px){.day .rail .di{margin-top:0; margin-left:auto}}
+  .day .body{padding:18px 20px; display:flex; flex-direction:column; gap:13px}
+  .day .concept{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap}
+  .day .concept .type{font-family:var(--font-mono); font-size:.66rem; letter-spacing:.14em; text-transform:uppercase; padding:3px 8px; border-radius:6px; background:var(--accent-soft); color:var(--accent-2); border:1px solid var(--line-2); font-weight:600}
+  .day .concept h3{font-size:1.08rem}
+  .blk{display:grid; grid-template-columns:88px 1fr; gap:10px; align-items:baseline}
+  @media (max-width:520px){.blk{grid-template-columns:1fr; gap:3px}}
+  .blk>.label{padding-top:2px}
+  .blk .v{font-size:.9rem; color:var(--muted)}
+  .blk .v.hookv{color:var(--text); font-weight:500; font-family:var(--font-display); letter-spacing:-.005em}
+  .blk .v code{font-family:var(--font-mono); font-size:.82em; background:var(--panel-3); padding:2px 6px; border-radius:5px; color:var(--gold); border:1px solid var(--line)}
+  .beats-min{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:4px}
+  .beats-min li{display:flex; gap:9px; font-size:.86rem; color:var(--muted)}
+  .beats-min .ts{font-family:var(--font-mono); font-size:.72rem; color:var(--cyan); width:46px; flex:none; font-variant-numeric:tabular-nums}
+  .hashv{font-family:var(--font-mono); font-size:.78rem; color:var(--cyan); word-break:break-word; line-height:1.7}
+  .ctaline{display:inline-flex; align-items:center; gap:9px; padding:9px 13px; border-radius:10px; background:var(--accent-soft); border:1px solid var(--line-2);
+    color:var(--text); font-weight:600; font-size:.9rem}
+  .ctaline svg{width:15px;height:15px;stroke:var(--gold);flex:none}
+  .sd{display:flex; flex-wrap:wrap; gap:8px}
+  .sd .st{font-size:.82rem; color:var(--muted); background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:6px 10px}
+  .sd .st b{color:var(--text); font-weight:600}
+  .grow{display:flex; gap:9px; align-items:flex-start; font-size:.86rem; color:var(--growth); background:rgba(87,207,147,.08); border:1px solid rgba(87,207,147,.22); border-radius:9px; padding:9px 12px}
+  .grow svg{width:15px;height:15px;stroke:var(--growth);flex:none;margin-top:2px}
+  .divider{height:1px; background:var(--line); margin:2px 0}
+
+  /* conversion engine */
+  .conv{padding:18px}
+  .conv h3{margin-bottom:6px; display:flex; align-items:center; gap:9px}
+  .conv h3 svg{width:17px;height:17px;stroke:var(--accent-2)}
+  .conv p{color:var(--muted); font-size:.9rem}
+  .conv ul{margin:9px 0 0; padding-left:0; list-style:none; display:flex; flex-direction:column; gap:7px}
+  .conv li{display:flex; gap:9px; font-size:.88rem; color:var(--muted)}
+  .conv li::before{content:"→"; color:var(--accent); font-family:var(--font-mono); flex:none}
+  .conv code{font-family:var(--font-mono); font-size:.82em; background:var(--panel-3); padding:2px 6px; border-radius:5px; color:var(--gold); border:1px solid var(--line)}
+
+  /* checklist / routine */
+  .route{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:9px}
+  .route li{display:flex; gap:12px; align-items:flex-start; font-size:.9rem}
+  .route .t{font-family:var(--font-mono); font-size:.74rem; color:var(--cyan); width:64px; flex:none; padding-top:2px; font-variant-numeric:tabular-nums}
+  .route b{color:var(--text)}
+  .route span{color:var(--muted)}
+  .checks{list-style:none; padding:0; margin:0; display:grid; grid-template-columns:repeat(2,1fr); gap:9px 20px}
+  @media (max-width:620px){.checks{grid-template-columns:1fr}}
+  .checks li{display:flex; gap:10px; align-items:flex-start; font-size:.9rem; color:var(--muted)}
+  .checks .box{width:17px;height:17px;border-radius:5px;border:1.5px solid var(--line-2);flex:none;margin-top:2px}
+
+  .note{margin-top:14px; font-size:.82rem; color:var(--faint)}
+  .footer{margin-top:60px; padding-top:22px; border-top:1px solid var(--line); display:flex; flex-wrap:wrap; gap:12px; align-items:center; justify-content:space-between; color:var(--faint); font-size:.82rem}
+  .footer .brand{font-size:.92rem}
+
+  .reveal{opacity:0; transform:translateY(14px); animation:rise .7s cubic-bezier(.2,.7,.2,1) forwards}
+  @keyframes rise{to{opacity:1; transform:none}}
+  @media (prefers-reduced-motion:reduce){.reveal{animation:none; opacity:1; transform:none}}
+  .card:hover{border-color:var(--line-2)}
+  :focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:6px}
+</style>
+
+<div class="wrap">
+
+  <!-- ===================== MASTHEAD ===================== -->
+  <header class="mast reveal">
+    <div class="brand">
+      <span class="dot" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4L12 2z" fill="#0a1030"/></svg>
+      </span>
+      SiteSpot
+    </div>
+    <p class="eyebrow" style="margin-top:26px">Týdenní campaign plán · Sociální sítě</p>
+    <h1>Viral týden:<br>videa, co nahánějí zákazníky</h1>
+    <p class="lead">Sedm dní obsahu s jediným cílem — maximum konverzí. Každý den má jedno silné video, které zaujme, jasnou nabídku, která převádí, a jeden tah, který přidá followery. Reels &amp; TikTok táhnou dosah, profil a DM převádí na leady.</p>
+    <div class="row">
+      <span class="chip"><b>Týden</b> Po 20/7 – Ne 26/7 2026</span>
+      <span class="chip"><b>Kanály</b> IG Reels · TikTok · YT Shorts · LinkedIn</span>
+      <span class="chip"><b>Cíl</b> Leady &amp; booknuté audity</span>
+      <span class="chip"><b>Cadence</b> 1 hlavní video / den</span>
+    </div>
+  </header>
+
+  <!-- ===================== BRIEF ===================== -->
+  <section class="sec reveal" aria-labelledby="brief">
+    <div class="sec-head"><span class="n">01</span><h2 id="brief">Strategický brief</h2><span class="sub">Než začneš točit — o co jde a jak měříme úspěch</span></div>
+
+    <div class="grid g4" style="margin-bottom:16px">
+      <div class="card kpi a"><span class="t">Reach</span><span class="big">10k+</span><span class="k">views na aspoň 1 videu (viral spike)</span></div>
+      <div class="card kpi g"><span class="t">Followers</span><span class="big">+200</span><span class="k">nových sledujících za týden</span></div>
+      <div class="card kpi c"><span class="t">Leady</span><span class="big">20+</span><span class="k">DM „AUDIT“ / vyplněných formulářů</span></div>
+      <div class="card kpi o"><span class="t">Konverze</span><span class="big">4</span><span class="k">booknuté audit-cally do kalendáře</span></div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+        <h3 style="margin-bottom:14px">Konverzní funnel</h3>
+        <div class="funnel">
+          <div class="fstep"><span class="fn">Dosah</span><div class="fbar">Viral video (Reel/TikTok)</div></div>
+          <div class="fstep"><span class="fn">Zájem</span><div class="fbar">Profil + bio: jasná nabídka</div></div>
+          <div class="fstep"><span class="fn">Lead</span><div class="fbar">DM keyword → auto odpověď + link</div></div>
+          <div class="fstep"><span class="fn">Klient</span><div class="fbar">15min audit → nabídka</div></div>
+        </div>
+        <p class="note">Každé video existuje kvůli jednomu dalšímu kroku dolů. Když video nemá jasné CTA na další krok, je to jen zábava — ne kampaň.</p>
+      </div>
+      <div class="card plain" style="padding:6px">
+        <div class="grid" style="gap:10px">
+          <div class="pillar">
+            <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></svg></span>
+            <div><h3>1 · „Magic moment“ demo</h3><p>Screen recording, kde AI odbaví nudnou práci za tebe. Hlavní tahoun dosahu — lidi to musí vidět, aby uvěřili. (Lead Radar, Inbox Autopilot, Fakturační linka.)</p></div>
+          </div>
+          <div class="pillar">
+            <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 11h18"/></svg></span>
+            <div><h3>2 · Před / po webu</h3><p>Rychlý reveal starý → nový web. Vizuálně uspokojivé = vysoká míra sdílení. Ukazuje řemeslo a prodává službu „web na míru“.</p></div>
+          </div>
+          <div class="pillar">
+            <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 3v18M5 8l7-5 7 5"/><path d="M5 8v9l7 4 7-4V8"/></svg></span>
+            <div><h3>3 · Vzdělání / hot take</h3><p>Listicle a mýty o webech a AI pro firmy. Save-bait, který buduje autoritu a sbírá uložení (algoritmus je miluje).</p></div>
+          </div>
+          <div class="pillar">
+            <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span>
+            <div><h3>4 · Důkaz &amp; founder</h3><p>Výsledky klientů, za oponou, tvůj příběh. Buduje důvěru — to je poslední páka před konverzí. (Max, David, Oliver.)</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== HERO SCRIPTS ===================== -->
+  <section class="sec reveal" aria-labelledby="heroes">
+    <div class="sec-head"><span class="n">02</span><h2 id="heroes">Tři hero videa (viral motory)</h2><span class="sub">Do těchhle dej 80 % produkční energie — nesou dosah celého týdne</span></div>
+
+    <div class="grid g3">
+      <!-- HERO 1 -->
+      <article class="card hero">
+        <div class="htop"><span class="idx">01</span><div><h3>AI to zvedne ve 3 ráno</h3><p style="color:var(--muted);font-size:.86rem;margin-top:3px">Magic-moment demo · Inbox Autopilot + Lead Radar</p></div></div>
+        <div class="hook"><span class="label">Hook · 0–2 s</span>„3:11 ráno. Přišla poptávka. Odpověděl na ni robot za 8 sekund — a domluvil schůzku, než ses probudil.“</div>
+        <ul class="beats">
+          <li><span class="ts">0–3 s</span><span>Hook + záběr telefonu s notifikací v <b>3:11</b>.</span></li>
+          <li><span class="ts">3–8 s</span><span>Problém: „<b>78 % firem</b> neodpoví na noční poptávku do rána — a zákazník mezitím napíše konkurenci.“</span></li>
+          <li><span class="ts">8–19 s</span><span>Screen: přišla zpráva → <b>Inbox Autopilot</b> odpoví, <b>Lead Radar</b> zařadí lead a pošle odkaz na kalendář.</span></li>
+          <li><span class="ts">19–26 s</span><span>Výsledek: „Ráno vstaneš a máš <b>3 domluvené schůzky</b>. Nula tvé práce.“</span></li>
+          <li><span class="ts">26–30 s</span><span>CTA: „Napiš <b>AUDIT</b> do DM — ukážu ti, kde ti web utíkají zákazníci. Zdarma.“</span></li>
+        </ul>
+        <div class="metaline"><span class="tag p">Reels</span><span class="tag p">TikTok</span><span class="tag p">YT Shorts</span><span class="tag">9:16 · 30 s</span><span class="tag">titulky povinné</span></div>
+      </article>
+
+      <!-- HERO 2 -->
+      <article class="card hero">
+        <div class="htop"><span class="idx">02</span><div><h3>Před / po: web, co prodává</h3><p style="color:var(--muted);font-size:.86rem;margin-top:3px">Transformace · šablony (Nexora / Synapse / Vrstva)</p></div></div>
+        <div class="hook"><span class="label">Hook · 0–2 s</span>„Tenhle web dělal 0 poptávek měsíčně. Za 9 dní jsme to obrátili — sleduj do konce.“</div>
+        <ul class="beats">
+          <li><span class="ts">0–2 s</span><span>Hook přes záběr <b>starého</b> webu (pomalý, ošklivý, mobilně rozbitý).</span></li>
+          <li><span class="ts">2–10 s</span><span>„Co je špatně“: 3 rychlé popisky — pomalé načtení, žádné CTA, nevzbudí důvěru.</span></li>
+          <li><span class="ts">10–20 s</span><span>Rychlý <b>reveal nového webu</b> na trend-beat drop: scroll, animace, mobil. Uspokojivé.</span></li>
+          <li><span class="ts">20–27 s</span><span>Čísla: „<b>1,2 s</b> načtení · <b>+3 CTA</b> · připraveno na reklamu.“</span></li>
+          <li><span class="ts">27–32 s</span><span>CTA: „Chceš vidět, jak by vypadal tvůj? Napiš <b>WEB</b> do DM.“</span></li>
+        </ul>
+        <div class="metaline"><span class="tag p">Reels</span><span class="tag p">TikTok</span><span class="tag">trend audio</span><span class="tag">+ carousel před/po</span></div>
+      </article>
+
+      <!-- HERO 3 -->
+      <article class="card hero">
+        <div class="htop"><span class="idx">03</span><div><h3>5 věcí, co ti web tajně kazí</h3><p style="color:var(--muted);font-size:.86rem;margin-top:3px">Vzdělání / save-bait · autorita</p></div></div>
+        <div class="hook"><span class="label">Hook · 0–2 s</span>„Tvoje firma přichází o zakázky kvůli 5 věcem na webu. Číslo 3 dělá skoro každý — a stojí tě nejvíc.“</div>
+        <ul class="beats">
+          <li><span class="ts">0–3 s</span><span>Hook + „ulož si to, ať si to projdeš na svém webu“.</span></li>
+          <li><span class="ts">3–22 s</span><span>Rychlý listicle (talking head + textové overlaye): <b>1</b> žádné CTA nad ohybem · <b>2</b> pomalý mobil · <b>3</b> chybí důvěra (reference, čísla) · <b>4</b> formulář na 8 polí · <b>5</b> nikdo neodpoví do hodiny.</span></li>
+          <li><span class="ts">22–28 s</span><span>„3 z 5 vyřeší AI automatizace za víkend.“</span></li>
+          <li><span class="ts">28–33 s</span><span>CTA: „Napiš <b>CHECKLIST</b> a pošlu ti celý audit v PDF.“</span></li>
+        </ul>
+        <div class="metaline"><span class="tag p">Reels</span><span class="tag p">LinkedIn</span><span class="tag p">TikTok</span><span class="tag">save-bait</span><span class="tag">+ carousel</span></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===================== 7-DAY CALENDAR ===================== -->
+  <section class="sec reveal" aria-labelledby="cal">
+    <div class="sec-head"><span class="n">03</span><h2 id="cal">Kalendář — den po dni</h2><span class="sub">Po 20/7 → Ne 26/7 · jedno hlavní video denně</span></div>
+
+    <div class="grid" style="gap:16px">
+
+      <!-- PONDĚLÍ -->
+      <article class="card day">
+        <div class="rail"><span class="dn">Pondělí</span><span class="dd">20. 7.</span><span class="di">Launch</span></div>
+        <div class="body">
+          <div class="concept"><span class="type">Magic-moment demo</span><h3>„AI to zvedne ve 3 ráno“ — start týdne s nejsilnějším videem</h3></div>
+          <div class="blk"><span class="label">Kanály / čas</span><span class="v">Reels + TikTok + YT Shorts <b style="color:var(--text)">18:30</b> · LinkedIn textový post <b style="color:var(--text)">8:00</b></span></div>
+          <div class="blk"><span class="label">Hook</span><span class="v hookv">„3:11 ráno. Přišla poptávka. Odpověděl robot za 8 sekund.“</span></div>
+          <div class="blk"><span class="label">Scénář</span>
+            <ul class="beats-min">
+              <li><span class="ts">0–3s</span>Notifikace v noci + hook</li>
+              <li><span class="ts">3–19s</span>Screen demo Inbox Autopilot + Lead Radar</li>
+              <li><span class="ts">19–30s</span>Výsledek „3 schůzky ráno“ + CTA</li>
+            </ul>
+          </div>
+          <div class="blk"><span class="label">Caption</span><span class="v">Zatímco spíš, konkurence odpovídá. My jsme dali AI, ať to zvedne za tebe — noční poptávka → domluvená schůzka, nula tvé práce. Napiš <code>AUDIT</code> a najdu ti, kde web ztrácí zákazníky. 👇</span></div>
+          <div class="blk"><span class="label">Hashtagy</span><span class="v hashv">#AIautomatizace #podnikáníčesko #maléfirmy #AIagent #digitalizacefirem #reelscesko #podnikatel #automatizace</span></div>
+          <div class="ctaline"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 4h16v12H8l-4 4z"/></svg>Keyword <b style="margin:0 4px">AUDIT</b> → auto DM s odkazem na 15min audit</div>
+          <div class="sd">
+            <span class="st"><b>Story:</b> anketa „Odpovíš na poptávku do hodiny?“ → teaser videa → sticker odkaz</span>
+          </div>
+          <div class="grow"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg><span><b style="color:var(--growth)">Follower tah:</b> do captionu „sleduj pro díl 2 — ukážu, jak si to postavíš sám“. Prvních 60 min odpovídej na každý komentář (nastartuje dosah).</span></div>
+        </div>
+      </article>
+
+      <!-- ÚTERÝ -->
+      <article class="card day">
+        <div class="rail"><span class="dn">Úterý</span><span class="dd">21. 7.</span><span class="di">Před/po</span></div>
+        <div class="body">
+          <div class="concept"><span class="type">Před / po webu</span><h3>Web glow-up — vizuální reveal na trend audio</h3></div>
+          <div class="blk"><span class="label">Kanály / čas</span><span class="v">Reels + TikTok <b style="color:var(--text)">12:30</b> a re-share do Stories <b style="color:var(--text)">18:00</b></span></div>
+          <div class="blk"><span class="label">Hook</span><span class="v hookv">„Tenhle web dělal 0 poptávek. Za 9 dní jsme to obrátili.“</span></div>
+          <div class="blk"><span class="label">Scénář</span>
+            <ul class="beats-min">
+              <li><span class="ts">0–10s</span>Starý web + 3× „co je špatně“</li>
+              <li><span class="ts">10–20s</span>Reveal nového na beat-drop</li>
+              <li><span class="ts">20–32s</span>Čísla (rychlost, CTA) + CTA „WEB“</li>
+            </ul>
+          </div>
+          <div class="blk"><span class="label">Caption</span><span class="v">Web z roku 2014 tě stojí zakázky, i když o tom nevíš. Takhle vypadá přestavba, co začne prodávat. Chceš vidět návrh toho svého? Napiš <code>WEB</code>. 🚀</span></div>
+          <div class="blk"><span class="label">Hashtagy</span><span class="v hashv">#webnamíru #webdesign #předapo #podnikáníčesko #maléfirmy #webovky #firemníweb #reelscesko</span></div>
+          <div class="ctaline"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 4h16v12H8l-4 4z"/></svg>Keyword <b style="margin:0 4px">WEB</b> → DM s ukázkou šablon + nabídka návrhu zdarma</div>
+          <div class="sd">
+            <span class="st"><b>Story:</b> A/B anketa „Který web se ti líbí víc?“ (starý vs. nový)</span>
+            <span class="st"><b>Doplněk:</b> carousel před/po na feed</span>
+          </div>
+          <div class="grow"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg><span><b style="color:var(--growth)">Follower tah:</b> before/after + trend audio = nejvyšší míra sdílení. Přidej „ulož si na inspiraci“ na konec.</span></div>
+        </div>
+      </article>
+
+      <!-- STŘEDA -->
+      <article class="card day">
+        <div class="rail"><span class="dn">Středa</span><span class="dd">22. 7.</span><span class="di">Autorita</span></div>
+        <div class="body">
+          <div class="concept"><span class="type">Vzdělání / save-bait</span><h3>„5 věcí, co ti web tajně kazí“ — listicle + lead magnet</h3></div>
+          <div class="blk"><span class="label">Kanály / čas</span><span class="v">LinkedIn carousel <b style="color:var(--text)">8:00</b> · Reels + TikTok <b style="color:var(--text)">18:30</b></span></div>
+          <div class="blk"><span class="label">Hook</span><span class="v hookv">„Přicházíš o zakázky kvůli 5 věcem na webu. Číslo 3 dělá skoro každý.“</span></div>
+          <div class="blk"><span class="label">Scénář</span>
+            <ul class="beats-min">
+              <li><span class="ts">0–3s</span>Hook + „ulož si to“</li>
+              <li><span class="ts">3–22s</span>Rychlý listicle 1–5 s overlayemi</li>
+              <li><span class="ts">22–33s</span>„3 z 5 vyřeší AI“ + CTA „CHECKLIST“</li>
+            </ul>
+          </div>
+          <div class="blk"><span class="label">Caption</span><span class="v">Většina firemních webů dělá aspoň 3 z těchhle 5 chyb. Projdi si to a oprav — nebo ať to za víkend vyřeší automatizace. Chceš celý audit v PDF? Napiš <code>CHECKLIST</code>. 📋</span></div>
+          <div class="blk"><span class="label">Hashtagy</span><span class="v hashv">#marketingtipy #webnamíru #podnikáníčesko #konverze #onlinebyznys #maléfirmy #AIautomatizace #tipy</span></div>
+          <div class="ctaline"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 4h16v12H8l-4 4z"/></svg>Keyword <b style="margin:0 4px">CHECKLIST</b> → PDF „7 věcí, co web musí mít, aby prodával“ (lead magnet)</div>
+          <div class="sd">
+            <span class="st"><b>Story:</b> kvíz „Kolik z 5 chyb má tvůj web?“ + odkaz na PDF</span>
+          </div>
+          <div class="grow"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg><span><b style="color:var(--growth)">Follower tah:</b> save-bait obsah algoritmus tlačí dál. „Ulož si, ať nezapomeneš“ + „sleduj pro víc auditů zdarma“.</span></div>
+        </div>
+      </article>
+
+      <!-- ČTVRTEK -->
+      <article class="card day">
+        <div class="rail"><span class="dn">Čtvrtek</span><span class="dd">23. 7.</span><span class="di">Demo #2</span></div>
+        <div class="body">
+          <div class="concept"><span class="type">Magic-moment demo</span><h3>„5⭐ recenze na autopilota“ — Recenze Autopilot</h3></div>
+          <div class="blk"><span class="label">Kanály / čas</span><span class="v">Reels + TikTok <b style="color:var(--text)">18:30</b></span></div>
+          <div class="blk"><span class="label">Hook</span><span class="v hookv">„Jak jsme firmě přidali 27 pětihvězd recenzí za měsíc — bez jediné prosby ručně.“</span></div>
+          <div class="blk"><span class="label">Scénář</span>
+            <ul class="beats-min">
+              <li><span class="ts">0–3s</span>Hook + záběr rostoucího hodnocení</li>
+              <li><span class="ts">3–20s</span>Screen: zakázka hotová → AI pošle SMS/e-mail → recenze naskočí</li>
+              <li><span class="ts">20–30s</span>„Víc recenzí = víc důvěry = víc zakázek“ + CTA „AI“</li>
+            </ul>
+          </div>
+          <div class="blk"><span class="label">Caption</span><span class="v">Recenze rozhodují, koho si zákazník vybere — a většina firem o ně aktivně nežádá. Tohle to dělá za tebe, automaticky a slušně. Zajímá tě, co všechno umí AI odbavit? Napiš <code>AI</code>. ⭐</span></div>
+          <div class="blk"><span class="label">Hashtagy</span><span class="v hashv">#recenze #googlerecenze #AIautomatizace #maléfirmy #podnikáníčesko #reputace #automatizace #firma</span></div>
+          <div class="ctaline"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 4h16v12H8l-4 4z"/></svg>Keyword <b style="margin:0 4px">AI</b> → DM s přehledem 5 automatizací + pozvánka na audit</div>
+          <div class="sd">
+            <span class="st"><b>Story:</b> „Zeptej se na cokoliv o AI“ box (Q&amp;A) — sbírej otázky na páteční video</span>
+          </div>
+          <div class="grow"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg><span><b style="color:var(--growth)">Follower tah:</b> reaguj/duetuj na video jiného českého podnikatele o recenzích — dostaneš se před jeho publikum.</span></div>
+        </div>
+      </article>
+
+      <!-- PÁTEK -->
+      <article class="card day">
+        <div class="rail"><span class="dn">Pátek</span><span class="dd">24. 7.</span><span class="di">Důkaz</span></div>
+        <div class="body">
+          <div class="concept"><span class="type">Social proof / founder</span><h3>Case study + tvář značky — páteční booking push</h3></div>
+          <div class="blk"><span class="label">Kanály / čas</span><span class="v">Reels <b style="color:var(--text)">17:00</b> · LinkedIn <b style="color:var(--text)">9:00</b></span></div>
+          <div class="blk"><span class="label">Hook</span><span class="v hookv">„Za oponou: jak jsme za 9 dní postavili web + 3 automatizace, co teď firmě šetří 12 h týdně.“</span></div>
+          <div class="blk"><span class="label">Scénář</span>
+            <ul class="beats-min">
+              <li><span class="ts">0–4s</span>Hook + rychlý sestřih práce/týmu</li>
+              <li><span class="ts">4–20s</span>Co jsme řešili → co jsme postavili → výsledek</li>
+              <li><span class="ts">20–30s</span>Screenshot díku od klienta + CTA na audit</li>
+            </ul>
+          </div>
+          <div class="blk"><span class="label">Caption</span><span class="v">Nejsme šablona z e-shopu — jsme parta (Max, David, Oliver), co ti postaví web i automatizace jako jeden systém. Tohle byl výsledek za 9 dní. Máme <b>2 volné termíny</b> na příští týden — napiš <code>AUDIT</code>. 🙌</span></div>
+          <div class="blk"><span class="label">Hashtagy</span><span class="v hashv">#casestudy #zaoponou #podnikáníčesko #webnamíru #AIautomatizace #tým #maléfirmy #výsledky</span></div>
+          <div class="ctaline"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 4h16v12H8l-4 4z"/></svg>Konverze: omezená dostupnost („2 termíny“) → naléhavost na booking před víkendem</div>
+          <div class="sd">
+            <span class="st"><b>Story:</b> screenshot recenze/díku klienta + odkaz „rezervuj audit“</span>
+          </div>
+          <div class="grow"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg><span><b style="color:var(--growth)">Follower tah:</b> tvář = důvěra. Lidi sledují lidi, ne loga. Ukaž tým a zákulisí — buduje to loajální publikum.</span></div>
+        </div>
+      </article>
+
+      <!-- SOBOTA -->
+      <article class="card day">
+        <div class="rail"><span class="dn">Sobota</span><span class="dd">25. 7.</span><span class="di">Reach</span></div>
+        <div class="body">
+          <div class="concept"><span class="type">Relatable / lehčí</span><h3>Meme reel — nízká produkce, vysoký dosah</h3></div>
+          <div class="blk"><span class="label">Kanály / čas</span><span class="v">Reels + TikTok <b style="color:var(--text)">11:00</b></span></div>
+          <div class="blk"><span class="label">Hook</span><span class="v hookv">„POV: je sobota večer a tvůj web právě sám domluvil 3. schůzku 😌“</span></div>
+          <div class="blk"><span class="label">Scénář</span>
+            <ul class="beats-min">
+              <li><span class="ts">0–3s</span>Relatable text-overlay na trend audio</li>
+              <li><span class="ts">3–12s</span>Vtipný kontrast: podnikatel v klidu vs. notifikace o leadech</li>
+              <li><span class="ts">12–18s</span>Jemné CTA v captionu (ne v obraze)</li>
+            </ul>
+          </div>
+          <div class="blk"><span class="label">Caption</span><span class="v">Nejlepší zaměstnanec nikdy nespí, nestěžuje si a odpovídá do 8 sekund. 😅 Tag někoho, kdo pořád odpovídá na poptávky ručně. Chceš stejný klid? <code>AUDIT</code> do DM.</span></div>
+          <div class="blk"><span class="label">Hashtagy</span><span class="v hashv">#podnikatelskýhumor #podnikáníčesko #maléfirmy #relatable #AIautomatizace #reelscesko #víkend</span></div>
+          <div class="ctaline"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 4h16v12H8l-4 4z"/></svg>Měkké CTA — sobota je na dosah &amp; engagement, ne na tvrdý prodej</div>
+          <div class="sd">
+            <span class="st"><b>Story:</b> repost nejlepšího momentu týdne + „tag kamaráda podnikatele“</span>
+          </div>
+          <div class="grow"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg><span><b style="color:var(--growth)">Follower tah:</b> relatable = sdílení + tagování = nejlevnější dosah. Věnuj 20 min komentování pod velkými CZ podnikatelskými účty.</span></div>
+        </div>
+      </article>
+
+      <!-- NEDĚLE -->
+      <article class="card day">
+        <div class="rail"><span class="dn">Neděle</span><span class="dd">26. 7.</span><span class="di">Hodnota</span></div>
+        <div class="body">
+          <div class="concept"><span class="type">Founder / recap</span><h3>Příběh + shrnutí týdne — příprava dalšího týdne</h3></div>
+          <div class="blk"><span class="label">Kanály / čas</span><span class="v">Reels <b style="color:var(--text)">19:00</b> · LinkedIn <b style="color:var(--text)">19:00</b></span></div>
+          <div class="blk"><span class="label">Hook</span><span class="v hookv">„Založil jsem SiteSpot, protože firmy ztrácejí zákazníky na věcech, které jdou vyřešit za víkend.“</span></div>
+          <div class="blk"><span class="label">Scénář</span>
+            <ul class="beats-min">
+              <li><span class="ts">0–4s</span>Osobní hook „proč to děláme“</li>
+              <li><span class="ts">4–20s</span>Mise + co jsme tenhle týden postavili</li>
+              <li><span class="ts">20–30s</span>CTA: „Rozjeď si příští týden s auditem zdarma“</li>
+            </ul>
+          </div>
+          <div class="blk"><span class="label">Caption</span><span class="v">Web není vizitka — je to tvůj nejlevnější obchodník. Náš cíl je jednoduchý: ať ti online kanál vydělává, i když spíš. Chceš do příštího týdne vstoupit s jasným plánem? Napiš <code>AUDIT</code>, projdeme to spolu. 🌙</span></div>
+          <div class="blk"><span class="label">Hashtagy</span><span class="v hashv">#founderstory #podnikáníčesko #mise #onlinebyznys #AIautomatizace #webnamíru #neděle</span></div>
+          <div class="ctaline"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 4h16v12H8l-4 4z"/></svg>Nedělní večer = lidi plánují týden → nejlepší okno na booking auditů</div>
+          <div class="sd">
+            <span class="st"><b>Story:</b> recap „Co jsme tento týden postavili“ (3–4 slidy) + CTA</span>
+            <span class="st"><b>Ty:</b> vyhodnoť analytiku a naplánuj příští týden</span>
+          </div>
+          <div class="grow"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg><span><b style="color:var(--growth)">Follower tah:</b> osobní příběhy budují nejsilnější pouto. „Sleduj naši cestu — každý týden stavíme něco nového.“</span></div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ===================== CONVERSION ENGINE ===================== -->
+  <section class="sec reveal" aria-labelledby="conv">
+    <div class="sec-head"><span class="n">04</span><h2 id="conv">Konverzní engine</h2><span class="sub">Bez tohohle je viral jen marnost — nastav dřív, než začneš postovat</span></div>
+    <div class="grid g2">
+      <div class="card conv">
+        <h3><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/><path d="M12 8v8M8 12h8"/></svg>Profil = landing page</h3>
+        <p>Návštěvník z videa musí za 3 sekundy pochopit, co nabízíš a co má udělat.</p>
+        <ul>
+          <li>Bio: „Weby &amp; AI automatizace pro firmy 📈 · Web, co prodává i když spíš“</li>
+          <li>Jeden CTA odkaz → rezervace auditu (Calendly) nebo <code>sitespot.cz</code></li>
+          <li>Připnutá 3 videa: 1 demo · 1 před/po · 1 výsledek klienta</li>
+          <li>Highlight Stories: „Reference“ · „Jak to funguje“ · „Ceník / audit“</li>
+        </ul>
+      </div>
+      <div class="card conv">
+        <h3><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 4h16v12H8l-4 4z"/><path d="M8 9h8M8 13h5"/></svg>DM automatizace (keywordy)</h3>
+        <p>Každé video posílá lidi psát klíčové slovo — nastav auto-odpovědi (ManyChat / vestavěné nástroje).</p>
+        <ul>
+          <li><code>AUDIT</code> → odkaz na 15min audit + 2 kvalifikační otázky</li>
+          <li><code>CHECKLIST</code> → PDF lead magnet (sbírá e-mail)</li>
+          <li><code>WEB</code> → ukázky šablon + nabídka návrhu zdarma</li>
+          <li><code>AI</code> → přehled 5 automatizací + pozvánka na call</li>
+        </ul>
+      </div>
+      <div class="card conv">
+        <h3><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 2 3 7v6c0 5 4 8 9 9 5-1 9-4 9-9V7l-9-5z"/><path d="M9 12l2 2 4-4"/></svg>Lead magnet</h3>
+        <p>Důvod, proč ti nechají kontakt — konkrétní a okamžitě užitečný.</p>
+        <ul>
+          <li>PDF: „7 věcí, co web musí mít, aby prodával“ (5 min čtení)</li>
+          <li>Nebo: bezplatný 15min audit — 3 konkrétní tipy na míru</li>
+          <li>Vždy končí měkkou nabídkou na placenou spolupráci</li>
+        </ul>
+      </div>
+      <div class="card conv">
+        <h3><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="9"/></svg>Rychlost = konverze</h3>
+        <p>Ironicky prodáváš rychlé odpovědi — tak buď rychlý sám.</p>
+        <ul>
+          <li>Na každý lead reaguj do <b style="color:var(--text)">10 minut</b> (v pracovní době)</li>
+          <li>Připrav si 3 hotové DM šablony (audit, cena, „pošli mi web“)</li>
+          <li>Cíl každé konverzace: domluvit 15min call, ne prodat v DM</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== ROUTINE + CHECKLIST ===================== -->
+  <section class="sec reveal" aria-labelledby="ops">
+    <div class="sec-head"><span class="n">05</span><h2 id="ops">Denní rutina &amp; kontrola</h2><span class="sub">30 minut denně, ať algoritmus i leady zůstanou v pohybu</span></div>
+    <div class="grid g2">
+      <div class="card">
+        <h3 style="margin-bottom:14px">Denní 30min rutina</h3>
+        <ul class="route">
+          <li><span class="t">ráno</span><span><b>5 min</b> — <span>zkontroluj DM, odpověz na leady (do 10 min od zprávy)</span></span></li>
+          <li><span class="t">před post</span><span><b>3 min</b> — <span>naplánuj/publikuj video v top čase, dvakrát zkontroluj titulky a hook</span></span></li>
+          <li><span class="t">po postu</span><span><b>15 min</b> — <span>prvních 60 min odpovídej na KAŽDÝ komentář (rozjede dosah)</span></span></li>
+          <li><span class="t">večer</span><span><b>7 min</b> — <span>10 relevantních komentářů pod cizími účty + repost do Stories</span></span></li>
+        </ul>
+        <p class="note">Konzistence &gt; dokonalost. Jedno video denně, publikované včas, porazí tři „perfektní“ jednou týdně.</p>
+      </div>
+      <div class="card">
+        <h3 style="margin-bottom:14px">Před spuštěním odškrtni</h3>
+        <ul class="checks">
+          <li><span class="box" aria-hidden="true"></span>Bio + CTA odkaz nastavený</li>
+          <li><span class="box" aria-hidden="true"></span>DM keywordy zapnuté (AUDIT/WEB/…)</li>
+          <li><span class="box" aria-hidden="true"></span>PDF lead magnet hotový</li>
+          <li><span class="box" aria-hidden="true"></span>Calendly / kalendář na audity</li>
+          <li><span class="box" aria-hidden="true"></span>3 hero videa natočená předem</li>
+          <li><span class="box" aria-hidden="true"></span>Titulky u všech videí (85 % kouká bez zvuku)</li>
+          <li><span class="box" aria-hidden="true"></span>DM šablony pro odpovědi</li>
+          <li><span class="box" aria-hidden="true"></span>Analytika: měř saves, sdílení, profil kliky</li>
+        </ul>
+        <p class="note">Sleduj hlavně <b>uložení, sdílení a prokliky na profil</b> — ne lajky. To jsou signály, které předpovídají leady.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <span class="brand" style="color:var(--text)"><span class="dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4L12 2z" fill="#0a1030"/></svg></span>SiteSpot</span>
+    <span>Týdenní campaign plán · 20.–26. 7. 2026 · Priorita: konverze &gt; dosah &gt; lajky</span>
+  </footer>
+
+</div>
+</body>
+</html>
