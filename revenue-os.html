@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Revenue OS: web, který vydělává | SiteSpot</title>
+  <meta name="description" content="SiteSpot Revenue OS: měníme firemní web z brožury na obchodní systém. Konverze, provoz a viditelnost pod jednou střechou. Revenue Flow Pilot za 10 dní."/>
+  <meta property="og:title" content="Revenue OS: web, který vydělává | SiteSpot"/>
+  <meta property="og:description" content="Web není brožura, je to obchodní systém. Revenue Flow Pilot za 10 dní s měřitelným výsledkem."/>
+  <meta property="og:type" content="website"/>
+  <link rel="icon" href="favicon.svg"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#070a0f; --bg-2:#0c1018; --surface:#111620; --surface-2:#181e2c;
+  --border:rgba(255,255,255,0.07); --border-2:rgba(255,255,255,0.14);
+  --accent:#27b7a5; --accent-2:#5dd9cb;
+  --accent-dim:rgba(39,183,165,0.10); --accent-glow:rgba(39,183,165,0.22);
+  --white:#eef2f7; --gray:#7da8c4; --gray-2:#3a5570;
+  --font-sans:'DM Sans',sans-serif; --font-serif:'Playfair Display',Georgia,serif;
+  --ease:cubic-bezier(0.16,1,0.3,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--white);font-family:var(--font-sans);line-height:1.65;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+ul{list-style:none}
+em{font-style:italic;color:var(--accent)}
+.container{max-width:1100px;margin:0 auto;padding:0 3rem}
+
+/* NAV */
+#nav{
+  position:fixed;top:0;left:0;right:0;z-index:9000;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.2rem 3rem;background:rgba(7,10,15,0.88);
+  backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{font-size:1.25rem;font-weight:700;color:var(--white);letter-spacing:-.02em}
+.nav-logo span{color:var(--accent)}
+.nav-links{display:flex;align-items:center;gap:2.5rem}
+.nav-links a{color:var(--gray);font-size:.875rem;transition:color .2s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:1px;background:var(--accent);transition:width .3s var(--ease)}
+.nav-links a:hover::after{width:100%}
+.nav-links a:hover{color:var(--white)}
+.nav-cta{display:inline-flex;align-items:center;gap:.4rem;padding:.55rem 1.2rem;border:1px solid var(--border-2);border-radius:3px;font-size:.85rem;font-weight:600;color:var(--white)!important;transition:border-color .2s,background .2s}
+.nav-cta:hover{border-color:var(--accent);background:var(--accent-dim)}
+
+/* BUTTONS */
+.btn-primary{display:inline-flex;align-items:center;gap:.5rem;padding:.85rem 1.6rem;background:var(--accent);color:#04120f!important;border:none;border-radius:3px;font-family:var(--font-sans);font-size:.9rem;font-weight:700;cursor:pointer;transition:transform .2s var(--ease),box-shadow .2s}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 30px -12px var(--accent-glow)}
+.btn-outline{display:inline-flex;align-items:center;gap:.5rem;padding:.85rem 1.6rem;background:transparent;color:var(--white);border:1px solid var(--border-2);border-radius:3px;font-size:.9rem;font-weight:600;transition:border-color .2s}
+.btn-outline:hover{border-color:var(--accent)}
+
+/* HERO */
+.hero{min-height:92svh;display:flex;flex-direction:column;justify-content:center;padding:7rem 3rem 4rem;position:relative;background:radial-gradient(1200px 600px at 70% -10%,rgba(39,183,165,.08),transparent 60%)}
+.eyebrow{display:inline-block;font-size:.66rem;color:var(--accent);font-weight:600;letter-spacing:.22em;text-transform:uppercase;margin-bottom:1.4rem}
+.hero-headline{font-family:var(--font-serif);font-size:clamp(2.6rem,6vw,4.6rem);font-weight:700;line-height:1.02;letter-spacing:-.03em;max-width:16ch}
+.hero-sub{color:var(--gray);font-size:clamp(1rem,1.4vw,1.18rem);max-width:52ch;margin-top:1.6rem;line-height:1.7}
+.hero-actions{display:flex;gap:1rem;margin-top:2.4rem;flex-wrap:wrap}
+.trust-row{display:flex;gap:2.2rem;margin-top:3rem;flex-wrap:wrap;padding-top:2rem;border-top:1px solid var(--border)}
+.trust-item{display:flex;flex-direction:column;gap:.15rem}
+.trust-item b{font-size:1.15rem;font-weight:700;color:var(--white)}
+.trust-item span{font-size:.72rem;color:var(--gray-2);text-transform:uppercase;letter-spacing:.1em}
+
+/* SECTION SHELL */
+.section{padding:6rem 0}
+.section-head{max-width:60ch;margin-bottom:3.5rem}
+.section-head h2{font-family:var(--font-serif);font-size:clamp(2rem,3.6vw,3rem);font-weight:700;line-height:1.05;letter-spacing:-.03em}
+.section-head p{color:var(--gray);margin-top:1.1rem;font-size:1.05rem}
+
+/* GAP CARDS */
+.gap-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem}
+.gap-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.9rem;transition:border-color .2s,transform .2s}
+.gap-card:hover{border-color:var(--border-2);transform:translateY(-3px)}
+.gap-card .q{font-size:.7rem;color:#f97316;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.7rem}
+.gap-card h3{font-size:1.12rem;font-weight:700;margin-bottom:.5rem}
+.gap-card p{font-size:.9rem;color:var(--gray);line-height:1.65}
+
+/* LAYERS */
+.layers{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.layer{background:linear-gradient(160deg,var(--surface),var(--bg-2));border:1px solid var(--border);border-radius:14px;padding:2rem;display:flex;flex-direction:column;gap:1rem}
+.layer__n{font-family:var(--font-serif);font-size:1rem;color:var(--accent)}
+.layer h3{font-size:1.3rem;font-weight:700}
+.layer p{font-size:.9rem;color:var(--gray)}
+.layer ul{display:flex;flex-direction:column;gap:.55rem;margin-top:.4rem}
+.layer li{display:flex;gap:.55rem;font-size:.85rem;color:var(--gray);align-items:flex-start}
+.layer li::before{content:'→';color:var(--accent);flex-shrink:0}
+
+/* PILOT */
+.pilot{background:linear-gradient(150deg,rgba(39,183,165,.08),transparent 55%),var(--surface);border:1px solid rgba(39,183,165,.28);border-radius:18px;padding:clamp(2rem,4vw,3.5rem);display:grid;grid-template-columns:1.15fr .85fr;gap:3rem;align-items:start}
+.pilot .label{font-size:.66rem;color:var(--accent);font-weight:700;letter-spacing:.2em;text-transform:uppercase}
+.pilot h2{font-family:var(--font-serif);font-size:clamp(1.9rem,3vw,2.6rem);font-weight:700;line-height:1.05;margin:.8rem 0 1rem;letter-spacing:-.02em}
+.pilot .lead{color:var(--gray);font-size:1.02rem;margin-bottom:1.6rem}
+.pilot-facts{display:flex;flex-direction:column;gap:0}
+.pilot-facts li{display:flex;justify-content:space-between;gap:1rem;padding:.85rem 0;border-top:1px solid var(--border);font-size:.9rem}
+.pilot-facts li:first-child{border-top:none}
+.pilot-facts .k{color:var(--gray)}
+.pilot-facts .v{color:var(--white);font-weight:600;text-align:right}
+.pilot-price{background:var(--bg-2);border:1px solid var(--border);border-radius:12px;padding:1.75rem;position:sticky;top:6rem}
+.pilot-price .from{font-size:.72rem;color:var(--gray-2);text-transform:uppercase;letter-spacing:.12em}
+.pilot-price .amount{font-family:var(--font-serif);font-size:2.5rem;font-weight:700;line-height:1;margin:.4rem 0 .2rem}
+.pilot-price .amount span{font-size:1rem;color:var(--gray);font-family:var(--font-sans)}
+.pilot-price .terms{font-size:.82rem;color:var(--gray);line-height:1.6;margin:1rem 0 1.4rem;padding-top:1rem;border-top:1px solid var(--border)}
+.pilot-price .btn-primary{width:100%;justify-content:center}
+
+/* PATH */
+.path{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;counter-reset:step}
+.path-step{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.9rem;position:relative}
+.path-step::before{counter-increment:step;content:counter(step);position:absolute;top:1.4rem;right:1.6rem;font-family:var(--font-serif);font-size:2.2rem;color:var(--gray-2);opacity:.4}
+.path-step .stage{font-size:.66rem;color:var(--accent);font-weight:700;letter-spacing:.15em;text-transform:uppercase}
+.path-step h3{font-size:1.2rem;font-weight:700;margin:.5rem 0}
+.path-step p{font-size:.88rem;color:var(--gray)}
+.path-step .amt{margin-top:1rem;font-size:.82rem;color:var(--gray-2);padding-top:.9rem;border-top:1px solid var(--border)}
+
+/* ENTERPRISE */
+.ent{display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem}
+.ent-card{background:var(--bg-2);border:1px solid var(--border);border-radius:12px;padding:1.6rem}
+.ent-card h4{font-size:.92rem;font-weight:700;margin-bottom:.4rem}
+.ent-card p{font-size:.82rem;color:var(--gray);line-height:1.6}
+
+/* CONTACT */
+.contact-inner{display:grid;grid-template-columns:.9fr 1.1fr;gap:3.5rem;align-items:start}
+.contact-info h2{font-family:var(--font-serif);font-size:clamp(1.9rem,3vw,2.6rem);font-weight:700;line-height:1.05;letter-spacing:-.02em;margin:.8rem 0 1rem}
+.contact-info p{color:var(--gray)}
+.contact-meta{display:flex;flex-direction:column;gap:.4rem;margin-top:1.6rem;font-size:.88rem;color:var(--gray)}
+.contact-meta a{color:var(--accent-2)}
+.form{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:2rem}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-field{display:flex;flex-direction:column;margin-bottom:1rem}
+.form-field label{font-size:.72rem;color:var(--gray-2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.4rem}
+.form-field input,.form-field textarea{background:var(--bg-2);border:1px solid var(--border);border-radius:6px;padding:.75rem .85rem;color:var(--white);font-family:inherit;font-size:.92rem;transition:border-color .2s,background .2s}
+.form-field input:focus,.form-field textarea:focus{outline:none;border-color:var(--accent);background:rgba(39,183,165,.04)}
+.form .btn-primary{width:100%;justify-content:center;margin-top:.4rem}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:3rem 0 2rem;margin-top:2rem}
+.footer-inner{max-width:1100px;margin:0 auto;padding:0 3rem}
+.footer-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:2.5rem}
+.footer-tagline{font-family:var(--font-serif);font-size:1.6rem;font-weight:700;line-height:1.1}
+.footer-nav{display:flex;gap:2rem;flex-wrap:wrap;margin-bottom:2rem}
+.footer-nav a{font-size:.85rem;color:var(--gray-2);transition:color .2s}
+.footer-nav a:hover{color:var(--white)}
+.footer-bottom{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;padding-top:1.5rem;border-top:1px solid var(--border);font-size:.76rem;color:var(--gray-2)}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+
+@media(max-width:1024px){
+  .gap-grid,.layers,.path{grid-template-columns:1fr 1fr}
+  .ent{grid-template-columns:1fr 1fr}
+  .pilot{grid-template-columns:1fr;gap:2rem}
+  .pilot-price{position:static}
+  .contact-inner{grid-template-columns:1fr;gap:2.5rem}
+}
+@media(max-width:768px){
+  #nav{padding:1.1rem 1.4rem}
+  .nav-links{display:none}
+  .container,.footer-inner{padding:0 1.4rem}
+  .hero{padding:6.5rem 1.4rem 3rem;min-height:auto}
+  .section{padding:4rem 0}
+  .gap-grid,.layers,.path,.ent{grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
+  .trust-row{gap:1.4rem}
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="/" class="nav-logo">Site<span>Spot</span></a>
+  <ul class="nav-links">
+    <li><a href="/">Hub</a></li>
+    <li><a href="#system">Revenue OS</a></li>
+    <li><a href="#pilot">Pilot</a></li>
+    <li><a href="#path">Postup</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Domluvit konzultaci</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <span class="eyebrow">SiteSpot Revenue OS</span>
+  <h1 class="hero-headline">Váš web není brožura. Je to <em>obchodní systém</em>.</h1>
+  <p class="hero-sub">
+    Většina firemních webů vypadá dobře a přitom neprodává. Přestavíme ten váš na systém,
+    který kvalifikuje poptávky, hlídá follow-up a propojuje obchod, projekci a servis do jednoho toku.
+    Méně ztracených leadů. Víc uzavřených zakázek.
+  </p>
+  <div class="hero-actions">
+    <a href="#pilot" class="btn-primary">Revenue Flow Pilot
+      <svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </a>
+    <a href="#system" class="btn-outline">Jak to funguje</a>
+  </div>
+  <div class="trust-row">
+    <div class="trust-item"><b>10 dní</b><span>k prvnímu výsledku</span></div>
+    <div class="trust-item"><b>Pevný rozsah</b><span>žádné otevřené hodiny</span></div>
+    <div class="trust-item"><b>DPA + GDPR</b><span>smluvní rámec</span></div>
+    <div class="trust-item"><b>IČ na smlouvě</b><span>fakturace na firmu</span></div>
+  </div>
+</section>
+
+<!-- GAP MIRROR -->
+<section class="section" id="gap">
+  <div class="container">
+    <div class="section-head reveal">
+      <h2>Web vypadá dobře. Ale <em>vydělává</em>?</h2>
+      <p>Čtyři místa, kde firmám ve vašem oboru utíkají peníze. Pokud alespoň dvě z nich znáte, ztrácíte zakázky, které jste už zaplatili reklamou a časem obchodníků.</p>
+    </div>
+    <div class="gap-grid">
+      <div class="gap-card reveal">
+        <div class="q">Poptávka</div>
+        <h3>Formulář jde do e-mailu a tam usne</h3>
+        <p>Poptávka přijde, nikdo ji hned nezařadí, obchodník se ozve za dva dny. Konkurence, co volá do hodiny, ji má.</p>
+      </div>
+      <div class="gap-card reveal">
+        <div class="q">Follow-up</div>
+        <h3>Zájemce se neozve a nikdo mu nezavolá</h3>
+        <p>80 % zakázek se uzavře po několika kontaktech. Bez automatického follow-upu končí většina poptávek v tichu.</p>
+      </div>
+      <div class="gap-card reveal">
+        <div class="q">Provoz</div>
+        <h3>Obchod, projekce a servis nevědí o sobě</h3>
+        <p>Data žijí v e-mailech a excelech. Nikdo nevidí, kde zakázka stojí, a předání mezi týmy ztrácí čas i marži.</p>
+      </div>
+      <div class="gap-card reveal">
+        <div class="q">Viditelnost</div>
+        <h3>Nevíte, který kanál nosí zakázky</h3>
+        <p>Bez měření se rozpočet lije do kanálů, které nevydělávají, a ty, co fungují, zůstávají podfinancované.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SYSTEM -->
+<section class="section" id="system">
+  <div class="container">
+    <div class="section-head reveal">
+      <h2>Revenue OS: tři vrstvy jednoho <em>toku</em></h2>
+      <p>Neprodáváme nový web. Stavíme systém, kde web je jen vstupní brána. Vše ostatní pracuje, i když zrovna nikdo nesedí u počítače.</p>
+    </div>
+    <div class="layers">
+      <div class="layer reveal">
+        <span class="layer__n">Vrstva 01</span>
+        <h3>Konverze</h3>
+        <p>Aby z návštěvníka byla kvalifikovaná poptávka.</p>
+        <ul>
+          <li>Web zaměřený na akci, ne na katalog</li>
+          <li>Kvalifikační formulář a scoring</li>
+          <li>Kalkulačka / konfigurátor nabídky</li>
+          <li>Okamžité potvrzení a přiřazení</li>
+        </ul>
+      </div>
+      <div class="layer reveal">
+        <span class="layer__n">Vrstva 02</span>
+        <h3>Provoz</h3>
+        <p>Aby žádná zakázka nespadla mezi týmy.</p>
+        <ul>
+          <li>CRM s pipeline poptávka → zakázka</li>
+          <li>Automatický follow-up a upomínky</li>
+          <li>Předání obchod → projekce → servis</li>
+          <li>Napojení na fakturaci a dokumenty</li>
+        </ul>
+      </div>
+      <div class="layer reveal">
+        <span class="layer__n">Vrstva 03</span>
+        <h3>Viditelnost</h3>
+        <p>Aby bylo vidět, co vydělává a co ne.</p>
+        <ul>
+          <li>Dashboard obchodních výsledků</li>
+          <li>Zdroj leadu až k uzavřené zakázce</li>
+          <li>SEO a kanály, které nosí poptávky</li>
+          <li>Reporting v reálném čase</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PILOT -->
+<section class="section" id="pilot">
+  <div class="container">
+    <div class="pilot reveal">
+      <div>
+        <span class="label">Revenue Flow Pilot</span>
+        <h2>Jeden měřitelný výsledek. Za deset dní.</h2>
+        <p class="lead">
+          Nezačínáme velkým projektem na půl roku. Začínáme pilotem s pevným rozsahem, který
+          opraví jedno nejdražší místo ve vašem toku a ukáže výsledek v číslech. Když sedí,
+          navazuje rollout. Když ne, máte funkční kus a jasné doporučení.
+        </p>
+        <ul class="pilot-facts">
+          <li><span class="k">Rozsah</span><span class="v">Pevně daný, odsouhlasený předem</span></li>
+          <li><span class="k">Doba</span><span class="v">10 pracovních dní</span></li>
+          <li><span class="k">Výstup</span><span class="v">Nasazený systém + report v číslech</span></li>
+          <li><span class="k">Platba</span><span class="v">50 % při podpisu, 50 % při spuštění</span></li>
+          <li><span class="k">Rizika</span><span class="v">Smlouva, DPA, jasné akceptační kritérium</span></li>
+        </ul>
+      </div>
+      <div class="pilot-price">
+        <span class="from">Pilotní projekt od</span>
+        <div class="amount">149 000 <span>Kč</span></div>
+        <p class="terms">
+          Cena podle zvoleného výsledku a rozsahu. Přesnou nabídku dostanete po krátkém auditu,
+          ne od stolu. Pilot se plně započítává do navazujícího rolloutu.
+        </p>
+        <a href="#contact" class="btn-primary">Chci audit a nabídku
+          <svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PATH -->
+<section class="section" id="path">
+  <div class="container">
+    <div class="section-head reveal">
+      <h2>Jak <em>rosteme</em> společně</h2>
+      <p>Žádný závazek na velký projekt naslepo. Postupujeme po krocích, kde každý další platíte až poté, co ten předchozí ukázal výsledek.</p>
+    </div>
+    <div class="path">
+      <div class="path-step reveal">
+        <span class="stage">Krok 01</span>
+        <h3>Pilot</h3>
+        <p>Opravíme jedno nejdražší místo v toku. Pevný rozsah, deset dní, měřitelný výstup.</p>
+        <div class="amt">Od 149 000 Kč</div>
+      </div>
+      <div class="path-step reveal">
+        <span class="stage">Krok 02</span>
+        <h3>Rollout</h3>
+        <p>Když pilot sedí, dostavíme všechny tři vrstvy do plného systému napříč obchodem a servisem.</p>
+        <div class="amt">Rozsah dle firmy</div>
+      </div>
+      <div class="path-step reveal">
+        <span class="stage">Krok 03</span>
+        <h3>Provoz a růst</h3>
+        <p>Systém dál ladíme, hlídáme a rozšiřujeme. Vy se staráte o zakázky, ne o nástroje.</p>
+        <div class="amt">Měsíční paušál</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ENTERPRISE -->
+<section class="section" id="trust">
+  <div class="container">
+    <div class="section-head reveal">
+      <h2>Postavené na <em>jistotě</em>, ne na slibech</h2>
+    </div>
+    <div class="ent">
+      <div class="ent-card reveal">
+        <h4>Smlouva a IČ</h4>
+        <p>Fakturujeme na firmu, na jasně definovaný rozsah a akceptační kritéria. Žádné otevřené hodiny.</p>
+      </div>
+      <div class="ent-card reveal">
+        <h4>DPA a GDPR</h4>
+        <p>Zpracování dat smluvně ošetřené. Vaše data zůstávají vaše, s jasnými pravidly a přístupy.</p>
+      </div>
+      <div class="ent-card reveal">
+        <h4>SLA na provoz</h4>
+        <p>U provozovaných systémů garantovaná dostupnost a reakční doba, ne odpověď, až bude čas.</p>
+      </div>
+      <div class="ent-card reveal">
+        <h4>Platba po krocích</h4>
+        <p>50 / 50 u pilotu, u větších zakázek po třetinách. Platíte za výsledek, ne za příslib.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section" id="contact">
+  <div class="container">
+    <div class="contact-inner">
+      <div class="contact-info reveal">
+        <span class="eyebrow">Kontakt</span>
+        <h2>Začneme <em>auditem</em>, ne prezentací.</h2>
+        <p>Krátký hovor, kde projdeme váš současný tok od poptávky po zakázku a najdeme to nejdražší místo. Odnesete si konkrétní doporučení, ať už se pak rozhodnete jakkoli.</p>
+        <div class="contact-meta">
+          <span>Email: <a href="mailto:oliver@sitespot.cz">oliver@sitespot.cz</a></span>
+          <span>Plzeň, Česká republika</span>
+        </div>
+      </div>
+      <form class="form reveal" id="contact-form">
+        <input type="hidden" name="source" value="revenue-os"/>
+        <div class="form-row">
+          <div class="form-field"><label for="name">Jméno</label><input type="text" id="name" name="name" placeholder="Jan Novák" required/></div>
+          <div class="form-field"><label for="email">E-mail</label><input type="email" id="email" name="email" placeholder="jan@firma.cz" required/></div>
+        </div>
+        <div class="form-field"><label for="company">Firma</label><input type="text" id="company" name="company" placeholder="Název firmy"/></div>
+        <div class="form-field"><label for="message">Kde vám dnes utíkají zakázky?</label><textarea id="message" name="message" rows="4" placeholder="Krátce popište, jak dnes zpracováváte poptávky..."></textarea></div>
+        <div class="form-field" style="flex-direction:row;align-items:flex-start;gap:.6rem;margin-bottom:.5rem">
+          <input type="checkbox" id="gdpr" name="gdpr" required style="margin-top:.25rem;accent-color:var(--accent);flex-shrink:0;width:14px;height:14px"/>
+          <label for="gdpr" style="font-size:.78rem;color:var(--gray-2);text-transform:none;letter-spacing:0;line-height:1.5;cursor:pointer">Souhlasím se <a href="privacy.html" target="_blank" style="color:var(--accent-2)">zpracováním osobních údajů</a> za účelem vyřízení mé poptávky.</label>
+        </div>
+        <button type="submit" class="btn-primary">Domluvit audit<svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <p class="footer-tagline">SiteSpot<br/>Revenue <em>OS.</em></p>
+      <a href="#contact" class="btn-primary">Domluvit konzultaci<svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
+    </div>
+    <nav class="footer-nav">
+      <a href="/">Hub</a>
+      <a href="#system">Revenue OS</a>
+      <a href="#pilot">Pilot</a>
+      <a href="#path">Postup</a>
+      <a href="privacy.html">Ochrana dat</a>
+    </nav>
+    <div class="footer-bottom">
+      <span>© 2026 SiteSpot. Všechna práva vyhrazena.</span>
+      <span>Plzeň, Česká republika</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// reveal on scroll
+const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+// nav bg on scroll
+const nav=document.getElementById('nav');
+addEventListener('scroll',()=>{nav.style.background=scrollY>40?'rgba(7,10,15,0.94)':'rgba(7,10,15,0.88)'});
+
+// contact form -> same endpoint as the rest of the site
+const form=document.getElementById('contact-form');
+form.addEventListener('submit',async(e)=>{
+  e.preventDefault();
+  const btn=form.querySelector('button[type="submit"]');
+  const original=btn.innerHTML;
+  btn.disabled=true;
+  btn.innerHTML='Odesílám…';
+  const data=Object.fromEntries(new FormData(form).entries());
+  try{
+    const res=await fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+    if(!res.ok) throw new Error('bad status');
+    form.outerHTML='<div style="padding:2.5rem 2rem;border:1px solid rgba(39,183,165,.25);border-radius:14px;background:rgba(39,183,165,.05)"><p style="font-size:1.05rem;font-weight:700;color:#eef2f7;margin-bottom:.4rem">Máme to. 🚀</p><p style="color:#7da8c4;font-size:.9rem">Ozveme se do 48 hodin a domluvíme termín auditu.</p></div>';
+  }catch(err){
+    btn.disabled=false;
+    btn.innerHTML=original;
+    alert('Něco se nepovedlo. Zkuste to prosím znovu nebo napište na oliver@sitespot.cz.');
+  }
+});
+</script>
+</body>
+</html>

@@ -4,6 +4,7 @@
   "builds": [
     { "src": "server.js", "use": "@vercel/node" },
     { "src": "index.html", "use": "@vercel/static" },
+    { "src": "revenue-os.html", "use": "@vercel/static" },
     { "src": "leads.html", "use": "@vercel/static" },
     { "src": "automation.html", "use": "@vercel/static" },
     { "src": "marketing.html", "use": "@vercel/static" },
@@ -25,6 +26,7 @@
     { "src": "/robots.txt", "dest": "/robots.txt" },
     { "src": "/sitemap.xml", "dest": "/sitemap.xml" },
     { "src": "/websites/(.*)", "dest": "/websites/$1" },
+    { "src": "/revenue-os(\\.html)?", "dest": "/revenue-os.html" },
     { "src": "/leads.html", "dest": "/leads.html" },
     { "src": "/automation.html", "dest": "/automation.html" },
     { "src": "/marketing.html", "dest": "/marketing.html" },
