@@ -1,5 +1,6 @@
 {
   "rewrites": [
-    { "source": "/rostlinka", "destination": "/rostlinka.html" }
+    { "source": "/rostlinka", "destination": "/rostlinka.html" },
+    { "source": "/revenue-os", "destination": "/revenue-os.html" }
   ]
 }

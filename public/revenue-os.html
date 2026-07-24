@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Revenue OS: web, který vydělává | SiteSpot</title>
+  <meta name="description" content="SiteSpot Revenue OS: měníme firemní web z brožury na obchodní systém. Konverze, provoz a viditelnost pod jednou střechou. Revenue Flow Pilot za 10 dní."/>
+  <meta property="og:title" content="Revenue OS: web, který vydělává | SiteSpot"/>
+  <meta property="og:description" content="Web není brožura, je to obchodní systém. Revenue Flow Pilot za 10 dní s měřitelným výsledkem."/>
+  <meta property="og:type" content="website"/>
+  <link rel="icon" href="favicon.svg"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"/>
+  <link href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#000000; --bg-soft:#0a0a0d; --surface:#0e0e12; --surface-2:#131319;
+  --border:rgba(255,255,255,0.09); --border-2:rgba(255,255,255,0.16);
+  --white:#f5f5f6; --muted:#9a9aa4; --faint:#5c5c66;
+  --green:#4abd83; --blue:#6a92ff; --orange:#e0782f;
+  --btn:#fafafa; --btn-ink:#0a0a0d;
+  --display:'Clash Display','Inter',system-ui,sans-serif;
+  --sans:'Inter',system-ui,sans-serif;
+  --serif:'Instrument Serif',Georgia,serif;
+  --ease:cubic-bezier(0.16,1,0.3,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body{background:var(--bg);color:var(--white);font-family:var(--sans);line-height:1.6;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+ul{list-style:none}
+em{font-style:italic;font-family:var(--serif);font-weight:400;color:var(--white)}
+.container{max-width:1160px;margin:0 auto;padding:0 2rem}
+
+/* NAV */
+#nav{position:fixed;top:0;left:0;right:0;z-index:9000;display:flex;align-items:center;justify-content:space-between;
+  padding:1rem 2rem;background:rgba(0,0,0,0.6);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid transparent;transition:border-color .3s,background .3s}
+#nav.scrolled{background:rgba(0,0,0,0.85);border-bottom-color:var(--border)}
+.nav-logo{font-family:var(--display);font-size:1.2rem;font-weight:600;letter-spacing:-.01em;display:flex;align-items:center;gap:.55rem}
+.nav-logo .mark{width:24px;height:24px;border-radius:6px;background:var(--white);color:#000;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem}
+.nav-links{display:flex;align-items:center;gap:2.2rem}
+.nav-links a{color:var(--muted);font-size:.9rem;transition:color .2s}
+.nav-links a:hover{color:var(--white)}
+.nav-cta{padding:.6rem 1.15rem;background:var(--btn);color:var(--btn-ink)!important;border-radius:4px;font-size:.86rem;font-weight:600;transition:opacity .2s,transform .2s}
+.nav-cta:hover{transform:translateY(-1px);opacity:.9}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.85rem 1.5rem;border-radius:4px;font-size:.92rem;font-weight:600;cursor:pointer;transition:transform .2s var(--ease),opacity .2s,border-color .2s;font-family:var(--sans)}
+.btn-primary{background:var(--btn);color:var(--btn-ink)!important;border:1px solid var(--btn)}
+.btn-primary:hover{transform:translateY(-2px);opacity:.92}
+.btn-ghost{background:#161619;color:var(--white);border:1px solid var(--border-2)}
+.btn-ghost:hover{border-color:#333;transform:translateY(-2px)}
+
+/* HERO */
+.hero{position:relative;padding:9.5rem 2rem 5rem;text-align:center;overflow:hidden}
+.rays{position:absolute;inset:0;top:0;pointer-events:none;z-index:0;
+  background:
+   radial-gradient(900px 460px at 50% -8%,rgba(106,146,255,0.16),transparent 62%),
+   radial-gradient(600px 300px at 78% 4%,rgba(74,189,131,0.07),transparent 60%)}
+.rays::before{content:'';position:absolute;top:-25%;left:42%;width:22%;height:130%;
+  background:linear-gradient(180deg,rgba(150,175,255,0.12),transparent 72%);filter:blur(46px);transform:rotate(16deg)}
+.rays::after{content:'';position:absolute;top:-25%;left:20%;width:16%;height:120%;
+  background:linear-gradient(180deg,rgba(150,175,255,0.07),transparent 70%);filter:blur(44px);transform:rotate(-14deg)}
+.hero-inner{position:relative;z-index:1;max-width:940px;margin:0 auto}
+.eyebrow{display:inline-flex;align-items:center;gap:.5rem;font-size:.74rem;color:var(--muted);font-weight:500;letter-spacing:.02em;padding:.35rem .8rem;border:1px solid var(--border);border-radius:100px;margin-bottom:1.8rem;background:rgba(255,255,255,.02)}
+.eyebrow i{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 0 3px rgba(74,189,131,.18)}
+.hero-h{font-family:var(--display);font-weight:600;font-size:clamp(2.7rem,6.6vw,5rem);line-height:1.02;letter-spacing:-.03em}
+.hero-h .serif{display:block;font-family:var(--serif);font-weight:400;font-style:italic;letter-spacing:-.01em}
+.hero-sub{color:var(--muted);font-size:clamp(1.02rem,1.4vw,1.2rem);max-width:56ch;margin:1.7rem auto 0;line-height:1.7}
+.hero-actions{display:flex;gap:.9rem;justify-content:center;margin-top:2.3rem;flex-wrap:wrap}
+
+/* HERO DASHBOARD MOCK */
+.hero-visual{position:relative;z-index:1;max-width:1000px;margin:4rem auto 0}
+.dash{background:linear-gradient(180deg,#101015,#08080b);border:1px solid var(--border);border-radius:16px;overflow:hidden;
+  box-shadow:0 50px 140px -50px rgba(106,146,255,.35),0 0 0 1px rgba(255,255,255,.02);text-align:left}
+.dash__bar{display:flex;align-items:center;gap:.7rem;padding:.85rem 1.1rem;border-bottom:1px solid var(--border);background:rgba(255,255,255,.02)}
+.dash__dots{display:flex;gap:.45rem}
+.dash__dots i{width:10px;height:10px;border-radius:50%;background:#26262d}
+.dash__ttl{font-size:.82rem;color:var(--muted);font-weight:500}
+.dash__live{margin-left:auto;display:flex;align-items:center;gap:.4rem;font-size:.68rem;color:var(--green);text-transform:uppercase;letter-spacing:.1em}
+.dash__live i{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 0 3px rgba(74,189,131,.2);animation:pulse 2.4s var(--ease) infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.dash__body{display:grid;grid-template-columns:1.7fr 1fr}
+.dash__main{padding:1.4rem;border-right:1px solid var(--border)}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;margin-bottom:1.5rem}
+.kpi{background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:10px;padding:.75rem .8rem}
+.kpi .l{font-size:.6rem;color:var(--faint);text-transform:uppercase;letter-spacing:.06em}
+.kpi .v{font-family:var(--display);font-size:1.25rem;font-weight:600;margin-top:.28rem;letter-spacing:-.01em}
+.kpi .d{font-size:.6rem;color:var(--green);margin-top:.1rem}
+.pipe{display:flex;flex-direction:column;gap:.65rem}
+.pipe__cap{font-size:.66rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.2rem}
+.pipe__row{display:flex;align-items:center;gap:.9rem}
+.pipe__row .stg{width:96px;font-size:.76rem;color:var(--muted);flex-shrink:0}
+.pipe__bar{flex:1;height:8px;border-radius:5px;background:rgba(255,255,255,.05);overflow:hidden}
+.pipe__bar span{display:block;height:100%;border-radius:5px;background:linear-gradient(90deg,var(--blue),var(--green))}
+.pipe__row .n{width:26px;text-align:right;font-size:.74rem;color:var(--faint)}
+.dash__side{padding:1.2rem}
+.feed__cap{font-size:.66rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.9rem}
+.feed{display:flex;flex-direction:column;gap:.85rem}
+.feed__i{display:flex;gap:.6rem;align-items:flex-start}
+.feed__i .ic{width:26px;height:26px;border-radius:7px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.72rem;background:rgba(106,146,255,.12)}
+.feed__i .ic.g{background:rgba(74,189,131,.14)}
+.feed__i .ic.o{background:rgba(224,120,47,.14)}
+.feed__i p{font-size:.74rem;color:var(--muted);line-height:1.45}
+.feed__i p b{color:var(--white);font-weight:600}
+.feed__i .t{font-size:.62rem;color:var(--faint);margin-top:.1rem;display:block}
+
+/* SEGMENT STRIP */
+.strip{position:relative;z-index:1;max-width:1000px;margin:3rem auto 0;text-align:center}
+.strip__cap{font-size:.72rem;color:var(--faint);text-transform:uppercase;letter-spacing:.16em;margin-bottom:1.2rem}
+.strip__row{display:flex;flex-wrap:wrap;justify-content:center;gap:1.4rem 2.6rem}
+.strip__row span{font-family:var(--display);font-weight:500;font-size:1.02rem;color:#4a4a52;letter-spacing:-.01em;transition:color .2s}
+.strip__row span:hover{color:var(--muted)}
+
+/* SECTION SHELL */
+.section{padding:6.5rem 0;position:relative}
+.section-head{max-width:64ch;margin:0 auto 4rem;text-align:center}
+.eb{display:inline-block;font-size:.72rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;margin-bottom:1.2rem}
+.eb-green{color:var(--green)} .eb-blue{color:var(--blue)} .eb-orange{color:var(--orange)}
+.section-head h2{font-family:var(--display);font-weight:600;font-size:clamp(2rem,4.4vw,3.3rem);line-height:1.05;letter-spacing:-.03em}
+.section-head p{color:var(--muted);margin-top:1.2rem;font-size:1.06rem;line-height:1.65}
+
+/* GAP CARDS */
+.gap-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+.gap-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.7rem;transition:border-color .25s,transform .25s}
+.gap-card:hover{border-color:var(--border-2);transform:translateY(-4px)}
+.gap-card .ic{width:38px;height:38px;border-radius:9px;background:rgba(224,120,47,.12);display:flex;align-items:center;justify-content:center;margin-bottom:1.1rem}
+.gap-card h3{font-family:var(--display);font-weight:600;font-size:1.06rem;margin-bottom:.55rem;letter-spacing:-.01em}
+.gap-card p{font-size:.88rem;color:var(--muted);line-height:1.6}
+
+/* FEATURE ROWS (Revenue OS layers) */
+.feat{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;margin-bottom:6rem}
+.feat:last-child{margin-bottom:0}
+.feat.rev .feat__media{order:2}
+.feat__eb{font-size:.72rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;margin-bottom:1rem}
+.feat h3{font-family:var(--display);font-weight:600;font-size:clamp(1.6rem,2.8vw,2.3rem);line-height:1.08;letter-spacing:-.02em;margin-bottom:1rem}
+.feat p.lead{color:var(--muted);font-size:1.02rem;line-height:1.7;margin-bottom:1.4rem}
+.feat p.lead b{color:var(--white);font-weight:600}
+.feat ul{display:flex;flex-direction:column;gap:.7rem}
+.feat li{display:flex;gap:.6rem;font-size:.92rem;color:var(--muted);align-items:flex-start}
+.feat li svg{flex-shrink:0;margin-top:.25rem}
+
+/* MINI MOCKS */
+.mock{background:linear-gradient(180deg,#101015,#08080b);border:1px solid var(--border);border-radius:14px;padding:1.2rem;box-shadow:0 40px 100px -50px rgba(106,146,255,.3)}
+.mock__top{display:flex;align-items:center;gap:.55rem;padding-bottom:1rem;margin-bottom:1.1rem;border-bottom:1px solid var(--border);font-size:.72rem;color:var(--faint)}
+.mock__top .d{width:8px;height:8px;border-radius:50%;background:#26262d}
+/* conversion mock */
+.conv__calc{background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:11px;padding:1.1rem;margin-bottom:1rem}
+.conv__k{font-size:.68rem;color:var(--faint);text-transform:uppercase;letter-spacing:.06em}
+.conv__v{font-family:var(--display);font-weight:600;font-size:2rem;letter-spacing:-.02em;display:block;margin:.3rem 0 1rem}
+.conv__v small{font-size:1rem;color:var(--muted);font-weight:500}
+.conv__slider{height:8px;border-radius:5px;background:rgba(255,255,255,.06);position:relative}
+.conv__slider span{position:absolute;left:0;top:0;height:100%;width:64%;border-radius:5px;background:linear-gradient(90deg,var(--green),#7fe0ad)}
+.conv__slider::after{content:'';position:absolute;left:64%;top:50%;width:16px;height:16px;border-radius:50%;background:#fff;transform:translate(-50%,-50%);box-shadow:0 2px 8px rgba(0,0,0,.5)}
+.conv__btn{width:100%;padding:.7rem;border-radius:8px;background:var(--white);color:#000;font-weight:600;font-size:.86rem;border:none;text-align:center}
+.conv__toast{display:flex;align-items:center;gap:.55rem;margin-top:.9rem;padding:.6rem .8rem;border:1px solid rgba(74,189,131,.28);background:rgba(74,189,131,.07);border-radius:8px;font-size:.76rem;color:#bfe6d2}
+.conv__toast i{width:7px;height:7px;border-radius:50%;background:var(--green);flex-shrink:0}
+/* pipeline mock */
+.crm__row{display:flex;align-items:center;gap:.7rem;padding:.7rem 0;border-top:1px solid var(--border)}
+.crm__row:first-of-type{border-top:none}
+.crm__av{width:26px;height:26px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.66rem;font-weight:600;color:#fff}
+.crm__nm{font-size:.82rem;color:var(--white);flex:1}
+.crm__nm span{display:block;font-size:.66rem;color:var(--faint)}
+.pill{font-size:.66rem;padding:.24rem .55rem;border-radius:100px;font-weight:600;white-space:nowrap}
+.pill.b{background:rgba(106,146,255,.14);color:#a8c0ff}
+.pill.g{background:rgba(74,189,131,.14);color:#8fe0b4}
+.pill.o{background:rgba(224,120,47,.14);color:#f0b088}
+/* viz mock */
+.viz__bars{display:flex;align-items:flex-end;gap:.5rem;height:120px;margin-bottom:1.2rem;padding:0 .2rem}
+.viz__bars i{flex:1;border-radius:5px 5px 0 0;background:linear-gradient(180deg,var(--blue),rgba(106,146,255,.25))}
+.viz__bars i:last-child{background:linear-gradient(180deg,var(--green),rgba(74,189,131,.25))}
+.viz__src{display:flex;flex-direction:column;gap:.6rem}
+.viz__s{display:flex;align-items:center;gap:.7rem;font-size:.78rem;color:var(--muted)}
+.viz__s .bar{flex:1;height:6px;border-radius:4px;background:rgba(255,255,255,.05);overflow:hidden}
+.viz__s .bar span{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,var(--blue),var(--green))}
+.viz__s .pct{width:34px;text-align:right;color:var(--faint);font-size:.72rem}
+
+/* PILOT */
+.pilot{background:radial-gradient(700px 300px at 20% 0%,rgba(106,146,255,.1),transparent 60%),var(--surface);
+  border:1px solid var(--border-2);border-radius:20px;padding:clamp(2rem,4vw,3.5rem);display:grid;grid-template-columns:1.15fr .85fr;gap:3.5rem;align-items:start}
+.pilot .eb{margin-bottom:.9rem}
+.pilot h2{font-family:var(--display);font-weight:600;font-size:clamp(1.9rem,3vw,2.7rem);line-height:1.06;letter-spacing:-.02em;margin-bottom:1rem}
+.pilot h2 em{display:inline}
+.pilot .lead{color:var(--muted);font-size:1.04rem;line-height:1.7;margin-bottom:1.7rem}
+.pilot-facts li{display:flex;justify-content:space-between;gap:1rem;padding:.85rem 0;border-top:1px solid var(--border);font-size:.9rem}
+.pilot-facts li:first-child{border-top:none}
+.pilot-facts .k{color:var(--muted)}
+.pilot-facts .v{color:var(--white);font-weight:600;text-align:right}
+.pilot-price{background:var(--bg-soft);border:1px solid var(--border);border-radius:14px;padding:1.8rem;position:sticky;top:6rem}
+.pilot-price .from{font-size:.7rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em}
+.pilot-price .amount{font-family:var(--display);font-weight:600;font-size:2.6rem;line-height:1;margin:.4rem 0 .2rem;letter-spacing:-.02em}
+.pilot-price .amount span{font-size:1rem;color:var(--muted);font-weight:500}
+.pilot-price .terms{font-size:.82rem;color:var(--muted);line-height:1.6;margin:1.1rem 0 1.4rem;padding-top:1.1rem;border-top:1px solid var(--border)}
+.pilot-price .btn{width:100%;justify-content:center}
+
+/* PATH */
+.path{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;counter-reset:step}
+.path-step{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.9rem;position:relative;transition:border-color .25s,transform .25s}
+.path-step:hover{border-color:var(--border-2);transform:translateY(-4px)}
+.path-step::before{counter-increment:step;content:'0' counter(step);position:absolute;top:1.5rem;right:1.6rem;font-family:var(--serif);font-style:italic;font-size:2rem;color:#2a2a30}
+.path-step .stage{font-size:.7rem;color:var(--muted);font-weight:600;letter-spacing:.12em;text-transform:uppercase}
+.path-step h3{font-family:var(--display);font-weight:600;font-size:1.25rem;margin:.55rem 0;letter-spacing:-.01em}
+.path-step p{font-size:.9rem;color:var(--muted);line-height:1.6}
+.path-step .amt{margin-top:1.1rem;font-size:.82rem;color:var(--faint);padding-top:.9rem;border-top:1px solid var(--border)}
+
+/* ENTERPRISE */
+.ent{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+.ent-card{background:var(--bg-soft);border:1px solid var(--border);border-radius:14px;padding:1.6rem}
+.ent-card h4{font-family:var(--display);font-weight:600;font-size:.98rem;margin-bottom:.5rem}
+.ent-card p{font-size:.82rem;color:var(--muted);line-height:1.6}
+
+/* CTA BAND */
+.cta-band{position:relative;text-align:center;padding:7rem 2rem;overflow:hidden}
+.cta-band .rays2{position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(700px 340px at 50% 120%,rgba(106,146,255,.14),transparent 60%)}
+.cta-band .rays2::before{content:'';position:absolute;bottom:-30%;left:46%;width:20%;height:150%;background:linear-gradient(0deg,rgba(150,175,255,.12),transparent 72%);filter:blur(46px);transform:rotate(8deg)}
+.cta-band .inner{position:relative;z-index:1;max-width:720px;margin:0 auto}
+.cta-band h2{font-family:var(--display);font-weight:600;font-size:clamp(2rem,4.4vw,3.2rem);line-height:1.06;letter-spacing:-.03em}
+.cta-band h2 .serif{display:block;font-family:var(--serif);font-style:italic;font-weight:400}
+.cta-band p{color:var(--muted);margin:1.2rem auto 2rem;max-width:48ch}
+
+/* CONTACT */
+.contact-inner{display:grid;grid-template-columns:.9fr 1.1fr;gap:3.5rem;align-items:start}
+.contact-info .eb{margin-bottom:1rem}
+.contact-info h2{font-family:var(--display);font-weight:600;font-size:clamp(1.9rem,3vw,2.7rem);line-height:1.06;letter-spacing:-.02em;margin-bottom:1rem}
+.contact-info p{color:var(--muted);line-height:1.7}
+.contact-meta{display:flex;flex-direction:column;gap:.45rem;margin-top:1.7rem;font-size:.9rem;color:var(--muted)}
+.contact-meta a{color:var(--white)}
+.form{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:2rem}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-field{display:flex;flex-direction:column;margin-bottom:1rem}
+.form-field label{font-size:.72rem;color:var(--faint);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.45rem}
+.form-field input,.form-field textarea{background:var(--bg-soft);border:1px solid var(--border);border-radius:8px;padding:.8rem .9rem;color:var(--white);font-family:inherit;font-size:.94rem;transition:border-color .2s,background .2s}
+.form-field input::placeholder,.form-field textarea::placeholder{color:#4a4a52}
+.form-field input:focus,.form-field textarea:focus{outline:none;border-color:var(--border-2);background:rgba(255,255,255,.02)}
+.form .btn{width:100%;justify-content:center;margin-top:.4rem}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:3.5rem 0 2.5rem}
+.footer-inner{max-width:1160px;margin:0 auto;padding:0 2rem}
+.footer-top{display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:2.5rem}
+.footer-tagline{font-family:var(--display);font-weight:600;font-size:1.7rem;line-height:1.1;letter-spacing:-.02em}
+.footer-nav{display:flex;gap:2rem;flex-wrap:wrap;margin-bottom:2rem}
+.footer-nav a{font-size:.86rem;color:var(--faint);transition:color .2s}
+.footer-nav a:hover{color:var(--white)}
+.footer-bottom{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;padding-top:1.6rem;border-top:1px solid var(--border);font-size:.78rem;color:var(--faint)}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+
+@media(max-width:1024px){
+  .gap-grid{grid-template-columns:1fr 1fr}
+  .ent{grid-template-columns:1fr 1fr}
+  .feat{gap:2.6rem}
+  .pilot{grid-template-columns:1fr;gap:2.2rem}
+  .pilot-price{position:static}
+  .contact-inner{grid-template-columns:1fr;gap:2.5rem}
+}
+@media(max-width:768px){
+  #nav{padding:.9rem 1.3rem}
+  .nav-links{display:none}
+  .container,.footer-inner{padding:0 1.3rem}
+  .hero{padding:8rem 1.3rem 3.5rem}
+  .section{padding:4.5rem 0}
+  .dash__body{grid-template-columns:1fr}
+  .dash__main{border-right:none;border-bottom:1px solid var(--border)}
+  .kpis{grid-template-columns:1fr 1fr}
+  .gap-grid,.ent,.path{grid-template-columns:1fr}
+  .feat{grid-template-columns:1fr;gap:1.8rem;margin-bottom:4rem}
+  .feat.rev .feat__media{order:0}
+  .form-row{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="/" class="nav-logo"><span class="mark">S</span>SiteSpot</a>
+  <ul class="nav-links">
+    <li><a href="#gap">Problém</a></li>
+    <li><a href="#system">Revenue OS</a></li>
+    <li><a href="#pilot">Pilot</a></li>
+    <li><a href="#path">Postup</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Domluvit audit</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="rays"></div>
+  <div class="hero-inner">
+    <span class="eyebrow"><i></i> SiteSpot Revenue OS</span>
+    <h1 class="hero-h">Váš web není brožura.<span class="serif">Je to obchodní systém.</span></h1>
+    <p class="hero-sub">
+      Většina firem na fotovoltaiku a tepelná čerpadla ztrácí poptávky mezi kliknutím a podpisem.
+      Ne kvůli marketingu, ale kvůli tomu, co se děje potom. Přestavíme váš web na systém, který
+      kvalifikuje, hlídá follow-up a propojuje obchod, projekci a servis do jednoho toku.
+    </p>
+    <div class="hero-actions">
+      <a href="#pilot" class="btn btn-primary">Revenue Flow Pilot
+        <svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </a>
+      <a href="#system" class="btn btn-ghost">Jak to funguje</a>
+    </div>
+  </div>
+
+  <!-- Revenue OS dashboard mock -->
+  <div class="hero-visual reveal">
+    <div class="dash">
+      <div class="dash__bar">
+        <div class="dash__dots"><i></i><i></i><i></i></div>
+        <span class="dash__ttl">Revenue OS: přehled obchodu</span>
+        <span class="dash__live"><i></i> live</span>
+      </div>
+      <div class="dash__body">
+        <div class="dash__main">
+          <div class="kpis">
+            <div class="kpi"><div class="l">Poptávky</div><div class="v">128</div><div class="d">+18 %</div></div>
+            <div class="kpi"><div class="l">Kvalifik.</div><div class="v">74</div><div class="d">+11 %</div></div>
+            <div class="kpi"><div class="l">Nabídky</div><div class="v">41</div><div class="d">+9 %</div></div>
+            <div class="kpi"><div class="l">Zakázky</div><div class="v">23</div><div class="d">+27 %</div></div>
+          </div>
+          <div class="pipe">
+            <div class="pipe__cap">Pipeline tento měsíc</div>
+            <div class="pipe__row"><span class="stg">Nová poptávka</span><div class="pipe__bar"><span style="width:100%"></span></div><span class="n">128</span></div>
+            <div class="pipe__row"><span class="stg">Kvalifikace</span><div class="pipe__bar"><span style="width:78%"></span></div><span class="n">74</span></div>
+            <div class="pipe__row"><span class="stg">Projekce</span><div class="pipe__bar"><span style="width:52%"></span></div><span class="n">41</span></div>
+            <div class="pipe__row"><span class="stg">Montáž</span><div class="pipe__bar"><span style="width:30%"></span></div><span class="n">23</span></div>
+          </div>
+        </div>
+        <div class="dash__side">
+          <div class="feed__cap">Aktivita</div>
+          <div class="feed">
+            <div class="feed__i"><span class="ic g">✓</span><p><b>Nová poptávka</b> přiřazena obchodníkovi<span class="t">před 2 min</span></p></div>
+            <div class="feed__i"><span class="ic">↗</span><p><b>Follow-up</b> odeslán, Novák s.r.o.<span class="t">před 14 min</span></p></div>
+            <div class="feed__i"><span class="ic o">!</span><p><b>Nabídka</b> čeká 3 dny bez reakce<span class="t">před 1 h</span></p></div>
+            <div class="feed__i"><span class="ic g">✓</span><p><b>Zakázka uzavřena</b>, 214 000 Kč<span class="t">před 3 h</span></p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- segment strip -->
+  <div class="strip reveal">
+    <div class="strip__cap">Postaveno pro obory, kde jde o velké zakázky</div>
+    <div class="strip__row">
+      <span>Fotovoltaika</span><span>Tepelná čerpadla</span><span>Baterie</span><span>Klimatizace</span><span>Energetika</span>
+    </div>
+  </div>
+</section>
+
+<!-- GAP MIRROR -->
+<section class="section" id="gap">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eb eb-orange">Problém</span>
+      <h2>Váš web vypadá dobře.<br/><em>Vydělává ale málo.</em></h2>
+      <p>Čtyři místa, kde firmám ve vašem oboru utíkají peníze. Pokud alespoň dvě z nich znáte, ztrácíte zakázky, které jste už zaplatili reklamou a časem obchodníků.</p>
+    </div>
+    <div class="gap-grid">
+      <div class="gap-card reveal">
+        <div class="ic"><svg width="18" height="18" fill="none" viewBox="0 0 24 24"><path d="M3 8l9 6 9-6M3 6h18v12H3z" stroke="#e0782f" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+        <h3>Poptávka usne v e-mailu</h3>
+        <p>Formulář přijde do schránky, nikdo ho hned nezařadí, obchodník se ozve za dva dny. Konkurence, co volá do hodiny, ji má.</p>
+      </div>
+      <div class="gap-card reveal">
+        <div class="ic"><svg width="18" height="18" fill="none" viewBox="0 0 24 24"><path d="M12 7v5l3 2M12 21a9 9 0 100-18 9 9 0 000 18z" stroke="#e0782f" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+        <h3>Zájemce se neozve, nikdo mu nezavolá</h3>
+        <p>80 % zakázek se uzavře až po několika kontaktech. Bez automatického follow-upu končí většina poptávek v tichu.</p>
+      </div>
+      <div class="gap-card reveal">
+        <div class="ic"><svg width="18" height="18" fill="none" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h10" stroke="#e0782f" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+        <h3>Obchod, projekce a servis o sobě nevědí</h3>
+        <p>Data žijí v e-mailech a excelech. Nikdo nevidí, kde zakázka stojí, a předání mezi týmy ztrácí čas i marži.</p>
+      </div>
+      <div class="gap-card reveal">
+        <div class="ic"><svg width="18" height="18" fill="none" viewBox="0 0 24 24"><path d="M4 19V5m0 14h16M8 15l3-4 3 2 4-6" stroke="#e0782f" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Nevíte, který kanál nosí zakázky</h3>
+        <p>Bez měření se rozpočet lije do kanálů, které nevydělávají, a ty, co fungují, zůstávají podfinancované.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SYSTEM (Revenue OS layers as feature rows) -->
+<section class="section" id="system">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eb eb-green">Systém</span>
+      <h2>Jedna vrstva. Každá poptávka.<br/><em>Vždy pod kontrolou.</em></h2>
+      <p>Neprodáváme nový web. Stavíme systém, kde web je jen vstupní brána. Vše ostatní pracuje, i když zrovna nikdo nesedí u počítače.</p>
+    </div>
+
+    <!-- Konverze -->
+    <div class="feat reveal">
+      <div class="feat__text">
+        <div class="feat__eb" style="color:var(--green)">Vrstva 01: Konverze</div>
+        <h3>Web, který uzavírá, ne jen informuje</h3>
+        <p class="lead"><b>Z návštěvníka udělá kvalifikovanou poptávku.</b> Kalkulačka úspory, konfigurátor a chytrý formulář, který rovnou třídí, kdo je připravený koupit a kdo se jen dívá.</p>
+        <ul>
+          <li><svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-8" stroke="#4abd83" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Web zaměřený na akci, ne na katalog</li>
+          <li><svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-8" stroke="#4abd83" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Kalkulačka úspory a konfigurátor nabídky</li>
+          <li><svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-8" stroke="#4abd83" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Okamžité potvrzení a přiřazení obchodníkovi</li>
+        </ul>
+      </div>
+      <div class="feat__media">
+        <div class="mock">
+          <div class="mock__top"><span class="d"></span> web → poptávka</div>
+          <div class="conv__calc">
+            <span class="conv__k">Orientační roční úspora</span>
+            <span class="conv__v">48 200 <small>Kč</small></span>
+            <div class="conv__slider"><span></span></div>
+          </div>
+          <button class="conv__btn">Chci nezávaznou nabídku</button>
+          <div class="conv__toast"><i></i> Poptávka přiřazena obchodníkovi</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Provoz -->
+    <div class="feat rev reveal">
+      <div class="feat__text">
+        <div class="feat__eb" style="color:var(--blue)">Vrstva 02: Provoz</div>
+        <h3>Každá poptávka má majitele a termín</h3>
+        <p class="lead"><b>Žádná zakázka nespadne mezi týmy.</b> CRM s jasnou pipeline, automatický follow-up a čisté předání z obchodu na projekci a servis. Systém hlídá, i když nikdo nekouká.</p>
+        <ul>
+          <li><svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-8" stroke="#6a92ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Pipeline poptávka → projekce → montáž → servis</li>
+          <li><svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-8" stroke="#6a92ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Automatický follow-up a upomínky</li>
+          <li><svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-8" stroke="#6a92ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Napojení na fakturaci a dokumenty</li>
+        </ul>
+      </div>
+      <div class="feat__media">
+        <div class="mock">
+          <div class="mock__top"><span class="d"></span> pipeline obchodu</div>
+          <div class="crm__row"><span class="crm__av" style="background:#6a92ff">JN</span><div class="crm__nm">Novák s.r.o.<span>FVE 8,4 kWp</span></div><span class="pill b">Kvalifikace</span></div>
+          <div class="crm__row"><span class="crm__av" style="background:#4abd83">PS</span><div class="crm__nm">Svoboda<span>Tepelné čerpadlo</span></div><span class="pill g">Nabídka</span></div>
+          <div class="crm__row"><span class="crm__av" style="background:#e0782f">MK</span><div class="crm__nm">Kovář a syn<span>FVE + baterie</span></div><span class="pill o">Follow-up 3 dny</span></div>
+          <div class="crm__row"><span class="crm__av" style="background:#6a92ff">AD</span><div class="crm__nm">Dvořák<span>Montáž 12/2026</span></div><span class="pill g">Zakázka</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Viditelnost -->
+    <div class="feat reveal">
+      <div class="feat__text">
+        <div class="feat__eb" style="color:var(--orange)">Vrstva 03: Viditelnost</div>
+        <h3>Vidíte, co vydělává, ne jen návštěvnost</h3>
+        <p class="lead"><b>Od zdroje leadu až k uzavřené zakázce.</b> Dashboard, který ukáže, který kanál nosí peníze a kde se tok zadrhává. Rozhodujete podle čísel, ne podle pocitu.</p>
+        <ul>
+          <li><svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-8" stroke="#e0782f" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Dashboard obchodních výsledků v reálném čase</li>
+          <li><svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-8" stroke="#e0782f" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Cesta od zdroje leadu k uzavřené zakázce</li>
+          <li><svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-8" stroke="#e0782f" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>SEO a kanály, které skutečně nosí poptávky</li>
+        </ul>
+      </div>
+      <div class="feat__media">
+        <div class="mock">
+          <div class="mock__top"><span class="d"></span> zdroje zakázek</div>
+          <div class="viz__bars"><i style="height:45%"></i><i style="height:62%"></i><i style="height:38%"></i><i style="height:78%"></i><i style="height:55%"></i><i style="height:92%"></i></div>
+          <div class="viz__src">
+            <div class="viz__s"><span style="width:78px">FVE web</span><div class="bar"><span style="width:42%"></span></div><span class="pct">42 %</span></div>
+            <div class="viz__s"><span style="width:78px">Doporučení</span><div class="bar"><span style="width:28%"></span></div><span class="pct">28 %</span></div>
+            <div class="viz__s"><span style="width:78px">PPC</span><div class="bar"><span style="width:18%"></span></div><span class="pct">18 %</span></div>
+            <div class="viz__s"><span style="width:78px">Ostatní</span><div class="bar"><span style="width:12%"></span></div><span class="pct">12 %</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PILOT -->
+<section class="section" id="pilot">
+  <div class="container">
+    <div class="pilot reveal">
+      <div>
+        <span class="eb eb-blue">Revenue Flow Pilot</span>
+        <h2>Jeden měřitelný výsledek. <em>Za deset dní.</em></h2>
+        <p class="lead">
+          Nezačínáme velkým projektem na půl roku. Začínáme pilotem s pevným rozsahem, který
+          opraví jedno nejdražší místo ve vašem toku a ukáže výsledek v číslech. Když sedí,
+          navazuje rollout. Když ne, máte funkční kus a jasné doporučení.
+        </p>
+        <ul class="pilot-facts">
+          <li><span class="k">Rozsah</span><span class="v">Pevně daný, odsouhlasený předem</span></li>
+          <li><span class="k">Doba</span><span class="v">10 pracovních dní</span></li>
+          <li><span class="k">Výstup</span><span class="v">Nasazený systém + report v číslech</span></li>
+          <li><span class="k">Platba</span><span class="v">50 % při podpisu, 50 % při spuštění</span></li>
+          <li><span class="k">Rizika</span><span class="v">Smlouva, DPA, jasné akceptační kritérium</span></li>
+        </ul>
+      </div>
+      <div class="pilot-price">
+        <span class="from">Pilotní projekt od</span>
+        <div class="amount">149 000 <span>Kč</span></div>
+        <p class="terms">
+          Cena podle zvoleného výsledku a rozsahu. Přesnou nabídku dostanete po krátkém auditu,
+          ne od stolu. Pilot se plně započítává do navazujícího rolloutu.
+        </p>
+        <a href="#contact" class="btn btn-primary">Chci audit a nabídku
+          <svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PATH -->
+<section class="section" id="path">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eb eb-green">Postup</span>
+      <h2>Rosteme po krocích,<br/><em>ne naslepo.</em></h2>
+      <p>Žádný závazek na velký projekt předem. Každý další krok platíte až poté, co ten předchozí ukázal výsledek.</p>
+    </div>
+    <div class="path">
+      <div class="path-step reveal">
+        <span class="stage">Krok 01</span>
+        <h3>Pilot</h3>
+        <p>Opravíme jedno nejdražší místo v toku. Pevný rozsah, deset dní, měřitelný výstup.</p>
+        <div class="amt">Od 149 000 Kč</div>
+      </div>
+      <div class="path-step reveal">
+        <span class="stage">Krok 02</span>
+        <h3>Rollout</h3>
+        <p>Když pilot sedí, dostavíme všechny tři vrstvy do plného systému napříč obchodem a servisem.</p>
+        <div class="amt">Rozsah dle firmy</div>
+      </div>
+      <div class="path-step reveal">
+        <span class="stage">Krok 03</span>
+        <h3>Provoz a růst</h3>
+        <p>Systém dál ladíme, hlídáme a rozšiřujeme. Vy se staráte o zakázky, ne o nástroje.</p>
+        <div class="amt">Měsíční paušál</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ENTERPRISE -->
+<section class="section" id="trust">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eb eb-blue">Jistota</span>
+      <h2>Postavené na jistotě,<br/><em>ne na slibech.</em></h2>
+    </div>
+    <div class="ent">
+      <div class="ent-card reveal">
+        <h4>Smlouva a IČ</h4>
+        <p>Fakturujeme na firmu, na jasně definovaný rozsah a akceptační kritéria. Žádné otevřené hodiny.</p>
+      </div>
+      <div class="ent-card reveal">
+        <h4>DPA a GDPR</h4>
+        <p>Zpracování dat smluvně ošetřené. Vaše data zůstávají vaše, s jasnými pravidly a přístupy.</p>
+      </div>
+      <div class="ent-card reveal">
+        <h4>SLA na provoz</h4>
+        <p>U provozovaných systémů garantovaná dostupnost a reakční doba, ne odpověď, až bude čas.</p>
+      </div>
+      <div class="ent-card reveal">
+        <h4>Platba po krocích</h4>
+        <p>50 / 50 u pilotu, u větších zakázek po třetinách. Platíte za výsledek, ne za příslib.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<section class="cta-band">
+  <div class="rays2"></div>
+  <div class="inner reveal">
+    <h2>Připraveni na web, který vydělává?<span class="serif">Začneme auditem.</span></h2>
+    <p>Krátký hovor, kde projdeme váš tok od poptávky po zakázku a najdeme nejdražší místo. Konkrétní doporučení si odnesete, ať se pak rozhodnete jakkoli.</p>
+    <a href="#contact" class="btn btn-primary">Domluvit audit
+      <svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section" id="contact">
+  <div class="container">
+    <div class="contact-inner">
+      <div class="contact-info reveal">
+        <span class="eb eb-green">Kontakt</span>
+        <h2>Začneme auditem, <em>ne prezentací.</em></h2>
+        <p>Projdeme váš současný tok od poptávky po zakázku a najdeme to nejdražší místo. Odnesete si konkrétní doporučení, ať už se pak rozhodnete jakkoli.</p>
+        <div class="contact-meta">
+          <span>Email: <a href="mailto:oliver@sitespot.cz">oliver@sitespot.cz</a></span>
+          <span>Plzeň, Česká republika</span>
+        </div>
+      </div>
+      <form class="form reveal" id="contact-form">
+        <input type="hidden" name="source" value="revenue-os"/>
+        <input type="hidden" name="_subject" value="Revenue OS poptavka (SiteSpot)"/>
+        <input type="hidden" name="_captcha" value="false"/>
+        <input type="hidden" name="_template" value="table"/>
+        <div class="form-row">
+          <div class="form-field"><label for="name">Jméno</label><input type="text" id="name" name="name" placeholder="Jan Novák" required/></div>
+          <div class="form-field"><label for="email">E-mail</label><input type="email" id="email" name="email" placeholder="jan@firma.cz" required/></div>
+        </div>
+        <div class="form-field"><label for="company">Firma</label><input type="text" id="company" name="company" placeholder="Název firmy"/></div>
+        <div class="form-field"><label for="message">Kde vám dnes utíkají zakázky?</label><textarea id="message" name="message" rows="4" placeholder="Krátce popište, jak dnes zpracováváte poptávky..."></textarea></div>
+        <div class="form-field" style="flex-direction:row;align-items:flex-start;gap:.6rem;margin-bottom:.5rem">
+          <input type="checkbox" id="gdpr" name="gdpr" required style="margin-top:.25rem;accent-color:#4abd83;flex-shrink:0;width:14px;height:14px"/>
+          <label for="gdpr" style="font-size:.78rem;color:var(--faint);text-transform:none;letter-spacing:0;line-height:1.5;cursor:pointer">Souhlasím se <a href="privacy.html" target="_blank" style="color:var(--white)">zpracováním osobních údajů</a> za účelem vyřízení mé poptávky.</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Domluvit audit<svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <p class="footer-tagline">SiteSpot<br/>Revenue <em>OS.</em></p>
+      <a href="#contact" class="btn btn-primary">Domluvit audit<svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></a>
+    </div>
+    <nav class="footer-nav">
+      <a href="/">Hub</a>
+      <a href="#system">Revenue OS</a>
+      <a href="#pilot">Pilot</a>
+      <a href="#path">Postup</a>
+      <a href="privacy.html">Ochrana dat</a>
+    </nav>
+    <div class="footer-bottom">
+      <span>© 2026 SiteSpot. Web jako obchodní systém.</span>
+      <span>Plzeň, Česká republika</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// reveal on scroll
+const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+// nav bg on scroll
+const nav=document.getElementById('nav');
+addEventListener('scroll',()=>{nav.classList.toggle('scrolled',scrollY>40)});
+
+// contact form -> FormSubmit AJAX, same mechanism as the rest of the live site
+const CONTACT_EMAIL='max@sitespot.cz';
+const form=document.getElementById('contact-form');
+form.addEventListener('submit',async(e)=>{
+  e.preventDefault();
+  const btn=form.querySelector('button[type="submit"]');
+  const original=btn.innerHTML;
+  btn.disabled=true;
+  btn.innerHTML='Odesílám...';
+  try{
+    // multipart FormData is a CORS "simple" request (no preflight) and is what FormSubmit expects
+    const res=await fetch('https://formsubmit.co/ajax/'+CONTACT_EMAIL,{method:'POST',headers:{'Accept':'application/json'},body:new FormData(form)});
+    const data=await res.json().catch(()=>({}));
+    if(!res.ok||data.success!=='true') throw new Error('rejected');
+    form.outerHTML='<div style="padding:2.5rem 2rem;border:1px solid rgba(74,189,131,.28);border-radius:16px;background:rgba(74,189,131,.06)"><p style="font-size:1.1rem;font-weight:700;color:#f5f5f6;margin-bottom:.4rem">Máme to.</p><p style="color:#9a9aa4;font-size:.92rem">Ozveme se do 48 hodin a domluvíme termín auditu.</p></div>';
+  }catch(err){
+    btn.disabled=false;
+    btn.innerHTML=original;
+    alert('Něco se nepovedlo. Zkuste to prosím znovu nebo napište na '+CONTACT_EMAIL+'.');
+  }
+});
+</script>
+</body>
+</html>
