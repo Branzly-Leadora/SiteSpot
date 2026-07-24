@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CTC Energy: fotovoltaika a tepelná čerpadla na klíč</title>
+<meta name="description" content="CTC Energy: fotovoltaické elektrárny, tepelná čerpadla a bateriová úložiště na klíč. Návrh, dotace NZÚ, montáž a servis pod jednou střechou."/>
+<meta property="og:title" content="CTC Energy: fotovoltaika a tepelná čerpadla na klíč"/>
+<meta property="og:description" content="Úspora, energetická nezávislost a servis, na který se spolehnete. Nezávazná kalkulace do 24 hodin."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --accent:#ea580c; --accent-dk:#c2410c; --accent-soft:rgba(234,88,12,.10);
+  --ink:#0f1b16; --ink-2:#3f5148; --line:#e4ebe6; --line-2:#d3ddd6;
+  --bg:#ffffff; --bg-2:#f5f8f6; --bg-3:#eef3f0; --white:#fff;
+  --sun:#f59e0b;
+  --font:'Inter',system-ui,sans-serif;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --shadow:0 24px 60px -30px rgba(15,27,22,.25);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);line-height:1.6;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+ul{list-style:none}
+img{max-width:100%;display:block}
+.wrap{max-width:1180px;margin:0 auto;padding:0 2rem}
+em{font-style:normal;color:var(--accent-dk)}
+
+/* UTIL BAR */
+.util{background:var(--ink);color:#cfe3d8;font-size:.8rem}
+.util__in{max-width:1180px;margin:0 auto;padding:.5rem 2rem;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.util a{color:#eafff4}
+.util__r{display:flex;gap:1.4rem}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:900;background:rgba(255,255,255,.9);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+.nav__in{max-width:1180px;margin:0 auto;padding:.95rem 2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.logo{display:flex;align-items:center;gap:.55rem;font-weight:800;font-size:1.22rem;letter-spacing:-.02em}
+.logo__mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-dk));display:grid;place-items:center;color:#fff;font-size:1rem}
+.nav__links{display:flex;align-items:center;gap:2rem}
+.nav__links a{font-size:.9rem;color:var(--ink-2);font-weight:500;transition:color .2s}
+.nav__links a:hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;gap:.5rem;font-weight:700;font-size:.9rem;border-radius:8px;padding:.7rem 1.3rem;cursor:pointer;transition:transform .2s var(--ease),box-shadow .2s,background .2s;border:1px solid transparent}
+.btn--primary{background:var(--accent);color:#fff}
+.btn--primary:hover{background:var(--accent-dk);transform:translateY(-2px);box-shadow:0 12px 24px -12px var(--accent)}
+.btn--ghost{background:transparent;color:var(--ink);border-color:var(--line-2)}
+.btn--ghost:hover{border-color:var(--accent);color:var(--accent-dk)}
+.btn--lg{padding:.9rem 1.7rem;font-size:.98rem}
+.nav__burger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:.4rem}
+.nav__burger span{width:22px;height:2px;background:var(--ink);border-radius:2px}
+
+/* HERO */
+.hero{padding:4.5rem 0 4rem;background:radial-gradient(900px 460px at 82% 0%,var(--accent-soft),transparent 60%),var(--bg)}
+.hero__in{display:grid;grid-template-columns:1.05fr .95fr;gap:3.5rem;align-items:center}
+.badge{display:inline-flex;align-items:center;gap:.5rem;background:var(--accent-soft);color:var(--accent-dk);font-weight:700;font-size:.78rem;padding:.4rem .85rem;border-radius:100px;margin-bottom:1.3rem}
+.hero h1{font-size:clamp(2.3rem,4.4vw,3.5rem);font-weight:800;line-height:1.06;letter-spacing:-.03em}
+.hero__lead{color:var(--ink-2);font-size:1.12rem;margin:1.3rem 0 2rem;max-width:46ch}
+.hero__acts{display:flex;gap:.9rem;flex-wrap:wrap}
+.hero-stats{display:flex;gap:2.4rem;margin-top:2.6rem;padding-top:1.8rem;border-top:1px solid var(--line)}
+.hero-stats .v{font-size:1.7rem;font-weight:800;letter-spacing:-.02em}
+.hero-stats .l{font-size:.8rem;color:var(--ink-2)}
+/* hero visual = live "kalkulace" card (the conversion layer, visible) */
+.hero__card{background:var(--white);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:1.6rem;position:relative}
+.hero__card h4{font-size:.82rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-2);margin-bottom:1rem}
+.calc-row{display:flex;justify-content:space-between;align-items:center;padding:.7rem 0;border-top:1px solid var(--line);font-size:.92rem}
+.calc-row:first-of-type{border-top:none}
+.calc-row b{font-weight:700}
+.calc-bar{height:8px;border-radius:5px;background:var(--bg-3);overflow:hidden;margin:.2rem 0 .1rem}
+.calc-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-dk));border-radius:5px}
+.calc-total{margin-top:1rem;padding:1rem;background:var(--accent-soft);border-radius:12px;display:flex;justify-content:space-between;align-items:center}
+.calc-total .k{font-size:.82rem;color:var(--accent-dk);font-weight:600}
+.calc-total .val{font-size:1.5rem;font-weight:800;color:var(--accent-dk)}
+.hero__float{position:absolute;bottom:-18px;right:-14px;background:var(--ink);color:#fff;border-radius:12px;padding:.7rem 1rem;display:flex;align-items:center;gap:.6rem;box-shadow:var(--shadow);font-size:.8rem}
+.hero__float .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+
+/* TRUST STRIP */
+.trust{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--bg-2)}
+.trust__in{padding:1.4rem 2rem;display:flex;align-items:center;gap:2rem;flex-wrap:wrap;justify-content:center}
+.trust .lbl{font-size:.76rem;text-transform:uppercase;letter-spacing:.12em;color:var(--ink-2)}
+.trust .brand{font-weight:800;color:var(--line-2);font-size:1.1rem;letter-spacing:-.02em;filter:grayscale(1);opacity:.75}
+
+/* SECTION */
+.sec{padding:5rem 0}
+.sec__head{max-width:60ch;margin:0 auto 3rem;text-align:center}
+.sec__ey{font-size:.76rem;text-transform:uppercase;letter-spacing:.16em;color:var(--accent-dk);font-weight:700}
+.sec__head h2{font-size:clamp(1.9rem,3.2vw,2.6rem);font-weight:800;line-height:1.1;letter-spacing:-.03em;margin:.7rem 0 .6rem}
+.sec__head p{color:var(--ink-2);font-size:1.05rem}
+
+/* PRODUCTS */
+.prod-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.3rem}
+.prod{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:1.7rem;transition:transform .2s,border-color .2s,box-shadow .2s}
+.prod:hover{transform:translateY(-4px);border-color:var(--line-2);box-shadow:var(--shadow)}
+.prod__ic{width:46px;height:46px;border-radius:12px;background:var(--accent-soft);display:grid;place-items:center;font-size:1.4rem;margin-bottom:1rem}
+.prod h3{font-size:1.12rem;font-weight:700;margin-bottom:.4rem}
+.prod p{font-size:.9rem;color:var(--ink-2)}
+
+/* PROCESS PIPELINE */
+.proc{background:var(--ink);color:#eafff4}
+.proc .sec__head h2{color:#fff}
+.proc .sec__head p{color:#a9c6ba}
+.proc .sec__ey{color:var(--accent)}
+.proc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;counter-reset:s}
+.proc-step{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:1.6rem;position:relative}
+.proc-step::before{counter-increment:s;content:'0' counter(s);position:absolute;top:1.2rem;right:1.4rem;font-weight:800;font-size:1.6rem;color:rgba(255,255,255,.14)}
+.proc-step h3{font-size:1.08rem;font-weight:700;margin:.3rem 0 .4rem}
+.proc-step p{font-size:.86rem;color:#a9c6ba}
+.proc-step .tag{font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);font-weight:700}
+
+/* SPLIT / WHY */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;align-items:center}
+.why-list{display:flex;flex-direction:column;gap:1.1rem;margin-top:1.6rem}
+.why{display:flex;gap:.9rem;align-items:flex-start}
+.why__ic{flex-shrink:0;width:30px;height:30px;border-radius:8px;background:var(--accent-soft);color:var(--accent-dk);display:grid;place-items:center;font-weight:800}
+.why h4{font-size:1rem;font-weight:700}
+.why p{font-size:.9rem;color:var(--ink-2)}
+.split__visual{background:linear-gradient(160deg,var(--bg-2),var(--bg-3));border:1px solid var(--line);border-radius:18px;padding:2.2rem;box-shadow:var(--shadow)}
+.band-stats{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem}
+.band-stats .v{font-size:2.2rem;font-weight:800;color:var(--accent-dk);letter-spacing:-.02em}
+.band-stats .l{font-size:.85rem;color:var(--ink-2)}
+
+/* REFERENCE */
+.ref-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.3rem}
+.ref{background:var(--white);border:1px solid var(--line);border-radius:16px;overflow:hidden;transition:transform .2s,box-shadow .2s}
+.ref:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.ref__img{height:150px;background:linear-gradient(135deg,var(--accent),var(--accent-dk));position:relative}
+.ref__img::after{content:'☀';position:absolute;right:14px;bottom:8px;font-size:2.4rem;color:rgba(255,255,255,.35)}
+.ref__body{padding:1.3rem}
+.ref__body .k{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--accent-dk);font-weight:700}
+.ref__body h4{font-size:1.05rem;font-weight:700;margin:.3rem 0}
+.ref__body p{font-size:.86rem;color:var(--ink-2)}
+
+/* DOTACE BAND */
+.dot-band{background:linear-gradient(135deg,var(--accent-dk),var(--accent));color:#fff;border-radius:20px;padding:clamp(2rem,4vw,3rem);display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap;box-shadow:var(--shadow)}
+.dot-band h2{font-size:clamp(1.6rem,2.6vw,2.2rem);font-weight:800;letter-spacing:-.02em}
+.dot-band p{color:rgba(255,255,255,.9);margin-top:.5rem;max-width:52ch}
+.dot-band .btn--primary{background:#fff;color:var(--accent-dk)}
+.dot-band .btn--primary:hover{background:#f0fff8;box-shadow:0 12px 24px -12px rgba(0,0,0,.4)}
+
+/* CONTACT */
+.contact-in{display:grid;grid-template-columns:.9fr 1.1fr;gap:3.5rem;align-items:start}
+.contact-info h2{font-size:clamp(1.8rem,3vw,2.4rem);font-weight:800;letter-spacing:-.02em;margin:.6rem 0 .8rem}
+.contact-info p{color:var(--ink-2)}
+.contact-meta{display:flex;flex-direction:column;gap:.5rem;margin-top:1.4rem;font-size:.95rem}
+.contact-meta a{color:var(--accent-dk);font-weight:600}
+.form{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:1.9rem;box-shadow:var(--shadow)}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.f-field{display:flex;flex-direction:column;margin-bottom:1rem}
+.f-field label{font-size:.78rem;color:var(--ink-2);font-weight:600;margin-bottom:.35rem}
+.f-field input,.f-field select,.f-field textarea{border:1px solid var(--line-2);border-radius:8px;padding:.72rem .8rem;font-family:inherit;font-size:.94rem;color:var(--ink);background:var(--bg)}
+.f-field input:focus,.f-field select:focus,.f-field textarea:focus{outline:none;border-color:var(--accent)}
+.form .btn--primary{width:100%;justify-content:center}
+.f-note{font-size:.76rem;color:var(--ink-2);margin-top:.7rem;text-align:center}
+
+/* FOOTER */
+footer{background:var(--ink);color:#a9c6ba;padding:3rem 0 2rem;margin-top:1rem}
+.foot-top{display:flex;justify-content:space-between;gap:2rem;flex-wrap:wrap;margin-bottom:2rem}
+.foot-top .logo{color:#fff}
+.foot-cols{display:flex;gap:3rem;flex-wrap:wrap}
+.foot-col h5{color:#fff;font-size:.82rem;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.7rem}
+.foot-col a{display:block;font-size:.88rem;padding:.2rem 0;color:#a9c6ba}
+.foot-col a:hover{color:#fff}
+.foot-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:1.3rem;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;font-size:.8rem}
+.foot-bottom .made{color:#7fa593}
+.foot-bottom .made b{color:var(--accent)}
+
+/* REVEAL */
+.rv{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.rv.in{opacity:1;transform:none}
+
+@media(max-width:960px){
+  .hero__in,.split,.contact-in{grid-template-columns:1fr;gap:2.5rem}
+  .prod-grid,.proc-grid{grid-template-columns:1fr 1fr}
+  .ref-grid{grid-template-columns:1fr}
+  .nav__links{display:none}
+  .nav__burger{display:flex}
+}
+@media(max-width:560px){
+  .wrap{padding:0 1.3rem}
+  .util__in{padding:.5rem 1.3rem}
+  .nav__in{padding:.9rem 1.3rem}
+  .prod-grid,.proc-grid,.band-stats,.f-row{grid-template-columns:1fr}
+  .hero-stats{gap:1.4rem;flex-wrap:wrap}
+  .dot-band{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<!-- UTIL -->
+<div class="util"><div class="util__in">
+  <div class="util__l">Fotovoltaika · tepelná čerpadla · baterie · Plzeň a Plzeňský kraj</div>
+  <div class="util__r"><a href="tel:+420777000000">+420 777 000 000</a><a href="mailto:poptavka@ctcenergy.cz">poptavka@ctcenergy.cz</a></div>
+</div></div>
+
+<!-- NAV -->
+<nav class="nav"><div class="nav__in">
+  <a href="#top" class="logo"><span class="logo__mark">C</span>CTC Energy</a>
+  <ul class="nav__links">
+    <li><a href="#produkty">Řešení</a></li>
+    <li><a href="#postup">Jak to probíhá</a></li>
+    <li><a href="#reference">Reference</a></li>
+    <li><a href="#dotace">Dotace</a></li>
+    <li><a href="#kontakt">Kontakt</a></li>
+  </ul>
+  <a href="#kontakt" class="btn btn--primary">Nezávazná kalkulace</a>
+  <button class="nav__burger" aria-label="Menu"><span></span><span></span><span></span></button>
+</div></nav>
+
+<!-- HERO -->
+<header class="hero" id="top">
+  <div class="wrap hero__in">
+    <div class="rv">
+      <span class="badge">☀ Dotace NZÚ až 60 % · vyřídíme za vás</span>
+      <h1>Energetická <em>nezávislost</em> pro váš dům i firmu</h1>
+      <p class="hero__lead">Fotovoltaika, tepelná čerpadla a bateriová úložiště na klíč. Návrh, dotace, montáž i servis pod jednou střechou. Bez subdodavatelských zmatků.</p>
+      <div class="hero__acts">
+        <a href="#kontakt" class="btn btn--primary btn--lg">Spočítat úsporu</a>
+        <a href="#postup" class="btn btn--ghost btn--lg">Jak to probíhá</a>
+      </div>
+      <div class="hero-stats">
+        <div><div class="v">1 200+</div><div class="l">instalací</div></div>
+        <div><div class="v">18 MW</div><div class="l">nainstalovaný výkon</div></div>
+        <div><div class="v">7 let</div><div class="l">na trhu</div></div>
+      </div>
+    </div>
+    <div class="rv">
+      <div class="hero__card">
+        <h4>Orientační kalkulace úspory</h4>
+        <div class="calc-row"><span>Spotřeba domácnosti</span><b>4 200 kWh / rok</b></div>
+        <div class="calc-row"><span>Navržený systém</span><b>FVE 6,5 kWp + baterie</b></div>
+        <div><div class="calc-bar"><i style="width:78%"></i></div></div>
+        <div class="calc-row"><span>Pokrytí z vlastní výroby</span><b>78 %</b></div>
+        <div class="calc-total"><span class="k">Roční úspora</span><span class="val">37 400 Kč</span></div>
+      </div>
+      <div class="hero__float"><span class="dot"></span><span><b>Nová poptávka</b> přiřazena obchodníkovi</span></div>
+    </div>
+  </div>
+</header>
+
+<!-- TRUST -->
+<div class="trust"><div class="trust__in">
+  <span class="lbl">Montujeme komponenty značek</span>
+  <span class="brand">JA Solar</span><span class="brand">Huawei</span><span class="brand">Fronius</span><span class="brand">Victron</span><span class="brand">NIBE</span>
+</div></div>
+
+<!-- PRODUKTY -->
+<section class="sec" id="produkty">
+  <div class="wrap">
+    <div class="sec__head rv">
+      <span class="sec__ey">Naše řešení</span>
+      <h2>Vše pro soběstačný dům i firmu</h2>
+      <p>Od návrhu po servis. Jeden dodavatel, jedna odpovědnost, jeden telefon, když je potřeba.</p>
+    </div>
+    <div class="prod-grid">
+      <div class="prod rv"><div class="prod__ic">☀</div><h3>Fotovoltaika</h3><p>Návrh a montáž FVE na míru pro rodinné domy, bytové domy i firemní haly.</p></div>
+      <div class="prod rv"><div class="prod__ic">♨</div><h3>Tepelná čerpadla</h3><p>Vytápění a ohřev vody s nízkými provozními náklady. Vzduch-voda i země-voda.</p></div>
+      <div class="prod rv"><div class="prod__ic">🔋</div><h3>Baterie a akumulace</h3><p>Uložte přebytky a využijte je večer. Vyšší soběstačnost, nižší účet.</p></div>
+      <div class="prod rv"><div class="prod__ic">🛠</div><h3>Servis a monitoring</h3><p>Vlastní servisní tým a dálkový dohled výroby. Řešíme dřív, než to zaznamenáte.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- POSTUP (Revenue OS operations layer, visible) -->
+<section class="sec proc" id="postup">
+  <div class="wrap">
+    <div class="sec__head rv">
+      <span class="sec__ey">Jak to probíhá</span>
+      <h2>Od poptávky ke spuštění, bez zmatků</h2>
+      <p>Každý krok má jasného majitele a termín. Vždy víte, kde vaše zakázka stojí.</p>
+    </div>
+    <div class="proc-grid">
+      <div class="proc-step rv"><span class="tag">Do 24 h</span><h3>Poptávka a kalkulace</h3><p>Ozveme se do jednoho dne, projdeme spotřebu a pošleme orientační návrh a úsporu.</p></div>
+      <div class="proc-step rv"><span class="tag">Návrh</span><h3>Projekce a dotace</h3><p>Zaměření, přesný projekt a vyřízení dotace NZÚ. Vy jen podepíšete.</p></div>
+      <div class="proc-step rv"><span class="tag">Montáž</span><h3>Realizace na klíč</h3><p>Vlastní montážní týmy, dodržený termín, revize a připojení k distribuci.</p></div>
+      <div class="proc-step rv"><span class="tag">Provoz</span><h3>Servis a dohled</h3><p>Monitoring výroby a servis, na který se spolehnete i po letech.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY / SPLIT -->
+<section class="sec" id="proc">
+  <div class="wrap split">
+    <div class="rv">
+      <span class="sec__ey">Proč CTC Energy</span>
+      <h2 style="font-size:clamp(1.8rem,3vw,2.4rem);font-weight:800;letter-spacing:-.03em;margin:.6rem 0 .3rem">Jeden dodavatel místo pěti</h2>
+      <p style="color:var(--ink-2)">Nekoordinujete elektrikáře, pokrývače a dotačního poradce. Máte jeden tým a jednu smlouvu.</p>
+      <div class="why-list">
+        <div class="why"><div class="why__ic">✓</div><div><h4>Vlastní montážní i servisní týmy</h4><p>Žádní subdodavatelé, na které se nedovoláte. Odpovídáme za celé dílo.</p></div></div>
+        <div class="why"><div class="why__ic">✓</div><div><h4>Dotaci NZÚ vyřídíme za vás</h4><p>Kompletní administrativa dotace včetně podání. Vy jen dodáte podklady.</p></div></div>
+        <div class="why"><div class="why__ic">✓</div><div><h4>Záruka a dálkový monitoring</h4><p>Sledujeme výrobu vzdáleně a řešíme odchylky dřív, než se projeví na účtu.</p></div></div>
+      </div>
+    </div>
+    <div class="split__visual rv">
+      <div class="band-stats">
+        <div><div class="v">98 %</div><div class="l">zakázek dokončeno v termínu</div></div>
+        <div><div class="v">4,9 ★</div><div class="l">průměrné hodnocení klientů</div></div>
+        <div><div class="v">2 h</div><div class="l">reakce servisu na výpadek</div></div>
+        <div><div class="v">10 let</div><div class="l">záruka na montáž</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REFERENCE -->
+<section class="sec" id="reference" style="background:var(--bg-2)">
+  <div class="wrap">
+    <div class="sec__head rv">
+      <span class="sec__ey">Realizace</span>
+      <h2>Vybrané instalace</h2>
+      <p>Přes tisíc dokončených projektů. Tady je pár z nich.</p>
+    </div>
+    <div class="ref-grid">
+      <div class="ref rv"><div class="ref__img"></div><div class="ref__body"><span class="k">Rodinný dům · 9,8 kWp</span><h4>FVE + baterie, Plzeň</h4><p>Pokrytí 81 % spotřeby, návratnost 6,5 roku. Dotace NZÚ vyřízena kompletně.</p></div></div>
+      <div class="ref rv"><div class="ref__img"></div><div class="ref__body"><span class="k">Firemní hala · 92 kWp</span><h4>Střešní FVE, Rokycany</h4><p>Snížení nákladů na energie o 340 tis. Kč ročně. Provoz bez výpadku.</p></div></div>
+      <div class="ref rv"><div class="ref__img"></div><div class="ref__body"><span class="k">Rodinný dům · TČ</span><h4>Tepelné čerpadlo, Klatovy</h4><p>Náhrada plynového kotle, provozní úspora 48 % za první topnou sezónu.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- DOTACE -->
+<section class="sec" id="dotace">
+  <div class="wrap">
+    <div class="dot-band rv">
+      <div>
+        <h2>Dotaci NZÚ vyřídíme za vás</h2>
+        <p>Až 60 % nákladů zpět z programu Nová zelená úsporám. Kompletní administrativu bereme na sebe, vy jen dodáte podklady a podepíšete.</p>
+      </div>
+      <a href="#kontakt" class="btn btn--primary btn--lg">Zjistit výši dotace</a>
+    </div>
+  </div>
+</section>
+
+<!-- KONTAKT -->
+<section class="sec" id="kontakt" style="background:var(--bg-2)">
+  <div class="wrap contact-in">
+    <div class="contact-info rv">
+      <span class="sec__ey">Nezávazná kalkulace</span>
+      <h2>Spočítáme vaši úsporu do 24 hodin</h2>
+      <p>Vyplňte pár údajů a ozveme se s orientačním návrhem a výší úspory. Bez závazku a bez tlaku.</p>
+      <div class="contact-meta">
+        <span>Telefon: <a href="tel:+420777000000">+420 777 000 000</a></span>
+        <span>Email: <a href="mailto:poptavka@ctcenergy.cz">poptavka@ctcenergy.cz</a></span>
+        <span>Působnost: Plzeňský kraj</span>
+      </div>
+    </div>
+    <form class="form rv" id="lead-form">
+      <input type="hidden" name="source" value="demo-ctc-energy"/>
+      <div class="f-row">
+        <div class="f-field"><label for="jmeno">Jméno</label><input type="text" id="jmeno" name="name" placeholder="Jan Novák" required/></div>
+        <div class="f-field"><label for="tel">Telefon</label><input type="tel" id="tel" name="phone" placeholder="+420 777 123 456" required/></div>
+      </div>
+      <div class="f-row">
+        <div class="f-field"><label for="email">E-mail</label><input type="email" id="email" name="email" placeholder="jan@email.cz" required/></div>
+        <div class="f-field"><label for="zajem">Mám zájem o</label>
+          <select id="zajem" name="interest">
+            <option>Fotovoltaiku</option><option>Tepelné čerpadlo</option><option>Baterie / akumulaci</option><option>Kombinaci / nevím</option>
+          </select>
+        </div>
+      </div>
+      <div class="f-field"><label for="zprava">Poznámka</label><textarea id="zprava" name="message" rows="3" placeholder="Typ nemovitosti, roční spotřeba, termín..."></textarea></div>
+      <button type="submit" class="btn btn--primary btn--lg">Chci nezávaznou kalkulaci</button>
+      <p class="f-note">Odesláním souhlasíte se zpracováním údajů za účelem vyřízení poptávky.</p>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div>
+        <a href="#top" class="logo"><span class="logo__mark">C</span>CTC Energy</a>
+        <p style="margin-top:.7rem;max-width:34ch;font-size:.88rem">Fotovoltaika, tepelná čerpadla a baterie na klíč. Úspora a klid pod jednou střechou.</p>
+      </div>
+      <div class="foot-cols">
+        <div class="foot-col"><h5>Řešení</h5><a href="#produkty">Fotovoltaika</a><a href="#produkty">Tepelná čerpadla</a><a href="#produkty">Baterie</a><a href="#produkty">Servis</a></div>
+        <div class="foot-col"><h5>Firma</h5><a href="#reference">Reference</a><a href="#postup">Jak to probíhá</a><a href="#dotace">Dotace NZÚ</a><a href="#kontakt">Kontakt</a></div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 CTC Energy s.r.o. · IČ 000 000 00</span>
+      <span class="made">web postavil <b>SiteSpot</b></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+document.querySelector('.nav__burger')?.addEventListener('click',()=>{const l=document.querySelector('.nav__links');l.style.display=l.style.display==='flex'?'none':'flex';l.style.position='absolute';l.style.top='100%';l.style.left='0';l.style.right='0';l.style.flexDirection='column';l.style.background='#fff';l.style.padding='1rem 2rem';l.style.borderBottom='1px solid var(--line)';l.style.gap='.4rem'});
+const f=document.getElementById('lead-form');
+f?.addEventListener('submit',async(e)=>{
+  e.preventDefault();
+  const b=f.querySelector('button[type="submit"]');const o=b.innerHTML;b.disabled=true;b.innerHTML='Odesílám…';
+  const data=Object.fromEntries(new FormData(f).entries());
+  try{
+    const r=await fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+    if(!r.ok)throw 0;
+    f.outerHTML='<div class="form" style="text-align:center"><p style="font-size:1.1rem;font-weight:800;color:var(--accent-dk);margin-bottom:.4rem">Děkujeme! ☀</p><p style="color:var(--ink-2)">Ozveme se do 24 hodin s orientační kalkulací.</p></div>';
+  }catch(_){b.disabled=false;b.innerHTML=o;alert('Něco se nepovedlo, zkuste to prosím znovu.');}
+});
+</script>
+</body>
+</html>
