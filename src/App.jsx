@@ -582,7 +582,7 @@ function LegalModal({ open, onClose }) {
               <h3>Ochrana osobních údajů</h3>
             </div>
             <div className="legal-body">
-              <p><b>Správce údajů:</b> SiteSpot s.r.o., Praha. Kontakt: {CONTACT_EMAIL}.</p>
+              <p><b>Správce údajů:</b> Leadora Technologies s.r.o., IČO 24624136, se sídlem Hostěradice 44, 252 82 Kamenný Přívoz (provozovatel značky SiteSpot). Kontakt: {CONTACT_EMAIL}.</p>
               <p><b>Jaké údaje zpracováváme:</b> jméno, e-mail a obsah zprávy, které nám pošlete přes kontaktní formulář nebo e-mailem.</p>
               <p><b>Účel a právní základ:</b> odpověď na vaši poptávku a jednání o spolupráci (plnění smlouvy, oprávněný zájem). Údaje nevyužíváme k marketingu bez vašeho souhlasu a nepředáváme je třetím stranám mimo zpracovatele nezbytné pro provoz (e-mailová služba, hosting).</p>
               <p><b>Doba uchování:</b> po dobu jednání o zakázce, nejdéle 3 roky od poslední komunikace.</p>
@@ -1668,7 +1668,7 @@ export default function App() {
               </div>
             </div>
           </div>
-          <div className="footer-note"><span>© 2026 SiteSpot s.r.o. Všechna práva vyhrazena.</span><span>Vyrobeno v Praze ⚡</span></div>
+          <div className="footer-note"><span>© 2026 Leadora Technologies s.r.o., IČO 24624136. Všechna práva vyhrazena.</span><span>Vyrobeno v Praze ⚡</span></div>
         </div>
       </footer>
 
