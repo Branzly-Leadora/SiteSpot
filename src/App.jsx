@@ -1658,6 +1658,7 @@ export default function App() {
               <a href="tel:+420777123456"><Phone size={15} strokeWidth={1.7} /> +420 777 123 456</a>
               <span style={{ color: 'var(--muted)', fontSize: '14.5px', display: 'inline-flex', alignItems: 'center', gap: 8 }}><MapPin size={15} strokeWidth={1.7} /> Praha · pracujeme po celé ČR</span>
               <button className="footer-legal" onClick={() => setLegalOpen(true)}>Ochrana osobních údajů</button>
+              <a className="footer-legal" href="/obchodni-podminky">Obchodní podmínky</a>
             </div>
             <div className="footer-col">
               <div className="footer-head">Newsletter</div>
