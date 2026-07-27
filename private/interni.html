@@ -1,0 +1,1974 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>SiteSpot — High-ticket deal room</title>
+  <style>
+    :root {
+      --bg: #07101d;
+      --panel: #0d1828;
+      --panel-2: #111f33;
+      --panel-3: #172842;
+      --line: rgba(255, 255, 255, .1);
+      --text: #f6f8fc;
+      --muted: #9ba9be;
+      --blue: #4e8cff;
+      --cyan: #42d9ff;
+      --green: #43d7a3;
+      --yellow: #ffc75a;
+      --red: #ff7b82;
+      --purple: #a88cff;
+      --shadow: 0 18px 70px rgba(0, 0, 0, .28);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-width: 320px;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 15% -10%, rgba(78, 140, 255, .22), transparent 34rem),
+        radial-gradient(circle at 95% 10%, rgba(66, 217, 255, .11), transparent 30rem),
+        var(--bg);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+
+    button, input, select, textarea { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    a { color: var(--cyan); }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { margin-bottom: 10px; font-size: clamp(2rem, 5vw, 4.25rem); line-height: .98; letter-spacing: -.055em; }
+    h2 { margin-bottom: 16px; font-size: clamp(1.35rem, 2.8vw, 2.1rem); letter-spacing: -.035em; }
+    h3 { margin-bottom: 8px; font-size: 1rem; letter-spacing: -.015em; }
+    p:last-child { margin-bottom: 0; }
+
+    .shell { width: min(1540px, calc(100% - 28px)); margin: 0 auto; padding: 22px 0 54px; }
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 42px;
+    }
+    .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 850; letter-spacing: -.03em; }
+    .brand-mark {
+      display: grid;
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      color: #06101d;
+      box-shadow: 0 8px 28px rgba(78, 140, 255, .32);
+    }
+    .verified {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: .76rem;
+    }
+    .verified::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 4px rgba(67, 215, 163, .12);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(300px, .65fr);
+      gap: 26px;
+      align-items: end;
+      margin: 10px 0 28px;
+    }
+    .eyebrow {
+      margin-bottom: 15px;
+      color: var(--cyan);
+      font-size: .76rem;
+      font-weight: 850;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+    .hero-copy { max-width: 890px; color: #bec9d9; font-size: clamp(1rem, 1.6vw, 1.24rem); }
+    .hero-aside {
+      padding: 22px;
+      border: 1px solid rgba(78, 140, 255, .28);
+      border-radius: var(--radius);
+      background: linear-gradient(145deg, rgba(78, 140, 255, .15), rgba(66, 217, 255, .04));
+      box-shadow: var(--shadow);
+    }
+    .hero-aside strong { display: block; margin-bottom: 7px; font-size: 1.08rem; }
+    .hero-aside p { color: #b9c7da; font-size: .9rem; }
+
+    .toolbar {
+      position: sticky;
+      z-index: 20;
+      top: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 24px 0;
+      padding: 8px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(9, 18, 31, .86);
+      box-shadow: 0 15px 45px rgba(0, 0, 0, .23);
+      backdrop-filter: blur(18px);
+    }
+    .tabs, .actions { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tab, .btn {
+      min-height: 38px;
+      padding: 8px 12px;
+      border: 1px solid transparent;
+      border-radius: 10px;
+      color: #c5d0df;
+      background: transparent;
+      cursor: pointer;
+      transition: .18s ease;
+    }
+    .tab:hover, .btn:hover { border-color: var(--line); background: rgba(255, 255, 255, .05); color: #fff; }
+    .tab.active { color: #fff; background: var(--panel-3); }
+    .btn {
+      border-color: var(--line);
+      background: rgba(255, 255, 255, .035);
+      font-size: .84rem;
+      font-weight: 720;
+    }
+    .btn.primary { border-color: transparent; color: #07101d; background: linear-gradient(135deg, var(--blue), var(--cyan)); }
+    .btn.danger { color: #ffd6d8; }
+    .btn.small { min-height: 32px; padding: 5px 9px; font-size: .76rem; }
+
+    .notice {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 24px;
+      padding: 14px 16px;
+      border: 1px solid rgba(255, 199, 90, .2);
+      border-radius: 13px;
+      color: #e9d5a7;
+      background: rgba(255, 199, 90, .07);
+      font-size: .86rem;
+    }
+    .notice span:first-child { flex: 0 0 auto; }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+      margin: 0 0 24px;
+    }
+    .metric, .card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(145deg, rgba(255, 255, 255, .045), rgba(255, 255, 255, .018));
+      box-shadow: var(--shadow);
+    }
+    .metric { min-height: 126px; padding: 18px; }
+    .metric-label { color: var(--muted); font-size: .76rem; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; }
+    .metric-value { margin: 9px 0 2px; font-size: clamp(1.75rem, 3vw, 2.65rem); font-weight: 880; line-height: 1; letter-spacing: -.05em; }
+    .metric-note { color: #8190a5; font-size: .74rem; }
+
+    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+    .card { padding: 22px; }
+    .card p, .card li { color: #b6c2d3; }
+    .card ul, .card ol { margin: 12px 0 0; padding-left: 20px; }
+    .card li + li { margin-top: 8px; }
+    .card-accent { border-color: rgba(66, 217, 255, .25); background: linear-gradient(145deg, rgba(66, 217, 255, .09), rgba(255, 255, 255, .02)); }
+    .section { margin-top: 28px; }
+    .section-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 14px;
+    }
+    .section-head p { max-width: 700px; color: var(--muted); font-size: .88rem; }
+    .section-head h2 { margin-bottom: 4px; }
+
+    .positioning {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+    .positioning .number {
+      display: grid;
+      width: 42px;
+      height: 42px;
+      place-items: center;
+      border-radius: 12px;
+      color: var(--cyan);
+      background: rgba(66, 217, 255, .1);
+      font-weight: 850;
+    }
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 8px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: #b9c6d7;
+      background: rgba(255, 255, 255, .04);
+      font-size: .7rem;
+      white-space: nowrap;
+    }
+    .tag.a { border-color: rgba(67, 215, 163, .3); color: #a7f2d7; background: rgba(67, 215, 163, .09); }
+    .tag.b { border-color: rgba(255, 199, 90, .28); color: #ffe0a1; background: rgba(255, 199, 90, .08); }
+    .tag.c { border-color: rgba(168, 140, 255, .28); color: #d7c8ff; background: rgba(168, 140, 255, .08); }
+    .tag.old { color: #b7c8ff; }
+    .tag.new { color: #a9f1e5; }
+
+    .lead-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .lead-card {
+      min-width: 0;
+      padding: 17px;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      background: rgba(255, 255, 255, .028);
+      cursor: pointer;
+      transition: .18s ease;
+    }
+    .lead-card:hover { transform: translateY(-2px); border-color: rgba(78, 140, 255, .35); background: rgba(78, 140, 255, .06); }
+    .lead-card-top { display: flex; justify-content: space-between; gap: 12px; }
+    .lead-card h3 { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .lead-card p { margin-bottom: 12px; color: #9eacc0; font-size: .8rem; }
+    .score { color: var(--cyan); font-weight: 850; }
+
+    .filters {
+      display: grid;
+      grid-template-columns: minmax(220px, 2fr) repeat(3, minmax(125px, .7fr)) minmax(150px, .8fr);
+      gap: 9px;
+      margin-bottom: 12px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, .025);
+    }
+    input, select, textarea {
+      width: 100%;
+      min-height: 39px;
+      padding: 8px 10px;
+      border: 1px solid rgba(255, 255, 255, .12);
+      border-radius: 9px;
+      outline: none;
+      color: var(--text);
+      background: #0c1727;
+    }
+    textarea { min-height: 92px; resize: vertical; }
+    input:focus, select:focus, textarea:focus { border-color: rgba(78, 140, 255, .75); box-shadow: 0 0 0 3px rgba(78, 140, 255, .12); }
+    select option { color: #fff; background: #0c1727; }
+    .table-wrap {
+      overflow: auto;
+      max-height: calc(100vh - 180px);
+      min-height: 460px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(7, 16, 29, .65);
+      box-shadow: var(--shadow);
+    }
+    table { width: 100%; min-width: 1510px; border-collapse: separate; border-spacing: 0; font-size: .82rem; }
+    th {
+      position: sticky;
+      z-index: 3;
+      top: 0;
+      padding: 11px 10px;
+      border-bottom: 1px solid var(--line);
+      color: #aebbd0;
+      background: #101c2e;
+      font-size: .68rem;
+      letter-spacing: .06em;
+      text-align: left;
+      text-transform: uppercase;
+    }
+    td { padding: 11px 10px; border-bottom: 1px solid rgba(255, 255, 255, .065); vertical-align: top; }
+    tbody tr { transition: .14s ease; }
+    tbody tr:hover { background: rgba(78, 140, 255, .045); }
+    tbody tr:last-child td { border-bottom: 0; }
+    .company-cell { min-width: 210px; }
+    .company-cell strong { display: block; margin-bottom: 3px; font-size: .9rem; }
+    .subtle { color: #8997ac; font-size: .72rem; }
+    .contact-cell { min-width: 210px; }
+    .contact-cell strong { display: block; }
+    .contact-links { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 7px; }
+    .contact-links a {
+      padding: 3px 7px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      color: #bbd8ff;
+      background: rgba(255, 255, 255, .035);
+      font-size: .68rem;
+      text-decoration: none;
+    }
+    .angle-cell { min-width: 280px; max-width: 360px; color: #b9c6d7; }
+    .ticket-cell { min-width: 175px; }
+    .ticket-cell strong { display: block; color: #dce8f9; }
+    .editable-cell { min-width: 150px; }
+    .editable-cell input, .editable-cell select { min-height: 34px; padding: 5px 7px; font-size: .75rem; }
+    .row-actions { display: flex; min-width: 130px; flex-wrap: wrap; gap: 5px; }
+    .source-link { text-decoration: none; }
+    .empty {
+      padding: 48px 20px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .timeline { position: relative; }
+    .timeline::before {
+      content: "";
+      position: absolute;
+      top: 21px;
+      bottom: 21px;
+      left: 20px;
+      width: 1px;
+      background: linear-gradient(var(--blue), rgba(66, 217, 255, .12));
+    }
+    .timeline-item { position: relative; display: grid; grid-template-columns: 42px 1fr; gap: 14px; padding: 0 0 20px; }
+    .timeline-item:last-child { padding-bottom: 0; }
+    .timeline-dot {
+      z-index: 1;
+      display: grid;
+      width: 42px;
+      height: 42px;
+      place-items: center;
+      border: 1px solid rgba(78, 140, 255, .35);
+      border-radius: 50%;
+      color: var(--cyan);
+      background: #0c1829;
+      font-size: .76rem;
+      font-weight: 850;
+    }
+    .timeline-item p { margin-bottom: 0; font-size: .86rem; }
+    .quote {
+      padding: 18px;
+      border-left: 3px solid var(--blue);
+      border-radius: 0 12px 12px 0;
+      color: #d2dceb;
+      background: rgba(78, 140, 255, .07);
+      font-size: .92rem;
+    }
+    .offer-price { margin: 14px 0 5px; font-size: 2.15rem; font-weight: 900; letter-spacing: -.05em; }
+    .offer-price span { color: var(--muted); font-size: .78rem; font-weight: 600; letter-spacing: 0; }
+
+    .source-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .source-card {
+      min-height: 160px;
+      padding: 17px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, .027);
+    }
+    .source-card a { display: inline-block; margin-top: 10px; font-size: .78rem; text-decoration: none; }
+    .source-card p { color: #aab7ca; font-size: .82rem; }
+    .risk {
+      border-color: rgba(255, 123, 130, .25);
+      background: rgba(255, 123, 130, .06);
+    }
+
+    dialog {
+      width: min(940px, calc(100% - 22px));
+      max-height: calc(100vh - 28px);
+      padding: 0;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      color: var(--text);
+      background: #0b1626;
+      box-shadow: 0 40px 140px rgba(0, 0, 0, .7);
+    }
+    dialog::backdrop { background: rgba(2, 7, 14, .76); backdrop-filter: blur(7px); }
+    .dialog-head {
+      position: sticky;
+      z-index: 2;
+      top: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(11, 22, 38, .96);
+      backdrop-filter: blur(12px);
+    }
+    .dialog-head h2 { margin: 0; font-size: 1.28rem; }
+    .dialog-body { padding: 20px; }
+    .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px; }
+    .field.full { grid-column: 1 / -1; }
+    .field label { display: block; margin: 0 0 5px; color: #9fadc1; font-size: .7rem; font-weight: 750; letter-spacing: .04em; text-transform: uppercase; }
+    .dialog-actions {
+      position: sticky;
+      bottom: 0;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 14px 20px;
+      border-top: 1px solid var(--line);
+      background: rgba(11, 22, 38, .97);
+      backdrop-filter: blur(12px);
+    }
+    .dialog-actions > div { display: flex; gap: 8px; }
+
+    .toast {
+      position: fixed;
+      z-index: 100;
+      right: 18px;
+      bottom: 18px;
+      max-width: 360px;
+      padding: 12px 14px;
+      border: 1px solid rgba(67, 215, 163, .28);
+      border-radius: 12px;
+      color: #d8fff1;
+      background: rgba(13, 39, 34, .96);
+      box-shadow: var(--shadow);
+      opacity: 0;
+      transform: translateY(12px);
+      pointer-events: none;
+      transition: .22s ease;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    footer { margin-top: 34px; color: #718097; font-size: .74rem; text-align: center; }
+
+    @media (max-width: 1100px) {
+      .metrics { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .lead-cards, .source-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .filters { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .filters input:first-child { grid-column: 1 / -1; }
+    }
+    @media (max-width: 760px) {
+      .shell { width: min(100% - 18px, 1540px); padding-top: 14px; }
+      .topbar, .hero, .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .topbar { align-items: flex-start; margin-bottom: 30px; }
+      .hero { display: grid; }
+      .toolbar { position: static; align-items: flex-start; flex-direction: column; }
+      .toolbar .actions { width: 100%; }
+      .metrics, .lead-cards, .source-grid, .filters, .form-grid { grid-template-columns: 1fr; }
+      .field.full { grid-column: auto; }
+      .filters input:first-child { grid-column: auto; }
+      .metric { min-height: 105px; }
+      .section-head { align-items: flex-start; flex-direction: column; }
+      .verified { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="topbar">
+      <div class="brand"><span class="brand-mark">S</span> SiteSpot Deal Room</div>
+      <div class="verified">Kontakty ověřeny z veřejných zdrojů · 23. 7. 2026</div>
+    </div>
+
+    <header class="hero">
+      <div>
+        <div class="eyebrow">Website → Revenue OS</div>
+        <h1>Web je váš vstup.<br>Ne finální produkt.</h1>
+        <p class="hero-copy">Editovatelný high-ticket pipeline pro firmy z FVE, tepelných čerpadel a HVAC. Původních 8 kontaktů je zachováno a doplněno o nové firmy, konkrétní decision makery, prodejní signály a personalizovaný opening angle.</p>
+      </div>
+      <aside class="hero-aside">
+        <strong>Doporučený první deal</strong>
+        <p><b>SiteSpot Revenue Flow Pilot</b>: za 7 pracovních dnů napojit jednu cestu poptávky z webu až do kvalifikace, správného obchodníka, nabídky a dashboardu.</p>
+        <span class="tag a">149–249 tis. Kč</span>
+        <span class="tag">50 % předem</span>
+        <span class="tag">1 proces</span>
+      </aside>
+    </header>
+
+    <div class="toolbar">
+      <nav class="tabs" aria-label="Sekce">
+        <button class="tab active" data-tab="overview">Přehled</button>
+        <button class="tab" data-tab="leads">Kontakty</button>
+        <button class="tab" data-tab="playbook">High-ticket playbook</button>
+        <button class="tab" data-tab="sources">Kde hledat</button>
+      </nav>
+      <div class="actions">
+        <button class="btn" id="exportCsv">Export CSV</button>
+        <button class="btn" id="exportJson">Záloha JSON</button>
+        <button class="btn" id="importJson">Import JSON</button>
+        <button class="btn primary" id="addLead">+ Přidat lead</button>
+      </div>
+    </div>
+
+    <div class="notice"><span>◉</span><span>Změny se automaticky ukládají pouze v tomto prohlížeči. Pro přenos mezi zařízeními nebo jako pravidelnou zálohu použij <b>Záloha JSON</b>. Před oslovením znovu ověř roli, firmu a stav v ARES/Justice/ISIR.</span></div>
+
+    <main>
+      <section class="tab-panel active" id="overview">
+        <div class="metrics" id="metrics"></div>
+
+        <div class="grid-2">
+          <article class="card card-accent">
+            <div class="eyebrow">Co přesně prodávat</div>
+            <h2>Revenue Flow, ne „nový web“</h2>
+            <p>SiteSpot už umí vizuální weby, CRM napojení, AI agenty a živá dema. Spojte je do jednoho výsledku: <b>méně ztracených poptávek a rychlejší cesta k nabídce</b>.</p>
+            <div class="positioning">
+              <div class="number">1</div>
+              <div><h3>Conversion layer</h3><p>Vertikální landing, kalkulátor nebo chytrý formulář, který získá informace nutné pro nabídku.</p></div>
+            </div>
+            <div class="positioning">
+              <div class="number">2</div>
+              <div><h3>Operations layer</h3><p>Kvalifikace, routing na správný region/produkt, CRM, follow-up a předání technikovi.</p></div>
+            </div>
+            <div class="positioning">
+              <div class="number">3</div>
+              <div><h3>Visibility layer</h3><p>Dashboard: response time, zdroj, fáze, důvod ztráty a hodnota pipeline.</p></div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="eyebrow">SiteSpot web · audit</div>
+            <h2>Co změnit před kampaní</h2>
+            <ul>
+              <li><b>Oddělte high-ticket route.</b> Ceny „od 16/29 tisíc“ vás kotví jako levnou webovou agenturu. Na <code>/revenue-os</code> ukažte pilot 149–249 tisíc a business outcome.</li>
+              <li><b>Přidejte vertikální živé demo.</b> Stávající Lead Radar a automations jsou dobrý základ; přidejte FVE/TČ „Lead-to-Quote“ se směrováním podle regionu a výkonu.</li>
+              <li><b>Posilte proof.</b> Konceptové Vercel ukázky označte jako koncepty. High-ticket route potřebuje jmenované reference nebo ověřitelné case studies.</li>
+              <li><b>Doplňte enterprise trust.</b> IČ, zabezpečení, DPA/GDPR, datové toky, SLA, předání zdrojáků, integrace a odpovědnost.</li>
+              <li><b>Ověřte veřejný telefon.</b> Číslo +420 777 123 456 působí jako placeholder; před outboundem musí být bezchybné.</li>
+            </ul>
+          </article>
+        </div>
+
+        <section class="section">
+          <div class="section-head">
+            <div><div class="eyebrow">Call first</div><h2>První fronta pro 1–2týdenní sales-cycle</h2></div>
+            <p>Founder-led nebo ředitelsky dostupné firmy, kde lze podepsat jasně ohraničený placený pilot. Kliknutím otevřeš editaci leadu.</p>
+          </div>
+          <div class="lead-cards" id="topLeadCards"></div>
+        </section>
+
+        <section class="section grid-3">
+          <article class="card">
+            <div class="eyebrow">Vstupní wedge</div>
+            <h3>Personalizovaný live prototype</h3>
+            <p>Jedna reusable šablona na <code>sitespot.cz/for/firma</code>. Logo, veřejné produktové řady, routing a ROI kalkulačka. Max. 30–45 minut práce na A-lead.</p>
+          </article>
+          <article class="card">
+            <div class="eyebrow">Risk reversal</div>
+            <h3>7denní pilot, ne transformace</h3>
+            <p>Jeden formulář nebo inbox, jedna cílová metrika, pevný rozsah. Pilotní fee lze při rychlém rozhodnutí započítat do rolloutu.</p>
+          </article>
+          <article class="card">
+            <div class="eyebrow">Expanze</div>
+            <h3>Web → proces → retainer</h3>
+            <p>Po prokázání flow přidejte další regiony, produkty, servis, partner portal a reporting. Cíl rolloutu 350–700 tisíc + 25–60 tisíc měsíčně.</p>
+          </article>
+        </section>
+      </section>
+
+      <section class="tab-panel" id="leads">
+        <div class="section-head">
+          <div><div class="eyebrow">Mini CRM</div><h2>High-ticket kontakty</h2></div>
+          <p>Stav, owner, datum dalšího kroku a prioritu upravíš přímo v tabulce. Tlačítko „Detail“ otevře všechna pole včetně personalizovaného pitch angle.</p>
+        </div>
+
+        <div class="filters">
+          <input id="search" type="search" placeholder="Hledat firmu, člověka, segment, angle…">
+          <select id="priorityFilter" aria-label="Priorita">
+            <option value="">Všechny priority</option>
+            <option value="A">Priorita A</option>
+            <option value="B">Priorita B</option>
+            <option value="C">Priorita C</option>
+          </select>
+          <select id="statusFilter" aria-label="Stav">
+            <option value="">Všechny stavy</option>
+          </select>
+          <select id="originFilter" aria-label="Původ">
+            <option value="">Původní + nové</option>
+            <option value="Původní shortlist">Původních 8</option>
+            <option value="Nový research">Nový research</option>
+          </select>
+          <select id="sortBy" aria-label="Řazení">
+            <option value="score-desc">Score: nejvyšší</option>
+            <option value="company-asc">Firma: A–Z</option>
+            <option value="next-asc">Další krok: nejdřív</option>
+            <option value="updated-desc">Naposledy upravené</option>
+          </select>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Priorita</th>
+                <th>Firma</th>
+                <th>Decision maker</th>
+                <th>High-ticket angle</th>
+                <th>Ticket / close</th>
+                <th>Stav</th>
+                <th>Owner</th>
+                <th>Další krok</th>
+                <th>Zdroj</th>
+                <th>Akce</th>
+              </tr>
+            </thead>
+            <tbody id="leadRows"></tbody>
+          </table>
+          <div class="empty" id="emptyState" hidden>Žádné leady neodpovídají filtru.</div>
+        </div>
+      </section>
+
+      <section class="tab-panel" id="playbook">
+        <div class="grid-2">
+          <article class="card card-accent">
+            <div class="eyebrow">Produktizovaná nabídka</div>
+            <h2>SiteSpot Revenue Flow Pilot</h2>
+            <p>„Za 7 pracovních dnů zprovozníme jednu měřitelnou cestu od poptávky po připravené podklady pro nabídku — na vašem stávajícím webu a nástrojích.“</p>
+            <div class="offer-price">149–249k <span>Kč bez DPH / fixed scope</span></div>
+            <ul>
+              <li>1 conversion page, formulář nebo inbox</li>
+              <li>kvalifikační logika a routing</li>
+              <li>napojení na jedno CRM / e-mail / tabulku</li>
+              <li>automatický follow-up a interní upozornění</li>
+              <li>dashboard a předání týmu</li>
+            </ul>
+          </article>
+          <article class="card">
+            <div class="eyebrow">Hranice scope</div>
+            <h2>Co do pilotu nedávat</h2>
+            <ul>
+              <li>kompletní redesign všech stránek</li>
+              <li>výměnu ERP/CRM nebo migraci celé databáze</li>
+              <li>všechny regiony, produkty a týmy najednou</li>
+              <li>neomezené integrace a custom reporting</li>
+              <li>vágní „AI transformaci“ bez jedné metriky</li>
+            </ul>
+            <p style="margin-top:16px"><b>Success metric:</b> čas do prvního kontaktu, podíl kompletních leadů, čas k nabídce, nebo počet ručních handoffů.</p>
+          </article>
+        </div>
+
+        <section class="section grid-2">
+          <article class="card">
+            <div class="eyebrow">7denní prodej</div>
+            <h2>Sales-cycle krok za krokem</h2>
+            <div class="timeline">
+              <div class="timeline-item"><div class="timeline-dot">D0</div><div><h3>Vyber trigger</h3><p>Pobočky, více produktů, více inboxů, 24–48h SLA, partner program nebo složitý poptávkový formulář.</p></div></div>
+              <div class="timeline-item"><div class="timeline-dot">D1</div><div><h3>Zavolej, demo pošli až potom</h3><p>Cílem hovoru není prodat systém, ale získat 12 minut nad konkrétní ukázkou jejich flow.</p></div></div>
+              <div class="timeline-item"><div class="timeline-dot">D2</div><div><h3>20min process mapping</h3><p>Zmapuj zdroj → kvalifikace → owner → nabídka → follow-up. Najdi jediný drahý handoff.</p></div></div>
+              <div class="timeline-item"><div class="timeline-dot">D3</div><div><h3>Jednostránková nabídka</h3><p>Fixní výstup, termín, metrika, cena, kdo dodá přístupy a co se stane po pilotu.</p></div></div>
+              <div class="timeline-item"><div class="timeline-dot">D4–7</div><div><h3>Technický proof + procurement</h3><p>15 minut s technickým člověkem. Připrav DPA, datový tok, rollback a vlastnictví.</p></div></div>
+              <div class="timeline-item"><div class="timeline-dot">D7–10</div><div><h3>Podpis a kickoff</h3><p>50 % předem, kickoff do 72 hodin. Pokud chtějí širší scope, dej ho do fáze 2.</p></div></div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="eyebrow">Call opener</div>
+            <h2>Neprodávej redesign</h2>
+            <div class="quote">„Dobrý den, pane/paní [jméno], nejdu vám prodávat nový web. Všiml jsem si, že řešíte [více regionů / FVE + TČ / partner síť] a veřejně slibujete reakci do [24/48 h]. Postavili jsme krátký živý model, jak by se poptávka sama kvalifikovala a šla rovnou správnému člověku s podklady pro nabídku. Když vám pošlu odkaz, najdete zítra 12 minut, abyste mi řekl/a, kde je to mimo realitu?“</div>
+
+            <div class="eyebrow" style="margin-top:24px">Follow-up e-mail</div>
+            <div class="quote">Předmět: [Firma] — živý model cesty poptávky<br><br>Dobrý den, [jméno], tady je slíbená ukázka: [odkaz]. Vychází jen z veřejných informací a nic nepředstírá — jde o model. Na 12 minutách bych chtěl ověřit tři handoffy a zjistit, zda má smysl fixní 7denní pilot. [termín 1] / [termín 2]?</div>
+          </article>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <div><div class="eyebrow">Váš web jako unfair advantage</div><h2>Personalizace bez zabití marže</h2></div>
+          </div>
+          <div class="grid-3">
+            <article class="card"><h3>1 reusable vertical shell</h3><p>FVE/TČ demo drží stejnou architekturu. Měníte jen logo, barvy, veřejné služby, regiony a jeden trigger.</p></article>
+            <article class="card"><h3>30–45 minut na A-lead</h3><p>Žádný bezplatný full redesign. Hero, kalkulátor, flow diagram a dashboard stačí k tomu, aby byl hovor konkrétní.</p></article>
+            <article class="card"><h3>Odkaz jako multithreading</h3><p>Decision maker ho může přeposlat obchodu, IT a realizaci. Každý na stejné stránce vidí svůj kus systému.</p></article>
+            <article class="card"><h3>ROI bez fake čísel</h3><p>Nechte prospecta zadat počet leadů, průměrnou marži a odhad leakage. Výpočet je jejich, ne váš slib.</p></article>
+            <article class="card"><h3>Technický appendix</h3><p>Za vizuálním demem dejte datový tok, integrace, přístupy, zabezpečení, logging a rollback. To odlišuje high-ticket.</p></article>
+            <article class="card"><h3>Proof po vrstvách</h3><p>Koncept → placený pilot → měřitelný case study → rollout. Neukazujte koncept jako hotovou klientskou realizaci.</p></article>
+          </div>
+        </section>
+      </section>
+
+      <section class="tab-panel" id="sources">
+        <div class="section-head">
+          <div><div class="eyebrow">Lead sourcing stack</div><h2>Kde hledat další firmy</h2></div>
+          <p>Registry jsou skvělé na ověření, ne na samotný buying intent. Nejlepší lead vznikne průnikem kvalitní vertikální databáze, konkrétního triggeru a přímého decision makera.</p>
+        </div>
+
+        <div class="source-grid">
+          <article class="source-card"><h3>Refsite — spolehliví dodavatelé</h3><p>Aktuálně uvádí 174 prověřovaných firem z 1 009 profilů. Filtruj 20+ recenzí, 5+ let a více služeb.</p><a href="https://sluzby.refsite.info/verified-suppliers" target="_blank" rel="noreferrer">Otevřít Refsite ↗</a></article>
+          <article class="source-card"><h3>AVTČ — členové asociace</h3><p>Výrobci, distributoři, montážní firmy, geotermie a průmyslové aplikace. Ideální vertikální seed list.</p><a href="https://www.avtc.cz/clenove-asociace/" target="_blank" rel="noreferrer">Otevřít AVTČ ↗</a></article>
+          <article class="source-card"><h3>Solární asociace / CAFT / ČFA</h3><p>Členské seznamy a akce. Hledej firmy s partner programem, firemní FVE, bateriemi a novými regiony.</p><a href="https://solarniasociace.cz/" target="_blank" rel="noreferrer">Otevřít asociaci ↗</a></article>
+          <article class="source-card"><h3>Oficiální web firmy</h3><p>Nejlepší zdroj rolí, e-mailů a provozních signálů: tým, pobočky, formuláře, reakční SLA, kariéra, nové produkty.</p><a href="https://www.google.com/search?q=site%3Afirma.cz+kontakt+t%C3%BDm+obchodn%C3%AD+%C5%99editel" target="_blank" rel="noreferrer">Vyhledávací pattern ↗</a></article>
+          <article class="source-card"><h3>ARES + Justice + ISIR</h3><p>Ověř IČ, aktivitu, statutáry, změny ve vedení, sbírku listin a insolvenci. Povinné před nabídkou a smlouvou.</p><a href="https://www.ares.gov.cz/ekonomicke-subjekty" target="_blank" rel="noreferrer">ARES ↗</a> · <a href="https://or.justice.cz/ias/ui/rejstrik" target="_blank" rel="noreferrer">Justice ↗</a> · <a href="https://isir.justice.cz/isir/common/index.do" target="_blank" rel="noreferrer">ISIR ↗</a></article>
+          <article class="source-card"><h3>NEN + veřejné zakázky</h3><p>Dodavatelský profil, vyhrané/rozpracované tendry a veřejný sektor jsou signál kapacity i složitější administrativy.</p><a href="https://nen.nipez.cz/registr-dodavatelu" target="_blank" rel="noreferrer">Registr dodavatelů NEN ↗</a></article>
+          <article class="source-card"><h3>Registr smluv / Hlídač státu</h3><p>Najdi firmy s reálnými kontrakty, jejich typické zákazníky, hodnotu a sezónnost. Dobré pro personalizovaný trigger.</p><a href="https://smlouvy.gov.cz/" target="_blank" rel="noreferrer">Registr smluv ↗</a> · <a href="https://www.hlidacstatu.cz/" target="_blank" rel="noreferrer">Hlídač státu ↗</a></article>
+          <article class="source-card"><h3>LinkedIn + pracovní inzeráty</h3><p>Najdi Head of Sales, COO, IT/Marketing Director. Hiring CRM, project managera nebo obchodníků znamená rostoucí procesní bolest.</p><a href="https://www.linkedin.com/" target="_blank" rel="noreferrer">LinkedIn ↗</a></article>
+          <article class="source-card"><h3>Veletržní exhibitor lists</h3><p>Aquatherm, FOR ARCH, ISH, The smarter E. Vystavovatelé mají rozpočet, produktový launch a důvod rozhodnout před akcí.</p><a href="https://www.ish.messefrankfurt.com/" target="_blank" rel="noreferrer">ISH ↗</a></article>
+        </div>
+
+        <section class="section grid-2">
+          <article class="card">
+            <div class="eyebrow">Scoring pattern</div>
+            <h2>Signály, které zvedají prioritu</h2>
+            <ul>
+              <li>2+ regiony nebo pobočky</li>
+              <li>3+ produktové řady / rozdílné typy zákazníků</li>
+              <li>oddělený obchod, projekce, realizace a servis</li>
+              <li>veřejný příslib reakce do 24/48 hodin</li>
+              <li>partner nebo distributor program</li>
+              <li>nový formulář, produkt, akvizice, fúze či export</li>
+              <li>founder/jednatel s přímým e-mailem a telefonem</li>
+            </ul>
+          </article>
+          <article class="card risk">
+            <div class="eyebrow" style="color:#ff9ca2">Due diligence</div>
+            <h2>Watchlist mimo aktivní pipeline</h2>
+            <p><b>S‑Power Business Solutions s.r.o., IČ 17863368:</b> firemní zdroje ukazují aktivní nabídku, ale jeden aktuální datový agregátor uvádí insolvenční řízení. Nezařazeno mezi aktivní leady; nejdřív ověřit přímo v ISIR.</p>
+            <p><b>Pravidlo:</b> pozitivní recenze nebo pěkný web nenahrazují kontrolu právního subjektu, platební schopnosti a osoby oprávněné podepsat smlouvu.</p>
+          </article>
+        </section>
+
+        <section class="section card">
+          <div class="eyebrow">Outbound hygiene</div>
+          <h2>Veřejný kontakt ≠ neomezené oslovování</h2>
+          <p>Oslovujte pouze pracovní role relevantní k nabídce, uveďte proč kontaktujete právě je, evidujte zdroj a datum, nabídněte snadné odhlášení a držte suppression list. Pro větší škálu si nechte zkontrolovat oprávněný zájem a interní GDPR proces právníkem.</p>
+        </section>
+      </section>
+    </main>
+
+    <footer>SiteSpot High-ticket Deal Room · offline HTML · data zůstávají ve vašem prohlížeči</footer>
+  </div>
+
+  <dialog id="leadDialog">
+    <form id="leadForm" method="dialog">
+      <div class="dialog-head">
+        <div><div class="eyebrow" style="margin-bottom:4px">Editace leadu</div><h2 id="dialogTitle">Lead</h2></div>
+        <button class="btn" type="button" id="closeDialog">Zavřít</button>
+      </div>
+      <div class="dialog-body">
+        <div class="form-grid" id="formFields"></div>
+      </div>
+      <div class="dialog-actions">
+        <button class="btn danger" type="button" id="deleteLead">Smazat lead</button>
+        <div>
+          <button class="btn" type="button" id="cancelDialog">Zrušit</button>
+          <button class="btn primary" type="submit">Uložit změny</button>
+        </div>
+      </div>
+    </form>
+  </dialog>
+
+  <input id="fileInput" type="file" accept=".json,application/json" hidden>
+  <div class="toast" id="toast" role="status"></div>
+
+  <script>
+    const STORAGE_KEY = "sitespot-high-ticket-crm-v1";
+    const statuses = ["Nový", "Research", "Volat", "Kontaktováno", "Discovery", "Pilot nabídnut", "Proposal", "Vyhráno", "Nurture", "Ztraceno"];
+
+    const seedLeads = [
+      {
+        id: "ilios",
+        origin: "Původní shortlist",
+        priority: "A",
+        score: 96,
+        company: "ILIOS",
+        legal: "ILIOS s.r.o.",
+        ico: "09494561",
+        location: "Brno",
+        segment: "FVE · HVAC · BESS · chytré řízení",
+        contactName: "Ing. David Škaroupka",
+        role: "Jednatel / obchodní ředitel",
+        email: "david@ilios.cz",
+        phone: "+420 776 010 625",
+        secondaryContact: "Ing. Jaromír Mahel · obchodní a marketingový manažer · jaromir.mahel@ilios.cz",
+        website: "https://ilios.cz/",
+        sourceUrl: "https://ilios.cz/kontakt/",
+        decisionSource: "Oficiální tým firmy; IČ na oficiálním webu; Refsite 99 % / 18 recenzí při ověření.",
+        signal: "Více technických divizí a samostatní project manageři pro HVAC, FVE a řízení. Přímý přístup k jednateli i obchodně-marketingovému manažerovi.",
+        angle: "Jeden intake pro FVE/HVAC/BESS, který podle typu projektu doplní technická data, přiřadí správného PM a ukáže čas do nabídky.",
+        offer: "Revenue Flow Pilot: firemní FVE/BESS poptávka → kvalifikace → PM → quote-ready brief → dashboard.",
+        ticket: "179–249k pilot → 450–700k rollout",
+        pilotMin: 179000,
+        pilotMax: 249000,
+        closeWindow: "1–2 týdny (pilot)",
+        status: "Volat",
+        owner: "",
+        nextDate: "",
+        nextAction: "Zavolat Davidovi; po hovoru poslat personalizované demo FVE/BESS flow.",
+        notes: "Top 3. Opening musí být o předávání zakázky mezi obchodem a projektem, ne o novém webu.",
+        verified: "2026-07-23",
+        updated: "2026-07-23T10:00:00Z"
+      },
+      {
+        id: "energosolar",
+        origin: "Původní shortlist",
+        priority: "A",
+        score: 95,
+        company: "Energosolar",
+        legal: "Chaintech s.r.o.",
+        ico: "06512119",
+        location: "Písková Lhota / Praha",
+        segment: "FVE · TČ · domácnosti · firmy · veřejný sektor",
+        contactName: "Jaroslav Štěpán",
+        role: "Jednatel a zakladatel",
+        email: "jaroslav.stepan@energosolar.cz",
+        phone: "+420 774 274 690",
+        secondaryContact: "Michal Krčmář · marketingový a IT ředitel · michal.krcmar@energosolar.cz · +420 722 829 579",
+        website: "https://www.energosolar.cz/",
+        sourceUrl: "https://www.energosolar.cz/kontakt/",
+        decisionSource: "Oficiální tým a fakturační údaje; Refsite 99 % / 39 recenzí při ověření.",
+        signal: "Veřejně oddělené inboxy pro instalace, servis, revize, projekty, marketing, IT a fakturaci; firma slibuje odpověď do 48 h.",
+        angle: "Inbox-to-install OS: automatické třídění poptávek a odpovědí, jednotný owner, SLA a předání projektu bez ručního přeposílání mezi odděleními.",
+        offer: "Revenue Flow Pilot na jednom kanálu: info@ → kvalifikace → obchodník → projekce → termín follow-upu.",
+        ticket: "179–249k pilot → 450–750k rollout",
+        pilotMin: 179000,
+        pilotMax: 249000,
+        closeWindow: "1–2 týdny (pilot)",
+        status: "Volat",
+        owner: "",
+        nextDate: "",
+        nextAction: "Volat Jaroslavovi; Michala použít jako technického/champion kontaktu.",
+        notes: "Top 3. Silný veřejný procesní signál: mnoho inboxů + reakční SLA.",
+        verified: "2026-07-23",
+        updated: "2026-07-23T10:00:00Z"
+      },
+      {
+        id: "ctc-energy",
+        origin: "Původní shortlist",
+        priority: "A",
+        score: 94,
+        company: "CTC Energy",
+        legal: "CTC Plzeň s.r.o. / VK Solar system s.r.o. / Solar Factory s.r.o.",
+        ico: "29103479 (skupina také 29079110, 14174545)",
+        location: "Plzeň",
+        segment: "TČ · FVE · skupina 3 firem",
+        contactName: "Ing. David Král",
+        role: "Obchodní ředitel FVE",
+        email: "dk@ctcenergy.cz",
+        phone: "+420 702 104 212",
+        secondaryContact: "Ing. Vladimír Kliment · jednatel · vlk@ctcenergy.cz / vlk.ctc@ctcenergy.cz",
+        website: "https://www.ctcenergy.cz/",
+        sourceUrl: "https://www.ctcenergy.cz/kontakty/",
+        decisionSource: "Oficiální kontakty a popis skupiny; Refsite uváděl CTC Plzeň 95 % / 39 recenzí.",
+        signal: "Tři právní subjekty řízené jedním majitelem, dvě produktové větve, oddělená administrativa projektů a veřejný příslib rychlé reakce.",
+        angle: "Sdílený lead/project cockpit pro FVE a TČ napříč třemi firmami: owner, dokumenty, SLA, nabídka a reporting v jednom toku.",
+        offer: "Pilot na FVE flow; rollout pak propojí TČ, administraci a servis.",
+        ticket: "199–279k pilot → 500–850k rollout",
+        pilotMin: 199000,
+        pilotMax: 279000,
+        closeWindow: "1–2 týdny (pilot)",
+        status: "Volat",
+        owner: "",
+        nextDate: "",
+        nextAction: "Zavolat Davidovi; demo ukázat jako jednu frontu pro tři právní subjekty.",
+        notes: "Top 5. Neřešit celou skupinu v pilotu; začít FVE intake.",
+        verified: "2026-07-23",
+        updated: "2026-07-23T10:00:00Z"
+      },
+      {
+        id: "neota",
+        origin: "Původní shortlist",
+        priority: "A",
+        score: 93,
+        company: "NEOTA CZ",
+        legal: "NEOTA CZ s.r.o.",
+        ico: "27759431",
+        location: "Holešov / Praha-východ",
+        segment: "Výrobce TČ · FVE · rekuperace · velkoobchod",
+        contactName: "Martin Husák",
+        role: "Obchodní ředitel",
+        email: "martin.husak@neota.cz",
+        phone: "+420 576 130 900",
+        secondaryContact: "Ing. Petra Husáková · velkoobchod a zahraniční obchod · petra.husakova@neota.cz",
+        website: "https://www.neota.cz/",
+        sourceUrl: "https://www.neota.cz/kontakty/",
+        decisionSource: "Oficiální tým a fakturační údaje; Refsite 99 % / 54 recenzí při ověření.",
+        signal: "Výroba, montáž, servis, velkoobchod, zahraniční obchod a partnerská sekce. Regionální provozovny a různé typy zákazníků.",
+        angle: "Partner & Quote Portal: onboarding partnera, konfigurace řešení, technické podklady, předání leadu a stav nabídky.",
+        offer: "Pilot partner leadu nebo jedné produktové kalkulace; rollout na dokumentaci, školení a servis.",
+        ticket: "179–249k pilot → 450–800k rollout",
+        pilotMin: 179000,
+        pilotMax: 249000,
+        closeWindow: "1–2 týdny (pilot)",
+        status: "Volat",
+        owner: "",
+        nextDate: "",
+        nextAction: "Volat Martinovi s ukázkou partner portálu a quote-ready briefu.",
+        notes: "Top 5. Rodinná firma s přímým obchodním ředitelem; vhodné pro rychlé rozhodnutí.",
+        verified: "2026-07-23",
+        updated: "2026-07-23T10:00:00Z"
+      },
+      {
+        id: "enado",
+        origin: "Původní shortlist",
+        priority: "A",
+        score: 92,
+        company: "Enado",
+        legal: "Enado s.r.o.",
+        ico: "14041936",
+        location: "Luby · Cheb · Staňkov · Frýdek-Místek · střední Čechy",
+        segment: "FVE · TČ · distribuce · regionální centra",
+        contactName: "František Kolář",
+        role: "Regionální specialista Praha a střední Čechy",
+        email: "obchod@enado.cz",
+        phone: "+420 602 172 838",
+        secondaryContact: "Centrální obchod · +420 724 280 008 · obchod@enado.cz",
+        website: "https://www.enado.cz/",
+        sourceUrl: "https://www.enado.cz/kontakt/",
+        decisionSource: "Oficiální regionální tým a IČ; Refsite 99 % / 65 recenzí při ověření.",
+        signal: "Nejméně čtyři regionální centra, veřejné kontakty pro obchod, marketing, distribuci, servis, dotace, nákup a fakturaci.",
+        angle: "Regional Lead Router: automatická kvalifikace podle PSČ, technologie a typu objektu, společné SLA a viditelnost nad regiony.",
+        offer: "Pilot pro jeden region + jeden zdroj leadů; rollout napříč středisky.",
+        ticket: "149–229k pilot → 400–700k rollout",
+        pilotMin: 149000,
+        pilotMax: 229000,
+        closeWindow: "1–2 týdny (pilot)",
+        status: "Volat",
+        owner: "",
+        nextDate: "",
+        nextAction: "Přes Františka zjistit ownera centrálního lead flow; poslat regionální demo.",
+        notes: "Top 7. Původní kontakt byl centrální inbox; doplněn konkrétní regionální specialista.",
+        verified: "2026-07-23",
+        updated: "2026-07-23T10:00:00Z"
+      },
+      {
+        id: "ac-heating",
+        origin: "Původní shortlist",
+        priority: "B",
+        score: 84,
+        company: "AC Heating",
+        legal: "KUFI INT, s.r.o.",
+        ico: "26410656",
+        location: "Plzeň-Letkov · celá ČR",
+        segment: "Český výrobce TČ · FVE · B2B partneři",
+        contactName: "Leoš Hrádek",
+        role: "B2B partnerský kontakt",
+        email: "lhradek@ac-heating.cz",
+        phone: "+420 602 160 356",
+        secondaryContact: "Zakladatelé Michal Fiala a Lubomír Kuchynka · zákaznické centrum info@ac-heating.cz · +420 725 539 825",
+        website: "https://www.ac-heating.cz/",
+        sourceUrl: "https://b2b.ac-heating.cz/kontakt/",
+        decisionSource: "Oficiální B2B kontakt, zákaznické centrum a příběh zakladatelů; Refsite 99 % / 39 recenzí.",
+        signal: "120 lidí, vlastní výroba a software xCC, B2B partner program, celorepublikové instalace, servis a vzdálená diagnostika.",
+        angle: "B2B Partner Flow: registrace montážní firmy → kvalifikace → projektové podklady → školení → nabídka → podpora.",
+        offer: "Pilot partner onboardingu nebo projektového intake, ne zásah do jejich produktového řízení xCC.",
+        ticket: "199–299k pilot → 550–900k rollout",
+        pilotMin: 199000,
+        pilotMax: 299000,
+        closeWindow: "2–4 týdny",
+        status: "Research",
+        owner: "",
+        nextDate: "",
+        nextAction: "Nejdřív zjistit B2B stack a ownera procesu přes Leoše.",
+        notes: "Větší firma; vysoký ticket, ale delší procurement. Nepitchovat generický chatbot.",
+        verified: "2026-07-23",
+        updated: "2026-07-23T10:00:00Z"
+      },
+      {
+        id: "master-therm",
+        origin: "Původní shortlist",
+        priority: "B",
+        score: 86,
+        company: "Master Therm",
+        legal: "Master Therm tepelná čerpadla s.r.o.",
+        ico: "28892275",
+        location: "Jablonec nad Jizerou · Chýně · export",
+        segment: "Výrobce TČ · regionální obchod · průmysl · export",
+        contactName: "Roman Řehák",
+        role: "Technicko-obchodní zástupce jihozápad Čech vč. Prahy",
+        email: "r.rehak@mastertherm.cz",
+        phone: "+420 777 724 576",
+        secondaryContact: "Centrála · info@mastertherm.cz · +420 800 444 000",
+        website: "https://www.mastertherm.cz/",
+        sourceUrl: "https://www.mastertherm.cz/kontakty",
+        decisionSource: "Oficiální kontakty, IČ a regionální zástupci.",
+        signal: "Regionální obchodníci, export do Evropy, samostatný servisní dispečink a reference z bytových i průmyslových projektů.",
+        angle: "Project Sizing & Handover Portal: technická kvalifikace projektu, dokumenty a předání regionálnímu obchodníkovi nebo partnerovi.",
+        offer: "Pilot pro jeden region nebo průmyslový typ projektu.",
+        ticket: "179–269k pilot → 500–850k rollout",
+        pilotMin: 179000,
+        pilotMax: 269000,
+        closeWindow: "2–4 týdny",
+        status: "Research",
+        owner: "",
+        nextDate: "",
+        nextAction: "Zjistit přes Romana, kdo vlastní partner/distributor flow.",
+        notes: "Dobrá komplexita, ale regionální kontakt nemusí mít budget authority.",
+        verified: "2026-07-23",
+        updated: "2026-07-23T10:00:00Z"
+      },
+      {
+        id: "acond",
+        origin: "Původní shortlist",
+        priority: "B",
+        score: 83,
+        company: "ACOND",
+        legal: "ACOND a.s.",
+        ico: "27154505",
+        location: "Milevsko · Praha · celá ČR",
+        segment: "Výrobce TČ · zákaznické centrum · partner síť",
+        contactName: "David Kubíček",
+        role: "Podpora realizace objektů",
+        email: "david.kubicek@acond.cz",
+        phone: "+420 777 300 412",
+        secondaryContact: "Centrála · info@acond.cz · +420 606 511 511",
+        website: "https://www.acond.cz/",
+        sourceUrl: "https://www.acond.cz/kontakt",
+        decisionSource: "Oficiální zákaznické centrum a fakturační údaje.",
+        signal: "Celorepublikové pokrytí, více kontaktů na expedici podle regionů, realizace objektů, servis a poptávka rozlišující typ stavby.",
+        angle: "Installation Support Portal: od poptávky přes zaměření a podklady až po realizaci, expedici a servisní handover.",
+        offer: "Pilot pro podporu realizace objektů a jeden typ stavby.",
+        ticket: "179–249k pilot → 450–750k rollout",
+        pilotMin: 179000,
+        pilotMax: 249000,
+        closeWindow: "2–4 týdny",
+        status: "Research",
+        owner: "",
+        nextDate: "",
+        nextAction: "Discovery přes Davida; identifikovat decision makera pro obchodní proces.",
+        notes: "Silný operational champion, ale nejasná rozpočtová pravomoc.",
+        verified: "2026-07-23",
+        updated: "2026-07-23T10:00:00Z"
+      },
+      {
+        id: "ivt",
+        origin: "Nový research",
+        priority: "B",
+        score: 87,
+        company: "IVT Tepelná čerpadla",
+        legal: "IVT Tepelná čerpadla s.r.o.",
+        ico: "05583004",
+        location: "Praha · regionální pokrytí ČR",
+        segment: "TČ · regionální obchod · logistika · servis",
+        contactName: "Michal Fryš",
+        role: "Obchodní ředitel",
+        email: "frys@ivtcentrum.cz",
+        phone: "+420 720 055 839",
+        secondaryContact: "Ing. Jakub Kirchner · ředitel společnosti · kirchner@ivtcentrum.cz",
+        website: "https://www.cerpadla-ivt.cz/",
+        sourceUrl: "https://www.cerpadla-ivt.cz/cz/kontakty",
+        decisionSource: "Oficiální tým, management a IČ.",
+        signal: "Obchodní zástupci podle krajů, samostatná podpora obchodu, servis, logistika, technická podpora a vedení.",
+        angle: "Dealer & Regional Sales OS: lead routing podle kraje, kompletní technický brief a předání mezi obchodem, logistikou a servisem.",
+        offer: "Pilot Praha/Středočeský kraj nebo jeden partner flow.",
+        ticket: "199–279k pilot → 550–900k rollout",
+        pilotMin: 199000,
+        pilotMax: 279000,
+        closeWindow: "2–4 týdny",
+        status: "Research",
+        owner: "",
+        nextDate: "",
+        nextAction: "Zavolat Michalovi; ověřit CRM, objem leadů a regionální routing.",
+        notes: "Dobrá přímá role, ale větší struktura. Michal je také obchodním ředitelem GT Energy.",
+        verified: "2026-07-23",
+        updated: "2026-07-23T10:00:00Z"
+      },
+      {
+        id: "sunnycold",
+        origin: "Nový research",
+        priority: "A",
+        score: 93,
+        company: "SUNNYCOLD",
+        legal: "SUNNYCOLD s.r.o.",
+        ico: "28810911",
+        location: "Hradec Králové · partner síť",
+        segment: "TČ · FVE · partner program · monitoring",
+        contactName: "Jaroslav Šafarik",
+        role: "Jednatel / obchodní ředitel",
+        email: "safarik@sunnycold.cz",
+        phone: "+420 739 486 570",
+        secondaryContact: "Jaroslav Přibyl · jednatel / projektový ředitel · pribyl@sunnycold.cz · +420 777 121 087",
+        website: "https://www.sunnycold.eu/",
+        sourceUrl: "https://www.sunnycold.eu/kontakt",
+        decisionSource: "Oficiální vedení společnosti, kontakty a IČ.",
+        signal: "Tři jednatelé s jasnými obchodními, projektovými a technickými rolemi; partner program, vzdálený monitoring, projektová dokumentace a školení.",
+        angle: "Installer Partner OS: onboarding, první instalace, dokumentace, vzdálené oživení, monitoring a partner pipeline.",
+        offer: "7denní pilot partner onboardingu s jedním typem projektu.",
+        ticket: "179–249k pilot → 450–750k rollout",
+        pilotMin: 179000,
+        pilotMax: 249000,
+        closeWindow: "1–2 týdny (pilot)",
+        status: "Volat",
+        owner: "",
+        nextDate: "",
+        nextAction: "Volat Jaroslavovi Šafarikovi; demo partner journey, ne koncový web.",
+        notes: "Top 7. Výborná dostupnost decision makera a jasný partner use case.",
+        verified: "2026-07-23",
+        updated: "2026-07-23T10:00:00Z"
+      },
+      {
+        id: "swhg",
+        origin: "Nový research",
+        priority: "A",
+        score: 95,
+        company: "S WHG",
+        legal: "S WHG s.r.o.",
+        ico: "63321271",
+        location: "Praha · Valašské Meziříčí · Vizovice",
+        segment: "TČ · FVE · stavby · projekce · dotace · servis",
+        contactName: "Lukáš Sovák",
+        role: "Jednatel společnosti",
+        email: "sovak@swhg.cz",
+        phone: "+420 734 667 933",
+        secondaryContact: "Tomáš Čegan · fotovoltaika a energetika · solar@swhg.cz · +420 603 371 337",
+        website: "https://www.swhg.cz/",
+        sourceUrl: "https://www.swhg.cz/kontakty/",
+        decisionSource: "Oficiální tým, pobočky a IČ.",
+        signal: "Tři pobočky a široká kombinace staveb, projekce, FVE, TČ, dotací, servisu a inženýrské činnosti.",
+        angle: "Multi-service Lead Router: z jednoho formuláře rozeznat službu, lokalitu a fázi projektu, sestavit brief a přiřadit specialistu.",
+        offer: "Pilot pro FVE/TČ lead routing mezi třemi pobočkami.",
+        ticket: "149–229k pilot → 400–650k rollout",
+        pilotMin: 149000,
+        pilotMax: 229000,
+        closeWindow: "1–2 týdny (pilot)",
+        status: "Volat",
+        owner: "",
+        nextDate: "",
+        nextAction: "Volat Lukášovi; personalizovat demo podle jejich devíti kategorií ve formuláři.",
+        notes: "Top 3 pro rychlý pilot: owner-led, konkrétní telefon a zjevná routing complexity.",
+        verified: "2026-07-23",
+        updated: "2026-07-23T10:00:00Z"
+      },
+      {
+        id: "watt-guru",
+        origin: "Nový research",
+        priority: "A",
+        score: 88,
+        company: "WATT-GURU",
+        legal: "WATT-GURU s.r.o.",
+        ico: "09781781",
+        location: "Rosice",
+        segment: "FVE · konzultace · instalace",
+        contactName: "Pavel Strýček",
+        role: "Specialista na fotovoltaické elektrárny",
+        email: "strycek@wguru.cz",
+        phone: "+420 739 851 083",
+        secondaryContact: "Objednávky · info@wguru.cz · +420 702 035 671",
+        website: "https://www.wguru.cz/",
+        sourceUrl: "https://www.wguru.cz/kontakty",
+        decisionSource: "Oficiální kontaktní stránka a IČ.",
+        signal: "Přímý specialista obsluhuje hlavní konzultační linku; firma veřejně slibuje ozvat se do 48 h.",
+        angle: "Lean Quote Accelerator: chytrý intake, který připraví spotřebu, objekt a fotky před hovorem, takže specialista řeší jen kvalifikované projekty.",
+        offer: "Menší fixed pilot pro jeden formulář + follow-up + pipeline.",
+        ticket: "99–179k pilot → 220–400k rollout",
+        pilotMin: 99000,
+        pilotMax: 179000,
+        closeWindow: "1–2 týdny",
+        status: "Volat",
+        owner: "",
+        nextDate: "",
+        nextAction: "Zavolat Pavlovi a zjistit měsíční objem poptávek.",
+        notes: "Rychlé rozhodnutí pravděpodobné, ale ověřit rozpočet a velikost týmu.",
+        verified: "2026-07-23",
+        updated: "2026-07-23T10:00:00Z"
+      },
+      {
+        id: "geosun",
+        origin: "Nový research",
+        priority: "A",
+        score: 91,
+        company: "GEOSUN",
+        legal: "GEOSUN s.r.o.",
+        ico: "28119169",
+        location: "Sedlečko u Soběslavě",
+        segment: "Výroba TČ · FVE velkoobchod · chytré řízení · školení",
+        contactName: "Martin Flaška / FVE obchod",
+        role: "Jednatel / obchodní oddělení",
+        email: "sales@geosun.cz",
+        phone: "+420 774 000 541",
+        secondaryContact: "TČ obchod · obchod@geosun.cz · +420 774 451 419",
+        website: "https://www.geosun.cz/",
+        sourceUrl: "https://www.geosun.cz/",
+        decisionSource: "Oficiální web uvádí jednatele, IČ, obchodní kontakty, výrobu, distribuci a showroom.",
+        signal: "Výroba rozvaděčů a TČ, velkoobchod, dvě obchodní divize, chytré řízení Infigy a pravidelná školení instalačních partnerů.",
+        angle: "B2B Partner Academy & Quote Hub: registrace partnerů, školení, technické podklady, produktový výběr a obchodní předání.",
+        offer: "Pilot registrace + školení + jeden quote/configuration flow.",
+        ticket: "179–249k pilot → 450–750k rollout",
+        pilotMin: 179000,
+        pilotMax: 249000,
+        closeWindow: "1–2 týdny (pilot)",
+        status: "Volat",
+        owner: "",
+        nextDate: "",
+        nextAction: "Volat na FVE obchod a vyžádat krátké spojení s Martinem Flaškou.",
+        notes: "Top 10. Owner není veřejně uveden s přímým e-mailem; cesta přes obchod.",
+        verified: "2026-07-23",
+        updated: "2026-07-23T10:00:00Z"
+      },
+      {
+        id: "pkv",
+        origin: "Nový research",
+        priority: "B",
+        score: 81,
+        company: "PKV",
+        legal: "PKV BUILD s.r.o.",
+        ico: "28149785",
+        location: "Brno · celá ČR",
+        segment: "Energetické audity · FVE · dotace · software Enmon",
+        contactName: "Ivan Korolov",
+        role: "Rozvoj obchodu",
+        email: "ivan.korolov@pkv.cz",
+        phone: "+420 604 760 567",
+        secondaryContact: "Robert Pavlík · obchodní manažer · pavlik@pkv.cz · +420 604 760 567",
+        website: "https://www.pkv.cz/",
+        sourceUrl: "https://www.pkv.cz/kontakt",
+        decisionSource: "Oficiální kontakt, IČ a produktové stránky.",
+        signal: "Komplexní energetický consulting, software Enmon, tisíce budov, segmentované landingy a procesy pro audity, dotace, FVE i municipality.",
+        angle: "Client Audit Workspace: sběr podkladů, automatické chybějící dokumenty, stav auditu a předání mezi obchodem, technikem a klientem.",
+        offer: "Pilot pro jeden auditní produkt nebo partnerský PENB flow.",
+        ticket: "199–299k pilot → 550–900k rollout",
+        pilotMin: 199000,
+        pilotMax: 299000,
+        closeWindow: "2–4 týdny",
+        status: "Research",
+        owner: "",
+        nextDate: "",
+        nextAction: "Zjistit, co již řeší Enmon a kde zůstává manuální client intake.",
+        notes: "Digitálně vyspělý prospect; pitch musí být konkrétní integrace, ne generická automatizace.",
+        verified: "2026-07-23",
+        updated: "2026-07-23T10:00:00Z"
+      },
+      {
+        id: "presolidsun",
+        origin: "Nový research",
+        priority: "C",
+        score: 66,
+        company: "PREsolidsun / SolidSun",
+        legal: "PREsolidsun, s.r.o.",
+        ico: "28923405",
+        location: "Praha · Frýdek-Místek · regionální centra",
+        segment: "FVE · TČ · baterie · klimatizace · post-merger",
+        contactName: "Martin Palarčík",
+        role: "Předseda rady jednatelů",
+        email: "info@solidsun.cz",
+        phone: "+420 800 400 506",
+        secondaryContact: "Jakub Vančura · místopředseda rady jednatelů · kontakt přes info@solidsun.cz",
+        website: "https://www.solidsun.cz/",
+        sourceUrl: "https://www.solidsun.cz/kontakt",
+        decisionSource: "Oficiální kontakt a IČ; aktuální vedení z veřejného rejstříku. Refsite 96 % / 323 recenzí při ověření.",
+        signal: "Fúze více firem do PREsolidsun od 1. 7. 2025, regionální centra a více produktových linek. Silný post-merger integrační use case.",
+        angle: "Post-merger Unified Intake: sjednotit veřejné formuláře, routing, reporting a dokumentaci napříč sloučenými entitami.",
+        offer: "Nejdřív placený discovery; pilot pouze na jedné business jednotce.",
+        ticket: "249–349k discovery/pilot → 700k–1.2m rollout",
+        pilotMin: 249000,
+        pilotMax: 349000,
+        closeWindow: "4–8+ týdnů",
+        status: "Nurture",
+        owner: "",
+        nextDate: "",
+        nextAction: "Najít interního transformation ownera přes LinkedIn/PRE, nevolat generickou linku naslepo.",
+        notes: "High value, ale korporátní procurement. Ne pro cíl 1–2 týdny.",
+        verified: "2026-07-23",
+        updated: "2026-07-23T10:00:00Z"
+      },
+      {
+        id: "gerotop",
+        origin: "Nový research",
+        priority: "A",
+        score: 96,
+        company: "GEROtop",
+        legal: "GEROtop spol. s r.o.",
+        ico: "27277160",
+        location: "Stráž nad Nisou · regionální ČR",
+        segment: "Geotermie · projekce · vrty · TČ",
+        contactName: "Ing. Ondřej Kaňka",
+        role: "Obchodní ředitel",
+        email: "o.kanka@gerotop.cz",
+        phone: "+420 777 166 262",
+        secondaryContact: "Marek Svačinka · jednatel · m.svacinka@gerotop.cz",
+        website: "https://www.gerotop.cz/",
+        sourceUrl: "https://www.gerotop.cz/kontakt",
+        decisionSource: "Oficiální tým, vedení a IČ; firma je uvedena v AVTČ.",
+        signal: "Samostatná projekce, regionální obchodníci, technické vedení a geotermální projekty s velkým množstvím vstupních dat.",
+        angle: "Geothermal Project Intake: pozemek, objekt, výkon, dokumentace, region a předání mezi obchodem, projekcí a realizací.",
+        offer: "7denní pilot kvalifikačního briefu pro jeden typ geotermálního projektu.",
+        ticket: "179–249k pilot → 450–750k rollout",
+        pilotMin: 179000,
+        pilotMax: 249000,
+        closeWindow: "1–2 týdny (pilot)",
+        status: "Volat",
+        owner: "",
+        nextDate: "",
+        nextAction: "Volat Ondřejovi; poslat demo projektového intake se soubory a routingem.",
+        notes: "Top 3. Přímý obchodní ředitel a jasná bolest mezi obchodem a projekcí.",
+        verified: "2026-07-23",
+        updated: "2026-07-23T10:00:00Z"
+      },
+      {
+        id: "enbra",
+        origin: "Nový research",
+        priority: "C",
+        score: 67,
+        company: "ENBRA",
+        legal: "ENBRA, a.s.",
+        ico: "44015844",
+        location: "Popůvky · ČR/SR/PL",
+        segment: "Měření · HVAC · TČ · servis · zkušebna",
+        contactName: "Patrik Prokeš",
+        role: "Obchodní ředitel",
+        email: "prokes@enbra.cz",
+        phone: "+420 731 534 766",
+        secondaryContact: "Centrála · enbra@enbra.cz · +420 533 039 903",
+        website: "https://www.enbra.cz/",
+        sourceUrl: "https://www.enbra.cz/kontakt",
+        decisionSource: "Oficiální kontakty, obchodní tým a IČ.",
+        signal: "200+ odborníků v ČR, SR a Polsku, velký regionální obchodní tým, více produktových divizí, servis a zkušebna.",
+        angle: "Sales Territory & Partner Portal: routing, produktové podklady, quote handoff a dashboard napříč regiony a divizemi.",
+        offer: "Placený discovery nebo pilot jedné divize; ne celofiremní transformace.",
+        ticket: "249–349k pilot → 800k–1.5m rollout",
+        pilotMin: 249000,
+        pilotMax: 349000,
+        closeWindow: "4–8+ týdnů",
+        status: "Nurture",
+        owner: "",
+        nextDate: "",
+        nextAction: "Připravit enterprise proof a zjistit interní IT/procurement před oslovením.",
+        notes: "Velký high-ticket potenciál, ale nevhodné pro 1–2týdenní close bez silného intro.",
+        verified: "2026-07-23",
+        updated: "2026-07-23T10:00:00Z"
+      },
+      {
+        id: "pzp",
+        origin: "Nový research",
+        priority: "B",
+        score: 79,
+        company: "PZP HEATING",
+        legal: "PZP HEATING a.s.",
+        ico: "28820614",
+        location: "Opočno · regionální ČR",
+        segment: "Výrobce TČ · regionální obchod · servis · projekce",
+        contactName: "Jiří Hlávka, DiS.",
+        role: "Obchodní zastoupení pro více krajů",
+        email: "hlavka.jiri@pzpheating.cz",
+        phone: "+420 739 247 707",
+        secondaryContact: "Centrála · info@pzpheating.cz · +420 494 664 203",
+        website: "https://www.pzpheating.cz/",
+        sourceUrl: "https://www.pzpheating.cz/kontakty/",
+        decisionSource: "Oficiální regionální kontakty, servis, projekční podpora a IČ.",
+        signal: "Celorepublikové obchodní zastoupení, oddělený servis a projekční podpora, vlastní výroba.",
+        angle: "Dealer/Project Flow: kvalifikace podle kraje a typu objektu, projektové podklady, předání obchodu a servisní historie.",
+        offer: "Pilot pro jeden region nebo projekční support.",
+        ticket: "199–279k pilot → 550–900k rollout",
+        pilotMin: 199000,
+        pilotMax: 279000,
+        closeWindow: "2–4 týdny",
+        status: "Research",
+        owner: "",
+        nextDate: "",
+        nextAction: "Přes Jiřího zjistit obchodního/process ownera a CRM.",
+        notes: "Dobrá provozní komplexita, ale první kontakt není centrální decision maker.",
+        verified: "2026-07-23",
+        updated: "2026-07-23T10:00:00Z"
+      },
+      {
+        id: "regulus",
+        origin: "Nový research",
+        priority: "C",
+        score: 64,
+        company: "REGULUS",
+        legal: "REGULUS spol. s r.o.",
+        ico: "45317020",
+        location: "Praha · ČR · export do 46 zemí",
+        segment: "TČ · FVE · rekuperace · výroba · export",
+        contactName: "Roman Bláha",
+        role: "Vedoucí obchodních zástupců",
+        email: "roman.blaha@regulus.cz",
+        phone: "+420 602 168 538",
+        secondaryContact: "Centrála · regulus@regulus.cz · +420 241 764 506",
+        website: "https://www.regulus.cz/",
+        sourceUrl: "https://www.regulus.cz/cz/kontakty",
+        decisionSource: "Oficiální obchodní tým, produktové údaje a IČ; firma je uvedena v AVTČ.",
+        signal: "180 odborníků, 20+ lidí připravených pro poptávky, široká nabídka, vlastní výroba a export do 46 zemí.",
+        angle: "International Partner & Spec Portal: produktová konfigurace, technické podklady, routing a servis napříč zeměmi.",
+        offer: "Placený discovery + pilot pro jednu zemi/produkt.",
+        ticket: "249–349k pilot → 900k–1.6m rollout",
+        pilotMin: 249000,
+        pilotMax: 349000,
+        closeWindow: "4–8+ týdnů",
+        status: "Nurture",
+        owner: "",
+        nextDate: "",
+        nextAction: "Neoslovovat bez enterprise case study nebo teplého intra.",
+        notes: "Strategický účet, ne rychlý start.",
+        verified: "2026-07-23",
+        updated: "2026-07-23T10:00:00Z"
+      },
+      {
+        id: "gt-energy",
+        origin: "Nový research",
+        priority: "B",
+        score: 85,
+        company: "GT Energy",
+        legal: "GT Energy s.r.o.",
+        ico: "25723189",
+        location: "Praha · průmyslové projekty",
+        segment: "Průmyslová TČ · mikrokogenerace · odpadní teplo",
+        contactName: "Bc. Sophie Hiker",
+        role: "Business Development Manager",
+        email: "hiker@gt-energy.cz",
+        phone: "+420 725 776 774",
+        secondaryContact: "Ing. Richard Beber · ředitel společnosti · beber@gt-energy.cz · +420 777 281 439",
+        website: "https://www.gt-energy.cz/",
+        sourceUrl: "https://www.gt-energy.cz/cz/kontakt",
+        decisionSource: "Oficiální tým, vedení a IČ; firma je uvedena v AVTČ platformě průmyslových aplikací.",
+        signal: "Komplexní B2B projekty od studie přes projekci a dotace až po realizaci a servis; samostatné BD, projekce a realizace.",
+        angle: "Opportunity-to-Project OS: kvalifikace průmyslové příležitosti, studie, dokumenty, dotace a handoff do projekce/realizace.",
+        offer: "Pilot pro jeden průmyslový use case a jeden BD kanál.",
+        ticket: "199–299k pilot → 600k–1m rollout",
+        pilotMin: 199000,
+        pilotMax: 299000,
+        closeWindow: "2–4 týdny",
+        status: "Research",
+        owner: "",
+        nextDate: "",
+        nextAction: "Volat Sophie; opening přes drahé pre-sales hodiny a neúplné technické podklady.",
+        notes: "High-value B2B fit. Komplexní projekty mohou prodloužit interní rozhodnutí.",
+        verified: "2026-07-23",
+        updated: "2026-07-23T10:00:00Z"
+      },
+      {
+        id: "tc-mach",
+        origin: "Nový research",
+        priority: "A",
+        score: 97,
+        company: "Tepelná čerpadla MACH",
+        legal: "Tepelná čerpadla MACH, s.r.o.",
+        ico: "26238659",
+        location: "Moravský Krumlov · celá ČR",
+        segment: "Výrobce TČ · domácnosti · komerční projekty",
+        contactName: "Barbora Machová",
+        role: "Ředitelka společnosti",
+        email: "machovab@tcmach.cz",
+        phone: "+420 737 260 794",
+        secondaryContact: "Stanislav Mach · majitel · machs@tcmach.cz · +420 737 260 792",
+        website: "https://tepelna-cerpadla-mach.cz/",
+        sourceUrl: "https://tepelna-cerpadla-mach.cz/kontakt",
+        decisionSource: "Oficiální vedení, přímé kontakty a IČ; firma je uvedena v AVTČ.",
+        signal: "Owner-led výrobce s celorepublikovou instalací, detailním poptávkovým formulářem a komerčními projekty včetně využití odpadního tepla.",
+        angle: "Quote-ready Intake: z dlouhého formuláře udělat adaptivní flow, které doplní podklady, spočítá prioritu a vytvoří brief před hovorem.",
+        offer: "7denní pilot na jednom typu objektu; měřit kompletnost leadu a čas k nabídce.",
+        ticket: "149–229k pilot → 400–700k rollout",
+        pilotMin: 149000,
+        pilotMax: 229000,
+        closeWindow: "1–2 týdny (pilot)",
+        status: "Volat",
+        owner: "",
+        nextDate: "",
+        nextAction: "Volat Barboře; Stanislava zapojit do 20min discovery.",
+        notes: "Nejlepší startovní lead: přímé vedení, jasný proces, realistický budget a rychlé rozhodování.",
+        verified: "2026-07-23",
+        updated: "2026-07-23T10:00:00Z"
+      },
+      {
+        id: "energotherm",
+        origin: "Nový research",
+        priority: "A",
+        score: 96,
+        company: "Energotherm Praha",
+        legal: "Energotherm Praha s.r.o.",
+        ico: "27168077",
+        location: "Vestec u Prahy",
+        segment: "TČ · komerční vytápění · realizace projektů",
+        contactName: "Ing. Ladislav Ročárek",
+        role: "Jednatel / obchodní oddělení",
+        email: "rocarek@energotherm.cz",
+        phone: "+420 608 256 661",
+        secondaryContact: "Ing. Karel Sklenička · jednatel / technické oddělení · sklenicka@energotherm.cz · +420 731 482 527",
+        website: "https://energotherm.cz/",
+        sourceUrl: "https://energotherm.cz/kontakty/",
+        decisionSource: "Oficiální kontakty všech jednatelů, realizačního týmu a IČ; firma je uvedena v AVTČ.",
+        signal: "Přímý obchodní jednatel, dva techničtí jednatelé, realizace zakázek a komerční projekty s dokumenty a výkresy.",
+        angle: "Commercial Project Intake: upload výkresů, validace podkladů, technická kvalifikace a handoff od obchodu k návrhu a realizaci.",
+        offer: "7denní pilot pro komerční poptávky s uploadem dokumentů.",
+        ticket: "149–229k pilot → 400–700k rollout",
+        pilotMin: 149000,
+        pilotMax: 229000,
+        closeWindow: "1–2 týdny (pilot)",
+        status: "Volat",
+        owner: "",
+        nextDate: "",
+        nextAction: "Volat Ladislavovi; ukázat upload/validation brief a projektový handoff.",
+        notes: "Top 3. Přímý obchodní jednatel a jasné oddělení obchod → technika → realizace.",
+        verified: "2026-07-23",
+        updated: "2026-07-23T10:00:00Z"
+      },
+      {
+        id: "hotjet",
+        origin: "Nový research",
+        priority: "A",
+        score: 92,
+        company: "HOTJET CZ",
+        legal: "HOTJET CZ s.r.o.",
+        ico: "27764290",
+        location: "Bolatice · Ostrava · export/OEM",
+        segment: "Výrobce TČ · OEM/ODM · servis · vlastní AI experimenty",
+        contactName: "Ing. Richard Köhler",
+        role: "Jednatel / owner",
+        email: "obchod@hotjet.cz",
+        phone: "+420 777 427 427",
+        secondaryContact: "Zákaznické centrum · obchod@hotjet.cz; přímý e-mail jednatele nebyl na oficiálním webu veřejně uveden.",
+        website: "https://www.hotjet.cz/",
+        sourceUrl: "https://www.hotjet.cz/",
+        decisionSource: "Oficiální kontakt, IČ a veřejný obsah firmy; statutární role ověřena ve veřejných firemních zdrojích.",
+        signal: "45 zaměstnanců, veřejný článek o 66 interních AI projektech, grant na digitalizaci vývojově-výrobního procesu a export/OEM růst.",
+        angle: "AI Orchestration & Governance Pilot: sjednotit interní AI experimenty, přístupy, schvalování, knowledge a audit log kolem jednoho výrobního procesu.",
+        offer: "Placený architecture sprint + jeden agentic workflow; nejde o generický Company Brain.",
+        ticket: "199–299k pilot → 600k–1.1m rollout",
+        pilotMin: 199000,
+        pilotMax: 299000,
+        closeWindow: "1–3 týdny",
+        status: "Volat",
+        owner: "",
+        nextDate: "",
+        nextAction: "Oslovit Richarda s reakcí na jeho veřejný AI experiment; nabídnout orchestration pilot, ne edukaci o AI.",
+        notes: "Strategicky výborný fit, ale prospect je pokročilý a pravděpodobně rád staví interně. Musíte přinést architekturu a delivery speed.",
+        verified: "2026-07-23",
+        updated: "2026-07-23T10:00:00Z"
+      }
+    ];
+
+    const fieldDefinitions = [
+      ["company", "Firma", "text"],
+      ["legal", "Právní název", "text"],
+      ["ico", "IČ / skupina IČ", "text"],
+      ["location", "Lokalita", "text"],
+      ["segment", "Segment", "text"],
+      ["origin", "Původ", "select", ["Původní shortlist", "Nový research"]],
+      ["priority", "Priorita", "select", ["A", "B", "C"]],
+      ["score", "Fit score 0–100", "number"],
+      ["contactName", "Primární kontakt", "text"],
+      ["role", "Role", "text"],
+      ["email", "E-mail", "email"],
+      ["phone", "Telefon", "text"],
+      ["secondaryContact", "Sekundární kontakt", "textarea", null, true],
+      ["website", "Web", "url"],
+      ["sourceUrl", "Zdroj kontaktu", "url"],
+      ["decisionSource", "Jak byl kontakt ověřen", "textarea", null, true],
+      ["signal", "Prodejní signál", "textarea", null, true],
+      ["angle", "Personalizovaný high-ticket angle", "textarea", null, true],
+      ["offer", "Nabídka / pilot", "textarea", null, true],
+      ["ticket", "Ticket", "text"],
+      ["pilotMin", "Pilot minimum (Kč)", "number"],
+      ["pilotMax", "Pilot maximum (Kč)", "number"],
+      ["closeWindow", "Odhad close window", "text"],
+      ["status", "Stav", "select", statuses],
+      ["owner", "Owner", "text"],
+      ["nextDate", "Datum dalšího kroku", "date"],
+      ["nextAction", "Další krok", "textarea", null, true],
+      ["notes", "Poznámky", "textarea", null, true],
+      ["verified", "Datum ověření", "date"]
+    ];
+
+    let leads = loadLeads();
+    let activeLeadId = null;
+    let toastTimer = null;
+
+    const $ = (selector) => document.querySelector(selector);
+    const $$ = (selector) => [...document.querySelectorAll(selector)];
+
+    function deepClone(value) {
+      return JSON.parse(JSON.stringify(value));
+    }
+
+    function loadLeads() {
+      try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (!stored) return deepClone(seedLeads);
+        const parsed = JSON.parse(stored);
+        return Array.isArray(parsed) && parsed.length ? parsed : deepClone(seedLeads);
+      } catch (error) {
+        return deepClone(seedLeads);
+      }
+    }
+
+    function persist(message) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(leads));
+      if (message) showToast(message);
+    }
+
+    function showToast(message) {
+      const toast = $("#toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove("show"), 2200);
+    }
+
+    function escapeHTML(value = "") {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function safeHttpUrl(value = "") {
+      try {
+        const url = new URL(value);
+        return ["http:", "https:"].includes(url.protocol) ? url.href : "";
+      } catch (error) {
+        return "";
+      }
+    }
+
+    function money(value) {
+      return new Intl.NumberFormat("cs-CZ", { maximumFractionDigits: 0 }).format(value || 0) + " Kč";
+    }
+
+    function formatDate(value) {
+      if (!value) return "—";
+      const date = new Date(value + (value.length === 10 ? "T12:00:00" : ""));
+      return Number.isNaN(date.getTime()) ? value : new Intl.DateTimeFormat("cs-CZ").format(date);
+    }
+
+    function priorityClass(priority) {
+      return ["A", "B", "C"].includes(priority) ? priority.toLowerCase() : "";
+    }
+
+    function populateStatusFilter() {
+      $("#statusFilter").innerHTML = '<option value="">Všechny stavy</option>' +
+        statuses.map(status => `<option value="${escapeHTML(status)}">${escapeHTML(status)}</option>`).join("");
+    }
+
+    function getFilteredLeads() {
+      const query = $("#search").value.trim().toLocaleLowerCase("cs");
+      const priority = $("#priorityFilter").value;
+      const status = $("#statusFilter").value;
+      const origin = $("#originFilter").value;
+      const sort = $("#sortBy").value;
+
+      const filtered = leads.filter(lead => {
+        const haystack = Object.values(lead).join(" ").toLocaleLowerCase("cs");
+        return (!query || haystack.includes(query)) &&
+          (!priority || lead.priority === priority) &&
+          (!status || lead.status === status) &&
+          (!origin || lead.origin === origin);
+      });
+
+      filtered.sort((a, b) => {
+        if (sort === "company-asc") return a.company.localeCompare(b.company, "cs");
+        if (sort === "next-asc") return (a.nextDate || "9999-12-31").localeCompare(b.nextDate || "9999-12-31");
+        if (sort === "updated-desc") return (b.updated || "").localeCompare(a.updated || "");
+        return Number(b.score || 0) - Number(a.score || 0);
+      });
+      return filtered;
+    }
+
+    function renderMetrics() {
+      const aLeads = leads.filter(lead => lead.priority === "A").length;
+      const originals = leads.filter(lead => lead.origin === "Původní shortlist").length;
+      const inMotion = leads.filter(lead => ["Kontaktováno", "Discovery", "Pilot nabídnut", "Proposal"].includes(lead.status)).length;
+      const pilotMin = leads.reduce((sum, lead) => sum + Number(lead.pilotMin || 0), 0);
+      const metrics = [
+        ["Aktivní leady", leads.length, `${originals} původních · ${leads.length - originals} nových`],
+        ["Priorita A", aLeads, "nejrychlejší cesta k pilotu"],
+        ["Rozpracováno", inMotion, "kontakt → proposal"],
+        ["Pilot pipeline min.", money(pilotMin), "součet minimálních pilotů"],
+        ["Vyhráno", leads.filter(lead => lead.status === "Vyhráno").length, "aktualizuje se z tabulky"]
+      ];
+      $("#metrics").innerHTML = metrics.map(([label, value, note]) => `
+        <article class="metric">
+          <div class="metric-label">${escapeHTML(label)}</div>
+          <div class="metric-value">${escapeHTML(value)}</div>
+          <div class="metric-note">${escapeHTML(note)}</div>
+        </article>
+      `).join("");
+    }
+
+    function renderTopLeads() {
+      const top = leads
+        .filter(lead => lead.priority === "A" && !["Vyhráno", "Ztraceno"].includes(lead.status))
+        .sort((a, b) => Number(b.score || 0) - Number(a.score || 0))
+        .slice(0, 6);
+      $("#topLeadCards").innerHTML = top.map(lead => `
+        <article class="lead-card" data-open-id="${escapeHTML(lead.id)}" tabindex="0" role="button">
+          <div class="lead-card-top">
+            <h3>${escapeHTML(lead.company)}</h3>
+            <span class="score">${escapeHTML(lead.score)}</span>
+          </div>
+          <p>${escapeHTML(lead.contactName)} · ${escapeHTML(lead.role)}</p>
+          <span class="tag a">A</span>
+          <span class="tag">${escapeHTML(lead.closeWindow)}</span>
+          <span class="tag ${lead.origin === "Původní shortlist" ? "old" : "new"}">${lead.origin === "Původní shortlist" ? "původní" : "nový"}</span>
+        </article>
+      `).join("");
+    }
+
+    function renderRows() {
+      const rows = getFilteredLeads();
+      $("#leadRows").innerHTML = rows.map(lead => {
+        const website = safeHttpUrl(lead.website);
+        const source = safeHttpUrl(lead.sourceUrl);
+        const email = String(lead.email || "").trim();
+        const phone = String(lead.phone || "").trim();
+        return `
+          <tr>
+            <td>
+              <select data-id="${escapeHTML(lead.id)}" data-field="priority" aria-label="Priorita ${escapeHTML(lead.company)}">
+                ${["A", "B", "C"].map(value => `<option value="${value}" ${lead.priority === value ? "selected" : ""}>${value}</option>`).join("")}
+              </select>
+              <div style="margin-top:6px"><span class="tag ${priorityClass(lead.priority)}">score ${escapeHTML(lead.score)}</span></div>
+            </td>
+            <td class="company-cell">
+              <strong>${escapeHTML(lead.company)}</strong>
+              <div class="subtle">${escapeHTML(lead.legal)} · IČ ${escapeHTML(lead.ico)}</div>
+              <div style="margin-top:7px"><span class="tag ${lead.origin === "Původní shortlist" ? "old" : "new"}">${escapeHTML(lead.origin)}</span></div>
+            </td>
+            <td class="contact-cell">
+              <strong>${escapeHTML(lead.contactName)}</strong>
+              <div class="subtle">${escapeHTML(lead.role)}</div>
+              <div class="contact-links">
+                ${email ? `<a href="mailto:${encodeURIComponent(email)}">E-mail</a>` : ""}
+                ${phone ? `<a href="tel:${escapeHTML(phone.replace(/[^\d+]/g, ""))}">Volat</a>` : ""}
+                ${website ? `<a href="${escapeHTML(website)}" target="_blank" rel="noreferrer">Web</a>` : ""}
+              </div>
+            </td>
+            <td class="angle-cell">${escapeHTML(lead.angle)}</td>
+            <td class="ticket-cell">
+              <strong>${escapeHTML(lead.ticket)}</strong>
+              <div class="subtle" style="margin-top:5px">${escapeHTML(lead.closeWindow)}</div>
+            </td>
+            <td class="editable-cell">
+              <select data-id="${escapeHTML(lead.id)}" data-field="status" aria-label="Stav ${escapeHTML(lead.company)}">
+                ${statuses.map(value => `<option value="${escapeHTML(value)}" ${lead.status === value ? "selected" : ""}>${escapeHTML(value)}</option>`).join("")}
+              </select>
+            </td>
+            <td class="editable-cell"><input data-id="${escapeHTML(lead.id)}" data-field="owner" value="${escapeHTML(lead.owner)}" placeholder="Max / Oliver / David" aria-label="Owner ${escapeHTML(lead.company)}"></td>
+            <td class="editable-cell">
+              <input type="date" data-id="${escapeHTML(lead.id)}" data-field="nextDate" value="${escapeHTML(lead.nextDate)}" aria-label="Datum dalšího kroku ${escapeHTML(lead.company)}">
+              <div class="subtle" style="margin-top:5px">${escapeHTML(lead.nextAction || "Doplnit další krok")}</div>
+            </td>
+            <td>
+              ${source ? `<a class="source-link" href="${escapeHTML(source)}" target="_blank" rel="noreferrer">Ověření ↗</a>` : "—"}
+              <div class="subtle" style="margin-top:5px">${escapeHTML(lead.verified)}</div>
+            </td>
+            <td><div class="row-actions">
+              <button class="btn small" data-action="edit" data-id="${escapeHTML(lead.id)}">Detail</button>
+              ${email ? `<a class="btn small" style="text-decoration:none" href="mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent(lead.company + " — živý model cesty poptávky")}">Napsat</a>` : ""}
+            </div></td>
+          </tr>
+        `;
+      }).join("");
+      $("#emptyState").hidden = rows.length > 0;
+    }
+
+    function renderAll() {
+      renderMetrics();
+      renderTopLeads();
+      renderRows();
+    }
+
+    function openLeadDialog(id) {
+      const lead = leads.find(item => item.id === id);
+      if (!lead) return;
+      activeLeadId = id;
+      $("#dialogTitle").textContent = lead.company || "Lead";
+      $("#formFields").innerHTML = fieldDefinitions.map(([name, label, type, options, full]) => {
+        const value = lead[name] ?? "";
+        let control;
+        if (type === "textarea") {
+          control = `<textarea name="${escapeHTML(name)}">${escapeHTML(value)}</textarea>`;
+        } else if (type === "select") {
+          control = `<select name="${escapeHTML(name)}">${options.map(option => `<option value="${escapeHTML(option)}" ${String(value) === String(option) ? "selected" : ""}>${escapeHTML(option)}</option>`).join("")}</select>`;
+        } else {
+          control = `<input name="${escapeHTML(name)}" type="${escapeHTML(type)}" value="${escapeHTML(value)}">`;
+        }
+        return `<div class="field ${full ? "full" : ""}"><label>${escapeHTML(label)}</label>${control}</div>`;
+      }).join("");
+      const dialog = $("#leadDialog");
+      if (typeof dialog.showModal === "function") dialog.showModal();
+      else dialog.setAttribute("open", "");
+    }
+
+    function closeLeadDialog() {
+      const dialog = $("#leadDialog");
+      if (typeof dialog.close === "function") dialog.close();
+      else dialog.removeAttribute("open");
+      activeLeadId = null;
+    }
+
+    function saveDialog(event) {
+      event.preventDefault();
+      const lead = leads.find(item => item.id === activeLeadId);
+      if (!lead) return closeLeadDialog();
+      const data = new FormData(event.currentTarget);
+      fieldDefinitions.forEach(([name, , type]) => {
+        const raw = data.get(name);
+        lead[name] = type === "number" ? Number(raw || 0) : String(raw || "").trim();
+      });
+      lead.updated = new Date().toISOString();
+      persist("Lead uložen");
+      closeLeadDialog();
+      renderAll();
+    }
+
+    function addLead() {
+      const id = typeof crypto.randomUUID === "function" ? crypto.randomUUID() : "lead-" + Date.now();
+      const today = new Date().toISOString().slice(0, 10);
+      leads.unshift({
+        id,
+        origin: "Nový research",
+        priority: "B",
+        score: 70,
+        company: "Nová firma",
+        legal: "",
+        ico: "",
+        location: "",
+        segment: "",
+        contactName: "",
+        role: "",
+        email: "",
+        phone: "",
+        secondaryContact: "",
+        website: "",
+        sourceUrl: "",
+        decisionSource: "",
+        signal: "",
+        angle: "",
+        offer: "Revenue Flow Pilot",
+        ticket: "149–249k pilot",
+        pilotMin: 149000,
+        pilotMax: 249000,
+        closeWindow: "Ověřit",
+        status: "Research",
+        owner: "",
+        nextDate: "",
+        nextAction: "",
+        notes: "",
+        verified: today,
+        updated: new Date().toISOString()
+      });
+      persist("Nový lead přidán");
+      renderAll();
+      openLeadDialog(id);
+    }
+
+    function deleteActiveLead() {
+      const lead = leads.find(item => item.id === activeLeadId);
+      if (!lead) return;
+      if (!confirm(`Opravdu smazat lead „${lead.company}“?`)) return;
+      leads = leads.filter(item => item.id !== activeLeadId);
+      persist("Lead smazán");
+      closeLeadDialog();
+      renderAll();
+    }
+
+    function updateInline(target) {
+      const id = target.dataset.id;
+      const field = target.dataset.field;
+      const lead = leads.find(item => item.id === id);
+      if (!lead || !field) return;
+      lead[field] = target.value;
+      lead.updated = new Date().toISOString();
+      persist();
+      renderMetrics();
+      renderTopLeads();
+    }
+
+    function csvEscape(value) {
+      const text = String(value ?? "");
+      return `"${text.replaceAll('"', '""')}"`;
+    }
+
+    function downloadFile(filename, content, type) {
+      const blob = new Blob([content], { type });
+      const url = URL.createObjectURL(blob);
+      const anchor = document.createElement("a");
+      anchor.href = url;
+      anchor.download = filename;
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 500);
+    }
+
+    function exportCSV() {
+      const columns = fieldDefinitions.map(([name, label]) => [name, label]);
+      const header = columns.map(([, label]) => csvEscape(label)).join(",");
+      const body = leads.map(lead => columns.map(([name]) => csvEscape(lead[name])).join(",")).join("\r\n");
+      downloadFile("sitespot-high-ticket-leads.csv", "\ufeff" + header + "\r\n" + body, "text/csv;charset=utf-8");
+      showToast("CSV exportováno");
+    }
+
+    function exportJSON() {
+      const payload = {
+        exportedAt: new Date().toISOString(),
+        format: "SiteSpot High-ticket CRM v1",
+        leads
+      };
+      downloadFile("sitespot-high-ticket-backup.json", JSON.stringify(payload, null, 2), "application/json");
+      showToast("JSON záloha vytvořena");
+    }
+
+    async function importJSON(file) {
+      try {
+        const parsed = JSON.parse(await file.text());
+        const incoming = Array.isArray(parsed) ? parsed : parsed.leads;
+        if (!Array.isArray(incoming) || !incoming.length || incoming.some(item => !item || typeof item.company !== "string")) {
+          throw new Error("Neplatný formát");
+        }
+        if (!confirm(`Import přepíše aktuálních ${leads.length} leadů a načte ${incoming.length}. Pokračovat?`)) return;
+        leads = incoming.map((lead, index) => ({
+          ...lead,
+          id: lead.id || `import-${Date.now()}-${index}`,
+          updated: lead.updated || new Date().toISOString()
+        }));
+        persist("Import dokončen");
+        renderAll();
+      } catch (error) {
+        alert("Soubor se nepodařilo importovat. Použij JSON vytvořený tlačítkem Záloha JSON.");
+      } finally {
+        $("#fileInput").value = "";
+      }
+    }
+
+    $$(".tab").forEach(button => {
+      button.addEventListener("click", () => {
+        $$(".tab").forEach(item => item.classList.toggle("active", item === button));
+        $$(".tab-panel").forEach(panel => panel.classList.toggle("active", panel.id === button.dataset.tab));
+      });
+    });
+
+    ["search", "priorityFilter", "statusFilter", "originFilter", "sortBy"].forEach(id => {
+      $("#" + id).addEventListener(id === "search" ? "input" : "change", renderRows);
+    });
+
+    $("#leadRows").addEventListener("change", event => {
+      if (event.target.matches("[data-field]")) updateInline(event.target);
+    });
+    $("#leadRows").addEventListener("click", event => {
+      const button = event.target.closest("[data-action='edit']");
+      if (button) openLeadDialog(button.dataset.id);
+    });
+    $("#topLeadCards").addEventListener("click", event => {
+      const card = event.target.closest("[data-open-id]");
+      if (card) openLeadDialog(card.dataset.openId);
+    });
+    $("#topLeadCards").addEventListener("keydown", event => {
+      if (!["Enter", " "].includes(event.key)) return;
+      const card = event.target.closest("[data-open-id]");
+      if (card) {
+        event.preventDefault();
+        openLeadDialog(card.dataset.openId);
+      }
+    });
+
+    $("#leadForm").addEventListener("submit", saveDialog);
+    $("#closeDialog").addEventListener("click", closeLeadDialog);
+    $("#cancelDialog").addEventListener("click", closeLeadDialog);
+    $("#deleteLead").addEventListener("click", deleteActiveLead);
+    $("#addLead").addEventListener("click", addLead);
+    $("#exportCsv").addEventListener("click", exportCSV);
+    $("#exportJson").addEventListener("click", exportJSON);
+    $("#importJson").addEventListener("click", () => $("#fileInput").click());
+    $("#fileInput").addEventListener("change", event => {
+      const [file] = event.target.files;
+      if (file) importJSON(file);
+    });
+
+    populateStatusFilter();
+    renderAll();
+  </script>
+</body>
+</html>
