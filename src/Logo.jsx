@@ -10,12 +10,14 @@
 export function LogoMark({ size = 18, ...rest }) {
   return (
     <img
-      src="/media/logo-crystal.webp?v=2"
+      src="/media/logo-crystal.webp?v=3"
       width={size}
       height={size}
       alt=""
       aria-hidden="true"
       draggable="false"
+      decoding="async"
+      fetchPriority="high"
       style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
       {...rest}
     />

@@ -7,12 +7,12 @@ import { ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react'
 // mockup and gracefully falls back to it via onError (like the team photos).
 // `url` is the live site; `host` is the domain shown in the browser-frame bar.
 const TEMPLATES = [
-  { type: 'studio', cls: 't-food', tag: 'Designové studio', name: 'Lynx Studio', url: 'https://lynx-studio-delta.vercel.app', host: 'lynx-studio-delta.vercel.app', img: '/media/templates/lynxstudio.jpg', desc: 'Kreativní studio pro startupy i značky.' },
-  { type: 'ai', cls: 't-b2b', tag: 'AI agentura', name: 'Synthetix', url: 'https://synthetix-seven.vercel.app', host: 'synthetix-seven.vercel.app', img: '/media/templates/synthetix.jpg', desc: 'Landing pro AI automatizaci a integrace.' },
-  { type: 'ai', cls: 't-book', tag: 'SaaS / AI produkt', name: 'Nexora', url: 'https://nexora-red-nu.vercel.app', host: 'nexora-red-nu.vercel.app', img: '/media/templates/nexora.jpg', desc: 'Produktový web pro AI agenta, od hero po ceník.' },
-  { type: 'ai', cls: 't-saas', tag: 'AI / Tech', name: 'Branzly', url: 'https://branzly-asci.vercel.app', host: 'branzly-asci.vercel.app', img: '/media/templates/branzlyasci.jpg', desc: 'Světlý minimalistický web s ASCII vizuálem.' },
-  { type: 'studio', cls: 't-studio', tag: 'Kreativní studio', name: 'Vrstva', url: 'https://vrstva.vercel.app', host: 'vrstva.vercel.app', img: '/media/templates/vrstva.jpg', desc: 'Studio pro tech značky — strategie, design, vývoj.' },
-  { type: 'studio', cls: 't-b2b', tag: 'Design & portfolio', name: 'Synapse', url: 'https://synapse-sepia-nine.vercel.app/', host: 'synapse-sepia-nine.vercel.app', img: '/media/templates/synapse.jpg', desc: 'Studio pro UI/UX, branding, ilustraci a weby.' },
+  { type: 'studio', cls: 't-food', tag: 'Designové studio', name: 'Lynx Studio', url: 'https://lynx-studio-delta.vercel.app', host: 'lynx-studio-delta.vercel.app', img: '/media/templates/lynxstudio', desc: 'Kreativní studio pro startupy i značky.' },
+  { type: 'ai', cls: 't-b2b', tag: 'AI agentura', name: 'Synthetix', url: 'https://synthetix-seven.vercel.app', host: 'synthetix-seven.vercel.app', img: '/media/templates/synthetix', desc: 'Landing pro AI automatizaci a integrace.' },
+  { type: 'ai', cls: 't-book', tag: 'SaaS / AI produkt', name: 'Nexora', url: 'https://nexora-red-nu.vercel.app', host: 'nexora-red-nu.vercel.app', img: '/media/templates/nexora', desc: 'Produktový web pro AI agenta, od hero po ceník.' },
+  { type: 'ai', cls: 't-saas', tag: 'AI / Tech', name: 'Branzly', url: 'https://branzly-asci.vercel.app', host: 'branzly-asci.vercel.app', img: '/media/templates/branzlyasci', desc: 'Světlý minimalistický web s ASCII vizuálem.' },
+  { type: 'studio', cls: 't-studio', tag: 'Kreativní studio', name: 'Vrstva', url: 'https://vrstva.vercel.app', host: 'vrstva.vercel.app', img: '/media/templates/vrstva', desc: 'Studio pro tech značky — strategie, design, vývoj.' },
+  { type: 'studio', cls: 't-b2b', tag: 'Design & portfolio', name: 'Synapse', url: 'https://synapse-sepia-nine.vercel.app/', host: 'synapse-sepia-nine.vercel.app', img: '/media/templates/synapse', desc: 'Studio pro UI/UX, branding, ilustraci a weby.' },
 ]
 
 // Per-template CSS mockup — a generic mini-website that shows behind a screenshot
@@ -38,6 +38,8 @@ function Preview({ type }) {
 
 export default function Templates() {
   const [idx, setIdx] = useState(0)
+  const [near, setNear] = useState(false)
+  const sectionRef = useRef(null)
   const stageRef = useRef(null)
   const slideRefs = useRef([])
   const drag = useRef({ active: false, startX: 0, dx: 0 })
@@ -63,22 +65,37 @@ export default function Templates() {
       s.classList.toggle('active', i === idx)
     })
   }
-  useEffect(() => { apply() }) // re-settle after every render / idx change
+  useEffect(() => { apply() }, [idx]) // re-settle on slide change (it used to run on *every* render)
 
   const go = (i) => setIdx(((i % N) + N) % N)
 
-  // keyboard
+  // track visibility so nothing animates while the section is off screen
   useEffect(() => {
+    const el = sectionRef.current
+    if (!el) return
+    const io = new IntersectionObserver(([e]) => setNear(e.isIntersecting), { rootMargin: '200px 0px 200px 0px' })
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+
+  // keyboard — only while the carousel is the thing on screen, otherwise the
+  // arrow keys silently drive a carousel the visitor cannot see
+  useEffect(() => {
+    if (!near) return
     const onKey = (e) => { if (e.key === 'ArrowRight') go(idx + 1); if (e.key === 'ArrowLeft') go(idx - 1) }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [idx])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [idx, near])
 
-  // autoplay — always on (pauses only on hover / while dragging)
+  // autoplay — pauses on hover, while dragging, off screen and in a hidden tab
   useEffect(() => {
-    const id = setInterval(() => { if (!hover.current && !drag.current.active) setIdx((i) => (i + 1) % N) }, 4600)
+    if (!near) return
+    const id = setInterval(() => {
+      if (!hover.current && !drag.current.active && !document.hidden) setIdx((i) => (i + 1) % N)
+    }, 4600)
     return () => clearInterval(id)
-  }, [N])
+  }, [N, near])
 
   // drag / swipe
   useEffect(() => {
@@ -118,7 +135,7 @@ export default function Templates() {
   }, [idx])
 
   return (
-    <section id="sablony" className="section">
+    <section id="sablony" className="section" ref={sectionRef}>
       <div className="wrap">
         <div className="head">
           <div className="eyebrow" data-reveal="0"><span className="dot" />Naše práce</div>
@@ -136,7 +153,16 @@ export default function Templates() {
                     <div className="tbar"><span className="tlights"><i /><i /><i /></span><span className="turl">{t.host || `${t.name.toLowerCase()}.sitespot.cz`}</span></div>
                     <div className={`tprev ${t.cls}`}>
                       <Preview type={t.type} />
-                      {t.img && <img className="tshot" src={t.img} alt={`Šablona ${t.name}`} loading="lazy" onError={(e) => { e.currentTarget.style.display = 'none' }} />}
+                      {t.img && (
+                        <picture>
+                          <source srcSet={`${t.img}.avif`} type="image/avif" />
+                          <img
+                            className="tshot" src={`${t.img}.webp`} alt={`Šablona ${t.name}`}
+                            width="1280" height="704" loading="lazy" decoding="async"
+                            onError={(e) => { e.currentTarget.style.display = 'none' }}
+                          />
+                        </picture>
+                      )}
                     </div>
                     <div className="tmeta">
                       <div className="tmeta-l">

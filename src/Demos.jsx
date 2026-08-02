@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 import { ArrowUpRight, ChevronLeft, ChevronRight, X } from 'lucide-react'
 
 // Automation demos in the same 3D depth carousel as Templates. Each demo is a
@@ -75,8 +75,8 @@ function DemoModal({ demo, onClose }) {
   return (
     <AnimatePresence>
       {demo && (
-        <motion.div className="dmodal-backdrop" data-lenis-prevent="" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose}>
-          <motion.div
+        <m.div className="dmodal-backdrop" data-lenis-prevent="" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose}>
+          <m.div
             className="dmodal" role="dialog" aria-modal="true" aria-label={`Živý náhled — ${demo.name}`}
             initial={{ opacity: 0, y: 24, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 24, scale: 0.97 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
@@ -105,18 +105,30 @@ function DemoModal({ demo, onClose }) {
                 } catch { /* cross-origin — close via X/backdrop */ }
               }}
             />
-          </motion.div>
-        </motion.div>
+          </m.div>
+        </m.div>
       )}
     </AnimatePresence>
   )
 }
 
+// How many live demo iframes may exist at once. Each one is a full document with
+// its own layout, style and animation loop, so an unbounded set of them is the
+// most expensive thing on the page by a wide margin. Keeping the current slide
+// plus its two neighbours means a swipe is still instant.
+const MAX_LIVE = 3
+
 export default function Demos() {
   const [idx, setIdx] = useState(0)
   const [open, setOpen] = useState(null)      // demo in the modal
-  const [mounted, setMounted] = useState([0]) // slides whose live iframe already mounted (kept alive)
+  // Nothing mounts until the section is actually approaching the viewport. It
+  // used to mount slide 0 during the initial render — a second full page loading
+  // in parallel with the hero — and the autoplay then added one more every 4.6 s
+  // until all five were live, whether or not anyone had scrolled this far.
+  const [near, setNear] = useState(false)
+  const [mounted, setMounted] = useState([])  // slides whose live iframe is mounted (most recent last)
   const [loaded, setLoaded] = useState([])    // slides whose iframe finished loading
+  const sectionRef = useRef(null)
   const stageRef = useRef(null)
   const slideRefs = useRef([])
   const iframeRefs = useRef([])
@@ -145,29 +157,50 @@ export default function Demos() {
       s.classList.toggle('active', i === idx)
     })
   }
-  useEffect(() => { if (!drag.current.active) apply() }) // re-settle, but never snap a live drag (iframe onLoad can re-render mid-drag)
+  useEffect(() => { if (!drag.current.active) apply() }, [idx, mounted, loaded]) // re-settle, but never snap a live drag (iframe onLoad can re-render mid-drag)
 
   const go = (i) => {
     const n = ((i % N) + N) % N
     setIdx(n)
-    setMounted((m) => (m.includes(n) ? m : [...m, n]))
+    setMounted((m) => {
+      const next = m.includes(n) ? [...m.filter((x) => x !== n), n] : [...m, n]
+      return next.length > MAX_LIVE ? next.slice(next.length - MAX_LIVE) : next
+    })
   }
+
+  // hold off on every live document until the section is one viewport away, and
+  // tear them all down again once it is well out of sight
+  useEffect(() => {
+    const el = sectionRef.current
+    if (!el) return
+    const io = new IntersectionObserver(([e]) => setNear(e.isIntersecting), { rootMargin: '600px 0px 600px 0px' })
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+  useEffect(() => {
+    if (near) setMounted((m) => (m.length ? m : [idx]))
+    else { setMounted([]); setLoaded([]) }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [near])
 
   // only the active slide's demo runs its attract loop — the rest pause (embed.js listens for these messages)
   useEffect(() => {
     iframeRefs.current.forEach((fr, i) => {
       if (!fr || !fr.contentWindow) return
-      fr.contentWindow.postMessage(i === idx ? 'attract:resume' : 'attract:pause', window.location.origin)
+      fr.contentWindow.postMessage(i === idx && near ? 'attract:resume' : 'attract:pause', window.location.origin)
     })
-  }, [idx, loaded])
+  }, [idx, loaded, near])
 
-  // autoplay — pauses on hover, drag and while the modal is open
+  // autoplay — pauses on hover, drag, while the modal is open, off screen and in
+  // a backgrounded tab
   useEffect(() => {
+    if (!near) return
     const id = setInterval(() => {
-      if (!hover.current && !drag.current.active && !openRef.current) go(idx + 1)
+      if (!hover.current && !drag.current.active && !openRef.current && !document.hidden) go(idx + 1)
     }, 4600)
     return () => clearInterval(id)
-  }, [idx])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [idx, near])
 
   // drag / swipe (identical to Templates)
   useEffect(() => {
@@ -207,7 +240,7 @@ export default function Demos() {
   }, [idx])
 
   return (
-    <section id="dema" className="section">
+    <section id="dema" className="section" ref={sectionRef}>
       <div className="wrap">
         <div className="head">
           <div className="eyebrow" data-reveal="0"><span className="dot" />Automatizace v akci</div>

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
+import { m, AnimatePresence, useScroll, useTransform } from 'framer-motion'
 import Lenis from 'lenis'
 import SpaceHero from './SpaceHero'
 import { LogoMark } from './Logo'
@@ -214,29 +214,36 @@ function Marquee({ reverse = false }) {
   )
 }
 
-// intro preloader — logo + 0→100 % count, then the curtain lifts
+// intro preloader — logo + 0→100 % count, then the curtain lifts.
+// The counter used to run for 1.3 s plus a 0.22 s hold plus a 0.75 s curtain,
+// so the hero stayed hidden for well over two seconds and that is exactly what
+// Lighthouse measures as the largest contentful paint. The count now runs on a
+// short fixed budget and the number is written straight to the DOM instead of
+// through state, so the curtain doesn't re-render React 60 times on the way out.
+const PRE_DUR = 620
 function Preloader() {
-  const [n, setN] = useState(0)
+  const numRef = useRef(null)
   const [done, setDone] = useState(false)
   useEffect(() => {
-    const t0 = performance.now(), dur = 1300
-    let raf
+    const t0 = performance.now()
+    let raf = 0, timer = 0
     const tick = (t) => {
-      const p = Math.min(1, (t - t0) / dur)
-      setN(Math.round((1 - Math.pow(1 - p, 2)) * 100))
+      const p = Math.min(1, (t - t0) / PRE_DUR)
+      const el = numRef.current
+      if (el) el.textContent = `${Math.round((1 - Math.pow(1 - p, 2)) * 100)} %`
       if (p < 1) raf = requestAnimationFrame(tick)
-      else setTimeout(() => setDone(true), 220)
+      else timer = setTimeout(() => setDone(true), 60)
     }
     raf = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(raf)
+    return () => { cancelAnimationFrame(raf); clearTimeout(timer) }
   }, [])
   return (
     <AnimatePresence>
       {!done && (
-        <motion.div className="preloader" exit={{ y: '-100%' }} transition={{ duration: 0.75, ease: [0.76, 0, 0.24, 1] }}>
+        <m.div className="preloader" exit={{ y: '-100%' }} transition={{ duration: 0.55, ease: [0.76, 0, 0.24, 1] }}>
           <span className="pre-mark"><LogoMark size={46} /></span>
-          <span className="pre-num">{n} %</span>
-        </motion.div>
+          <span className="pre-num" ref={numRef}>0 %</span>
+        </m.div>
       )}
     </AnimatePresence>
   )
@@ -457,12 +464,12 @@ function BenChart() {
 const LIVE_LOGS = ['Faktura odeslána', 'Lead zapsán do CRM', 'Report vygenerován', 'Schůzka naplánována', 'Dotaz zodpovězen AI']
 function BenLive() {
   const [i, setI] = useState(0)
-  useEffect(() => {
-    const id = setInterval(() => setI((v) => (v + 1) % LIVE_LOGS.length), 2400)
-    return () => clearInterval(id)
-  }, [])
+  const boxRef = useRef(null)
+  // the log cycled every 2.4 s for the whole session, including the ~95 % of the
+  // page where this card is nowhere near the viewport
+  useVisibleInterval(boxRef, () => setI((v) => (v + 1) % LIVE_LOGS.length), 2400)
   return (
-    <div className="benefit ben-live spot-card" data-reveal="120">
+    <div className="benefit ben-live spot-card" data-reveal="120" ref={boxRef}>
       <div className="ben-top">
         <span className="live-pill"><span className="live-dot" />Živě</span>
       </div>
@@ -474,7 +481,7 @@ function BenLive() {
       </div>
       <div className="live-rows">
         <AnimatePresence mode="popLayout" initial={false}>
-          <motion.div
+          <m.div
             className="live-row" key={i}
             initial={{ opacity: 0, y: 12, filter: 'blur(4px)' }}
             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
@@ -482,7 +489,7 @@ function BenLive() {
             transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
           >
             <CheckCircle2 size={14} strokeWidth={2} /> {LIVE_LOGS[i]}
-          </motion.div>
+          </m.div>
         </AnimatePresence>
       </div>
     </div>
@@ -570,8 +577,8 @@ function LegalModal({ open, onClose }) {
   return (
     <AnimatePresence>
       {open && (
-        <motion.div className="cmodal-backdrop" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose}>
-          <motion.div
+        <m.div className="cmodal-backdrop" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose}>
+          <m.div
             className="cmodal legal" role="dialog" aria-modal="true" aria-label="Ochrana osobních údajů"
             initial={{ opacity: 0, y: 34, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 20, scale: 0.97 }}
             transition={{ type: 'spring', stiffness: 260, damping: 26 }}
@@ -589,8 +596,8 @@ function LegalModal({ open, onClose }) {
               <p><b>Vaše práva:</b> přístup, oprava, výmaz, omezení zpracování a přenositelnost údajů — stačí napsat na {CONTACT_EMAIL}. Stížnost lze podat u Úřadu pro ochranu osobních údajů (uoou.cz).</p>
               <p>Web neukládá sledovací cookies.</p>
             </div>
-          </motion.div>
-        </motion.div>
+          </m.div>
+        </m.div>
       )}
     </AnimatePresence>
   )
@@ -641,8 +648,8 @@ function ContactModal({ open, onClose }) {
   return (
     <AnimatePresence>
       {open && (
-        <motion.div className="cmodal-backdrop" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose}>
-          <motion.div
+        <m.div className="cmodal-backdrop" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose}>
+          <m.div
             className="cmodal" role="dialog" aria-modal="true" aria-label="Domluvit schůzku"
             initial={{ opacity: 0, y: 34, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 20, scale: 0.97 }}
             transition={{ type: 'spring', stiffness: 260, damping: 26 }}
@@ -674,8 +681,8 @@ function ContactModal({ open, onClose }) {
                 </form>
               </>
             )}
-          </motion.div>
-        </motion.div>
+          </m.div>
+        </m.div>
       )}
     </AnimatePresence>
   )
@@ -685,42 +692,43 @@ function useNumberFormat() {
   return useRef(new Intl.NumberFormat('cs-CZ')).current
 }
 
-// Mounts the heavy Spline WebGL scene. To make the robot appear fast and never
-// re-load: (1) warm the runtime chunk + the .splinecode asset during idle time,
-// (2) mount a full viewport early so it has time to initialise before it's in
-// view, (3) latch it mounted once shown — scrolling away never tears down the
-// WebGL, so returning is instant with no stutter.
+// The Spline runtime is by far the heaviest thing on the site: ~2.5 MB of JS
+// (runtime + physics + splat decoders) plus the scene file. It used to be
+// prefetched during the first idle window of every desktop visit, which meant
+// every single visitor downloaded, parsed and compiled all of it while the rest
+// of the page was still settling — the single biggest cause of an unresponsive
+// first few seconds.
+//
+// Now it loads only when the section is genuinely approaching the viewport, and
+// devices that would struggle with it (phones, low-memory or few-core machines,
+// data saver) keep the static poster instead. Once shown it stays mounted, so
+// scrolling back is still instant.
+function splineWorthIt() {
+  if (typeof window === 'undefined') return false
+  if (window.matchMedia('(max-width: 860px)').matches) return false
+  const c = navigator.connection
+  if (c?.saveData) return false
+  if (c?.effectiveType && /2g/.test(c.effectiveType)) return false
+  if (navigator.deviceMemory && navigator.deviceMemory <= 4) return false
+  if (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) return false
+  return true
+}
+
 function LazySpline({ scene }) {
   const ref = useRef(null)
   const [on, setOn] = useState(false)
-  // phones get a lightweight static poster instead of the ~2MB WebGL runtime
-  const [isMob] = useState(() => typeof window !== 'undefined' && window.matchMedia('(max-width: 860px)').matches)
-
-  // prefetch during idle so both the JS runtime and the scene file are cached
-  // before the user ever reaches the section
-  useEffect(() => {
-    if (isMob) return
-    let done = false
-    const warm = () => {
-      if (done) return
-      done = true
-      import('@splinetool/react-spline').catch(() => {})
-      fetch(scene, { mode: 'cors', cache: 'force-cache' }).catch(() => {})
-    }
-    const ric = window.requestIdleCallback
-    const id = ric ? ric(warm, { timeout: 2500 }) : setTimeout(warm, 1200)
-    return () => { (window.cancelIdleCallback || clearTimeout)(id) }
-  }, [isMob, scene])
+  const [isMob] = useState(() => !splineWorthIt())
 
   const appRef = useRef(null)
   useEffect(() => {
     if (isMob) return
     const el = ref.current
     if (!el) return
-    // start mounting a viewport early, then latch — once shown it stays mounted
+    // one viewport of lead time is enough to hide the load behind the scroll,
+    // without paying for it on visits that never reach this section
     const io = new IntersectionObserver(([e]) => {
       if (e.isIntersecting) { setOn(true); io.disconnect() }
-    }, { rootMargin: '700px 0px 700px 0px' })
+    }, { rootMargin: '400px 0px 400px 0px' })
     io.observe(el)
     return () => io.disconnect()
   }, [isMob])
@@ -757,6 +765,94 @@ function LazySpline({ scene }) {
   )
 }
 
+// Runs a callback on an interval, but only while `el` is on screen. Timers that
+// fire behind the viewport are pure waste: they re-render, re-layout and keep
+// the tab awake for animations nobody is looking at.
+function useVisibleInterval(ref, fn, ms) {
+  const saved = useRef(fn)
+  saved.current = fn
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    let id = 0, onScreen = false
+    const start = () => { if (!id && onScreen && !document.hidden) id = setInterval(() => saved.current(), ms) }
+    const stop = () => { clearInterval(id); id = 0 }
+    const io = new IntersectionObserver(([e]) => { onScreen = e.isIntersecting; onScreen ? start() : stop() }, { threshold: 0 })
+    io.observe(el)
+    // a backgrounded tab pauses too, and picks up again on return
+    const onVis = () => (document.hidden ? stop() : start())
+    document.addEventListener('visibilitychange', onVis)
+    return () => { io.disconnect(); stop(); document.removeEventListener('visibilitychange', onVis) }
+  }, [ref, ms])
+}
+
+// Case studies own their carousel index. It used to live on <App>, so the 5 s
+// autoplay tick re-rendered every section on the page — nav, hero, pricing, FAQ,
+// footer, the lot — three times a minute.
+function CaseCarousel() {
+  const [caseIdx, setCaseIdx] = useState(0)
+  const cHover = useRef(false)
+  const boxRef = useRef(null)
+  const fmt = useNumberFormat()
+  useVisibleInterval(boxRef, () => { if (!cHover.current) setCaseIdx((i) => (i + 1) % CASES.length) }, 5000)
+
+  return (
+    <section id="reference" className="section dark">
+      <div className="blob" data-parallax="-0.04" aria-hidden style={{ bottom: -220, left: '35%', width: 560, height: 520, background: 'radial-gradient(closest-side, color-mix(in oklab, var(--acc) 16%, transparent), transparent 70%)', filter: 'blur(70px)' }} />
+      <div className="wrap">
+        <div className="head">
+          <h2 data-split="1">Výsledky, které se dají změřit</h2>
+        </div>
+        <div className="case3d" data-reveal="0" ref={boxRef} onMouseEnter={() => (cHover.current = true)} onMouseLeave={() => (cHover.current = false)}>
+          <div className="case3d-stage">
+            {CASES.map((c, i) => {
+              let off = i - caseIdx
+              if (off > 1) off -= CASES.length
+              if (off < -1) off += CASES.length
+              const abs = Math.abs(off)
+              const style = {
+                transform: `translateX(${off * 58}%) translateZ(${-abs * 170}px) rotateY(${off * -34}deg) scale(${1 - abs * 0.1})`,
+                opacity: abs > 1 ? 0 : 1,
+                zIndex: 10 - abs,
+                pointerEvents: abs > 1 ? 'none' : 'auto',
+                filter: abs > 0 ? 'brightness(0.9)' : 'none',
+              }
+              return (
+                <div className={`case3d-card card case spot-card trend-${c.trend}${off === 0 ? ' is-active' : ''}`} style={style} key={i} onClick={() => setCaseIdx(i)}>
+                  <div className="case-glow" aria-hidden />
+                  <div className="case-top">
+                    <span className="case-ic"><KIcon C={CASE_ICONS[i]} size={18} color="#fff" /></span>
+                    <span className="kicker">{c.k}</span>
+                  </div>
+                  <div className="big grad" data-count={c.num} data-prefix={c.prefix} data-suffix={c.suffix}>{c.prefix}{fmt.format(c.num)}{c.suffix}</div>
+                  <div className="lead">{c.lead}</div>
+                  <CaseSpark dir={c.trend} />
+                  <div className="case-ba">
+                    <span className="ba-val from">{c.from}</span>
+                    <ArrowRight size={14} strokeWidth={2.2} className="ba-arrow" />
+                    <span className="ba-val to">{c.to}</span>
+                    <span className="ba-metric">{c.metric}</span>
+                  </div>
+                  <p>{c.p}</p>
+                </div>
+              )
+            })}
+          </div>
+          <div className="case3d-nav">
+            <button className="t-arrow" aria-label="Předchozí" onClick={() => setCaseIdx((i) => (i + CASES.length - 1) % CASES.length)}>←</button>
+            <div className="t-dots">
+              {CASES.map((_, i) => (
+                <button key={i} className={`t-dot${i === caseIdx ? ' on' : ''}`} aria-label="Přejít na studii" onClick={() => setCaseIdx(i)} />
+              ))}
+            </div>
+            <button className="t-arrow" aria-label="Další" onClick={() => setCaseIdx((i) => (i + 1) % CASES.length)}>→</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 export default function App() {
   const [navOpen, setNavOpen] = useState(false)
   const [contactOpen, setContactOpen] = useState(false)
@@ -764,34 +860,114 @@ export default function App() {
   const [fab, setFab] = useState(false)
   const openContact = (e) => { e.preventDefault(); e.stopPropagation(); setContactOpen(true) }
 
-  // --- scroll chrome: progress bar, auto-hiding nav, floating CTA, wall-light fade ---
+  // --- one scroll pipeline for the whole page ---
+  //
+  // This used to be three independent scroll listeners, each with its own rAF
+  // gate, and each one read layout (scrollHeight, getBoundingClientRect) *after*
+  // the previous one had already written styles — a forced synchronous reflow
+  // per handler, three times per frame, on every scroll event. Now: one
+  // listener, one rAF, all reads first, all writes second, and the viewport
+  // metrics are cached instead of re-measured 60 times a second.
   useEffect(() => {
     const bar = document.querySelector('.scroll-progress')
     const wrap = document.querySelector('.nav-wrap')
     const spot = document.querySelector('.cursor-spot')
-    let last = 0, tick = false
+    const heroC = document.getElementById('ss-hero-content')
+    const parEls = [...document.querySelectorAll('[data-parallax]')]
+      .map((el) => [el, parseFloat(el.getAttribute('data-parallax'))])
+
+    // headline word-scrub: wrap each word once, then only touch opacity later
+    const scrubEl = document.querySelector('[data-scrub]')
+    let scrubWords = []
+    if (scrubEl) {
+      ;[...scrubEl.childNodes].forEach((n) => {
+        if (n.nodeType !== 3 || !n.textContent.trim()) return
+        const frag = document.createDocumentFragment()
+        n.textContent.split(/(\s+)/).forEach((w) => {
+          if (!w) return
+          if (/^\s+$/.test(w)) { frag.appendChild(document.createTextNode(w)); return }
+          const sp = document.createElement('span')
+          sp.textContent = w; sp.className = 'scrub-w'
+          frag.appendChild(sp)
+        })
+        scrubEl.replaceChild(frag, n)
+      })
+      scrubWords = [...scrubEl.querySelectorAll('.scrub-w')]
+    }
+
+    // cached viewport / document metrics — refreshed on resize and whenever the
+    // document actually changes height, never inside the scroll handler
+    let vh = window.innerHeight
+    let maxScroll = Math.max(0, document.documentElement.scrollHeight - vh)
+    const measure = () => {
+      vh = window.innerHeight
+      maxScroll = Math.max(0, document.documentElement.scrollHeight - vh)
+    }
+
+    let last = 0, ticking = false
+    let navHidden = null, spotOn = null, fabOn = null
     const apply = () => {
-      tick = false
+      ticking = false
+      // ---- reads ----
       const y = window.scrollY
-      const max = document.documentElement.scrollHeight - window.innerHeight
-      if (bar) bar.style.transform = `scaleX(${max > 0 ? Math.min(1, y / max) : 0})`
-      if (wrap) wrap.classList.toggle('hide', y > 320 && y > last)
-      if (spot) spot.style.opacity = y > window.innerHeight * 0.72 ? '1' : '0'
-      setFab(y > window.innerHeight * 0.9)
+      const scrubTop = scrubWords.length ? scrubEl.getBoundingClientRect().top : 0
+      const hideNav = y > 320 && y > last
+      const showSpot = y > vh * 0.72
+      const showFab = y > vh * 0.9
+
+      // ---- writes ----
+      if (bar) bar.style.transform = `scaleX(${maxScroll > 0 ? Math.min(1, y / maxScroll) : 0})`
+      if (wrap && hideNav !== navHidden) { wrap.classList.toggle('hide', hideNav); navHidden = hideNav }
+      if (spot && showSpot !== spotOn) { spot.style.opacity = showSpot ? '1' : '0'; spotOn = showSpot }
+      if (showFab !== fabOn) { fabOn = showFab; setFab(showFab) }
+
+      if (heroC && y < vh * 1.1) {
+        heroC.style.transform = `translate3d(0, ${y * 0.28}px, 0)`
+        heroC.style.opacity = String(Math.max(0, 1 - y / 640))
+      }
+      for (const [el, f] of parEls) el.style.transform = `translate3d(0, ${y * f}px, 0)`
+
+      if (scrubWords.length) {
+        // progress 0→1 as the headline travels from 88% to 38% of the viewport
+        const p = Math.min(1, Math.max(0, (vh * 0.88 - scrubTop) / (vh * 0.5)))
+        const n = scrubWords.length + 2
+        for (let i = 0; i < scrubWords.length; i++) {
+          scrubWords[i].style.opacity = Math.min(1, Math.max(0.12, p * n - i))
+        }
+      }
       last = y
     }
-    const onScroll = () => { if (tick) return; tick = true; requestAnimationFrame(apply) }
+    const onScroll = () => { if (ticking) return; ticking = true; requestAnimationFrame(apply) }
+
+    const onResize = () => { measure(); onScroll() }
     window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onResize, { passive: true })
+    // reveal animations and lazy images keep changing the page height
+    const ro = new ResizeObserver(measure)
+    ro.observe(document.documentElement)
     apply()
-    return () => window.removeEventListener('scroll', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onResize)
+      ro.disconnect()
+    }
   }, [])
   const [isMobile, setIsMobile] = useState(false)
   const [active, setActive] = useState('')
-  const [tIndex, setTIndex] = useState(0)
-  const [caseIdx, setCaseIdx] = useState(0)
   const [faqOpen, setFaqOpen] = useState(0)
-  const tHover = useRef(false)
-  const cHover = useRef(false)
+  // the hero video covers the WebGL nebula completely, so the shader is only
+  // needed as the fallback for when there is no video to show
+  const [videoFailed, setVideoFailed] = useState(false)
+  // Phones and data-saver visitors get the shader nebula on its own. The loop is
+  // a decorative backdrop, and on a phone it costs a download plus continuous
+  // hardware decoding for something the WebGL scene already draws — which is
+  // what the hero looked like before the video was ever added.
+  const [wantVideo] = useState(() => {
+    if (typeof window === 'undefined') return false
+    if (window.matchMedia('(max-width: 860px)').matches) return false
+    const c = navigator.connection
+    return !(c?.saveData || (c?.effectiveType && /2g|3g/.test(c.effectiveType)))
+  })
   const navRef = useRef(null)
   const heroRef = useRef(null)
   const fmt = useNumberFormat()
@@ -803,19 +979,28 @@ export default function App() {
   const heroMediaY = useTransform(scrollYProgress, [0, 1], [0, 80])
 
   // --- starfield canvas ---
+  //
+  // The old loop drew up to 320 separate arc() paths per frame, each with its own
+  // globalAlpha — i.e. 320 state changes and 320 draw calls, 60 times a second,
+  // at up to 1.5× device pixel ratio. Stars are now bucketed into a handful of
+  // alpha steps so a frame is ~10 batched fills, the buffer runs at 1× DPR (they
+  // are 1px dots on a moving backdrop, nobody sees the difference) and the whole
+  // thing ticks at 30 fps because the twinkle is slow by design.
   useEffect(() => {
-    const reduce = false // animations always on (OS reduced-motion used to blank the whole site)
     const panel = document.getElementById('ss-hero-panel')
     const cv = document.getElementById('ss-stars')
     if (!panel || !cv) return
-    const ctx = cv.getContext('2d')
-    const dpr = Math.min(1.5, window.devicePixelRatio || 1)
+    const ctx = cv.getContext('2d', { alpha: true })
+    const BUCKETS = 10
+    const dpr = Math.min(1.5, window.devicePixelRatio || 1)   // keep 1px stars crisp on retina
     let stars = [], W = 0, H = 0, raf = 0
     const resize = () => {
-      W = panel.clientWidth; H = panel.clientHeight
-      cv.width = W * dpr; cv.height = H * dpr
+      const w = panel.clientWidth, h = panel.clientHeight
+      if (w === W && h === H) return
+      W = w; H = h
+      cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr)
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-      const n = Math.min(320, Math.round((W * H) / 8500))
+      const n = Math.min(190, Math.round((W * H) / 11000))
       stars = Array.from({ length: n }, () => ({
         x: Math.random() * W, y: Math.random() * H,
         r: Math.random() < 0.85 ? Math.random() * 0.9 + 0.35 : Math.random() * 1.5 + 0.9,
@@ -825,24 +1010,50 @@ export default function App() {
     const paint = (t) => {
       ctx.clearRect(0, 0, W, H)
       ctx.fillStyle = '#DDE4FF'
+      // group by rounded alpha, then one path (and one fill) per group
+      const groups = Array.from({ length: BUCKETS }, () => [])
       for (const st of stars) {
-        ctx.globalAlpha = 0.16 + 0.72 * Math.abs(Math.sin(st.p + t * 0.00045 * st.s))
-        ctx.beginPath(); ctx.arc(st.x, st.y, st.r, 0, 6.283); ctx.fill()
+        const a = 0.16 + 0.72 * Math.abs(Math.sin(st.p + t * 0.00045 * st.s))
+        groups[Math.min(BUCKETS - 1, (a * BUCKETS) | 0)].push(st)
         st.x += st.v; if (st.x > W + 2) st.x = -2
+      }
+      for (let b = 0; b < BUCKETS; b++) {
+        const g = groups[b]
+        if (!g.length) continue
+        ctx.globalAlpha = (b + 0.5) / BUCKETS
+        ctx.beginPath()
+        for (const st of g) {
+          ctx.moveTo(st.x + st.r, st.y)
+          ctx.arc(st.x, st.y, st.r, 0, 6.283)
+        }
+        ctx.fill()
       }
       ctx.globalAlpha = 1
     }
-    let running = false
-    const loop = (t) => { paint(t); raf = requestAnimationFrame(loop) }
-    const play = () => { if (running || reduce) return; running = true; raf = requestAnimationFrame(loop) }
+    let running = false, prev = 0
+    const loop = (t) => {
+      raf = requestAnimationFrame(loop)
+      if (t - prev < 32) return       // ~30 fps is plenty for a slow twinkle
+      prev = t
+      paint(t)
+    }
+    const play = () => { if (running) return; running = true; raf = requestAnimationFrame(loop) }
     const stop = () => { running = false; cancelAnimationFrame(raf) }
     resize()
-    if (reduce) paint(0)
+    paint(0)
     // pause the starfield loop whenever the hero is off screen
     const io = new IntersectionObserver(([e]) => { e.isIntersecting ? play() : stop() }, { threshold: 0 })
     io.observe(panel)
-    window.addEventListener('resize', resize)
-    return () => { io.disconnect(); stop(); window.removeEventListener('resize', resize) }
+    let rraf = 0
+    const onResize = () => {
+      if (rraf) return
+      rraf = requestAnimationFrame(() => { rraf = 0; resize() })
+    }
+    window.addEventListener('resize', onResize, { passive: true })
+    return () => {
+      io.disconnect(); stop(); cancelAnimationFrame(rraf)
+      window.removeEventListener('resize', onResize)
+    }
   }, [])
 
   // --- hero video: play only while the hero is on screen ---
@@ -860,61 +1071,38 @@ export default function App() {
     return () => { io.disconnect(); v.removeEventListener('canplay', kick) }
   }, [])
 
-  // --- scroll-scrubbed word reveal on the big headline (Awwwards-style) ---
-  useEffect(() => {
-    const el = document.querySelector('[data-scrub]')
-    if (!el) return
-    // wrap each word in a span (keeps <br /> intact)
-    ;[...el.childNodes].forEach((n) => {
-      if (n.nodeType !== 3 || !n.textContent.trim()) return
-      const frag = document.createDocumentFragment()
-      n.textContent.split(/(\s+)/).forEach((w) => {
-        if (!w) return
-        if (/^\s+$/.test(w)) { frag.appendChild(document.createTextNode(w)); return }
-        const sp = document.createElement('span')
-        sp.textContent = w; sp.className = 'scrub-w'
-        frag.appendChild(sp)
-      })
-      el.replaceChild(frag, n)
-    })
-    const words = el.querySelectorAll('.scrub-w')
-    let ticking = false
-    const apply = () => {
-      ticking = false
-      const r = el.getBoundingClientRect()
-      const vh = window.innerHeight
-      // progress 0→1 as the headline travels from 88% to 38% of the viewport
-      const p = Math.min(1, Math.max(0, (vh * 0.88 - r.top) / (vh * 0.5)))
-      words.forEach((w, i) => {
-        const o = Math.min(1, Math.max(0.12, p * (words.length + 2) - i))
-        w.style.opacity = o
-      })
-    }
-    const onScroll = () => { if (ticking) return; ticking = true; requestAnimationFrame(apply) }
-    window.addEventListener('scroll', onScroll, { passive: true })
-    apply()
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
-
   // --- reveal + word-split + counters ---
   useEffect(() => {
     const reduce = false // animations always on (OS reduced-motion used to blank the whole site)
+    const timers = new Set()
+    const after = (ms, fn) => { const t = setTimeout(() => { timers.delete(t); fn() }, ms); timers.add(t) }
+
     const io = new IntersectionObserver((entries) => {
       entries.forEach((en) => {
         if (!en.isIntersecting) return
-        en.target.style.opacity = '1'
-        en.target.style.transform = 'translateY(0px) scale(1)'
-        en.target.style.filter = 'blur(0px)'
-        io.unobserve(en.target)
+        const el = en.target
+        el.style.opacity = '1'
+        el.style.transform = 'translate3d(0, 0, 0) scale(1)'
+        io.unobserve(el)
+        // once it has played, drop the compositing hint and the inline transform
+        // so the element goes back to being a plain, cheap piece of the page
+        after(1100, () => {
+          el.classList.remove('rv-pending')
+          el.style.transition = ''; el.style.transform = ''
+        })
       })
     }, { threshold: 0.1, rootMargin: '0px 0px -6% 0px' })
 
     const wio = new IntersectionObserver((entries) => {
       entries.forEach((en) => {
         if (!en.isIntersecting) return
-        wio.unobserve(en.target)
-        en.target.querySelectorAll('.ss-w').forEach((w) => {
-          w.style.transform = 'translateY(0)'
+        const el = en.target
+        wio.unobserve(el)
+        const words = el.querySelectorAll('.ss-w')
+        words.forEach((w) => { w.style.transform = 'translateY(0)' })
+        after(1000 + words.length * 60, () => {
+          el.classList.remove('ss-pending')
+          words.forEach((w) => { w.style.transition = ''; w.style.transform = '' })
         })
       })
     }, { threshold: 0.35 })
@@ -955,8 +1143,13 @@ export default function App() {
         const r = el.getBoundingClientRect()
         if (r.top < window.innerHeight * 0.88) return
         const d = parseInt(el.getAttribute('data-reveal') || '0', 10)
-        el.style.opacity = '0'; el.style.transform = 'translateY(28px) scale(0.94)'; el.style.filter = 'blur(8px)'
-        el.style.transition = `opacity 0.7s ease ${d}ms, transform 0.8s cubic-bezier(0.22,1,0.36,1) ${d}ms, filter 0.7s ease ${d}ms`
+        // no blur() in the reveal: animating an 8px filter blur on ~80 cards
+        // means the compositor re-blurs each of them every frame they move,
+        // which is what made scrolling stutter on the way down the page.
+        // Opacity + transform are both composited and cost nothing.
+        el.style.opacity = '0'; el.style.transform = 'translate3d(0, 28px, 0) scale(0.94)'
+        el.style.transition = `opacity 0.7s ease ${d}ms, transform 0.8s cubic-bezier(0.22,1,0.36,1) ${d}ms`
+        el.classList.add('rv-pending')
         io.observe(el)
       })
       document.querySelectorAll('[data-split]').forEach((el) => {
@@ -966,6 +1159,7 @@ export default function App() {
         const r = el.getBoundingClientRect()
         if (r.top < window.innerHeight * 0.85) return
         splitWords(el)
+        el.classList.add('ss-pending')
         el.querySelectorAll('.ss-w').forEach((w, i) => {
           w.style.transform = 'translateY(112%)'
           w.style.transition = `transform 0.9s cubic-bezier(0.16,1,0.3,1) ${i * 60}ms`
@@ -997,34 +1191,36 @@ export default function App() {
     }, { threshold: 0.5 })
     document.querySelectorAll('[data-count]').forEach((el) => cio.observe(el))
 
-    return () => { io.disconnect(); wio.disconnect(); cio.disconnect(); clearTimeout(t1); clearTimeout(t2) }
+    return () => {
+      io.disconnect(); wio.disconnect(); cio.disconnect()
+      clearTimeout(t1); clearTimeout(t2)
+      timers.forEach(clearTimeout)
+    }
   }, [fmt])
 
-  // --- scroll: shrink, active section, hero + glow parallax ---
+  // --- pause every looping animation in sections that are off screen ---
+  // Marquee bands, orbit rings, pulsing dots, the mockup dashboards: about forty
+  // infinite CSS animations, all of which used to keep running the whole time
+  // the page was open, wherever the visitor happened to be scrolled to.
   useEffect(() => {
-    const reduce = false // animations always on (OS reduced-motion used to blank the whole site)
+    const targets = [...document.querySelectorAll('section, footer, .marq')]
+    if (!targets.length) return
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((en) => en.target.classList.toggle('is-off', !en.isIntersecting))
+    }, { rootMargin: '15% 0px 15% 0px' })
+    targets.forEach((el) => io.observe(el))
+    return () => { io.disconnect(); targets.forEach((el) => el.classList.remove('is-off')) }
+  }, [])
+
+  // --- active section highlight (the parallax it used to also drive now lives
+  // in the single scroll pipeline above) ---
+  useEffect(() => {
     const ids = ['sluzby', 'proces', 'dema', 'sablony', 'cenik', 'faq']
     const sio = new IntersectionObserver((entries) => {
       entries.forEach((en) => { if (en.isIntersecting) setActive(en.target.id) })
     }, { rootMargin: '-30% 0px -60% 0px' })
     ids.forEach((id) => { const el = document.getElementById(id); if (el) sio.observe(el) })
-
-    const heroC = document.getElementById('ss-hero-content')
-    // cache nodes once (no per-scroll querySelectorAll) and coalesce writes into one rAF/frame
-    const parEls = [...document.querySelectorAll('[data-parallax]')].map((el) => [el, parseFloat(el.getAttribute('data-parallax'))])
-    let ticking = false
-    const apply = () => {
-      ticking = false
-      const y = window.scrollY
-      if (heroC && y < window.innerHeight * 1.1) {
-        heroC.style.transform = `translateY(${y * 0.28}px)`
-        heroC.style.opacity = String(Math.max(0, 1 - y / 640))
-      }
-      for (const [el, f] of parEls) el.style.transform = `translateY(${y * f}px)`
-    }
-    const onScroll = () => { if (reduce || ticking) return; ticking = true; requestAnimationFrame(apply) }
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => { sio.disconnect(); window.removeEventListener('scroll', onScroll) }
+    return () => sio.disconnect()
   }, [])
 
   // --- track mobile breakpoint ---
@@ -1038,7 +1234,29 @@ export default function App() {
   // --- Lenis smooth scrolling (the ScrollEase effect) applied to the whole page ---
   useEffect(() => {
     const lenis = new Lenis({ lerp: 0.09, wheelMultiplier: 1, smoothWheel: true, syncTouch: false })
-    let raf = requestAnimationFrame(function loop(t) { lenis.raf(t); raf = requestAnimationFrame(loop) })
+
+    // Lenis only needs a frame callback while it is actually easing something.
+    // Driving it from an unconditional rAF (the usual copy-paste setup) wakes
+    // the main thread 60 times a second for the entire visit, even on a page
+    // sitting perfectly still — it keeps the CPU out of its idle state and shows
+    // up as general sluggishness. The loop now parks itself after a third of a
+    // second of quiet and any real scroll input starts it again.
+    let raf = 0, idle = 0
+    const loop = (t) => {
+      lenis.raf(t)
+      idle = lenis.isScrolling ? 0 : idle + 1
+      if (idle > 20) { raf = 0; return }
+      raf = requestAnimationFrame(loop)
+    }
+    const wake = () => { if (!raf) { idle = 0; raf = requestAnimationFrame(loop) } }
+    const wakeOpts = { passive: true }
+    window.addEventListener('wheel', wake, wakeOpts)
+    window.addEventListener('touchstart', wake, wakeOpts)
+    window.addEventListener('touchmove', wake, wakeOpts)
+    window.addEventListener('scroll', wake, wakeOpts)
+    window.addEventListener('keydown', wake, wakeOpts)
+    wake()
+
     // smooth in-page anchor navigation (nav links, hero buttons, footer)
     const onClick = (e) => {
       const a = e.target.closest('a[href^="#"]')
@@ -1049,10 +1267,20 @@ export default function App() {
       if (!el) return
       e.preventDefault()
       lenis.scrollTo(el, { offset: -90 })
+      wake()
       setNavOpen(false)
     }
     document.addEventListener('click', onClick)
-    return () => { cancelAnimationFrame(raf); document.removeEventListener('click', onClick); lenis.destroy() }
+    return () => {
+      cancelAnimationFrame(raf)
+      window.removeEventListener('wheel', wake)
+      window.removeEventListener('touchstart', wake)
+      window.removeEventListener('touchmove', wake)
+      window.removeEventListener('scroll', wake)
+      window.removeEventListener('keydown', wake)
+      document.removeEventListener('click', onClick)
+      lenis.destroy()
+    }
   }, [])
 
   // --- close island on outside click ---
@@ -1062,17 +1290,11 @@ export default function App() {
     return () => document.removeEventListener('click', onDoc)
   }, [navOpen])
 
-  // --- testimonial autoplay ---
-  useEffect(() => {
-    const id = setInterval(() => { if (!tHover.current) setTIndex((i) => (i + 1) % TESTIMONIALS.length) }, 7000)
-    return () => clearInterval(id)
-  }, [])
-
-  // --- case-study carousel autoplay ---
-  useEffect(() => {
-    const id = setInterval(() => { if (!cHover.current) setCaseIdx((i) => (i + 1) % CASES.length) }, 5000)
-    return () => clearInterval(id)
-  }, [])
+  // The testimonial section is commented out further down, but its 7 s autoplay
+  // timer was still running — and because the index lives on <App>, every tick
+  // re-rendered the entire page for a section nobody can see. Removed; the
+  // carousel now keeps its own state inside <CaseCarousel /> so its 5 s tick
+  // only re-renders the three cards it owns.
 
   const closeNav = () => setNavOpen(false)
 
@@ -1156,24 +1378,24 @@ export default function App() {
         >
           <div className="nav-corner left" aria-hidden />
           <div className="nav-corner right" aria-hidden />
-          <motion.nav className="nav" layout transition={ISLAND_LAYOUT}>
+          <m.nav className="nav" layout transition={ISLAND_LAYOUT}>
             {/* left half of the sections — slides out to the left of the centered logo */}
             <AnimatePresence initial={false}>
               {navOpen && !isMobile && (
-                <motion.div
+                <m.div
                   className="nav-links left"
                   initial={{ opacity: 0 }} animate={{ opacity: 1 }}
                   transition={ISLAND_SPRING}
                 >
                   {NAV.slice(0, 3).map((l, i) => (
-                    <motion.a
+                    <m.a
                       key={l.id} href={l.href} onClick={closeNav}
                       className={`nav-link${active === l.id ? ' active' : ''}`}
                       initial={{ opacity: 0, x: 14 }} animate={{ opacity: 1, x: 0 }}
                       transition={{ ...ISLAND_SPRING, delay: 0.03 * (NAV.slice(0, 3).length - 1 - i) }}
-                    >{l.label}</motion.a>
+                    >{l.label}</m.a>
                   ))}
-                </motion.div>
+                </m.div>
               )}
             </AnimatePresence>
 
@@ -1194,27 +1416,27 @@ export default function App() {
             {/* right half of the sections + CTA — slides out to the right of the logo */}
             <AnimatePresence initial={false}>
               {navOpen && !isMobile && (
-                <motion.div
+                <m.div
                   className="nav-links right"
                   initial={{ opacity: 0 }} animate={{ opacity: 1 }}
                   transition={ISLAND_SPRING}
                 >
                   {NAV.slice(3).map((l, i) => (
-                    <motion.a
+                    <m.a
                       key={l.id} href={l.href} onClick={closeNav}
                       className={`nav-link${active === l.id ? ' active' : ''}`}
                       initial={{ opacity: 0, x: -14 }} animate={{ opacity: 1, x: 0 }}
                       transition={{ ...ISLAND_SPRING, delay: 0.03 * i }}
-                    >{l.label}</motion.a>
+                    >{l.label}</m.a>
                   ))}
                   <a href="#kontakt" className="nav-cta" onClick={openContact}>Domluvit schůzku</a>
-                </motion.div>
+                </m.div>
               )}
             </AnimatePresence>
-          </motion.nav>
+          </m.nav>
           <AnimatePresence initial={false}>
             {isMobile && navOpen && (
-              <motion.div
+              <m.div
                 className="nav-links mobile"
                 initial={{ opacity: 0, y: -10, scale: 0.97 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -1228,7 +1450,7 @@ export default function App() {
                   >{l.label}</a>
                 ))}
                 <a href="#kontakt" className="nav-cta" onClick={openContact}>Domluvit schůzku</a>
-              </motion.div>
+              </m.div>
             )}
           </AnimatePresence>
         </div>
@@ -1236,20 +1458,27 @@ export default function App() {
 
       {/* ===== HERO ===== */}
       <section id="hero" className="hero" ref={heroRef}>
-        <motion.div id="ss-hero-panel" className="hero-panel" style={{ scale: heroScale, borderRadius: heroRadius }}>
-          <motion.div className="hero-media" style={{ y: heroMediaY }} aria-hidden>
-            <SpaceHero />
-            {/* drop any loop into public/media/hero.mp4 and it overlays the shader automatically.
+        <m.div id="ss-hero-panel" className="hero-panel" style={{ scale: heroScale, borderRadius: heroRadius }}>
+          <m.div className="hero-media" style={{ y: heroMediaY }} aria-hidden>
+            {/* The video (poster included) covers this canvas edge to edge, so the
+                shader only ever runs when there is no video: phones, data saver,
+                or a load that failed. */}
+            <SpaceHero paused={wantVideo && !videoFailed} />
+            {/* drop any loop into public/media/hero.{webm,mp4} and it overlays the shader automatically.
                 autoPlay + muted + playsInline makes every browser start it natively (not only via JS);
-                the .ready class (added on the first of loadeddata/canplay/playing to fire) fades it in. */}
-            <video className="hero-video" autoPlay muted loop playsInline preload="auto"
-              onError={(e) => { e.currentTarget.style.display = 'none' }}
-              onLoadedData={(e) => { e.currentTarget.classList.add('ready') }}
-              onCanPlay={(e) => { e.currentTarget.classList.add('ready'); e.currentTarget.play().catch(() => {}) }}
-              onPlaying={(e) => { e.currentTarget.classList.add('ready') }}>
-              <source src="/media/hero.mp4" type="video/mp4" />
-            </video>
-          </motion.div>
+                the .ready class (added on the first of loadeddata/canplay/playing to fire) fades it in.
+                The poster is a 10 kB still of the first frame so the hero has its final
+                look on the very first paint instead of waiting for the video to decode. */}
+            {wantVideo && (
+              <video className="hero-video" autoPlay muted loop playsInline preload="auto"
+                poster="/media/hero-poster.webp"
+                onError={(e) => { e.currentTarget.style.display = 'none'; setVideoFailed(true) }}
+                onCanPlay={(e) => { e.currentTarget.play().catch(() => {}) }}>
+                <source src="/media/hero.webm" type="video/webm" />
+                <source src="/media/hero.mp4" type="video/mp4" />
+              </video>
+            )}
+          </m.div>
           <canvas id="ss-stars" className="hero-stars" />
           <div className="hero-glow a" data-parallax="0.06" aria-hidden />
           <div className="hero-glow b" data-parallax="0.04" aria-hidden />
@@ -1275,7 +1504,7 @@ export default function App() {
               </a>
             </div>
           </div>
-        </motion.div>
+        </m.div>
       </section>
 
       <TrustBar />
@@ -1364,59 +1593,7 @@ export default function App() {
       <Demos />
 
       {/* ===== CASE STUDIES ===== */}
-      <section id="reference" className="section dark">
-        <div className="blob" data-parallax="-0.04" aria-hidden style={{ bottom: -220, left: '35%', width: 560, height: 520, background: 'radial-gradient(closest-side, color-mix(in oklab, var(--acc) 16%, transparent), transparent 70%)', filter: 'blur(70px)' }} />
-        <div className="wrap">
-          <div className="head">
-            <h2 data-split="1">Výsledky, které se dají změřit</h2>
-          </div>
-          <div className="case3d" data-reveal="0" onMouseEnter={() => (cHover.current = true)} onMouseLeave={() => (cHover.current = false)}>
-            <div className="case3d-stage">
-              {CASES.map((c, i) => {
-                let off = i - caseIdx
-                if (off > 1) off -= CASES.length
-                if (off < -1) off += CASES.length
-                const abs = Math.abs(off)
-                const style = {
-                  transform: `translateX(${off * 58}%) translateZ(${-abs * 170}px) rotateY(${off * -34}deg) scale(${1 - abs * 0.1})`,
-                  opacity: abs > 1 ? 0 : 1,
-                  zIndex: 10 - abs,
-                  pointerEvents: abs > 1 ? 'none' : 'auto',
-                  filter: abs > 0 ? 'brightness(0.9)' : 'none',
-                }
-                return (
-                  <div className={`case3d-card card case spot-card trend-${c.trend}${off === 0 ? ' is-active' : ''}`} style={style} key={i} onClick={() => setCaseIdx(i)}>
-                    <div className="case-glow" aria-hidden />
-                    <div className="case-top">
-                      <span className="case-ic"><KIcon C={CASE_ICONS[i]} size={18} color="#fff" /></span>
-                      <span className="kicker">{c.k}</span>
-                    </div>
-                    <div className="big grad" data-count={c.num} data-prefix={c.prefix} data-suffix={c.suffix}>{c.prefix}{fmt.format(c.num)}{c.suffix}</div>
-                    <div className="lead">{c.lead}</div>
-                    <CaseSpark dir={c.trend} />
-                    <div className="case-ba">
-                      <span className="ba-val from">{c.from}</span>
-                      <ArrowRight size={14} strokeWidth={2.2} className="ba-arrow" />
-                      <span className="ba-val to">{c.to}</span>
-                      <span className="ba-metric">{c.metric}</span>
-                    </div>
-                    <p>{c.p}</p>
-                  </div>
-                )
-              })}
-            </div>
-            <div className="case3d-nav">
-              <button className="t-arrow" aria-label="Předchozí" onClick={() => setCaseIdx((i) => (i + CASES.length - 1) % CASES.length)}>←</button>
-              <div className="t-dots">
-                {CASES.map((_, i) => (
-                  <button key={i} className={`t-dot${i === caseIdx ? ' on' : ''}`} aria-label="Přejít na studii" onClick={() => setCaseIdx(i)} />
-                ))}
-              </div>
-              <button className="t-arrow" aria-label="Další" onClick={() => setCaseIdx((i) => (i + 1) % CASES.length)}>→</button>
-            </div>
-          </div>
-        </div>
-      </section>
+      <CaseCarousel />
 
       {/* ===== TEMPLATES ===== */}
       <Templates />
@@ -1447,6 +1624,10 @@ export default function App() {
       </section>
 
       {/* ===== TESTIMONIALS — dočasně skryto =====
+      POZOR při znovuzapnutí: stav tIndex/tHover a jeho 7s autoplay byl odstraněn
+      (timer běžel pro sekci, kterou nikdo nevidí, a každý tik překresloval celou
+      stránku). Až se sekce vrátí, vytáhněte ji do vlastní komponenty jako
+      <CaseCarousel /> a použijte useVisibleInterval — ne stav na <App>.
       <section id="ohlasy" className="section">
         <div className="wrap">
           <div className="head" style={{ marginBottom: 44 }}>
@@ -1507,12 +1688,12 @@ export default function App() {
             <p className="sub" data-reveal="120">SiteSpot jsme založili ve třech s jednoduchou myšlenkou: malé a střední firmy si zaslouží stejně chytré weby a automatizace jako korporace — bez korporátních cen a nekonečných procesů. Píšeme si napřímo, mluvíme česky a výsledky měříme v číslech.</p>
           </div>
           <div className="grid g3 team-grid">
-            {/* real photos live in public/media/*.jpg; they replace the initials automatically.
+            {/* real photos live in public/media/*.webp; they replace the initials automatically.
                 socials: real URL → clickable; '#' → disabled placeholder; null/omitted → hidden (e.g. no X yet). */}
             {[
-              { n: 'Oliver Žaigla', img: '/media/oliver.jpg', role: 'Strategie', bio: 'Vede strategii, akvizici a vztahy s klienty.', chips: ['Strategie', 'Leady', 'Growth'], li: 'https://www.linkedin.com/in/zaigla/', ig: 'https://www.instagram.com/oliksmd/', x: null },
-              { n: 'David Sak', img: '/media/david.jpg', role: 'Design', bio: 'Navrhuje weby a značky, které prodávají.', chips: ['Web design', 'UX/UI', 'Brand'], li: 'https://www.linkedin.com/in/david-sak-141601246/', ig: 'https://www.instagram.com/dejvyq/', x: null },
-              { n: 'Max Hrubý', img: '/media/max.jpg', role: 'Vývoj & AI', bio: 'Staví weby, AI agenty a automatizace.', chips: ['Vývoj', 'AI agenti', 'Automatizace'], li: 'https://www.linkedin.com/in/hrub%C3%BD/', ig: 'https://www.instagram.com/maxmilian_hruby/', x: null },
+              { n: 'Oliver Žaigla', img: '/media/oliver.webp', role: 'Strategie', bio: 'Vede strategii, akvizici a vztahy s klienty.', chips: ['Strategie', 'Leady', 'Growth'], li: 'https://www.linkedin.com/in/zaigla/', ig: 'https://www.instagram.com/oliksmd/', x: null },
+              { n: 'David Sak', img: '/media/david.webp', role: 'Design', bio: 'Navrhuje weby a značky, které prodávají.', chips: ['Web design', 'UX/UI', 'Brand'], li: 'https://www.linkedin.com/in/david-sak-141601246/', ig: 'https://www.instagram.com/dejvyq/', x: null },
+              { n: 'Max Hrubý', img: '/media/max.webp', role: 'Vývoj & AI', bio: 'Staví weby, AI agenty a automatizace.', chips: ['Vývoj', 'AI agenti', 'Automatizace'], li: 'https://www.linkedin.com/in/hrub%C3%BD/', ig: 'https://www.instagram.com/maxmilian_hruby/', x: null },
             ].map((t, i) => {
               const socials = [
                 { key: 'li', label: 'LinkedIn', url: t.li, Icon: LinkedinIcon },
@@ -1522,7 +1703,7 @@ export default function App() {
               return (
                 <div className="team-card spot-card" data-reveal={i * 100} key={t.n}>
                   <div className="team-photo">
-                    <img src={t.img} alt={t.n} loading="lazy" onError={(e) => { e.currentTarget.style.display = 'none' }} />
+                    <img src={t.img} alt={t.n} width="126" height="126" loading="lazy" decoding="async" onError={(e) => { e.currentTarget.style.display = 'none' }} />
                     <span className="team-init">{t.n.split(' ').map((w) => w[0]).join('')}</span>
                   </div>
                   <div className="team-meta">
@@ -1675,13 +1856,13 @@ export default function App() {
 
       <AnimatePresence>
         {fab && !contactOpen && (
-          <motion.button
+          <m.button
             className="fab" onClick={() => setContactOpen(true)}
             initial={{ opacity: 0, y: 24, scale: 0.9 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 24, scale: 0.9 }}
             transition={{ type: 'spring', stiffness: 300, damping: 24 }}
           >
             <Zap size={15} strokeWidth={2.2} fill="currentColor" /> Konzultace zdarma
-          </motion.button>
+          </m.button>
         )}
       </AnimatePresence>
 

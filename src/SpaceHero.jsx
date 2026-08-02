@@ -1,10 +1,13 @@
 import { useEffect, useRef } from 'react'
-import * as THREE from 'three'
 
 // Deep-space background: procedural nebula (FBM) + twinkling starfield, all in-shader.
 // Reads like a looping space video, zero downloaded assets.
+//
+// Written against raw WebGL on purpose. This used to go through three.js, which
+// dragged ~600 kB of renderer/scene-graph code into the main bundle for what is
+// really one full-screen triangle and one fragment shader.
 const FRAG = `
-precision highp float;
+precision mediump float;
 uniform vec2 uRes;
 uniform float uTime;
 
@@ -73,46 +76,100 @@ void main(){
 }
 `
 
-const VERT = `void main(){ gl_Position = vec4(position, 1.0); }`
+// one oversized triangle covers the viewport with 3 vertices (no quad seam) —
+// cheaper to set up and to rasterise than the usual two-triangle plane
+const VERT = `
+attribute vec2 aPos;
+void main(){ gl_Position = vec4(aPos, 0.0, 1.0); }
+`
 
-export default function SpaceHero() {
+// The nebula is a soft, low-frequency image: rendering it below CSS resolution
+// and letting the browser scale it up is visually indistinguishable, and it cuts
+// the fragment count (the expensive part — 4 FBM octaves + 3 star layers per
+// pixel) to roughly a third. The old code ran at devicePixelRatio 1.25, i.e.
+// ~4× more pixels than this on a retina MacBook.
+const RENDER_SCALE = 0.6
+
+function compile(gl, type, src) {
+  const sh = gl.createShader(type)
+  gl.shaderSource(sh, src)
+  gl.compileShader(sh)
+  if (!gl.getShaderParameter(sh, gl.COMPILE_STATUS)) { gl.deleteShader(sh); return null }
+  return sh
+}
+
+// `paused` freezes the loop without unmounting: once the hero video is up it
+// covers this canvas completely, so animating underneath it is pure GPU burn.
+// The last painted frame stays on screen as the fallback backdrop.
+export default function SpaceHero({ paused = false }) {
   const ref = useRef(null)
+  const pausedRef = useRef(paused)
+  const ctrl = useRef(null)
+
   useEffect(() => {
     const canvas = ref.current
     const parent = canvas.parentElement
-    const reduce = false // animations always on (OS reduced-motion used to blank the whole site)
-    let renderer
+    let gl
     try {
-      renderer = new THREE.WebGLRenderer({ canvas, antialias: false, powerPreference: 'high-performance' })
-    } catch { return } // no WebGL → CSS gradient shows through
-    renderer.setPixelRatio(Math.min(1.25, window.devicePixelRatio || 1))
-    const scene = new THREE.Scene()
-    const camera = new THREE.Camera()
-    const uniforms = { uTime: { value: 0 }, uRes: { value: new THREE.Vector2(1, 1) } }
-    const mat = new THREE.ShaderMaterial({ vertexShader: VERT, fragmentShader: FRAG, uniforms })
-    scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), mat))
+      gl = canvas.getContext('webgl', {
+        antialias: false, alpha: false, depth: false, stencil: false,
+        powerPreference: 'low-power', preserveDrawingBuffer: false,
+      })
+    } catch { /* no WebGL → CSS gradient shows through */ }
+    if (!gl) return
+
+    const vs = compile(gl, gl.VERTEX_SHADER, VERT)
+    const fs = compile(gl, gl.FRAGMENT_SHADER, FRAG)
+    if (!vs || !fs) return
+    const prog = gl.createProgram()
+    gl.attachShader(prog, vs); gl.attachShader(prog, fs); gl.linkProgram(prog)
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return
+    gl.useProgram(prog)
+
+    const buf = gl.createBuffer()
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf)
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW)
+    const aPos = gl.getAttribLocation(prog, 'aPos')
+    gl.enableVertexAttribArray(aPos)
+    gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0)
+
+    const uTime = gl.getUniformLocation(prog, 'uTime')
+    const uRes = gl.getUniformLocation(prog, 'uRes')
 
     const resize = () => {
-      const w = parent.clientWidth, h = parent.clientHeight
-      renderer.setSize(w, h, false)
-      uniforms.uRes.value.set(w * renderer.getPixelRatio(), h * renderer.getPixelRatio())
+      const w = Math.max(1, Math.round(parent.clientWidth * RENDER_SCALE))
+      const h = Math.max(1, Math.round(parent.clientHeight * RENDER_SCALE))
+      if (canvas.width === w && canvas.height === h) return
+      canvas.width = w; canvas.height = h
+      gl.viewport(0, 0, w, h)
+      gl.uniform2f(uRes, w, h)
     }
-    resize()
-    window.addEventListener('resize', resize)
 
-    let raf = 0, running = false, start = performance.now()
-    const frame = () => {
-      uniforms.uTime.value = (performance.now() - start) / 1000
-      renderer.render(scene, camera)
-      raf = requestAnimationFrame(frame)
+    let raf = 0, running = false, visible = false
+    const start = performance.now()
+    const draw = (t) => {
+      gl.uniform1f(uTime, (t - start) / 1000)
+      gl.drawArrays(gl.TRIANGLES, 0, 3)
     }
-    const play = () => { if (running || reduce) return; running = true; raf = requestAnimationFrame(frame) }
-    const stop = () => { running = false; cancelAnimationFrame(raf) }
+    const frame = (t) => { draw(t); raf = requestAnimationFrame(frame) }
+    const play = () => { if (running || pausedRef.current || !visible) return; running = true; raf = requestAnimationFrame(frame) }
+    const stop = () => { running = false; cancelAnimationFrame(raf); raf = 0 }
+
+    resize()
+    draw(performance.now())
 
     // only render while the hero is actually on screen — frees the GPU everywhere else
-    const io = new IntersectionObserver(([e]) => { e.isIntersecting ? play() : stop() }, { threshold: 0 })
+    const io = new IntersectionObserver(([e]) => { visible = e.isIntersecting; visible ? play() : stop() }, { threshold: 0 })
     io.observe(parent)
-    if (reduce) { uniforms.uTime.value = 8; renderer.render(scene, camera) }
+
+    // resize coalesced into one rAF — the raw event fires dozens of times per
+    // window drag and every pass reallocates the drawing buffer
+    let rraf = 0
+    const onResize = () => {
+      if (rraf) return
+      rraf = requestAnimationFrame(() => { rraf = 0; resize(); if (!running) draw(performance.now()) })
+    }
+    window.addEventListener('resize', onResize, { passive: true })
 
     // survive GPU context loss (mobile backgrounding, driver resets)
     const onLost = (e) => { e.preventDefault(); stop() }
@@ -120,12 +177,25 @@ export default function SpaceHero() {
     canvas.addEventListener('webglcontextlost', onLost)
     canvas.addEventListener('webglcontextrestored', onRestored)
 
+    ctrl.current = { play, stop }
+
     return () => {
-      io.disconnect(); stop(); window.removeEventListener('resize', resize)
+      ctrl.current = null
+      io.disconnect(); stop(); cancelAnimationFrame(rraf)
+      window.removeEventListener('resize', onResize)
       canvas.removeEventListener('webglcontextlost', onLost)
       canvas.removeEventListener('webglcontextrestored', onRestored)
-      mat.dispose(); renderer.dispose()
+      gl.deleteBuffer(buf); gl.deleteProgram(prog); gl.deleteShader(vs); gl.deleteShader(fs)
+      gl.getExtension('WEBGL_lose_context')?.loseContext()
     }
   }, [])
+
+  useEffect(() => {
+    pausedRef.current = paused
+    const c = ctrl.current
+    if (!c) return
+    paused ? c.stop() : c.play()
+  }, [paused])
+
   return <canvas ref={ref} className="hero-space" aria-hidden />
 }

@@ -1,3 +1,34 @@
+/* Clash Display, self-hosted.
+   These used to come from api.fontshare.com: a render-blocking stylesheet on a
+   third-party origin, which then pointed at font files on a *second* third-party
+   origin — two DNS lookups, two TLS handshakes and a two-deep request chain
+   standing between the visitor and the first line of text. Served from our own
+   domain the files ride the connection that is already open, and each one is
+   subset to Latin + Czech (15 kB → 11 kB). Switzer was requested too (five more
+   weights, ~95 kB) but never actually rendered: Clash Display covers every Czech
+   glyph, and CSS picks the weight inside the first matching family rather than
+   moving down the stack. */
+@font-face {
+  font-family: 'Clash Display';
+  src: url('/fonts/clash-display-400.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Clash Display';
+  src: url('/fonts/clash-display-500.woff2') format('woff2');
+  font-weight: 500; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Clash Display';
+  src: url('/fonts/clash-display-600.woff2') format('woff2');
+  font-weight: 600; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Clash Display';
+  src: url('/fonts/clash-display-700.woff2') format('woff2');
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+
 :root {
   --bg: #000000;
   --acc: #E9EBEF;
@@ -93,10 +124,15 @@ a { color: inherit; }
 .hero-media { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
 .hero-media > * { position: absolute; inset: 0; width: 100%; height: 100%; }
 .hero-space { display: block; }
-.hero-video { object-fit: cover; opacity: 0; transition: opacity 1s ease; }
-.hero-video.ready { opacity: 1; }
+/* Visible from the moment it is in the DOM. It used to start at opacity 0 and
+   fade in on the first playable frame, which meant the poster — the whole point
+   of which is to put the final hero image on screen immediately — was invisible
+   until the video had decoded. That decode was the page's largest contentful
+   paint. The poster is frame one of the loop, so there is nothing to fade
+   between: the still simply becomes the moving image. */
+.hero-video { object-fit: cover; opacity: 1; }
 .hero-stars { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; opacity: 0.8; pointer-events: none; }
-.hero-glow { position: absolute; border-radius: 50%; opacity: var(--glow); pointer-events: none; }
+.hero-glow { position: absolute; border-radius: 50%; opacity: var(--glow); pointer-events: none; will-change: transform; }
 .hero-glow.a { top: -25%; right: -10%; width: 55%; height: 65%; background: radial-gradient(closest-side, color-mix(in oklab, var(--acc) 14%, transparent), transparent 70%); filter: blur(70px); }
 .hero-glow.b { bottom: -30%; left: -12%; width: 50%; height: 60%; background: radial-gradient(closest-side, rgba(120,140,200,0.1), transparent 70%); filter: blur(80px); }
 .hero-content { position: relative; z-index: 3; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 0 24px 40px; will-change: transform, opacity; }
@@ -180,7 +216,11 @@ a { color: inherit; }
 .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--acc); box-shadow: 0 0 9px var(--acc); }
 .head h2 { margin: 18px 0 0; font-size: clamp(30px,4.5vw,50px); font-weight: 600; letter-spacing: -0.03em; line-height: 1.12; text-wrap: balance; }
 .head .sub { margin: 14px 0 0; font-size: 17px; line-height: 1.6; color: var(--muted); max-width: 560px; }
-.blob { position: absolute; border-radius: 50%; opacity: var(--glow); pointer-events: none; }
+/* The ambient blobs carry a 60–80px blur and are moved on every scroll frame by
+   the parallax pass. Without the promotion hint the browser re-runs that blur
+   each time they move; with it, the blurred circle is rasterised once and the
+   compositor just slides the finished texture around. */
+.blob { position: absolute; border-radius: 50%; opacity: var(--glow); pointer-events: none; will-change: transform; }
 
 /* ===== per-card cursor spotlight ===== */
 .spot-card { position: relative; isolation: isolate; }
@@ -193,8 +233,22 @@ a { color: inherit; }
 .spot-card > *:not(.case-glow) { position: relative; z-index: 1; }
 @media (hover: none) { .spot-card::before { display: none; } }
 
-/* reveal base state (JS toggles to visible) */
-[data-reveal], [data-split] .ss-w { will-change: opacity, transform, filter; }
+/* Reveal base state (JS toggles to visible).
+   will-change is deliberately NOT on [data-reveal] itself: that selector matches
+   ~80 elements, so the old rule asked the browser to keep a composited layer —
+   with a filter hint, no less — for eighty cards from first paint until the tab
+   closed. That is tens of megabytes of GPU memory and a layer tree the
+   compositor has to walk on every frame, for an animation each element plays
+   exactly once. The hint is now added by JS for the moment it is actually
+   needed and dropped again afterwards. */
+.rv-pending { will-change: opacity, transform; }
+.ss-pending .ss-w { will-change: transform; }
+
+/* Animations inside a section that is off screen are paused outright. Roughly
+   forty of them loop forever across this page (marquee bands, orbit rings,
+   mockup dashboards, pulsing dots); left running they keep the main thread and
+   the compositor busy animating things nobody can see. */
+.is-off, .is-off *, .is-off *::before, .is-off *::after { animation-play-state: paused !important; }
 /* word mask for heading reveals — words rise from behind a clip line */
 .ss-m { display: inline-block; overflow: hidden; vertical-align: bottom; padding-bottom: 0.12em; margin-bottom: -0.12em; }
 .ss-w { display: inline-block; }
