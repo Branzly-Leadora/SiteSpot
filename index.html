@@ -29,9 +29,12 @@
   <meta name="twitter:title" content="SiteSpot — Proměníme váš web ve stroj na zákazníky" />
   <meta name="twitter:description" content="Weby, které prodávají. AI automatizace, které šetří čas a peníze." />
   <meta name="twitter:image" content="https://sitespot.cz/og.png" />
-  <!-- Analytika (Umami — zdarma, bez cookie lišty): zaregistruj se na https://umami.is,
-       přidej web, zkopíruj website-id a odkomentuj řádek níže: -->
-  <!-- <script defer src="https://cloud.umami.is/script.js" data-website-id="SEM-VLOZ-WEBSITE-ID"></script> -->
+  <!-- Analytika (Umami, zdarma a bez cookie lišty) a strukturovaná data FAQPage
+       se vkládají při buildu, viz vite.config.js.
+       Měření se zapne nastavením proměnné VITE_UMAMI_WEBSITE_ID: zaregistruj web
+       na https://umami.is, zkopíruj website id a vlož ho na Vercelu do proměnných
+       prostředí. Dokud proměnná není nastavená, žádný měřicí skript se nenačte,
+       takže lokální vývoj statistiky nezanáší. -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",

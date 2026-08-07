@@ -7,6 +7,8 @@ import Templates from './Templates'
 import Demos from './Demos'
 import { FramerLogo, ClaudeLogo, OpenAILogo, N8nLogo, GeminiLogo, BRANDS } from './BrandLogos'
 import { SplineScene } from './SplineScene'
+// Sdílené s buildem: vite.config.js ze stejného pole generuje FAQPage do index.html.
+import { FAQ } from './faq.js'
 import {
   Mail, Phone, MapPin, ArrowRight, Star,
   Globe, Bot, Target, Megaphone, Search, Rocket, LineChart,
@@ -267,17 +269,8 @@ const PLANS = [
 const CMP_BAD = ['Pomalé, ruční procesy', 'Náchylné k lidským chybám', 'Vyžaduje více lidí', 'Těžko škáluje bez náboru', 'Omezené na pracovní dobu', 'Rozhodování od oka a s prodlevami', 'Rutina zpomaluje tým', 'Vícekrokové ruční předávky', 'Pomalejší reakční doby', 'Ruční follow-upy a evidence']
 const CMP_GOOD = ['Úkoly hotové okamžitě', 'Vysoká přesnost, konzistentní výsledky', 'Nižší provozní náklady', 'Škáluje bez námahy', 'Běží 24/7 nonstop', 'Data a přehledy v reálném čase', 'Automatizuje rutinu pro vyšší výstup', 'Plynulý, automatický tok', 'Okamžité odpovědi přes chat i hlas', 'Automatický nurturing a připomínky']
 
-const FAQ = [
-  { q: 'Za jak dlouho bude web hotový?', a: 'Web v tarifu Starter spouštíme do 3 týdnů, rozsáhlejší weby na míru do 4–8 týdnů. Přesný harmonogram dostanete po úvodní analýze — a platí to, co si domluvíme.' },
-  { q: 'Kolik spolupráce stojí?', a: 'Menší web (Starter) pořídíte od 16 000 Kč, web na míru s automatizacemi (Business) od 29 000 Kč — obojí jednorázově. Průběžná spolupráce Full Stack začíná na 19 000 Kč měsíčně, bez závazku.' },
-  { q: 'Proč jsou ceny uvedené „od“?', a: 'Uvedené částky jsou startovní ceny pro malé firmy — každý projekt má jiný rozsah. Finální pevnou cenu dostanete po krátkém briefu, písemně a bez skrytých položek. A ta pak platí, žádné vícepráce navíc.' },
-  { q: 'Co je v ceně a co se děje po spuštění?', a: 'U Starteru texty, SEO základ, analytika a 30 dní podpory zdarma. Business přidává napojení na CRM či rezervace, jednu AI automatizaci a zaškolení. Kdo chce průběžnou péči, kampaně a optimalizaci, přechází na Full Stack.' },
-  { q: 'Už web mám. Má smysl se ozvat?', a: 'Určitě. Uděláme vám audit zdarma — často stačí stávající web optimalizovat a napojit na automatizace, místo stavění od nuly.' },
-  { q: 'Jak vypadají AI automatizace v praxi?', a: 'Propojíme nástroje, které už používáte — e-mail, CRM, fakturaci, tabulky. Poptávky se samy třídí, faktury odesílají, reporty generují. Klientům běžně šetříme 30 a více hodin měsíčně.' },
-  { q: 'Musím podepsat dlouhodobý závazek?', a: 'Ne. Starter a Business zaplatíte jednorázově a web je váš. Full Stack běží po měsících s měsíční výpovědní lhůtou — klienty si držíme výsledky, ne smlouvami.' },
-  { q: 'Jak poznám, že to funguje?', a: 'V tarifu Full Stack dostanete každý měsíc srozumitelný report a konzultaci: kolik přišlo poptávek, co stály a kolik hodin ušetřily automatizace. Žádná hausnumera.' },
-  { q: 'Pracujete i s menšími firmami?', a: 'Ano — většina našich klientů má 2 až 50 zaměstnanců. Řešení stavíme tak, aby dávalo smysl vašemu rozpočtu, ne našemu portfoliu.' },
-]
+// FAQ se přesunulo do src/faq.js (importuje se nahoře), protože ho vedle
+// stránky čte i build a dělá z něj strukturovaná data.
 
 // process cards — browser-window mini-scenes: page audit · live coding · growing chart
 function ProcScene({ i }) {

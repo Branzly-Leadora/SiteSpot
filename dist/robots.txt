@@ -1,0 +1,48 @@
+# sitespot.cz
+
+# Roboti jazykových modelů mají přístup výslovně povolený. Bez nich se web
+# nemůže objevit v odpovědích ChatGPT, Claude, Perplexity ani v přehledech AI
+# od Googlu, což je pro nás vyhledávaný kanál, ne vedlejší efekt.
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: SeznamBot
+Allow: /
+
+# Interní CRM za přihlášením do indexu nepatří.
+User-agent: *
+Allow: /
+Disallow: /interni
+Disallow: /api/
+
+Sitemap: https://sitespot.cz/sitemap.xml

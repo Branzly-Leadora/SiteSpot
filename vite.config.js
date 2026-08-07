@@ -1,8 +1,59 @@
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
+import { FAQ } from './src/faq.js'
 
-export default defineConfig({
-  plugins: [react()],
+// Dvě věci, které musí být přímo v HTML, ne až v Reactu:
+//
+// 1) Strukturovaná data FAQPage. Roboti jazykových modelů (GPTBot, ClaudeBot,
+//    PerplexityBot) většinou nespouštějí JavaScript, takže cokoliv vloží až
+//    React, to neuvidí. Generuje se ze stejného pole, které vykresluje stránka,
+//    takže značkování nemůže utéct od viditelného textu.
+// 2) Měřicí skript. Načítá se jen když je nastavené VITE_UMAMI_WEBSITE_ID,
+//    takže lokální vývoj a náhledy nezanáší data. Nastavuje se v proměnných
+//    prostředí na Vercelu, ne v repozitáři.
+function headTags(umamiId) {
+  const faqLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: FAQ.map(({ q, a }) => ({
+      '@type': 'Question',
+      name: q,
+      acceptedAnswer: { '@type': 'Answer', text: a },
+    })),
+  }
+
+  return {
+    name: 'sitespot-head-tags',
+    transformIndexHtml: {
+      order: 'pre',
+      handler() {
+        const tags = [{
+          tag: 'script',
+          attrs: { type: 'application/ld+json' },
+          // `<` se escapuje, aby řetězec v datech nemohl předčasně ukončit blok
+          children: JSON.stringify(faqLd).replace(/</g, '\\u003c'),
+          injectTo: 'head',
+        }]
+
+        if (umamiId) {
+          tags.push({
+            tag: 'script',
+            attrs: { defer: true, src: 'https://cloud.umami.is/script.js', 'data-website-id': umamiId },
+            injectTo: 'head',
+          })
+        }
+
+        return tags
+      },
+    },
+  }
+}
+
+export default defineConfig(({ mode }) => ({
+  plugins: [
+    react(),
+    headTags(loadEnv(mode, process.cwd(), 'VITE_').VITE_UMAMI_WEBSITE_ID || ''),
+  ],
   server: { port: Number(process.env.PORT) || 5173, strictPort: false },
   build: {
     // every browser that can run this site supports ES2020 — the default target
@@ -37,4 +88,4 @@ export default defineConfig({
     pure: ['console.debug', 'console.trace'],
     legalComments: 'none',
   },
-})
+}))

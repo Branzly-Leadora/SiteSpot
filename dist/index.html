@@ -29,9 +29,12 @@
   <meta name="twitter:title" content="SiteSpot — Proměníme váš web ve stroj na zákazníky" />
   <meta name="twitter:description" content="Weby, které prodávají. AI automatizace, které šetří čas a peníze." />
   <meta name="twitter:image" content="https://sitespot.cz/og.png" />
-  <!-- Analytika (Umami — zdarma, bez cookie lišty): zaregistruj se na https://umami.is,
-       přidej web, zkopíruj website-id a odkomentuj řádek níže: -->
-  <!-- <script defer src="https://cloud.umami.is/script.js" data-website-id="SEM-VLOZ-WEBSITE-ID"></script> -->
+  <!-- Analytika (Umami, zdarma a bez cookie lišty) a strukturovaná data FAQPage
+       se vkládají při buildu, viz vite.config.js.
+       Měření se zapne nastavením proměnné VITE_UMAMI_WEBSITE_ID: zaregistruj web
+       na https://umami.is, zkopíruj website id a vlož ho na Vercelu do proměnných
+       prostředí. Dokud proměnná není nastavená, žádný měřicí skript se nenačte,
+       takže lokální vývoj statistiky nezanáší. -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -51,7 +54,8 @@
        Spline is only reached if a visitor actually scrolls to the AI-agent
        section, so its connection is warmed lazily rather than on every load. -->
   <link rel="dns-prefetch" href="https://prod.spline.design" />
-  <script type="module" crossorigin src="/assets/index-BztqYv_L.js"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Za jak dlouho bude web hotový?","acceptedAnswer":{"@type":"Answer","text":"Web v tarifu Starter spouštíme do 3 týdnů, rozsáhlejší weby na míru do 4 až 8 týdnů. Přesný harmonogram dostanete po úvodní analýze. A platí to, co si domluvíme."}},{"@type":"Question","name":"Kolik spolupráce stojí?","acceptedAnswer":{"@type":"Answer","text":"Menší web (Starter) pořídíte od 16 000 Kč, web na míru s automatizacemi (Business) od 29 000 Kč, obojí jednorázově. Průběžná spolupráce Full Stack začíná na 19 000 Kč měsíčně, bez závazku."}},{"@type":"Question","name":"Proč jsou ceny uvedené „od“?","acceptedAnswer":{"@type":"Answer","text":"Uvedené částky jsou startovní ceny pro malé firmy, každý projekt má jiný rozsah. Finální pevnou cenu dostanete po krátkém briefu, písemně a bez skrytých položek. A ta pak platí, žádné vícepráce navíc."}},{"@type":"Question","name":"Co je v ceně a co se děje po spuštění?","acceptedAnswer":{"@type":"Answer","text":"U Starteru texty, SEO základ, analytika a 30 dní podpory zdarma. Business přidává napojení na CRM či rezervace, jednu AI automatizaci a zaškolení. Kdo chce průběžnou péči, kampaně a optimalizaci, přechází na Full Stack."}},{"@type":"Question","name":"Už web mám. Má smysl se ozvat?","acceptedAnswer":{"@type":"Answer","text":"Určitě. Uděláme vám audit zdarma. Často stačí stávající web optimalizovat a napojit na automatizace, místo stavění od nuly."}},{"@type":"Question","name":"Jak vypadají AI automatizace v praxi?","acceptedAnswer":{"@type":"Answer","text":"Propojíme nástroje, které už používáte: poštu, CRM, fakturaci, tabulky. Poptávky se samy třídí, faktury odesílají, reporty generují. Klientům běžně šetříme 30 a více hodin měsíčně."}},{"@type":"Question","name":"Musím podepsat dlouhodobý závazek?","acceptedAnswer":{"@type":"Answer","text":"Ne. Starter a Business zaplatíte jednorázově a web je váš. Full Stack běží po měsících s měsíční výpovědní lhůtou. Klienty si držíme výsledky, ne smlouvami."}},{"@type":"Question","name":"Jak poznám, že to funguje?","acceptedAnswer":{"@type":"Answer","text":"V tarifu Full Stack dostanete každý měsíc srozumitelný report a konzultaci: kolik přišlo poptávek, co stály a kolik hodin ušetřily automatizace. Žádná hausnumera."}},{"@type":"Question","name":"Pracujete i s menšími firmami?","acceptedAnswer":{"@type":"Answer","text":"Ano. Většina našich klientů má 2 až 50 zaměstnanců. Řešení stavíme tak, aby dávalo smysl vašemu rozpočtu, ne našemu portfoliu."}}]}</script>
+  <script type="module" crossorigin src="/assets/index-BLqpH9Pd.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/react-CsxxBGqL.js">
   <link rel="modulepreload" crossorigin href="/assets/lenis-8VXe07GT.js">
   <link rel="modulepreload" crossorigin href="/assets/icons-lEVZH2MD.js">

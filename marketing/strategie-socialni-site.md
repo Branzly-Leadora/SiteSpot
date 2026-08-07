@@ -221,7 +221,7 @@ traffic". Seřazeno podle poměru přínos ku námaze.
   Doporučení: nekupovat hned. Dává to smysl ve chvíli, kdy budou tři pořádné
   případovky s čísly. Pak je to nejlepší utracených 30 tisíc v celém rozpočtu,
   protože samotná účast v soutěži je zároveň PR příležitost.
-* **Shopisto.** Katalog agentur se zaměřením na e-commerce. Relevantní, pokud
+* **Shopisto.** Katalog agentur se zaměřením na internetové obchody. Relevantní, pokud
   budeme brát zakázky na obchody.
 * **Médiář, katalog komunikačních agentur.** Doplněk, dobrý odkaz.
 * **Clutch.co a Sortlist.** Mezinárodní, anglicky, mají bezplatnou úroveň.
@@ -249,16 +249,12 @@ skoro nikdo nevede, takže se dá vyhrát levně.
 
 Co konkrétně:
 
-1. **Doplnit robots.txt a sitemap.xml.** Ověřeno v repozitáři: ani jeden
-   soubor zatím neexistuje. Dobrá zpráva je, že chybějící robots.txt roboty
-   neblokuje, takže GPTBot, ClaudeBot ani PerplexityBot nemají zavřeno.
-   Vyplatí se ale přístup povolit výslovně a hlavně dodat mapu webu, aby
-   roboti našli i podstránky jako revenue-os.
-2. **Doplnit strukturovaná data typu FAQPage.** Ověřeno: sekce s dotazy na
-   webu je (osm otázek v `src/App.jsx`), ale značkování `FAQPage` chybí,
-   v kódu není ani jednou. Stránky s dobře udělaným FAQ ve strukturovaných
-   datech se v citacích objevují výrazně častěji. Tohle je nejlevnější
-   jednotlivý zásah v celém dokumentu.
+1. **Robots.txt a sitemap.xml. Hotovo.** Přístup pro GPTBot, ClaudeBot,
+   PerplexityBot a Google-Extended je povolený výslovně, mapa webu existuje.
+2. **Strukturovaná data typu FAQPage. Hotovo.** Devět otázek a odpovědí je
+   teď v `FAQPage` staticky v HTML. Stránky s dobře udělaným FAQ ve
+   strukturovaných datech se v citacích objevují výrazně častěji, takže tohle
+   byl nejlevnější jednotlivý zásah v celém dokumentu.
 3. **Psát obsah tak, jak ho AI cituje.** Princetonský výzkum testoval devět
    strategií a uspěly tři: konkrétní statistiky, odkazy na zdroje a citace
    odborníků. Čili přesně ten typ textu, který stejně chceme psát.
@@ -286,22 +282,37 @@ cestu k odběru.
 
 ## 5. Co opravit na webu, než se pustíme do obsahu
 
-Při procházení repozitáře vyplynuly čtyři věci, které podkopávají všechno
-ostatní úsilí. Všechny jsou ověřené v kódu, ne odhad:
+Tři technické překážky, které podkopávaly všechno ostatní úsilí. **Všechny
+jsou vyřešené**, popis zůstává jako záznam o tom, co se změnilo a proč.
 
-1. **Analytika není zapnutá.** V `index.html` je skript Umami zakomentovaný
-   a místo identifikátoru webu je zástupný text. Pouštět strategii na sítích
-   bez měření znamená za tři měsíce nevědět, který kanál funguje. Zapnout
-   dřív, než půjde ven první příspěvek.
-2. **Ve strukturovaných datech je zástupné telefonní číslo.** V bloku
-   `application/ld+json` je uvedeno `+420777123456`. Tenhle údaj čte Google
-   i jazykové modely a rozchází se se skutečným kontaktem. Opravit nebo
-   odstranit. Nesprávný kontakt ve strukturovaných datech kazí i zápis
-   v Google firemním profilu, kde konzistence údajů hraje roli.
-3. **Chybí značkování `FAQPage`.** Osm otázek a odpovědí na webu je,
-   strukturovaná data k nim ne. Viz úroveň 4 výše.
-4. **Chybí robots.txt i sitemap.xml.** Nic to zatím neblokuje, ale bez mapy
-   webu se hůř indexují podstránky. Práce na deset minut.
+1. **Analytika neběžela.** V `index.html` byl skript Umami zakomentovaný
+   a místo identifikátoru webu byl zástupný text. Pouštět strategii na sítích
+   bez měření znamená za tři měsíce nevědět, který kanál funguje.
+
+   Vyřešeno: měření se vkládá při buildu ve `vite.config.js` a zapne se ve
+   chvíli, kdy se na Vercelu nastaví proměnná `VITE_UMAMI_WEBSITE_ID`. Dokud
+   nastavená není, nenačte se žádný měřicí skript, takže lokální vývoj
+   statistiky nezanáší. **Zbývá jediný krok: založit web na umami.is
+   a vložit identifikátor do proměnných prostředí.**
+2. **Chybělo značkování `FAQPage`.** Devět otázek a odpovědí na webu bylo,
+   strukturovaná data k nim ne.
+
+   Vyřešeno: FAQ se přesunulo do `src/faq.js` a slouží jako jediný zdroj
+   pravdy. Stránka z něj vykresluje sekci dotazů a build z něj generuje
+   `FAQPage` staticky do `index.html`. Statický zápis je tu podstatný, roboti
+   jazykových modelů většinou nespouštějí JavaScript, takže co vloží až
+   React, to nikdy neuvidí.
+3. **Chyběl robots.txt i sitemap.xml.** Nic to sice neblokovalo, ale bez mapy
+   webu se hůř indexují podstránky.
+
+   Vyřešeno: `public/robots.txt` teď výslovně povoluje GPTBot, ClaudeBot,
+   PerplexityBot, Google-Extended a další roboty jazykových modelů, zakazuje
+   interní CRM a odkazuje na `public/sitemap.xml`.
+
+Zbývá jedna věc na rozhodnutí: sitemapa obsahuje jen úvodní stránku
+a obchodní podmínky. Landing pages `/revenue-os` a `/rostlinka` v ní nejsou,
+protože nejsou z webu nikam odkazované a vypadají jako stránky posílané
+přímo prospektům. Pokud je mají vyhledávače indexovat, stačí je doplnit.
 
 ---
 
