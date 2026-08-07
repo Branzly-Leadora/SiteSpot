@@ -5,9 +5,10 @@
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
-  <url>
-    <loc>https://sitespot.cz/obchodni-podminky</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
+  <!-- Obchodní podmínky ani ochrana osobních údajů tu nejsou schválně: obě
+       stránky nesou v hlavičce noindex, takže by je Search Console hlásila jako
+       chybu „odeslaná adresa označená noindex". Landing pages /revenue-os
+       a /rostlinka tu nejsou taky, protože na ně z webu nic neodkazuje a
+       vypadají jako stránky posílané přímo prospektům. Až je budeme chtít
+       indexovat, stačí je sem doplnit. -->
 </urlset>
