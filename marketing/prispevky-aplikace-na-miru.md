@@ -107,6 +107,25 @@ najdete to na sitespot.cz
 Karusel na sedm snímků. Karusel proto, že jde o vysvětlení rozhodnutí,
 a lidi si takový příspěvek ukládají. Uložení váží v dosahu víc než lajk.
 
+## Hotové grafiky
+
+Snímky jsou vyrobené a leží v `marketing/design/`:
+
+* `design/instagram/` sedm souborů PNG v rozměru 1080 na 1350, tedy nativní
+  formát Instagramu. Nahrát v pořadí podle čísel v názvu.
+* `design/linkedin/sitespot-aplikace-linkedin.pdf` je stejný karusel pro
+  LinkedIn dokument, 1200 na 1500.
+* `design/generator-karuselu.mjs` je zdroj, ze kterého se snímky renderují.
+  Když se změní text, přepíše se pole SLIDES a snímky se vygenerují znovu.
+  Layout, sazba i hvězdné pole zůstanou identické.
+* `design/filozofie-orbitalni-ticho.md` popisuje vizuální pravidla, aby
+  příští série vypadala jako ta stejná značka.
+
+Grafiky používají skutečný značkový font Clash Display a barvy přímo
+z `src/index.css`, takže sedí s webem na odstín.
+
+Popis níže slouží jako zadání, kdyby se snímky měnily.
+
 ## Snímky
 
 **Snímek 1, titulní**
