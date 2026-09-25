@@ -1,5 +1,5 @@
 /* ============================================================
-   SITESPOT — templates.css   v3.0
+   SITESPOT - templates.css   v3.0
    Inherits design tokens from style.css
    ============================================================ */
 
@@ -575,7 +575,7 @@
   .tpl-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
-/* ── Footer — centered layout for subpage ─────────────────── */
+/* ── Footer - centered layout for subpage ─────────────────── */
 footer {
   border-top: 1px solid var(--border);
   padding: 2.5rem 3rem;

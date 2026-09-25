@@ -1,5 +1,5 @@
 /* ============================================================
-   FORMA — Editorial Mono / BRUTALIST GRID
+   FORMA - Editorial Mono / BRUTALIST GRID
    Layout: obří typografie · viditelné rámečky · číslované sekce ·
    menu jako orámované řádky · asymetrická galerie
    ============================================================ */
@@ -43,7 +43,7 @@ a { color: inherit; }
 .ph-8 { background: radial-gradient(120% 120% at 50% 50%, #4a4a45, #0c0c0a 72%); }
 
 /* ============================================================
-   NAV — tvrdá linka dole, mono odkazy
+   NAV - tvrdá linka dole, mono odkazy
    ============================================================ */
 .nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 500;
@@ -91,7 +91,7 @@ section { padding: clamp(3.5rem, 7vw, 6.5rem) clamp(1.4rem, 5vw, 3rem); }
 .s-title .out { -webkit-text-stroke: 1.5px var(--ink); color: transparent; }
 
 /* ============================================================
-   BRUTALIST HERO — obří typografie + orámovaná info-mřížka
+   BRUTALIST HERO - obří typografie + orámovaná info-mřížka
    ============================================================ */
 .br-hero { padding: clamp(8rem,13vw,11rem) clamp(1.4rem,5vw,3rem) 0; border-bottom: 1px solid var(--line); }
 .br-hero__top { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 1rem; font-family: 'Space Mono', monospace; font-size: .68rem; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); padding-bottom: 1.4rem; }
@@ -120,7 +120,7 @@ section { padding: clamp(3.5rem, 7vw, 6.5rem) clamp(1.4rem, 5vw, 3rem); }
 @keyframes marq { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
 /* ============================================================
-   SIGNATURE / MENU — velké orámované řádky
+   SIGNATURE / MENU - velké orámované řádky
    ============================================================ */
 .rows { border-top: 1px solid var(--line); }
 .row { display: grid; grid-template-columns: 64px 1fr auto; gap: 1.4rem; align-items: center; padding: 1.6rem clamp(0rem,2vw,1rem); border-bottom: 1px solid var(--line); transition: background .2s, color .2s; }
@@ -134,7 +134,7 @@ section { padding: clamp(3.5rem, 7vw, 6.5rem) clamp(1.4rem, 5vw, 3rem); }
 .row:hover .row__price { color: var(--bg); }
 .row__tag { font-family: 'Space Mono', monospace; font-size: .56rem; letter-spacing: .06em; text-transform: uppercase; color: var(--bg); background: var(--acc); padding: .15rem .5rem; margin-left: .6rem; vertical-align: middle; }
 
-/* menu tabs — tvrdá orámovaná lišta */
+/* menu tabs - tvrdá orámovaná lišta */
 .menu__tabs { display: flex; border: 1px solid var(--line); margin-bottom: 0; flex-wrap: wrap; }
 .menu__tab { flex: 1; min-width: 120px; padding: 1rem; font-family: 'Space Mono', monospace; font-size: .7rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; border: none; border-right: 1px solid var(--line); cursor: pointer; background: var(--bg); color: var(--ink2); transition: all .2s; }
 .menu__tab:last-child { border-right: none; }
@@ -164,7 +164,7 @@ section { padding: clamp(3.5rem, 7vw, 6.5rem) clamp(1.4rem, 5vw, 3rem); }
 .split__media .ph { position: absolute; inset: 0; filter: grayscale(1) contrast(1.08); }
 
 /* ============================================================
-   REVIEWS — orámované boxy
+   REVIEWS - orámované boxy
    ============================================================ */
 .reviews__grid { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--line); }
 .review { padding: clamp(2rem,3vw,2.6rem); border-right: 1px solid var(--line); }
@@ -174,7 +174,7 @@ section { padding: clamp(3.5rem, 7vw, 6.5rem) clamp(1.4rem, 5vw, 3rem); }
 .review .who { font-family: 'Space Mono', monospace; font-size: .6rem; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); margin-top: 1.4rem; }
 
 /* ============================================================
-   GALLERY — asymetrická orámovaná mřížka + lightbox
+   GALLERY - asymetrická orámovaná mřížka + lightbox
    ============================================================ */
 .gal { display: grid; grid-template-columns: repeat(6, 1fr); border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
 .gal__item { position: relative; overflow: hidden; cursor: pointer; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
@@ -199,7 +199,7 @@ section { padding: clamp(3.5rem, 7vw, 6.5rem) clamp(1.4rem, 5vw, 3rem); }
 .lightbox__nav.prev { left: 3vw; } .lightbox__nav.next { right: 3vw; }
 
 /* ============================================================
-   CONTACT — orámované buňky
+   CONTACT - orámované buňky
    ============================================================ */
 .contact__inner { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--line); }
 .contact__col { padding: clamp(2rem,4vw,3rem); }

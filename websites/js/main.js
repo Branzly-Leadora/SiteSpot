@@ -1,5 +1,5 @@
 /**
- * SiteSpot — main.js  v3.0
+ * SiteSpot - main.js  v3.0
  * Works with: #nav, .nav-links, .reveal, #contact-form
  */
 (function () {
@@ -77,7 +77,7 @@
   burgerDesktopStyle.textContent = '.nav-burger { display: none !important; }';
   document.head.insertBefore(burgerDesktopStyle, document.head.firstChild);
 
-  // Create burger button — only insert into DOM on mobile
+  // Create burger button - only insert into DOM on mobile
   const burger = document.createElement('button');
   burger.className = 'nav-burger';
   burger.setAttribute('aria-label', 'Toggle menu');

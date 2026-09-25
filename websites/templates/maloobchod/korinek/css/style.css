@@ -1,5 +1,5 @@
 /* ============================================================
-   KOŘÍNEK — Soft Friendly / BENTO
+   KOŘÍNEK - Soft Friendly / BENTO
    Layout: kulaté dlaždice různých velikostí v mřížce ·
    pastelové barvy po dlaždicích · hravý Fredoka
    ============================================================ */
@@ -150,7 +150,7 @@ section { padding: clamp(3rem, 6vw, 5.5rem) clamp(1.4rem, 5vw, 3rem); }
 .tile .media-cap { position: absolute; bottom: 1rem; left: 1.2rem; font-weight: 700; font-size: .72rem; color: #fff; z-index: 2; }
 
 /* ============================================================
-   MENU — bento dlaždice
+   MENU - bento dlaždice
    ============================================================ */
 .menu__tabs { display: flex; gap: .5rem; flex-wrap: wrap; background: var(--bg2); padding: .4rem; border-radius: var(--pill); width: max-content; max-width: 100%; margin: 0 auto clamp(1.6rem,3vw,2.4rem); }
 .menu__tab { padding: .6rem 1.3rem; font-size: .82rem; font-weight: 700; font-family: 'DM Sans'; border: none; cursor: pointer; border-radius: var(--pill); background: transparent; color: var(--ink2); transition: all .25s; }
@@ -189,7 +189,7 @@ section { padding: clamp(3rem, 6vw, 5.5rem) clamp(1.4rem, 5vw, 3rem); }
 .review .who { font-size: .76rem; font-weight: 700; color: var(--muted); margin-top: 1.2rem; }
 
 /* ============================================================
-   GALLERY — bento + lightbox
+   GALLERY - bento + lightbox
    ============================================================ */
 .gal { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; grid-auto-rows: 200px; grid-auto-flow: dense; }
 .gal__item { position: relative; overflow: hidden; cursor: pointer; border-radius: var(--r); box-shadow: var(--sh-sm); }

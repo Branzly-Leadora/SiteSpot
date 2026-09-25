@@ -1,5 +1,5 @@
 /* ============================================================
-   SMASH — Bold Vibrant (gastro · burgery & street food)
+   SMASH - Bold Vibrant (gastro · burgery & street food)
    Layout: tmavý neon · gradientový hero s glow · produktové karty ·
    animovaná čísla · "order app" energie
    ============================================================ */
@@ -102,7 +102,7 @@ section { padding: clamp(3.5rem, 7vw, 6rem) clamp(1.4rem, 5vw, 3rem); position: 
 .s-head p { color: var(--muted); font-size: 1.02rem; margin-top: .9rem; }
 
 /* ============================================================
-   HERO — gradientový + glow
+   HERO - gradientový + glow
    ============================================================ */
 .v-hero { position: relative; overflow: hidden; padding: 8rem clamp(1.4rem,5vw,3rem) 4rem; }
 .v-hero .glow--o { width: 420px; height: 420px; top: -80px; left: -60px; }
@@ -135,7 +135,7 @@ section { padding: clamp(3.5rem, 7vw, 6rem) clamp(1.4rem, 5vw, 3rem); position: 
 @keyframes marq { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
 /* ============================================================
-   PRODUCT CARDS (menu / signature) — "order app"
+   PRODUCT CARDS (menu / signature) - "order app"
    ============================================================ */
 .prod-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; }
 .menu__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; }
@@ -161,7 +161,7 @@ section { padding: clamp(3.5rem, 7vw, 6rem) clamp(1.4rem, 5vw, 3rem); position: 
 .menu__tab:hover:not(.active) { color: var(--ink); }
 
 /* ============================================================
-   STEPS (jak objednat) — pill čísla
+   STEPS (jak objednat) - pill čísla
    ============================================================ */
 .osteps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; }
 .ostep { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 1.8rem; text-align: center; }

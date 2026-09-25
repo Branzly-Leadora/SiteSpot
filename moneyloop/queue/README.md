@@ -1,6 +1,6 @@
 # Approval queue
 
-`leads.jsonl` — one JSON object per line, appended by the overnight agent. Nothing here is sent
+`leads.jsonl` - one JSON object per line, appended by the overnight agent. Nothing here is sent
 until you approve it. Morning routine: open each preview URL, then approve or drop.
 
 ## Schema (one line per lead)

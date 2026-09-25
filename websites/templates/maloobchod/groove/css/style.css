@@ -1,5 +1,5 @@
 /* ============================================================
-   BAR KLÍČ — Midnight Noir / CINEMATIC
+   BAR KLÍČ - Midnight Noir / CINEMATIC
    Layout: celoplošný obrazový hero · boční kategorie menu ·
    horizontální filmstrip galerie · lepkavá rezervační lišta
    ============================================================ */
@@ -44,7 +44,7 @@ a { color: inherit; }
 .ph-8 { background: radial-gradient(130% 130% at 60% 40%, #4a2c0e, #050304 74%); }
 
 /* ============================================================
-   NAV — průhledný přes obraz, ztmavne při scrollu
+   NAV - průhledný přes obraz, ztmavne při scrollu
    ============================================================ */
 .nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 500;
@@ -84,7 +84,7 @@ body.menu-open .nav__burger span:nth-child(3){bottom:50%;transform:translateY(50
 .link:hover { color: var(--ink); }
 
 /* ============================================================
-   CINEMATIC HERO — celoplošný obraz
+   CINEMATIC HERO - celoplošný obraz
    ============================================================ */
 .cine { height: 100vh; min-height: 620px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; text-align: center; }
 .cine__media { position: absolute; inset: 0; }
@@ -110,7 +110,7 @@ section { padding: clamp(4.5rem, 9vw, 8.5rem) clamp(1.4rem, 5vw, 4rem); }
 .s-title { font-family: 'Playfair Display', serif; font-weight: 600; font-size: clamp(2.1rem, 4.6vw, 3.6rem); line-height: 1.08; }
 .s-title em { font-style: italic; color: var(--gold2); }
 
-/* split intro — text + obraz */
+/* split intro - text + obraz */
 .split { display: grid; grid-template-columns: 1fr 1fr; gap: 0; align-items: stretch; }
 .split__text { padding: clamp(3rem,7vw,6rem) clamp(1.4rem,5vw,5rem); display: flex; flex-direction: column; justify-content: center; }
 .split__text p { font-size: .98rem; line-height: 1.95; color: var(--muted); margin-top: 1.4rem; }
@@ -124,7 +124,7 @@ section { padding: clamp(4.5rem, 9vw, 8.5rem) clamp(1.4rem, 5vw, 4rem); }
 .feature__content { position: relative; z-index: 2; padding: clamp(2.5rem,6vw,5rem); max-width: 620px; }
 
 /* ============================================================
-   SIGNATURE — řada na tmavém s velkými čísly
+   SIGNATURE - řada na tmavém s velkými čísly
    ============================================================ */
 .sig { background: var(--bg2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .sig__head { text-align: center; margin-bottom: 3.5rem; }
@@ -136,7 +136,7 @@ section { padding: clamp(4.5rem, 9vw, 8.5rem) clamp(1.4rem, 5vw, 4rem); }
 .sig__price { font-size: 1rem; color: var(--gold2); white-space: nowrap; }
 
 /* ============================================================
-   REVIEWS — stacked velké citace
+   REVIEWS - stacked velké citace
    ============================================================ */
 .qstack { max-width: 980px; margin: 0 auto; }
 .qstack__row { padding: 2.6rem 0; border-bottom: 1px solid var(--line2); display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: center; }
@@ -146,7 +146,7 @@ section { padding: clamp(4.5rem, 9vw, 8.5rem) clamp(1.4rem, 5vw, 4rem); }
 .qstack .who .stars { color: var(--gold); display: block; margin-bottom: .4rem; letter-spacing: 2px; }
 
 /* ============================================================
-   MENU — boční kategorie (rail) + seznam
+   MENU - boční kategorie (rail) + seznam
    ============================================================ */
 .barmenu { display: grid; grid-template-columns: 240px 1fr; gap: clamp(2rem,5vw,4rem); align-items: start; max-width: 1100px; margin: 0 auto; }
 .menu__tabs { display: flex; flex-direction: column; gap: .2rem; position: sticky; top: 110px; }
@@ -165,7 +165,7 @@ section { padding: clamp(4.5rem, 9vw, 8.5rem) clamp(1.4rem, 5vw, 4rem); }
 .menu__note { max-width: 1100px; margin: 2.4rem auto 0; font-size: .72rem; color: var(--muted); }
 
 /* ============================================================
-   GALLERY — horizontální filmstrip + lightbox
+   GALLERY - horizontální filmstrip + lightbox
    ============================================================ */
 .gal { display: flex; gap: 14px; overflow-x: auto; padding: 0 clamp(1.4rem,5vw,4rem) 1.4rem; scroll-snap-type: x mandatory; scrollbar-width: thin; scrollbar-color: var(--gold) transparent; }
 .gal::-webkit-scrollbar { height: 6px; }

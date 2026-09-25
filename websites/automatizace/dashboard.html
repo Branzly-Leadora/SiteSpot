@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Live dashboard — ukázka SiteSpot</title>
+  <title>Live dashboard - ukázka SiteSpot</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="demo.css" />
   <style>
@@ -57,7 +57,7 @@
       el.className = 'kpi in'; el.style.animationDelay = (i * 0.08) + 's';
       el.innerHTML =
         '<div class="kpi__lab">' + k.lab + '</div>' +
-        '<div class="kpi__val" id="kv' + i + '">—</div>' +
+        '<div class="kpi__val" id="kv' + i + '">-</div>' +
         '<div class="kpi__delta ' + (k.delta >= 0 ? 'up' : 'down') + '">' + (k.delta >= 0 ? '▲ +' : '▼ ') + Math.abs(k.delta) + (k.suf === ' %' ? ' p.b.' : ' %') + ' vs. min. týden</div>' +
         '<canvas class="spark" id="sp' + i + '"></canvas>';
       kpisEl.appendChild(el);

@@ -1,5 +1,5 @@
 /**
- * SiteSpot — server.js
+ * SiteSpot - server.js
  * Express backend: contact form → email via Nodemailer
  *
  * Setup:
@@ -12,6 +12,7 @@ require('dotenv').config();
 const express    = require('express');
 const nodemailer = require('nodemailer');
 const path       = require('path');
+const fs         = require('fs');
 
 const app  = express();
 const PORT = process.env.PORT || 3010;
@@ -20,7 +21,7 @@ const PORT = process.env.PORT || 3010;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Statické soubory — root projekt
+// Statické soubory - root projekt
 app.use(express.static(path.join(__dirname)));
 // Starý web přesunutý do /websites/
 app.use('/websites', express.static(path.join(__dirname, 'websites')));
@@ -68,7 +69,7 @@ function esc(str = '') {
 }
 
 // ── Forward leadu do AI Business System (engine.zaigla.com) ─
-// Veřejný inquiry endpoint enginu — lead se objeví v operator dashboardu.
+// Veřejný inquiry endpoint enginu - lead se objeví v operator dashboardu.
 // Fire-and-forget: selhání enginu nikdy neblokuje odeslání e-mailů.
 const ENGINE_URL     = process.env.ENGINE_URL || 'https://engine.zaigla.com';
 const ENGINE_SITE_ID = process.env.ENGINE_SITE_ID || 'sitespot-inbound';
@@ -126,7 +127,7 @@ app.post('/api/contact', async (req, res) => {
     return res.status(400).json({ ok: false, message: 'Neplatný e-mail.' });
   }
 
-  // Mirror do AIBS enginu — await kvůli Vercel serverless (jinak se
+  // Mirror do AIBS enginu - await kvůli Vercel serverless (jinak se
   // request může zmrazit před dokončením); timeout 5 s to shora omezuje.
   await forwardToEngine({
     name, email,
@@ -144,8 +145,8 @@ app.post('/api/contact', async (req, res) => {
     to:      process.env.MAIL_TO || process.env.SMTP_USER,
     replyTo: email,
     subject: isDemoLead
-      ? `🔥 LEAD: ukázkový web zdarma — ${esc(name)}`
-      : `Nová zpráva od ${esc(name)} — SiteSpot`,
+      ? `🔥 LEAD: ukázkový web zdarma - ${esc(name)}`
+      : `Nová zpráva od ${esc(name)} - SiteSpot`,
     html: `
       <div style="font-family:sans-serif;max-width:560px;color:#111">
         <h2 style="color:#27b7a5;margin-bottom:4px">Nová zpráva z webu</h2>
@@ -168,12 +169,12 @@ app.post('/api/contact', async (req, res) => {
   const toSender = {
     from:    `"SiteSpot" <${process.env.SMTP_USER}>`,
     to:      email,
-    subject: isDemoLead ? 'Vaše ukázka je v přípravě — SiteSpot' : 'Vaši zprávu jsme dostali — SiteSpot',
+    subject: isDemoLead ? 'Vaše ukázka je v přípravě - SiteSpot' : 'Vaši zprávu jsme dostali - SiteSpot',
     html: `
       <div style="font-family:sans-serif;max-width:560px;color:#111">
         <h2 style="color:#27b7a5">Díky, ${esc(name)}!</h2>
         <p>${isDemoLead
-          ? 'Pustili jsme se do práce — do 48 hodin vám pošleme funkční ukázku vašeho nového webu. Zdarma a bez závazků.'
+          ? 'Pustili jsme se do práce - do 48 hodin vám pošleme funkční ukázku vašeho nového webu. Zdarma a bez závazků.'
           : 'Vaši zprávu jsme obdrželi a ozveme se do 24 hodin.'}</p>
         <p style="color:#666;font-size:14px">
           Pokud máte urgentní dotaz, napište přímo na
@@ -217,7 +218,7 @@ async function callClaude(system, messages, maxTokens = 400) {
   return (data.content || []).map(b => b.text || '').join('').trim();
 }
 
-const SAMPLE_INVOICE = `FAKTURA — daňový doklad č. FV2026-0042
+const SAMPLE_INVOICE = `FAKTURA - daňový doklad č. FV2026-0042
 Dodavatel: Dřevo Hrubý s.r.o., IČO 24681012, DIČ CZ24681012
 Odběratel: ACME s.r.o., Plzeň
 Vystaveno: 12. 6. 2026  Splatnost: 26. 6. 2026
@@ -260,10 +261,27 @@ app.post('/api/demo', async (req, res) => {
   }
 });
 
+// ── GET /api/pipeline ─────────────────────────────────────
+// Read-only snapshot of the moneyloop approval queue, for the internal
+// command center (/a). Reads the local (gitignored) queue/leads.jsonl;
+// returns an empty pipeline when it isn't present (e.g. on Vercel).
+app.get('/api/pipeline', (req, res) => {
+  const qPath = path.join(__dirname, 'moneyloop', 'queue', 'leads.jsonl');
+  let leads = [];
+  try {
+    leads = fs.readFileSync(qPath, 'utf8').trim().split('\n').filter(Boolean)
+      .map(l => { try { return JSON.parse(l); } catch { return null; } })
+      .filter(Boolean);
+  } catch { /* no queue yet - return empty */ }
+  const counts = { ready: 0, partial: 0, approved: 0, sent: 0, dropped: 0 };
+  for (const l of leads) if (l.status in counts) counts[l.status]++;
+  res.json({ ok: true, total: leads.length, counts, leads });
+});
+
 // ── Nabídka pro Telemarkclub Monínec (čistá URL bez .html) ─
 app.get('/telemarkclub', (req, res) => res.sendFile(path.join(__dirname, 'telemarkclub.html')));
 
-// ── Fallback — SPA na rootu ─────────────────────────────
+// ── Fallback - SPA na rootu ─────────────────────────────
 // Pro hlavní hub (nový index.html); /websites/ obsluhuje static middleware výše
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));

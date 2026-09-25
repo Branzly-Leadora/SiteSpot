@@ -1,5 +1,5 @@
 /* ============================================================
-   TAVOLA — Warm Luxe / EDITORIAL FINE-DINING
+   TAVOLA - Warm Luxe / EDITORIAL FINE-DINING
    Layout: centrovaný editoriální masthead + tištěný lístek (à la carte)
    Self-contained · relativní cesty
    ============================================================ */
@@ -54,7 +54,7 @@ a { color: inherit; }
 .ph-8 { background: radial-gradient(120% 120% at 60% 40%, #6b5d45, #14180f 72%); }
 
 /* ============================================================
-   NAV — serif wordmark vlevo, lístek odkazů vpravo
+   NAV - serif wordmark vlevo, lístek odkazů vpravo
    ============================================================ */
 .nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 500;
@@ -97,7 +97,7 @@ body.menu-open .nav__burger span:nth-child(3) { bottom: 50%; transform: translat
 .link:hover { color: var(--wine); border-color: var(--wine); }
 
 /* ============================================================
-   HERO — centrovaný editoriální masthead
+   HERO - centrovaný editoriální masthead
    ============================================================ */
 .ed-hero { min-height: 92vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 11rem clamp(1.4rem,5vw,4rem) 3rem; position: relative; }
 .ed-hero__eyebrow { font-size: .64rem; letter-spacing: .5em; text-transform: uppercase; color: var(--gold); margin-bottom: 2.2rem; opacity: 0; animation: fadeUp 1s var(--ease) .2s forwards; }
@@ -127,7 +127,7 @@ section { padding: clamp(4.5rem, 9vw, 8.5rem) clamp(1.4rem, 5vw, 4rem); }
 .s-title { font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: clamp(2.2rem, 5vw, 4rem); line-height: 1.05; }
 .s-title em { font-style: italic; color: var(--gold); }
 
-/* intro — asymetrický two-col */
+/* intro - asymetrický two-col */
 .intro { display: grid; grid-template-columns: 1.5fr 1fr; gap: clamp(2.5rem, 7vw, 7rem); align-items: end; }
 .intro__lead { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.5rem, 2.6vw, 2.2rem); line-height: 1.5; color: var(--dark); font-weight: 400; }
 .intro__lead em { font-style: italic; color: var(--gold); }
@@ -136,7 +136,7 @@ section { padding: clamp(4.5rem, 9vw, 8.5rem) clamp(1.4rem, 5vw, 4rem); }
 .intro__aside .label:not(:first-child) { margin-top: 1.8rem; }
 
 /* ============================================================
-   À LA CARTE — tištěný lístek (dotted leaders, žádné karty)
+   À LA CARTE - tištěný lístek (dotted leaders, žádné karty)
    ============================================================ */
 .carte { max-width: 880px; margin: 0 auto; }
 .carte__cat { margin-top: clamp(3rem, 6vw, 5rem); }
@@ -154,7 +154,7 @@ section { padding: clamp(4.5rem, 9vw, 8.5rem) clamp(1.4rem, 5vw, 4rem); }
 .carte__note { text-align: center; margin-top: 3rem; font-size: .72rem; letter-spacing: .04em; color: var(--muted); }
 
 /* ============================================================
-   SIGNATURE — číslovaný editoriální list
+   SIGNATURE - číslovaný editoriální list
    ============================================================ */
 .sig { background: var(--paper); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .sig__head { text-align: center; margin-bottom: 3.5rem; }
@@ -177,7 +177,7 @@ section { padding: clamp(4.5rem, 9vw, 8.5rem) clamp(1.4rem, 5vw, 4rem); }
 .pull .score .stars { color: var(--gold2); letter-spacing: 3px; font-size: .9rem; }
 
 /* ============================================================
-   STORY (o-nas) — drop cap
+   STORY (o-nas) - drop cap
    ============================================================ */
 .story { max-width: 760px; margin: 0 auto; }
 .story p { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; line-height: 1.75; color: var(--dark); font-weight: 400; margin-top: 1.6rem; }
@@ -188,7 +188,7 @@ section { padding: clamp(4.5rem, 9vw, 8.5rem) clamp(1.4rem, 5vw, 4rem); }
 .facts .l { font-size: .58rem; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin-top: .6rem; }
 
 /* ============================================================
-   GALLERY — editoriální asymetrie + lightbox
+   GALLERY - editoriální asymetrie + lightbox
    ============================================================ */
 .gal { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
 .gal__item { position: relative; overflow: hidden; cursor: pointer; }
@@ -214,7 +214,7 @@ section { padding: clamp(4.5rem, 9vw, 8.5rem) clamp(1.4rem, 5vw, 4rem); }
 .lightbox__nav.prev { left: 3vw; } .lightbox__nav.next { right: 3vw; }
 
 /* ============================================================
-   CONTACT — typeset
+   CONTACT - typeset
    ============================================================ */
 .contact__inner { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2.5rem, 7vw, 6rem); align-items: start; }
 .hours { margin-top: 1.8rem; }

@@ -1,5 +1,5 @@
 /**
- * SiteSpot — animations.js v4.0
+ * SiteSpot - animations.js v4.0
  * Wraps each section in a fixed full-screen panel via JS.
  * Zero changes to existing HTML/CSS files.
  */
@@ -61,7 +61,7 @@
     /* z-index stacking so nav always on top */
     #nav { z-index: 9000 !important; }
 
-    /* clip-path states — panels slide in from bottom/top */
+    /* clip-path states - panels slide in from bottom/top */
     .ss-panel--above {
       clip-path: inset(0 0 100% 0);
       transform: scale(0.96);
@@ -381,7 +381,7 @@
     document.addEventListener('mouseleave', () => { cur.style.opacity='0'; });
     (function loop(){ cx+=(mx-cx)*.1; cy+=(my-cy)*.1; cur.style.left=cx+'px'; cur.style.top=cy+'px'; requestAnimationFrame(loop); })();
 
-    // Magnetic buttons — includes hero-actions added by HTML
+    // Magnetic buttons - includes hero-actions added by HTML
     document.querySelectorAll('.btn-primary,.btn-outline,.nav-cta,.footer-cta').forEach(el => {
       el.addEventListener('mousemove', e => {
         const r=el.getBoundingClientRect();

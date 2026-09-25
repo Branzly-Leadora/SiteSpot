@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Central — SiteSpot Internal</title>
+  <title>Central - SiteSpot Internal</title>
   <meta name="robots" content="noindex, nofollow"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -15,6 +15,8 @@
   --accent:#27b7a5; --accent-2:#5dd9cb;
   --accent-dim:rgba(39,183,165,0.10); --accent-glow:rgba(39,183,165,0.22);
   --white:#eef2f7; --gray:#7da8c4; --gray-2:#3a5570;
+  /* pipeline status colors - internal tool only, kept restrained */
+  --st-ready:#e0a13c; --st-approved:#27b7a5; --st-sent:#4caf7d; --st-partial:#d98236; --st-dropped:#5a6b7a;
   --font-sans:'DM Sans',sans-serif; --font-serif:'Playfair Display',Georgia,serif;
   --ease:cubic-bezier(0.16,1,0.3,1);
 }
@@ -36,8 +38,8 @@ button{cursor:pointer;font-family:inherit}
 
 .btn-outline{
   display:inline-flex;align-items:center;gap:.5rem;
-  padding:.7rem 1.5rem;background:transparent;color:var(--gray);
-  font-weight:500;font-size:.82rem;
+  padding:.55rem 1.1rem;background:transparent;color:var(--gray);
+  font-weight:500;font-size:.78rem;
   border:1px solid var(--border-2);border-radius:6px;
   transition:color .2s,border-color .2s,background .2s;
 }
@@ -84,7 +86,7 @@ button{cursor:pointer;font-family:inherit}
 }
 .dashboard-header{
   display:flex;align-items:flex-end;justify-content:space-between;
-  gap:2rem;margin-bottom:3rem;flex-wrap:wrap;
+  gap:2rem;margin-bottom:2.5rem;flex-wrap:wrap;
 }
 .dashboard-header h1{
   font-family:var(--font-serif);font-size:clamp(2rem,4vw,3.5rem);
@@ -92,6 +94,63 @@ button{cursor:pointer;font-family:inherit}
 }
 .dashboard-header h1 em{font-style:italic;color:var(--accent)}
 .dashboard-header p{color:var(--gray);font-size:.95rem;max-width:380px;line-height:1.7;padding-bottom:.25rem}
+
+/* QUICK BAR */
+.quick-bar{
+  display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:2.5rem;
+}
+.quick-bar a{
+  display:inline-flex;align-items:center;gap:.5rem;
+  padding:.65rem 1.1rem;background:var(--surface);border:1px solid var(--border);border-radius:8px;
+  font-size:.82rem;font-weight:500;color:var(--gray);transition:all .2s;
+}
+.quick-bar a:hover{color:var(--white);border-color:var(--accent);background:rgba(39,183,165,.06)}
+
+/* ── PIPELINE (live moneyloop board) ── */
+.pipeline{margin-bottom:3.5rem}
+.pipeline-head{display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;margin-bottom:1.25rem;flex-wrap:wrap}
+.pipeline-head h2{font-family:var(--font-serif);font-size:clamp(1.5rem,3vw,2.2rem);font-weight:700;line-height:1;letter-spacing:-.02em}
+.pipeline-head h2 em{font-style:italic;color:var(--accent)}
+.pipeline-meta{display:flex;align-items:center;gap:1rem}
+.pl-updated{font-size:.7rem;color:var(--gray-2);letter-spacing:.04em}
+
+.pl-stats{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem;margin-bottom:1.5rem}
+@media(max-width:900px){.pl-stats{grid-template-columns:repeat(2,1fr)}}
+.pl-tile{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem 1.4rem}
+.pl-tile.is-action{border-color:rgba(224,161,60,.4);background:linear-gradient(180deg,rgba(224,161,60,.08),transparent)}
+.pl-tile.is-muted{opacity:.7}
+.pl-num{font-family:var(--font-serif);font-size:2.1rem;font-weight:700;line-height:1}
+.pl-tile.is-action .pl-num{color:var(--st-ready)}
+.pl-tlabel{font-size:.8rem;color:var(--white);margin-top:.35rem;font-weight:500}
+.pl-thint{font-size:.67rem;color:var(--gray-2);margin-top:.15rem}
+
+.pl-list{display:flex;flex-direction:column;gap:.5rem}
+.pl-row{display:flex;align-items:center;gap:1rem;background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--gray-2);border-radius:10px;padding:.85rem 1.1rem;transition:background .2s}
+.pl-row:hover{background:var(--surface-2)}
+.pl-row.st-ready{border-left-color:var(--st-ready)}
+.pl-row.st-approved{border-left-color:var(--st-approved)}
+.pl-row.st-sent{border-left-color:var(--st-sent)}
+.pl-row.st-partial{border-left-color:var(--st-partial)}
+.pl-row.st-dropped{border-left-color:var(--st-dropped);opacity:.55}
+.pl-badge{flex-shrink:0;font-size:.65rem;font-weight:600;letter-spacing:.02em;padding:.25rem .6rem;border-radius:4px;white-space:nowrap}
+.pl-badge.st-ready{background:rgba(224,161,60,.14);color:var(--st-ready)}
+.pl-badge.st-approved{background:rgba(39,183,165,.14);color:var(--accent-2)}
+.pl-badge.st-sent{background:rgba(76,175,125,.14);color:var(--st-sent)}
+.pl-badge.st-partial{background:rgba(217,130,54,.14);color:var(--st-partial)}
+.pl-badge.st-dropped{background:rgba(90,107,122,.16);color:var(--gray)}
+.pl-main{flex:1;min-width:0}
+.pl-biz{font-size:.9rem;font-weight:600;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pl-hook{font-size:.75rem;color:var(--gray);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pl-tpl{flex-shrink:0;font-size:.7rem;color:var(--gray);font-family:monospace;background:rgba(255,255,255,.04);border:1px solid var(--border);padding:.2rem .5rem;border-radius:4px}
+.pl-actions{flex-shrink:0;display:flex;gap:.4rem}
+.pl-link{font-size:.72rem;color:var(--accent-2);padding:.3rem .6rem;border:1px solid var(--border-2);border-radius:5px;transition:background .2s,border-color .2s}
+.pl-link:hover{background:var(--accent-dim);border-color:var(--accent)}
+.pl-empty{background:var(--surface);border:1px dashed var(--border-2);border-radius:10px;padding:1.75rem;color:var(--gray);font-size:.85rem;text-align:center;line-height:1.9}
+.pl-empty code{background:rgba(255,255,255,.06);padding:.15rem .45rem;border-radius:4px;font-size:.8rem;color:var(--accent-2)}
+@media(max-width:640px){
+  .pl-row{flex-wrap:wrap;gap:.5rem}
+  .pl-tpl{order:3}
+}
 
 /* GRID */
 .dash-grid{
@@ -134,6 +193,14 @@ button{cursor:pointer;font-family:inherit}
 .dash-links a:hover{color:var(--white);background:rgba(255,255,255,.04)}
 .dash-links a svg{color:var(--accent);flex-shrink:0}
 
+/* COMMAND LIST (ops card) */
+.cmd-list{display:flex;flex-direction:column;gap:.4rem}
+.cmd-step{font-size:.66rem;color:var(--gray-2);font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-top:.6rem}
+.cmd-step:first-child{margin-top:0}
+.cmd{display:block;background:var(--bg-2);border:1px solid var(--border);border-radius:6px;padding:.5rem .7rem;font-family:monospace;font-size:.73rem;color:var(--accent-2);overflow-x:auto;white-space:nowrap}
+.cmd-note{font-size:.76rem;color:var(--gray);line-height:1.6}
+.cmd-note code{color:var(--accent-2);background:rgba(255,255,255,.05);padding:.05rem .35rem;border-radius:3px;font-size:.72rem}
+
 /* STATUS BADGE */
 .status-badge{
   display:inline-flex;align-items:center;gap:.35rem;
@@ -144,17 +211,6 @@ button{cursor:pointer;font-family:inherit}
 .status-badge::before{
   content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);display:block;
 }
-
-/* QUICK BAR */
-.quick-bar{
-  display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:2.5rem;
-}
-.quick-bar a{
-  display:inline-flex;align-items:center;gap:.5rem;
-  padding:.65rem 1.1rem;background:var(--surface);border:1px solid var(--border);border-radius:8px;
-  font-size:.82rem;font-weight:500;color:var(--gray);transition:all .2s;
-}
-.quick-bar a:hover{color:var(--white);border-color:var(--accent);background:rgba(39,183,165,.06)}
 
 /* FOOTER */
 footer{border-top:1px solid var(--border);padding:2rem 0;margin-top:3rem}
@@ -193,7 +249,7 @@ footer{border-top:1px solid var(--border);padding:2rem 0;margin-top:3rem}
       <span class="eyebrow">SiteSpot Central</span>
       <h1>Interní<br/><em>Command Center</em></h1>
     </div>
-    <p>Přímé linky na všechny stránky, repo, deploy a brand assety.</p>
+    <p>Živý stav moneyloop pipeline + přímé linky na stránky, repo, deploy a brand.</p>
   </div>
 
   <div class="quick-bar">
@@ -201,13 +257,17 @@ footer{border-top:1px solid var(--border);padding:2rem 0;margin-top:3rem}
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
       GitHub Repo
     </a>
-    <a href="/websites/automatizace.html" target="_blank">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-      Automatizace Demo
+    <a href="#pipeline">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+      Pipeline
     </a>
     <a href="/websites/templates.html" target="_blank">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
       Šablony
+    </a>
+    <a href="/moneyloop/queue/last-burst.log" target="_blank">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
+      Burst log
     </a>
     <a href="mailto:hello@sitespot.cz">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
@@ -215,7 +275,53 @@ footer{border-top:1px solid var(--border);padding:2rem 0;margin-top:3rem}
     </a>
   </div>
 
+  <!-- ── LIVE PIPELINE ── -->
+  <section class="pipeline" id="pipeline">
+    <div class="pipeline-head">
+      <div>
+        <span class="eyebrow">Moneyloop</span>
+        <h2>Pipeline <em>leadů</em></h2>
+      </div>
+      <div class="pipeline-meta">
+        <span class="pl-updated" id="pl-updated"></span>
+        <button class="btn-outline" id="pl-refresh">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+          Obnovit
+        </button>
+      </div>
+    </div>
+    <div class="pl-stats" id="pl-stats"></div>
+    <div class="pl-list" id="pl-list"></div>
+  </section>
+
   <div class="dash-grid">
+
+    <!-- MONEYLOOP PROVOZ -->
+    <div class="dash-card">
+      <div class="dash-card__header">
+        <div class="dash-card__icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4"/><path d="m16.2 7.8 2.9-2.9"/><path d="M18 12h4"/><path d="m16.2 16.2 2.9 2.9"/><path d="M12 18v4"/><path d="m4.9 19.1 2.9-2.9"/><path d="M2 12h4"/><path d="m4.9 4.9 2.9 2.9"/></svg>
+        </div>
+        <div>
+          <h3>Moneyloop provoz</h3>
+          <span class="status-badge">Overnight</span>
+        </div>
+      </div>
+      <p>Noční engine: 1 burst = 1 lead od zdroje po draft. Ty jen ráno schvaluješ a odesíláš.</p>
+      <div class="cmd-list">
+        <span class="cmd-step">Spustit burst</span>
+        <code class="cmd">powershell -File moneyloop/run-burst.ps1</code>
+        <span class="cmd-step">Ráno - schválit</span>
+        <span class="cmd-note">Otevři náhledy nahoře → ve <code>queue/leads.jsonl</code> přepni <code>"status":"approved"</code>.</span>
+        <span class="cmd-step">Odeslat schválené (nejdřív test)</span>
+        <code class="cmd">node moneyloop/scripts/send-approved.mjs --test</code>
+        <code class="cmd">node moneyloop/scripts/send-approved.mjs</code>
+      </div>
+      <div class="dash-links">
+        <a href="/moneyloop/RUNBOOK.md" target="_blank"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg> RUNBOOK.md</a>
+        <a href="/moneyloop/task.md" target="_blank"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg> task.md (hard rules)</a>
+      </div>
+    </div>
 
     <!-- STRÁNKY WEBU -->
     <div class="dash-card">
@@ -228,7 +334,7 @@ footer{border-top:1px solid var(--border);padding:2rem 0;margin-top:3rem}
           <span class="status-badge">Live</span>
         </div>
       </div>
-      <p>Všechny stránky aktuálního SiteSpot webu — rozklikni a rovnou edituj.</p>
+      <p>Všechny stránky aktuálního SiteSpot webu - rozklikni a rovnou edituj.</p>
       <div class="dash-links">
         <a href="/" target="_blank"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg> Hub (index)</a>
         <a href="/leads.html" target="_blank"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg> Leady</a>
@@ -253,7 +359,7 @@ footer{border-top:1px solid var(--border);padding:2rem 0;margin-top:3rem}
       </div>
       <p>Express · Node.js · port 3010 locally. Deploy manuálně přes Vercel CLI.</p>
       <div class="dash-links">
-        <a href="https://github.com/Branzly-Leadora/SiteSpot" target="_blank"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg> GitHub — SiteSpot repo</a>
+        <a href="https://github.com/Branzly-Leadora/SiteSpot" target="_blank"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg> GitHub - SiteSpot repo</a>
         <a href="https://vercel.com/dashboard" target="_blank"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg> Vercel Dashboard</a>
         <a href="https://console.anthropic.com" target="_blank"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg> Anthropic Console (API key)</a>
       </div>
@@ -277,27 +383,6 @@ footer{border-top:1px solid var(--border);padding:2rem 0;margin-top:3rem}
       </div>
     </div>
 
-    <!-- INSPIRACE -->
-    <div class="dash-card">
-      <div class="dash-card__header">
-        <div class="dash-card__icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-        </div>
-        <div>
-          <h3>Inspirace</h3>
-          <span class="status-badge">Denně</span>
-        </div>
-      </div>
-      <p>Weby a zdroje, které sledujeme pro design a copywriting inspiraci.</p>
-      <div class="dash-links">
-        <a href="https://dribbble.com" target="_blank"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg> Dribbble</a>
-        <a href="https://www.awwwards.com" target="_blank"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg> Awwwards</a>
-        <a href="https://www.behance.net" target="_blank"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg> Behance</a>
-        <a href="https://figma.com" target="_blank"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg> Figma</a>
-        <a href="https://claude.ai" target="_blank"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg> Claude</a>
-      </div>
-    </div>
-
     <!-- AI ARSENAL -->
     <div class="dash-card">
       <div class="dash-card__header">
@@ -309,15 +394,15 @@ footer{border-top:1px solid var(--border);padding:2rem 0;margin-top:3rem}
           <span class="status-badge">Open-source</span>
         </div>
       </div>
-      <p>Nejlepší open-source TTS na světě. 8B model, zní jako reálný člověk — warmth, pacing, emoce. 110ms latency. One-shot voice cloning z krátkého samplu. Self-host = audio nikdy neopustí server. Weights zdarma na GitHubu.</p>
+      <p>Nejlepší open-source TTS na světě. 8B model, zní jako reálný člověk - warmth, pacing, emoce. 110ms latency. One-shot voice cloning z krátkého samplu. Self-host = audio nikdy neopustí server.</p>
       <div class="dash-links">
         <a href="https://github.com/MisoLabsAI/MisoTTS" target="_blank">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-          Miso One — 8B emotive TTS (GitHub)
+          Miso One - 8B emotive TTS (GitHub)
         </a>
         <a href="https://miso-one.com" target="_blank">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-          Miso One — demo & web
+          Miso One - demo & web
         </a>
       </div>
     </div>
@@ -328,7 +413,7 @@ footer{border-top:1px solid var(--border);padding:2rem 0;margin-top:3rem}
 <footer>
   <div class="footer-inner">
     <div class="footer-brand">Site<span>Spot</span> Central</div>
-    <div class="footer-copy">© 2026 SiteSpot — Internal use only</div>
+    <div class="footer-copy">© 2026 SiteSpot - Internal use only</div>
   </div>
 </footer>
 
@@ -336,6 +421,63 @@ footer{border-top:1px solid var(--border);padding:2rem 0;margin-top:3rem}
 (function(){
   const nav=document.getElementById('nav');
   if(nav) window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>40),{passive:true});
+})();
+
+// ── live moneyloop pipeline ──
+(function(){
+  const STATUS={
+    ready:   {cs:'Čeká na schválení',   k:'ready'},
+    partial: {cs:'Rozpracováno',        k:'partial'},
+    approved:{cs:'Schváleno',           k:'approved'},
+    sent:    {cs:'Odesláno',            k:'sent'},
+    dropped: {cs:'Zahozeno',            k:'dropped'},
+  };
+  const ORDER=['ready','partial','approved','sent','dropped'];
+  const $=id=>document.getElementById(id);
+  const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const tile=(n,label,cls,hint)=>`<div class="pl-tile ${cls||''}"><div class="pl-num">${n}</div><div class="pl-tlabel">${label}</div>${hint?`<div class="pl-thint">${hint}</div>`:''}</div>`;
+
+  function render(d){
+    const c=d.counts;
+    $('pl-stats').innerHTML=
+      tile(c.ready,'Čeká na tebe','is-action','schválit ráno')+
+      tile(c.approved,'Schváleno','','čeká na odeslání')+
+      tile(c.sent,'Odesláno','','')+
+      tile(c.partial+c.dropped,'Rozprac. / zahozeno','is-muted','')+
+      tile(d.total,'Celkem v pipeline','is-muted','');
+
+    const list=$('pl-list');
+    if(!d.total){ list.innerHTML=`<div class="pl-empty">Fronta je prázdná.<br/>Spusť burst: <code>powershell -File moneyloop/run-burst.ps1</code></div>`; return; }
+    const rows=d.leads.slice().sort((a,b)=>ORDER.indexOf(a.status)-ORDER.indexOf(b.status));
+    list.innerHTML=rows.map(r=>{
+      const st=STATUS[r.status]||{cs:r.status,k:'dropped'};
+      const preview=(r.preview&&/^https?:/.test(r.preview))?`<a class="pl-link" href="${esc(r.preview)}" target="_blank">Náhled ↗</a>`:'';
+      const draft=r.draft?`<a class="pl-link" href="/moneyloop/${esc(r.draft)}" target="_blank">Draft</a>`:'';
+      return `<div class="pl-row st-${st.k}">
+        <span class="pl-badge st-${st.k}">${esc(st.cs)}</span>
+        <div class="pl-main">
+          <div class="pl-biz">${esc(r.business)}</div>
+          <div class="pl-hook">${esc(r.hook)}</div>
+        </div>
+        ${r.template?`<span class="pl-tpl">${esc(r.template)}</span>`:''}
+        <div class="pl-actions">${preview}${draft}</div>
+      </div>`;
+    }).join('');
+  }
+
+  function offline(){
+    $('pl-stats').innerHTML='';
+    $('pl-list').innerHTML=`<div class="pl-empty">Pipeline se čte z lokální fronty.<br/>Spusť <code>npm run dev</code> a otevři <code>localhost:3010/a</code>.</div>`;
+  }
+
+  function load(){
+    $('pl-updated').textContent='načítám…';
+    fetch('/api/pipeline').then(r=>r.ok?r.json():Promise.reject()).then(d=>{
+      render(d); $('pl-updated').textContent='aktuální fronta';
+    }).catch(()=>{ offline(); $('pl-updated').textContent='offline'; });
+  }
+  $('pl-refresh').addEventListener('click',load);
+  load();
 })();
 </script>
 </body>

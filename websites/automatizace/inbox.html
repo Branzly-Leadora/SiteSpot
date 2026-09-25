@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI e-mailový asistent — ukázka SiteSpot</title>
+  <title>AI e-mailový asistent - ukázka SiteSpot</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="demo.css" />
   <style>
@@ -50,7 +50,7 @@
         </div>
         <div class="pane">
           <div class="pane__h">Detail + návrh odpovědi</div>
-          <div class="reader" id="reader"><div class="empty">Vyberte e-mail vlevo — AI ho rozřadí a&nbsp;připraví odpověď.</div></div>
+          <div class="reader" id="reader"><div class="empty">Vyberte e-mail vlevo - AI ho rozřadí a&nbsp;připraví odpověď.</div></div>
         </div>
       </div>
     </div>
@@ -62,13 +62,13 @@
     const MAILS = [
       { from: 'Jan Novák', time: '9:12', subj: 'Poptávka – nový web pro restauraci', tag: 't-lead', tagL: 'LEAD',
         body: 'Dobrý den,\n\nmáme restauraci v Plzni a sháníme nový web s online rezervací a menu. Kolik by to přibližně stálo a jak dlouho by to trvalo?\n\nDěkuji, Jan Novák',
-        priority: 'Vysoká', intent: 'Nová obchodní poptávka', draft: 'Dobrý den, pane Nováku,\n\nděkujeme za zájem! Web s online rezervací a menu pro restauraci u nás vychází orientačně na 45–70 tis. Kč a realizace trvá 4–6 týdnů. Rád vám připravím přesnou nabídku — hodil by se vám krátký call tento týden?\n\nS pozdravem,\ntým SiteSpot' },
+        priority: 'Vysoká', intent: 'Nová obchodní poptávka', draft: 'Dobrý den, pane Nováku,\n\nděkujeme za zájem! Web s online rezervací a menu pro restauraci u nás vychází orientačně na 45–70 tis. Kč a realizace trvá 4–6 týdnů. Rád vám připravím přesnou nabídku - hodil by se vám krátký call tento týden?\n\nS pozdravem,\ntým SiteSpot' },
       { from: 'Faktura Wedos', time: '8:40', subj: 'Faktura za hosting 2026', tag: 't-info', tagL: 'INFO',
         body: 'Vážený zákazníku,\nv příloze zasíláme fakturu za hostingové služby...',
-        priority: 'Nízká', intent: 'Administrativa / faktura', draft: 'Automaticky přeposláno do účetnictví a uloženo. Není potřeba odpovídat — pouze ke schválení úhrady.' },
+        priority: 'Nízká', intent: 'Administrativa / faktura', draft: 'Automaticky přeposláno do účetnictví a uloženo. Není potřeba odpovídat - pouze ke schválení úhrady.' },
       { from: 'Petra K.', time: 'včera', subj: 'RE: Nabídka – urgentní', tag: 't-urgent', tagL: 'URGENTNÍ',
         body: 'Dobrý den,\npotřebovala bych to vědět co nejdřív, šéf to chce do pátku. Můžete potvrdit termín?',
-        priority: 'Urgentní', intent: 'Čeká na odpověď · termín', draft: 'Dobrý den, paní Petro,\n\nrozumím, že to spěchá. Termín do pátku potvrzuji — návrh vám pošlu nejpozději ve čtvrtek dopoledne. Kdyby cokoli, jsem na telefonu.\n\nS pozdravem,\ntým SiteSpot' },
+        priority: 'Urgentní', intent: 'Čeká na odpověď · termín', draft: 'Dobrý den, paní Petro,\n\nrozumím, že to spěchá. Termín do pátku potvrzuji - návrh vám pošlu nejpozději ve čtvrtek dopoledne. Kdyby cokoli, jsem na telefonu.\n\nS pozdravem,\ntým SiteSpot' },
       { from: 'newsletter@nástroj.io', time: 'včera', subj: '5 tipů pro vyšší konverze', tag: 't-info', tagL: 'PROMO',
         body: 'Ahoj, koukni na naše nové tipy...',
         priority: 'Nízká', intent: 'Marketing / newsletter', draft: 'Nevyžaduje odpověď. Zařazeno do složky „Promo".' },

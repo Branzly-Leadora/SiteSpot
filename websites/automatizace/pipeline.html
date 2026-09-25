@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ukázka automatizace — SiteSpot</title>
+  <title>Ukázka automatizace - SiteSpot</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="demo.css" />
   <style>
@@ -102,7 +102,7 @@
       onboarding: {
         title: 'Onboarding zákazníka',
         steps: [
-          { icon: '✍️', label: 'Podpis smlouvy', log: 'Smlouva podepsána (DocuSign) — klient ACME s.r.o.' },
+          { icon: '✍️', label: 'Podpis smlouvy', log: 'Smlouva podepsána (DocuSign) - klient ACME s.r.o.' },
           { icon: '⚙️', label: 'Workflow', log: 'Založen účet, vygenerovány přístupy' },
           { icon: '📧', label: 'Uvítací série', log: 'Naplánováno 5 e-mailů (den 0, 1, 3, 7, 14)' },
           { icon: '✅', label: 'Úkoly týmu', log: 'Account managerovi přiřazen onboarding checklist' },
@@ -114,7 +114,7 @@
           { icon: '🗂️', label: 'CRM', log: 'Změna: u kontaktu #4821 upraven telefon' },
           { icon: '🔁', label: 'Sync', log: 'Detekována změna → mapování polí' },
           { icon: '📊', label: 'Účetnictví', log: 'Záznam aktualizován (obousměrně)' },
-          { icon: '📧', label: 'E-mail nástroj', log: 'Kontakt sjednocen — žádné duplicity' },
+          { icon: '📧', label: 'E-mail nástroj', log: 'Kontakt sjednocen - žádné duplicity' },
         ],
       },
       reporty: {
@@ -123,14 +123,14 @@
           { icon: '🗄️', label: 'Zdroje dat', log: 'Staženo: prodeje, poptávky, web, e-shop' },
           { icon: '🧮', label: 'Souhrn', log: 'Tržby 312 400 Kč (+8 %), 47 poptávek, konverze 23 %' },
           { icon: '📈', label: 'Report', log: 'Vygenerován PDF přehled s grafy' },
-          { icon: '📧', label: 'E-mail majiteli', log: 'Pondělí 7:00 — report doručen' },
+          { icon: '📧', label: 'E-mail majiteli', log: 'Pondělí 7:00 - report doručen' },
         ],
       },
       followup: {
         title: 'Follow-up sekvence',
         steps: [
           { icon: '👤', label: 'Nový lead', log: 'Lead „Petra K." bez reakce 2 dny' },
-          { icon: '🧠', label: 'Sekvence', log: 'Spuštěn krok 2/4 — připomínka nabídky' },
+          { icon: '🧠', label: 'Sekvence', log: 'Spuštěn krok 2/4 - připomínka nabídky' },
           { icon: '📧', label: 'E-mail', log: 'Personalizovaný follow-up odeslán' },
           { icon: '🛑', label: 'Auto-stop', log: 'Jakmile lead odpoví → sekvence se zastaví' },
         ],
@@ -149,7 +149,7 @@
         steps: [
           { icon: '📥', label: 'Poptávka', log: 'Nová poptávka: ACME s.r.o., rozpočet 80 tis. Kč' },
           { icon: '🧠', label: 'AI scoring', log: 'Vyhodnoceno: obor, rozpočet, naléhavost, zdroj' },
-          { icon: '🎯', label: 'Skóre', log: 'Skóre 92/100 — „Horký lead"' },
+          { icon: '🎯', label: 'Skóre', log: 'Skóre 92/100 - „Horký lead"' },
           { icon: '🗂️', label: 'CRM priorita', log: 'Zařazeno na vrchol fronty → notifikace obchodu' },
         ],
       },
@@ -167,7 +167,7 @@
     const params = new URLSearchParams(location.search);
     const scene = SCENES[params.get('scene')] || SCENES.poptavky;
     document.getElementById('title').textContent = scene.title;
-    document.title = scene.title + ' — ukázka';
+    document.title = scene.title + ' - ukázka';
 
     const pipe = document.getElementById('pipe');
     const loglist = document.getElementById('loglist');

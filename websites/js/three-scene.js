@@ -47,7 +47,7 @@
   scene.add(root);
 
   /* ═══════════════════════════════════════════════════════════
-     LAYER 0 — DEEP STARFIELD
+     LAYER 0 - DEEP STARFIELD
   ═══════════════════════════════════════════════════════════ */
   (function buildStarfield() {
     const S = 1200;
@@ -114,7 +114,7 @@
   })();
 
   /* ═══════════════════════════════════════════════════════════
-     LAYER 1 — QUANTUM CORE (displaced icosphere)
+     LAYER 1 - QUANTUM CORE (displaced icosphere)
   ═══════════════════════════════════════════════════════════ */
   const coreGroup = new THREE.Group();
   root.add(coreGroup);
@@ -161,7 +161,7 @@
       vNorm = normalize(normalMatrix * normal);
       vec3 p = position;
 
-      // Multi-octave FBM displacement — grows with scroll
+      // Multi-octave FBM displacement - grows with scroll
       float disp = fbm(p * 1.8 + uT * 0.12) * (0.22 + uScroll * 0.38);
       // Secondary high-freq detail
       disp += fbm(p * 4.5 - uT * 0.18) * 0.06;
@@ -194,7 +194,7 @@
 
       vec3 c0 = vec3(0.10, 0.72, 0.65);  // teal
       vec3 c1 = vec3(0.36, 0.84, 1.00);  // sky-blue
-      vec3 c2 = vec3(0.55, 0.22, 1.00);  // violet — appears at high scroll
+      vec3 c2 = vec3(0.55, 0.22, 1.00);  // violet - appears at high scroll
       vec3 base = mix(c0, c1, t1);
       base = mix(base, c2, t2 * uScroll * 0.7);
 
@@ -238,7 +238,7 @@
   coreGroup.add(nucleusMesh);
 
   /* ═══════════════════════════════════════════════════════════
-     LAYER 2 — CRYSTAL LATTICE CAGE
+     LAYER 2 - CRYSTAL LATTICE CAGE
   ═══════════════════════════════════════════════════════════ */
   const latticeGroup = new THREE.Group();
   root.add(latticeGroup);
@@ -267,7 +267,7 @@
   });
 
   /* ═══════════════════════════════════════════════════════════
-     LAYER 3 — ENERGY ARCS (Catmull-Rom tube paths)
+     LAYER 3 - ENERGY ARCS (Catmull-Rom tube paths)
   ═══════════════════════════════════════════════════════════ */
   const arcsGroup = new THREE.Group();
   root.add(arcsGroup);
@@ -360,7 +360,7 @@
   }
 
   /* ═══════════════════════════════════════════════════════════
-     LAYER 4 — MAIN PARTICLE CLOUD (8000 particles, 5 morphs)
+     LAYER 4 - MAIN PARTICLE CLOUD (8000 particles, 5 morphs)
   ═══════════════════════════════════════════════════════════ */
   const N = 8000;
   const pA  = new Float32Array(N * 3); // morph 0: sphere
@@ -537,7 +537,7 @@
   root.add(new THREE.Points(pGeo, pMat));
 
   /* ═══════════════════════════════════════════════════════════
-     LAYER 5 — VOLUMETRIC HALO RINGS
+     LAYER 5 - VOLUMETRIC HALO RINGS
   ═══════════════════════════════════════════════════════════ */
   const haloGroup = new THREE.Group();
   root.add(haloGroup);
@@ -567,7 +567,7 @@
   });
 
   /* ═══════════════════════════════════════════════════════════
-     LAYER 6 — SHOCKWAVE DISK
+     LAYER 6 - SHOCKWAVE DISK
   ═══════════════════════════════════════════════════════════ */
   const shockMesh = new THREE.Mesh(
     new THREE.RingGeometry(0.0, 0.12, 64),
@@ -600,7 +600,7 @@
   root.add(shockMesh);
 
   /* ═══════════════════════════════════════════════════════════
-     LAYER 7 — LENS FLARE SPARKS (16 billboards)
+     LAYER 7 - LENS FLARE SPARKS (16 billboards)
   ═══════════════════════════════════════════════════════════ */
   const sparkGroup = new THREE.Group();
   root.add(sparkGroup);
@@ -696,7 +696,7 @@
      SHOCKWAVE STATE
   ───────────────────────────────────────────────────────────── */
   let lastSection  = 0;
-  let shockR       = 1.1; // start beyond visible — idle
+  let shockR       = 1.1; // start beyond visible - idle
   let shockActive  = false;
 
   function triggerShockwave() {
@@ -815,7 +815,7 @@
     /* ── Sparks: billboard + flicker ───────────────────────── */
     sparkGroup.children.forEach((m, i) => {
       m.material.uniforms.uT.value = T;
-      // Bill board — face camera
+      // Bill board - face camera
       m.quaternion.copy(camera.quaternion);
       // Orbit slowly
       const d = sparkData[i];

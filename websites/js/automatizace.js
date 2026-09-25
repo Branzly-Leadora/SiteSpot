@@ -1,4 +1,4 @@
-/* SiteSpot — automatizace.js
+/* SiteSpot - automatizace.js
    1) Category filtering for the automation showcase grid.
    2) Wires each card to an interactive demo (opened in a preview modal).
    Reveal-on-scroll + hover ripple are handled by animations.js. */

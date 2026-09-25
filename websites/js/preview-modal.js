@@ -1,4 +1,4 @@
-/* SiteSpot — preview-modal.js
+/* SiteSpot - preview-modal.js
    Otevírá náhled (#tplModal) po kliknutí na kartu s data-url.
    Použito na stránce Weby (templates.html) pro mřížku šablon.
    Vlastní soubor nezávislý na templates.js, aby ho nesmazal merge,

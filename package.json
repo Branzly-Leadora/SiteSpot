@@ -1,7 +1,7 @@
 {
   "name": "sitespot",
   "version": "1.0.0",
-  "description": "SiteSpot — web agentura",
+  "description": "SiteSpot - web agentura",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

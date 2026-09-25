@@ -30,7 +30,8 @@ const transporter = nodemailer.createTransport({
   secure: (parseInt(env.SEND_SMTP_PORT) || 465) === 465,
   auth: { user: env.SEND_SMTP_USER, pass: env.SEND_SMTP_PASS },
 });
-const FROM = `"${env.SEND_FROM_NAME || 'David | SiteSpot'}" <${env.SEND_SMTP_USER}>`;
+// Auth uses SEND_SMTP_USER (the real mailbox); the visible From can be an alias (SEND_FROM_ADDRESS).
+const FROM = `"${env.SEND_FROM_NAME || 'David | SiteSpot'}" <${env.SEND_FROM_ADDRESS || env.SEND_SMTP_USER}>`;
 
 // ── test mode: verify auth + DKIM before any real send ──
 if (process.argv[2] === '--test') {

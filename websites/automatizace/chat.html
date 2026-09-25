@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI chatbot — ukázka SiteSpot</title>
+  <title>AI chatbot - ukázka SiteSpot</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="demo.css" />
   <style>
@@ -65,16 +65,16 @@
 
     // Canned fallback knowledge (used when the live /api/demo endpoint is unavailable)
     const FAQ = [
-      { k: ['cena','stojí','kolik','cenu','rozpočet'], a: 'Web na míru u nás startuje od 25 000 Kč, e-shop od 60 000 Kč. Přesnou cenu připravíme po krátké konzultaci — záleží na rozsahu. Chcete nezávaznou nabídku?' },
+      { k: ['cena','stojí','kolik','cenu','rozpočet'], a: 'Web na míru u nás startuje od 25 000 Kč, e-shop od 60 000 Kč. Přesnou cenu připravíme po krátké konzultaci - záleží na rozsahu. Chcete nezávaznou nabídku?' },
       { k: ['dlouho','termín','trvá','kdy'], a: 'Prezentační web zvládneme za 2–4 týdny, větší projekty 6–10 týdnů. Po zadání dostanete přesný harmonogram.' },
       { k: ['eshop','e-shop','obchod','prodávat'], a: 'Ano, děláme e-shopy i napojení na platby a sklad. Od jednoduchých až po řešení na míru. O jaký sortiment jde?' },
       { k: ['nabídk','poptáv','konzultac','schůzk','zavolat'], a: 'Super! Nechte mi e-mail nebo telefon a do 24 hodin se ozveme s návrhem. Případně rovnou napište na hello@sitespot.cz.' },
-      { k: ['seo','google','vyhledáv'], a: 'Každý web stavíme SEO-ready — rychlost, struktura, meta data. Volitelně řešíme i dlouhodobé SEO a obsah.' },
+      { k: ['seo','google','vyhledáv'], a: 'Každý web stavíme SEO-ready - rychlost, struktura, meta data. Volitelně řešíme i dlouhodobé SEO a obsah.' },
     ];
     function canned(text) {
       const t = text.toLowerCase();
       const hit = FAQ.find(f => f.k.some(k => t.includes(k)));
-      return hit ? hit.a : 'Dobrá otázka! Tohle rád upřesní někdo z týmu — napište prosím na hello@sitespot.cz nebo nechte kontakt a ozveme se. Mezitím: chcete vědět něco o cenách, termínech nebo našich službách?';
+      return hit ? hit.a : 'Dobrá otázka! Tohle rád upřesní někdo z týmu - napište prosím na hello@sitespot.cz nebo nechte kontakt a ozveme se. Mezitím: chcete vědět něco o cenách, termínech nebo našich službách?';
     }
 
     const history = [];
@@ -110,7 +110,7 @@
         const data = await res.json();
         answer = data.reply; live = !!data.live;
       } catch (e) {
-        // graceful fallback — realistic canned answer with a human-like delay
+        // graceful fallback - realistic canned answer with a human-like delay
         await new Promise(r => setTimeout(r, 650 + Math.random() * 500));
         answer = canned(text);
       }
@@ -137,7 +137,7 @@
     form.addEventListener('submit', e => { e.preventDefault(); send(input.value); });
 
     // Seed conversation
-    addMsg('bot', 'Dobrý den! 👋 Jsem AI asistent SiteSpot. Zeptejte se mě na ceny, termíny nebo služby — a když si nebudu vědět rady, předám vás kolegovi.');
+    addMsg('bot', 'Dobrý den! 👋 Jsem AI asistent SiteSpot. Zeptejte se mě na ceny, termíny nebo služby - a když si nebudu vědět rady, předám vás kolegovi.');
   })();
   </script>
 </body>

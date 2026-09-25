@@ -1,5 +1,5 @@
 /* ============================================================
-   BAR KLÍČ — sdílený JS pro všechny stránky
+   BAR KLÍČ - sdílený JS pro všechny stránky
    Každá funkce si hlídá existenci prvků → jeden soubor všude.
    ============================================================ */
 (function () {

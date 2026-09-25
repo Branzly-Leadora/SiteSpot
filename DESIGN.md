@@ -1,17 +1,17 @@
-# SiteSpot — Design System
+# SiteSpot - Design System
 
 The rules the **main marketing site** must obey, so new sections look designed, not generated.
 
-## Scope — READ FIRST
-✅ **Applies to:** the marketing pages only — `index.html`, `leads.html`, `automation.html`, `marketing.html`, `brand.html`, `content.html`.
-❌ **Does NOT apply to:** `websites/templates/**`. Each template (beauty, gastro, maloobchod, řemesla, wellness) is its **own brand** with its own palette, var names (`--ink`, `--acc`, `--muted`…) and fonts (Space Grotesk / Space Mono). Never impose these tokens on a template — you will break it. Edit a template only against its own `css/style.css`.
+## Scope - READ FIRST
+✅ **Applies to:** the marketing pages only - `index.html`, `leads.html`, `automation.html`, `marketing.html`, `brand.html`, `content.html`.
+❌ **Does NOT apply to:** `websites/templates/**`. Each template (beauty, gastro, maloobchod, řemesla, wellness) is its **own brand** with its own palette, var names (`--ink`, `--acc`, `--muted`…) and fonts (Space Grotesk / Space Mono). Never impose these tokens on a template - you will break it. Edit a template only against its own `css/style.css`.
 
-**Source of truth for tokens:** the inline `<style> :root {…}` block at the top of each marketing page (they're identical). `websites/css/style.css` is the *legacy* site copy and is NOT loaded by the live pages — do not treat it as authoritative. When in doubt, reuse a CSS var — never hardcode a hex.
+**Source of truth for tokens:** the inline `<style> :root {…}` block at the top of each marketing page (they're identical). `websites/css/style.css` is the *legacy* site copy and is NOT loaded by the live pages - do not treat it as authoritative. When in doubt, reuse a CSS var - never hardcode a hex.
 
 ## Feel
 
 Dark, restrained, editorial-tech. Near-black canvas, a single teal accent, generous space, sharp type.
-Effects stay quiet — subtle glows and a faint noise grain, never anything that fights the text.
+Effects stay quiet - subtle glows and a faint noise grain, never anything that fights the text.
 Reference feel: Linear / Vercel / Stripe dark marketing pages.
 
 ## Color
@@ -22,8 +22,8 @@ Reference feel: Linear / Vercel / Stripe dark marketing pages.
 | `--bg-2` | `#0c1018` | alt section band |
 | `--surface` | `#111620` | cards, panels |
 | `--surface-2` | `#181e2c` | raised / hover surface |
-| `--accent` | `#27b7a5` | teal — primary CTAs, links, highlights |
-| `--accent-2` | `#5dd9cb` | brighter teal — eyebrows, hover, gradients |
+| `--accent` | `#27b7a5` | teal - primary CTAs, links, highlights |
+| `--accent-2` | `#5dd9cb` | brighter teal - eyebrows, hover, gradients |
 | `--accent-dim` | `rgba(39,183,165,.10)` | tinted fills |
 | `--accent-glow` | `rgba(39,183,165,.22)` | shadow/glow on hover |
 | `--white` | `#eef2f7` | primary text |
@@ -40,7 +40,7 @@ Reference feel: Linear / Vercel / Stripe dark marketing pages.
 - **Headings / editorial italic:** Playfair Display (`--font-serif`).
 - Headings are weight **700**, tight tracking **`-0.03em`**. Body copy ~`1.05rem`, color `--gray`.
 
-Scale (all fluid — keep `clamp()`):
+Scale (all fluid - keep `clamp()`):
 | Level | Size |
 |---|---|
 | Hero H1 | `clamp(3.5rem, 8vw, 8rem)` |
@@ -53,15 +53,15 @@ Every section leads with an eyebrow label before its H2. That's the signature.
 
 ## Shape & motion
 
-- **Radius:** `3px` buttons/inputs · `6px` cards · `100px` pills. Keep it sharp — no big rounded corners.
+- **Radius:** `3px` buttons/inputs · `6px` cards · `100px` pills. Keep it sharp - no big rounded corners.
 - **Ease:** `cubic-bezier(0.16, 1, 0.3, 1)` (`--ease`) for everything.
 - **Hover:** lift `translateY(-2px)` + glow `box-shadow: 0 8px 32px var(--accent-glow)`. Transitions ~`0.2s`.
-- **Layout:** `.container` = `max-width:1200px; padding:0 3rem`. Section rhythm is roomy vertical padding — don't crowd.
+- **Layout:** `.container` = `max-width:1200px; padding:0 3rem`. Section rhythm is roomy vertical padding - don't crowd.
 - **Ambient:** teal radial glows + `0.022` noise grain live in `.bg-layer`. Don't add competing backgrounds.
 
 ## Components (reuse, don't reinvent)
 
-- `.eyebrow`, `.btn-primary`, `.btn-outline`, `.container` already exist — use them.
+- `.eyebrow`, `.btn-primary`, `.btn-outline`, `.container` already exist - use them.
 - New buttons match `.btn-primary`: `padding:.85rem 1.75rem`, weight 700, `0.875rem`, radius 3px.
 
 ## Do / Don't

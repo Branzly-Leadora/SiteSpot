@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vytěžování dokumentů — ukázka SiteSpot</title>
+  <title>Vytěžování dokumentů - ukázka SiteSpot</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="demo.css" />
   <style>
@@ -51,7 +51,7 @@
           <div class="pane__h">Vstup · přijatá faktura (PDF)</div>
           <div class="doc" id="doc">
             <div class="scan"></div>
-            <h4>FAKTURA — daňový doklad</h4>
+            <h4>FAKTURA - daňový doklad</h4>
             <div class="muted2">č. FV2026-0042</div>
             <hr/>
             <div class="row"><div><strong>Dodavatel</strong><br/>Dřevo Hrubý s.r.o.<br/><span class="muted2">IČO 24681012, DIČ CZ24681012</span></div>
@@ -85,7 +85,7 @@
   (function () {
     'use strict';
     const FIELDS = [
-      { lab: 'Typ dokladu', val: 'Faktura — daňový doklad', conf: '99 %' },
+      { lab: 'Typ dokladu', val: 'Faktura - daňový doklad', conf: '99 %' },
       { lab: 'Číslo faktury', val: 'FV2026-0042', conf: '99 %' },
       { lab: 'Dodavatel', val: 'Dřevo Hrubý s.r.o.', conf: '98 %' },
       { lab: 'IČO', val: '24681012', conf: '99 %' },
@@ -110,7 +110,7 @@
       (list || FIELDS).forEach(f => {
         const r = document.createElement('div');
         r.className = 'frow';
-        r.innerHTML = '<span class="lab">' + f.lab + '</span><span class="val empty">—</span>';
+        r.innerHTML = '<span class="lab">' + f.lab + '</span><span class="val empty">-</span>';
         fieldsEl.appendChild(r);
       });
     }

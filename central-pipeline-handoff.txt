@@ -1,0 +1,79 @@
+Předmět: Přidat živý pipeline přehled na /a + schovat /a za login
+
+Ahoj,
+
+na interní stránku /a (command center) bych chtěl přidat živý přehled moneyloop
+pipeline, ať ráno vidím stav leadů na jednom místě. A celé /a schovat za login,
+protože jsou tam e-maily leadů a drafty outreach e-mailů.
+
+CO TO DĚLÁ
+- Nahoře na /a je sekce "Pipeline leadů": pět dlaždic s počty (čeká na schválení,
+  schváleno, odesláno, rozpracováno/zahozeno, celkem) a pod nimi seznam leadů.
+  Každý řádek má název firmy, hook, použitou šablonu a odkaz na náhled i na draft.
+  Barevně odlišené podle statusu, "čeká na schválení" je zvýrazněné (to je to,
+  co ráno řeším).
+- Data se čtou z moneyloop/queue/leads.jsonl přes nový read-only endpoint
+  GET /api/pipeline. Když fronta neexistuje (třeba na Vercelu, kde je gitignored),
+  vrátí prázdno a stránka to sama ošetří hláškou.
+
+Hotový kód (úpravy v server.js a a.html) mám připravený ve working copy repa,
+funguje lokálně na portu 3010. Stačí projít a scommitit. Jediné, co ještě
+potřebuju od tebe, je dát celé /a za login. Níže je backend endpoint a
+doporučený login, ať to máš po ruce.
+
+
+1) BACKEND ENDPOINT (server.js)
+Nahoře přidej require:
+
+    const fs = require('fs');
+
+A tenhle route dej kamkoli před app.get('*', ...):
+
+    // GET /api/pipeline
+    // Read-only snapshot fronty pro interní /a. Čte lokální (gitignored) leads.jsonl.
+    app.get('/api/pipeline', (req, res) => {
+      const qPath = path.join(__dirname, 'moneyloop', 'queue', 'leads.jsonl');
+      let leads = [];
+      try {
+        leads = fs.readFileSync(qPath, 'utf8').trim().split('\n').filter(Boolean)
+          .map(l => { try { return JSON.parse(l); } catch { return null; } })
+          .filter(Boolean);
+      } catch { /* fronta zatím není */ }
+      const counts = { ready: 0, partial: 0, approved: 0, sent: 0, dropped: 0 };
+      for (const l of leads) if (l.status in counts) counts[l.status]++;
+      res.json({ ok: true, total: leads.length, counts, leads });
+    });
+
+
+2) LOGIN (Basic auth)
+Přihlašovací údaje ať jsou v env (na Vercelu v project settings), ne v repu:
+CENTRAL_USER a CENTRAL_PASS.
+
+    // Basic auth pro interní command center (/a)
+    function centralAuth(req, res, next) {
+      const U = process.env.CENTRAL_USER, P = process.env.CENTRAL_PASS;
+      if (!U || !P) return next();                 // bez nastavených creds zůstává otevřené
+      const [scheme, b64] = (req.headers.authorization || '').split(' ');
+      if (scheme === 'Basic' && b64) {
+        const [u, p] = Buffer.from(b64, 'base64').toString().split(':');
+        if (u === U && p === P) return next();
+      }
+      res.set('WWW-Authenticate', 'Basic realm="SiteSpot Central"')
+         .status(401).end('Auth required');
+    }
+    // DŮLEŽITÉ: dej to PŘED app.use(express.static(...)), ať to chytne i statické a.html
+    app.use(['/a', '/a.html', '/api/pipeline', '/moneyloop'], centralAuth);
+
+
+NA CO POZOR
+- Command center je fyzicky soubor /a.html. Čistá URL /a se kvůli static middleware
+  301 přesměruje na /a/ (je tam složka a/), proto login pokrývá /a, /a.html
+  i /api/pipeline zvlášť.
+- Gate dej i na /moneyloop, jinak jsou drafty s e-maily
+  (/moneyloop/queue/drafts/*.txt) veřejně přístupné bez hesla.
+- leads.jsonl, previews/ a drafty jsou gitignored (session artefakty), takže
+  na Vercelu tam data nejsou a přehled bude prázdný. Zatím je to lokální nástroj,
+  což je ok. Kdybychom to chtěli živě i na Vercelu, museli bychom data tahat
+  odjinud (DB nebo API), ale to teď neřeš.
+
+Kdyby cokoli, napiš. Díky moc.

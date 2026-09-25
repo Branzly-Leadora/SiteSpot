@@ -1,5 +1,5 @@
 /* ============================================================
-   HODOVNA — sdílený JS pro všechny stránky
+   HODOVNA - sdílený JS pro všechny stránky
    ============================================================ */
 (function () {
   'use strict';

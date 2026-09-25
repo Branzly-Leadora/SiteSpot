@@ -1,5 +1,5 @@
 /* ============================================================
-   SITESPOT — style.css  v3.0
+   SITESPOT - style.css  v3.0
    Consistent BEM-free class names matching index.html
    Font: DM Sans (body) + Playfair Display (headings/italic)
    ============================================================ */
@@ -679,7 +679,7 @@ footer {
 }
 
 /* ============================================================
-   HERO — centered layout
+   HERO - centered layout
    ============================================================ */
 .hero {
   position: relative;
@@ -707,7 +707,7 @@ footer {
 }
 
 /* ============================================================
-   FOOTER — full-screen panel layout
+   FOOTER - full-screen panel layout
    ============================================================ */
 footer {
   border-top: none;

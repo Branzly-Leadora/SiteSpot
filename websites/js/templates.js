@@ -1,9 +1,9 @@
-/* SiteSpot — templates.js  v3.0 */
+/* SiteSpot - templates.js  v3.0 */
 (function () {
   'use strict';
 
   const filters = document.querySelectorAll('.tpl-filter');
-  // Scope to grid only — carousel slides share .tpl-card but have no data-cat
+  // Scope to grid only - carousel slides share .tpl-card but have no data-cat
   const cards   = document.querySelectorAll('.tpl-grid .tpl-card');
 
   filters.forEach(btn => {
@@ -30,7 +30,7 @@
 (function () {
   'use strict';
 
-  // ⚙️ Rychlost rotace (ms) — uprav podle potřeby
+  // ⚙️ Rychlost rotace (ms) - uprav podle potřeby
   const ROTATE_INTERVAL = 4000;
 
   const root = document.getElementById('tplCarousel');

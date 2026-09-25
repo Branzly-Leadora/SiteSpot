@@ -1,5 +1,5 @@
 /* ============================================================
-   HODOVNA — Trust Corporate (gastro · catering & eventy)
+   HODOVNA - Trust Corporate (gastro · catering & eventy)
    Layout: strukturované sloupce · proces · cenové balíčky ·
    logos strip · čistá galerie. Profesionální B2B.
    ============================================================ */
@@ -101,7 +101,7 @@ section { padding: clamp(3.5rem, 7vw, 6rem) clamp(1.4rem, 5vw, 3rem); }
 .s-head p { color: var(--ink2); font-size: 1.02rem; margin-top: .9rem; }
 
 /* ============================================================
-   HERO — strukturovaný + trust stats
+   HERO - strukturovaný + trust stats
    ============================================================ */
 .corp-hero { background: linear-gradient(180deg, var(--bg2), var(--bg)); border-bottom: 1px solid var(--line); }
 .corp-hero__inner { max-width: var(--maxw); margin: 0 auto; padding: clamp(3rem,6vw,5rem) clamp(1.4rem,5vw,3rem); display: grid; grid-template-columns: 1.1fr .9fr; gap: clamp(2rem,5vw,4rem); align-items: center; }
@@ -128,7 +128,7 @@ section { padding: clamp(3.5rem, 7vw, 6rem) clamp(1.4rem, 5vw, 3rem); }
 .trustbar .logo { font-weight: 800; font-size: 1.1rem; color: #B4C0D6; letter-spacing: -.01em; }
 
 /* ============================================================
-   SERVICES — strukturované karty
+   SERVICES - strukturované karty
    ============================================================ */
 .svc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; }
 .svc { background: var(--bg); border: 1px solid var(--line); border-radius: var(--r); padding: 2rem 1.8rem; transition: transform .25s var(--ease), box-shadow .25s, border-color .25s; }
@@ -141,7 +141,7 @@ section { padding: clamp(3.5rem, 7vw, 6rem) clamp(1.4rem, 5vw, 3rem); }
 .svc .feat li::before { content: '✓'; color: var(--acc); font-weight: 700; }
 
 /* ============================================================
-   PROCESS — číslované kroky
+   PROCESS - číslované kroky
    ============================================================ */
 .process { background: var(--bg2); }
 .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; position: relative; }
@@ -153,7 +153,7 @@ section { padding: clamp(3.5rem, 7vw, 6rem) clamp(1.4rem, 5vw, 3rem); }
 .step:last-child::after { display: none; }
 
 /* ============================================================
-   PACKAGES — cenové tarify
+   PACKAGES - cenové tarify
    ============================================================ */
 .pkgs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; align-items: stretch; }
 .pkg { background: var(--bg); border: 1px solid var(--line); border-radius: var(--r); padding: 2rem 1.8rem; display: flex; flex-direction: column; transition: transform .25s var(--ease), box-shadow .25s; }
@@ -175,7 +175,7 @@ section { padding: clamp(3.5rem, 7vw, 6rem) clamp(1.4rem, 5vw, 3rem); }
 .pkg--featured .btn--ghost { border-color: rgba(255,255,255,.3); color: #fff; } .pkg--featured .btn--ghost:hover { background: rgba(255,255,255,.1); }
 
 /* ============================================================
-   MENU — taby + strukturovaná tabulka
+   MENU - taby + strukturovaná tabulka
    ============================================================ */
 .menu__tabs { display: inline-flex; background: var(--bg2); border-radius: var(--rsm); padding: .3rem; margin: 0 auto 2rem; gap: .2rem; }
 .menu__tab { padding: .6rem 1.3rem; font-size: .88rem; font-weight: 600; font-family: 'Inter'; border: none; cursor: pointer; border-radius: 6px; background: transparent; color: var(--ink2); transition: all .2s; }
@@ -211,7 +211,7 @@ section { padding: clamp(3.5rem, 7vw, 6rem) clamp(1.4rem, 5vw, 3rem); }
 .tcard .who b { font-size: .9rem; display: block; } .tcard .who span { font-size: .78rem; color: var(--muted); }
 
 /* ============================================================
-   GALLERY — čistá uniformní mřížka + lightbox
+   GALLERY - čistá uniformní mřížka + lightbox
    ============================================================ */
 .gal { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
 .gal__item { position: relative; aspect-ratio: 4/3; overflow: hidden; cursor: pointer; border-radius: var(--rsm); }
