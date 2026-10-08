@@ -1,5 +1,7 @@
 # Analýza segmentů: kde je největší potřeba a nejmenší konkurence
 
+> **Aktualizace.** Velkoobchody se z výběru vyřazují a eshopy se vedou samostatně. Třetí segment je hledán znovu v `15-overeni-tretiho-segmentu.md` s ověřením na úplném registru ČSÚ. Skóre v této tabulce zůstávají odhad a uvedená čísla firem jsou v dokumentu 15 nahrazena spočítanými.
+
 Cíl: vybrat tři segmenty, které nejvíc potřebují weby a automatizaci a zároveň je dnes nehoní desítky agentur s chatbotem. Vybírá se podle pravidla "hladový dav": silná bolest, schopnost platit, snadné dosažení rozhodovatele.
 
 ## Jak číst důvěryhodnost údajů

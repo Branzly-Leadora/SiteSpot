@@ -32,7 +32,7 @@ const SEQUENCES = [
 // Technické dokumenty (14-automatizace.md, system/schema.md) jsou vyňaté: píšou se v nich názvy jako e-shop a data RRRR-MM-DD.
 const NO_DASH_FILES = [
   '01-nabidka.md', '02-email-sekvence.md', '03-audit-sablona.md', '04-linkedin.md', '05-namitky.md',
-  '10-analyza-segmentu.md', '11-diferenciace-a-nabidka.md', '12-business-system.md', '13-outreach-system.md',
+  '10-analyza-segmentu.md', '15-overeni-tretiho-segmentu.md', '11-diferenciace-a-nabidka.md', '12-business-system.md', '13-outreach-system.md',
   'segmenty/s2-zakazkovi-vyrobci.md', 'segmenty/s3-servisni-firmy.md',
 ]
 // soubory s texty k odeslání, kde se hlídají proměnné a krátké zprávy
@@ -179,6 +179,7 @@ for (const f of [
   'system/guard.mjs', 'system/claim.mjs', 'system/config.json', 'system/campaigns.json',
   'system/routines/lead-prep.md', 'system/routines/reply-triage.md', 'system/routines/weekly-report.md',
   'system/vectors.json', 'system/vectors.test.mjs', 'system/mhruby-zadani.md',
+  'analyza/count_res.py', 'analyza/sample_res.py', 'analyza/pocty-res-2026-09-30.json',
 ]) {
   if (!existsSync(join(dir, f))) fail(f, 'chybí soubor')
 }

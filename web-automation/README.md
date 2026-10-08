@@ -4,7 +4,8 @@ Podklady pro prodej webů a automatizace třem segmentům, ve kterých je podle 
 
 | Segment | Produkt | Soubor |
 |---|---|---|
-| 1. Velkoobchody a výrobci se stálými odběrateli | objednávkový portál napojený na fakturaci | `segmenty/s1-velkoobchody-vyrobci.md` |
+| odloženo: Velkoobchody a výrobci se stálými odběrateli | objednávkový portál napojený na fakturaci | `segmenty/s1-velkoobchody-vyrobci.md` |
+| 1. Doprava a spedice (doporučeno, čeká na potvrzení) | poptávky, nabídky a objednávky přeprav + web | `15-overeni-tretiho-segmentu.md` |
 | 2. Zakázkoví výrobci a dílny | poptávkový a nabídkový systém | `segmenty/s2-zakazkovi-vyrobci.md` |
 | 3. Revizní a servisní firmy | servisní autopilot (termíny, protokoly, fakturace) | `segmenty/s3-servisni-firmy.md` |
 
@@ -37,6 +38,8 @@ Všechna čísla v analýze, nabídkách a ekonomice jsou odhady. Co je ze zdroj
 | `06-test-100-firem.md` | Plán testu, metriky, kdy upravit a kdy vypnout |
 | `07-pravidla-outreach.md` | Pravidla oslovování, odhlášení, seznam odhlášených |
 | `10-analyza-segmentu.md` | Výběr tří segmentů z deseti kandidátů, ověření, rizika |
+| `15-overeni-tretiho-segmentu.md` | Ověření třetího segmentu na úplném registru ČSÚ, konkurence, doporučení |
+| `analyza/` | Skripty a spočítané počty firem z registru ČSÚ |
 | `11-diferenciace-a-nabidka.md` | Odlišení od ostatních dodavatelů, rovnice hodnoty, balík, záruka |
 | `12-business-system.md` | Celý obchodní systém |
 | `13-outreach-system.md` | Vícekanálový outreach s nejvyšší konverzí v bezpečných mezích |
