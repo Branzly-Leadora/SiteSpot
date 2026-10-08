@@ -28,8 +28,9 @@ Firma se porovnává podle **IČO** (osm číslic, doplněné nulami), podle **d
 | `pravni_zaklad` | `souhlas`, `existujici_vztah`, `zadost_o_email` nebo `opravneny_zajem_overit_pravnikem` |
 | `zalozeno`, `posledni_kontakt` | data ve tvaru RRRR-MM-DD |
 | `odstup_do` | do kdy firmu nesmí oslovit jiná kampaň |
+| `zmeneno` | čas změny řádku (ISO, například `2026-10-08T09:30:00Z`). Podle něj se určuje nejnovější řádek, i když se soubory slučují v gitu a řádky skončí v jiném pořadí |
 
-Změna stavu je nový řádek se stejnou kampaní, vlastníkem a firmou. Platí poslední řádek.
+Změna stavu je nový řádek pro stejnou kampaň, vlastníka a firmu. Platí nejnovější řádek podle `zmeneno` (při shodě nebo chybějícím čase pořadí v souboru). Řádky patří k jedné firmě, pokud sdílejí IČO nebo doménu, takže doplnění IČO či domény později nezanechá starý řádek aktivní. Chybějící identitní pole (IČO, doména, e-mail, firma) se dědí z dřívějších řádků, ostatní pole ne, takže nový řádek může smazat `odstup_do`. Sloučení se dělá jen v rámci jedné kampaně a jednoho vlastníka. Implementace: funkce `resolveClaims` v `guard.mjs`, společné vektory `vectors.json`.
 
 ### Stavy a co znamenají pro ostatní kampaně
 

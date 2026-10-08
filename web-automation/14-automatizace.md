@@ -57,7 +57,7 @@ Rozhodnutí patří vám. Společný rejstřík na nich nezávisí: potřebuje j
 3. Po skončení sekvence `claim.mjs state --stav uzavreno`, po odpovědi se zájmem `--stav zajemce`.
 4. Zapisovat IČO k leadu (v `mhruby` už se dohledává přes ARES v `enrichment.ts`), jinak se párovalo jen podle domény.
 
-Tyto čtyři kroky jsou malá úprava vašeho repa. Dokud ji neuděláte, e-shopy nejsou chráněné proti kolizi. Pokud chcete, připravím ji jako návrh změny pro `mhruby`.
+Tyto čtyři kroky jsou ve skutečnosti rozsáhlejší, než vypadají (leady vznikají na pěti místech, odhlášení má jedno společné místo a většina volání běží uvnitř databázových transakcí). Kompletní zadání pro Claude Code v repu `mhruby` je v `system/mhruby-zadani.md`, společné testovací vektory v `system/vectors.json`. Dokud se změna neudělá, e-shopy nejsou chráněné proti kolizi.
 
 ## 4. Kdo co dělá
 

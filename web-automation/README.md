@@ -44,7 +44,8 @@ Všechna čísla v analýze, nabídkách a ekonomice jsou odhady. Co je ze zdroj
 | `sequences/` | Strojové verze mailových sekvencí |
 | `leads-template.csv` | Hlavička souboru kandidátů pro `claim.mjs` |
 | `14-automatizace.md` | Jak to celé automatizovat: rejstřík kampaní, rutiny, nasazení po fázích |
-| `system/` | Rejstřík kampaní (`guard.mjs`, `claim.mjs`), konfigurace, šablony rutin a testy |
+| `system/` | Rejstřík kampaní (`guard.mjs`, `claim.mjs`), konfigurace, šablony rutin, testy a společné vektory |
+| `system/mhruby-zadani.md` | Zadání pro Claude Code v repu `mhruby`: napojení e-shopů na rejstřík |
 | `validate.mjs` | Kontrola textů |
 
 ## Proměnné v textech
@@ -64,7 +65,7 @@ Všechna čísla v analýze, nabídkách a ekonomice jsou odhady. Co je ze zdroj
 
 ```
 node web-automation/validate.mjs
-node --test web-automation/system/guard.test.mjs
+node --test web-automation/system/guard.test.mjs web-automation/system/vectors.test.mjs
 ```
 
 Kontroluje: žádné pomlčky v textech, max 90 slov a právě jedna otázka v každém mailu, odkaz na Cal.com a patičku, 3 předměty na krok, délku LinkedIn pozvánek, shodu `sequences/*.json` s texty v dokumentech a jen povolené proměnné.

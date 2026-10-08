@@ -75,22 +75,60 @@ export function csvLine(values) {
 
 // ---------- načtení rejstříku ----------
 
-export const CLAIM_FIELDS = ['ico', 'domena', 'email', 'firma', 'kampan', 'vlastnik', 'stav', 'pravni_zaklad', 'zalozeno', 'posledni_kontakt', 'odstup_do']
+export const CLAIM_FIELDS = ['ico', 'domena', 'email', 'firma', 'kampan', 'vlastnik', 'stav', 'pravni_zaklad', 'zalozeno', 'posledni_kontakt', 'odstup_do', 'zmeneno']
 export const CONTACT_FIELDS = ['datum', 'ico', 'domena', 'kampan', 'vlastnik', 'kanal']
 export const SUPPRESSION_FIELDS = ['typ', 'hodnota', 'duvod', 'kanal', 'datum']
 
 const readCsv = (file) => (existsSync(file) ? parseCsv(readFileSync(file, 'utf8')) : [])
 
+/**
+ * Z řádků přidělení (v pořadí, jak jsou v souborech) vybere pro každou firmu v rámci kampaně a vlastníka
+ * nejnovější řádek. Řádky patří k jedné firmě, pokud sdílejí IČO nebo doménu, takže doplnění IČO nebo domény
+ * později nezanechá starý řádek aktivní. Pořadí určuje sloupec zmeneno (ISO čas), při shodě nebo chybějícím
+ * čase pořadí v souborech. Identitní pole (ico, domena, email, firma) se dědí z dřívějších řádků.
+ */
+export function resolveClaims(rows) {
+  const ordered = rows
+    .map((r, i) => ({ r, i }))
+    .sort((a, b) => {
+      const x = String(a.r.zmeneno ?? '')
+      const y = String(b.r.zmeneno ?? '')
+      return x < y ? -1 : x > y ? 1 : a.i - b.i
+    })
+  const groups = []
+  for (const { r } of ordered) {
+    const scope = `${r.kampan}|${r.vlastnik}`
+    const keys = [normIco(r.ico) && `${scope}|ico:${normIco(r.ico)}`, normDomain(r.domena) && `${scope}|dom:${normDomain(r.domena)}`].filter(Boolean)
+    const hit = groups.filter((g) => keys.some((k) => g.keys.has(k)))
+    let target = hit[0]
+    if (!target) {
+      target = { keys: new Set(), latest: null }
+      groups.push(target)
+    }
+    for (const g of hit.slice(1)) {
+      for (const k of g.keys) target.keys.add(k)
+      groups.splice(groups.indexOf(g), 1)
+    }
+    const prev = target.latest
+    const merged = { ...r }
+    for (const f of ['ico', 'domena', 'email', 'firma']) if (!merged[f] && prev?.[f]) merged[f] = prev[f]
+    target.latest = merged
+    for (const k of keys) target.keys.add(k)
+    for (const f of ['ico', 'domena']) {
+      const n = f === 'ico' ? normIco(merged.ico) : normDomain(merged.domena)
+      if (n) target.keys.add(`${scope}|${f === 'ico' ? 'ico' : 'dom'}:${n}`)
+    }
+  }
+  return groups.map((g) => g.latest)
+}
+
 export function loadRegistry(dir) {
   const config = JSON.parse(readFileSync(join(dir, '..', 'config.json'), 'utf8'))
   const campaigns = JSON.parse(readFileSync(join(dir, '..', 'campaigns.json'), 'utf8'))
   const files = existsSync(dir) ? readdirSync(dir) : []
-  // změny stavu se jen přidávají jako nové řádky, platí poslední řádek pro dvojici kampaň a vlastník a firmu
-  const latest = new Map()
-  for (const f of files.filter((x) => /^claims-.+\.csv$/.test(x)).sort()) {
-    for (const r of readCsv(join(dir, f))) latest.set(`${r.kampan}|${r.vlastnik}|${normIco(r.ico) ?? ''}|${normDomain(r.domena) ?? ''}`, r)
-  }
-  const claims = [...latest.values()]
+  // změny stavu se jen přidávají jako nové řádky, platí nejnovější řádek každé firmy v rámci kampaně a vlastníka
+  const rows = files.filter((x) => /^claims-.+\.csv$/.test(x)).sort().flatMap((f) => readCsv(join(dir, f)))
+  const claims = resolveClaims(rows)
   const contacts = files.filter((f) => /^contacts-.+\.csv$/.test(f)).flatMap((f) => readCsv(join(dir, f)))
 
   const suppression = { email: new Set(), domena: new Set(), ico: new Set() }
@@ -139,7 +177,7 @@ function excludedByChemistry(reg, keys, candidate, campaign) {
 const today = (ctx) => (ctx.today ?? new Date().toISOString().slice(0, 10))
 
 function dailyCount(reg, ctx) {
-  return reg.contacts.filter((c) => c.datum === today(ctx) && c.vlastnik === ctx.owner && c.kanal === ctx.channel).length
+  return reg.contacts.filter((c) => c.datum === today(ctx) && c.vlastnik === ctx.owner && c.kanal === ctx.channel && c.kampan === ctx.campaign).length
 }
 
 /**
@@ -191,13 +229,15 @@ export function decide(reg, candidate, ctx) {
   if (['odmitnuto', 'uzavreno'].includes(claim.stav)) return reject(claim.stav, `kampaň u této firmy skončila (stav ${claim.stav})`)
   const channel = ctx.channel
   if (!channel) return reject('bez_kanalu', 'chybí kanál')
-  if (channel === 'email' && !reg.config.mailRegimeB) {
+  // kampaň s vlastním schvalováním mailu (e-shopy) pravidlo o právním základu přeskakuje
+  if (channel === 'email' && !reg.config.mailRegimeB && def.legalBasisCheck !== false) {
     const allowed = reg.config.mailAllowedBases ?? []
     if (!allowed.includes(claim.pravni_zaklad)) {
       return reject('pravni_zaklad', `mail vyžaduje právní základ ${allowed.join(', ')}, firma má "${claim.pravni_zaklad || 'žádný'}"`)
     }
   }
-  const cap = reg.config.dailyCaps?.[channel]
+  // kampaň může mít vlastní limity (prázdný objekt = bez limitu v rejstříku, kampaň si je hlídá sama)
+  const cap = (def.dailyCaps ?? reg.config.dailyCaps)?.[channel]
   if (cap != null && dailyCount(reg, { ...ctx, today: now }) >= cap) {
     return reject('limit', `denní limit ${cap} pro kanál ${channel} u vlastníka ${owner} je vyčerpán`)
   }

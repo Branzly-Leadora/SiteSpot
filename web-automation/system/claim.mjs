@@ -34,6 +34,7 @@ const { cmd, opts } = parseArgs(process.argv.slice(2))
 const dir = opts.registry ? String(opts.registry) : join(here, 'registry')
 const today = opts.today ? String(opts.today) : new Date().toISOString().slice(0, 10)
 const json = Boolean(opts.json)
+const now = () => new Date().toISOString()
 const die = (msg, code = 2) => { console.error(msg); process.exit(code) }
 
 if (!cmd || cmd === 'help') die(readFileSync(new URL(import.meta.url), 'utf8').split('\n').slice(1, 11).join('\n'), cmd ? 0 : 2)
@@ -63,7 +64,7 @@ if (cmd === 'claim') {
       const rec = {
         ico: normIco(row.ico) ?? '', domena: normDomain(row.domena) ?? normDomain(row.email) ?? '', email: normEmail(row.email) ?? '',
         firma: row.firma ?? '', kampan: opts.campaign, vlastnik: opts.owner, stav: 'aktivni',
-        pravni_zaklad: row.pravni_zaklad ?? '', zalozeno: today, posledni_kontakt: '', odstup_do: '',
+        pravni_zaklad: row.pravni_zaklad ?? '', zalozeno: today, posledni_kontakt: '', odstup_do: '', zmeneno: now(),
       }
       seen.push(rec)
       claimed.push({ firma: label, ico: rec.ico, domena: rec.domena })
@@ -94,7 +95,7 @@ if (cmd === 'claim') {
     ((opts.ico && normIco(c.ico) === normIco(opts.ico)) || (opts.domena && normDomain(c.domena) === normDomain(opts.domena))))
   if (!cur) die('Firma není přidělena této kampani a vlastníkovi', 1)
   const odstup = opts.stav === 'uzavreno' ? addDays(today, reg.config.cooldownDays) : opts.stav === 'odmitnuto' ? addDays(today, reg.config.refusedCooldownDays) : ''
-  addClaim(dir, { ...cur, stav: opts.stav, posledni_kontakt: today, odstup_do: odstup })
+  addClaim(dir, { ...cur, stav: opts.stav, posledni_kontakt: today, odstup_do: odstup, zmeneno: now() })
   console.log(`${cur.firma || cur.domena || cur.ico}: stav ${opts.stav}${odstup ? `, odstup do ${odstup}` : ''}`)
 } else if (cmd === 'suppress') {
   if (!['email', 'domena', 'ico'].includes(opts.typ) || !opts.hodnota) die('Chybí --typ email|domena|ico a --hodnota')

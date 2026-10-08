@@ -178,6 +178,7 @@ for (const f of [
   '00-business-model.md', '06-test-100-firem.md', '07-pravidla-outreach.md', 'README.md',
   'system/guard.mjs', 'system/claim.mjs', 'system/config.json', 'system/campaigns.json',
   'system/routines/lead-prep.md', 'system/routines/reply-triage.md', 'system/routines/weekly-report.md',
+  'system/vectors.json', 'system/vectors.test.mjs', 'system/mhruby-zadani.md',
 ]) {
   if (!existsSync(join(dir, f))) fail(f, 'chybí soubor')
 }
@@ -190,6 +191,7 @@ try {
   for (const [key, c] of Object.entries(campaigns)) {
     if (!Array.isArray(c.channels) || !c.channels.length) fail('system/campaigns.json', `${key}: chybí channels`)
     if (!Number.isInteger(c.priority)) fail('system/campaigns.json', `${key}: priority musí být celé číslo`)
+    if ('legalBasisCheck' in c && typeof c.legalBasisCheck !== 'boolean') fail('system/campaigns.json', `${key}: legalBasisCheck musí být boolean`)
     if (key !== 'chemie' && !(c.excludeNace ?? []).includes('20')) fail('system/campaigns.json', `${key}: musí vylučovat obor 20 (chemie)`)
   }
   if (!campaigns.chemie || campaigns.chemie.priority !== Math.min(...Object.values(campaigns).map((c) => c.priority))) {

@@ -213,3 +213,18 @@ test('příkazový řádek: neznámý vlastník se odmítne', () => {
   assert.match(run.stderr, /Neznámý vlastník/)
   s.cleanup()
 })
+
+test('příkazový řádek: po uzavření bez odstupu může firmu převzít jiná kampaň, po odmítnutí ne', () => {
+  const s = sandbox()
+  const input = join(s.root, 'k.csv')
+  writeFileSync(input, 'ico,domena,firma\n12345678,firma.cz,Firma\n')
+  const run = (...args) => spawnSync(process.execPath, [join(here, 'claim.mjs'), ...args, '--registry', s.registry, '--today', '2026-10-10', '--json'], { encoding: 'utf8' })
+  assert.equal(run('claim', '--campaign', 'eshopy', '--owner', 'max', '--in', input).status, 0)
+  assert.equal(JSON.parse(run('claim', '--campaign', 'velkoobchody', '--owner', 'oliver', '--in', input, '--dry-run').stdout).claimed.length, 0)
+  run('state', '--campaign', 'eshopy', '--owner', 'max', '--ico', '12345678', '--stav', 'odmitnuto')
+  const blocked = JSON.parse(run('claim', '--campaign', 'velkoobchody', '--owner', 'oliver', '--in', input, '--dry-run').stdout)
+  assert.equal(blocked.rejected[0].kod, 'cizi_odstup')
+  const later = spawnSync(process.execPath, [join(here, 'claim.mjs'), 'claim', '--campaign', 'velkoobchody', '--owner', 'oliver', '--in', input, '--registry', s.registry, '--today', '2027-06-01', '--dry-run', '--json'], { encoding: 'utf8' })
+  assert.equal(JSON.parse(later.stdout).claimed.length, 1)
+  s.cleanup()
+})
