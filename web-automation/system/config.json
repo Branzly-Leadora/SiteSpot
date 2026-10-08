@@ -1,0 +1,10 @@
+{
+  "paused": false,
+  "owners": ["max", "oliver", "david"],
+  "cooldownDays": 90,
+  "refusedCooldownDays": 180,
+  "maxActiveDays": 45,
+  "dailyCaps": { "email": 20, "linkedin": 20, "post": 10, "phone": 15 },
+  "mailRegimeB": false,
+  "mailAllowedBases": ["souhlas", "existujici_vztah", "zadost_o_email"]
+}

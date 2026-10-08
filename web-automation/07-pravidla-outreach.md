@@ -60,7 +60,7 @@ Pozn.: jestli je potřeba pro každou zprávu i delší text, rozhodne právník
 ## Odhlášení a seznam odhlášených
 
 * Každý mail má odkaz pro odhlášení jedním kliknutím, bez přihlašování a bez vysvětlování.
-* Odpověď "nepište mi" kdekoli (LinkedIn, mail, telefon) se zapisuje do `suppression-list.csv` do 24 hodin, aby se k tomu nemuselo vracet.
+* Odpověď "nepište mi" kdekoli (LinkedIn, mail, telefon) se zapisuje do `system/registry/suppression.csv` do 24 hodin, aby se k tomu nemuselo vracet.
 * Před každým odesláním se kontroluje seznam odhlášených, a to podle mailu i podle domény firmy. Pokud někdo z firmy napíše "nepište", nepíšeme ani jeho kolegům bez zvláštního důvodu.
 * Seznam odhlášených se nemaže, aby se nikdo, kdo odmítl, nedostal omylem zpět do kampaně. Po odhlášení o osobě uchováváme jen to, co k tomu stačí (adresa, doména, datum), a v zásadách zpracování to uvedeme.
 * Žádost o výmaz údajů se vyřizuje do 30 dnů a zapíše se do seznamu odhlášených jen to, co je nutné (adresa).

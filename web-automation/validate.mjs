@@ -28,7 +28,8 @@ const SEQUENCES = [
   { json: 'sequences/zakazkovi-vyrobci.json', md: 'segmenty/s2-zakazkovi-vyrobci.md' },
   { json: 'sequences/servisni-firmy.json', md: 'segmenty/s3-servisni-firmy.md' },
 ]
-// soubory, ve kterých se nesmí objevit pomlčky (texty pro zákazníky i interní dokumenty)
+// soubory, ve kterých se nesmí objevit pomlčky (texty pro zákazníky i strategické dokumenty).
+// Technické dokumenty (14-automatizace.md, system/schema.md) jsou vyňaté: píšou se v nich názvy jako e-shop a data RRRR-MM-DD.
 const NO_DASH_FILES = [
   '01-nabidka.md', '02-email-sekvence.md', '03-audit-sablona.md', '04-linkedin.md', '05-namitky.md',
   '10-analyza-segmentu.md', '11-diferenciace-a-nabidka.md', '12-business-system.md', '13-outreach-system.md',
@@ -164,16 +165,38 @@ for (const f of MESSAGE_FILES) {
 
 // 4) soubory a hlavičky
 const need = {
-  'leads-template.csv': ['firma', 'osloveni', 'zdroj_kontaktu', 'pravni_zaklad', 'pozorovani'],
-  'suppression-list.csv': ['email', 'domena', 'datum_zapisu'],
+  'leads-template.csv': ['firma', 'ico', 'domena', 'nace', 'osloveni', 'zdroj_kontaktu', 'pravni_zaklad', 'pozorovani'],
+  'system/registry/suppression.csv': ['typ', 'hodnota', 'duvod', 'datum'],
+  'system/registry/excluded-chemie.csv': ['ico'],
 }
 for (const [f, cols] of Object.entries(need)) {
   if (!existsSync(join(dir, f))) { fail(f, 'chybí soubor'); continue }
   const header = read(f).split('\n')[0].split(',')
   for (const c of cols) if (!header.includes(c)) fail(f, `chybí sloupec ${c}`)
 }
-for (const f of ['00-business-model.md', '06-test-100-firem.md', '07-pravidla-outreach.md', 'README.md']) {
+for (const f of [
+  '00-business-model.md', '06-test-100-firem.md', '07-pravidla-outreach.md', 'README.md',
+  'system/guard.mjs', 'system/claim.mjs', 'system/config.json', 'system/campaigns.json',
+  'system/routines/lead-prep.md', 'system/routines/reply-triage.md', 'system/routines/weekly-report.md',
+]) {
   if (!existsSync(join(dir, f))) fail(f, 'chybí soubor')
+}
+
+// 5) konfigurace rejstříku: každá kampaň má kanály a prioritu, vlastníci jsou neprázdní
+try {
+  const campaigns = JSON.parse(read('system/campaigns.json')).campaigns
+  const config = JSON.parse(read('system/config.json'))
+  if (!Array.isArray(config.owners) || !config.owners.length) fail('system/config.json', 'owners musí být neprázdný seznam')
+  for (const [key, c] of Object.entries(campaigns)) {
+    if (!Array.isArray(c.channels) || !c.channels.length) fail('system/campaigns.json', `${key}: chybí channels`)
+    if (!Number.isInteger(c.priority)) fail('system/campaigns.json', `${key}: priority musí být celé číslo`)
+    if (key !== 'chemie' && !(c.excludeNace ?? []).includes('20')) fail('system/campaigns.json', `${key}: musí vylučovat obor 20 (chemie)`)
+  }
+  if (!campaigns.chemie || campaigns.chemie.priority !== Math.min(...Object.values(campaigns).map((c) => c.priority))) {
+    fail('system/campaigns.json', 'chemie musí existovat a mít nejvyšší prioritu')
+  }
+} catch (e) {
+  fail('system', `konfigurace rejstříku: ${e.message}`)
 }
 
 if (errors.length) {

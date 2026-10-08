@@ -21,7 +21,8 @@ Všechna čísla v analýze, nabídkách a ekonomice jsou odhady. Co je ze zdroj
 3. `12-business-system.md`: prodejní proces, dodání, týdenní rytmus, metriky, finanční plán, prvních 90 dnů.
 4. `13-outreach-system.md`: kanály, postup na 14 dnů, dopis, telefon, kalkulačka, partneři.
 5. `07-pravidla-outreach.md`: pravidla, která oslovování drží v bezpečných mezích. Platí pro všechno.
-6. Soubory segmentů a `06-test-100-firem.md`.
+6. `14-automatizace.md` a `system/`: jak to poběží v rutinách bez duplicit.
+7. Soubory segmentů a `06-test-100-firem.md`.
 
 ## Obsah
 
@@ -41,7 +42,9 @@ Všechna čísla v analýze, nabídkách a ekonomice jsou odhady. Co je ze zdroj
 | `13-outreach-system.md` | Vícekanálový outreach s nejvyšší konverzí v bezpečných mezích |
 | `segmenty/` | Nabídka, sekvence, LinkedIn, dopis, telefon a námitky po segmentech |
 | `sequences/` | Strojové verze mailových sekvencí |
-| `leads-template.csv`, `suppression-list.csv` | Hlavičky seznamu leadů a odhlášených |
+| `leads-template.csv` | Hlavička souboru kandidátů pro `claim.mjs` |
+| `14-automatizace.md` | Jak to celé automatizovat: rejstřík kampaní, rutiny, nasazení po fázích |
+| `system/` | Rejstřík kampaní (`guard.mjs`, `claim.mjs`), konfigurace, šablony rutin a testy |
 | `validate.mjs` | Kontrola textů |
 
 ## Proměnné v textech
@@ -61,6 +64,7 @@ Všechna čísla v analýze, nabídkách a ekonomice jsou odhady. Co je ze zdroj
 
 ```
 node web-automation/validate.mjs
+node --test web-automation/system/guard.test.mjs
 ```
 
 Kontroluje: žádné pomlčky v textech, max 90 slov a právě jedna otázka v každém mailu, odkaz na Cal.com a patičku, 3 předměty na krok, délku LinkedIn pozvánek, shodu `sequences/*.json` s texty v dokumentech a jen povolené proměnné.

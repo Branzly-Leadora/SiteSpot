@@ -1,0 +1,41 @@
+{
+  "poznamka": "priority: nižší číslo vyhrává při souběhu. owner doplní tým. excludeNace jsou obory CZ NACE, které kampaň nesmí oslovit.",
+  "campaigns": {
+    "chemie": {
+      "label": "Chemie, cold calling na lead gen",
+      "channels": ["phone"],
+      "priority": 1,
+      "owner": null,
+      "respectsChemistryExclusion": false,
+      "excludeNace": []
+    },
+    "velkoobchody": {
+      "label": "Velkoobchody a výrobci se stálými odběrateli (objednávkový portál)",
+      "channels": ["linkedin", "post", "phone", "email"],
+      "priority": 2,
+      "owner": null,
+      "excludeNace": ["20", "46.75"]
+    },
+    "zakazkovi_vyrobci": {
+      "label": "Zakázkoví výrobci a dílny (poptávkový systém)",
+      "channels": ["linkedin", "post", "phone", "email"],
+      "priority": 2,
+      "owner": null,
+      "excludeNace": ["20", "46.75"]
+    },
+    "servisni_firmy": {
+      "label": "Revizní a servisní firmy (servisní autopilot)",
+      "channels": ["linkedin", "post", "phone", "email"],
+      "priority": 2,
+      "owner": null,
+      "excludeNace": ["20", "46.75"]
+    },
+    "eshopy": {
+      "label": "E-shopy (web a automatizace, audity), systém v repu mhruby",
+      "channels": ["email"],
+      "priority": 3,
+      "owner": null,
+      "excludeNace": ["20", "46.75"]
+    }
+  }
+}
