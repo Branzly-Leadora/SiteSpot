@@ -1,0 +1,68 @@
+{
+  "name": "Servisni autopilot: revizni a servisni firmy",
+  "version": 1,
+  "language": "cs",
+  "status": "nenapojeno na odesilac",
+  "variables": {
+    "osloveni": "oslovení v 5. pádě, doplní člověk (např. pane Nováku)",
+    "firma": "název firmy tak, jak ho firma sama používá",
+    "pozorovani": "jedna ověřená věc z veřejných zdrojů firmy, max 15 slov, bez ní se neodesílá",
+    "cal_link": "odkaz na rezervaci termínu v Cal.com",
+    "odesilatel": "jméno odesílatele",
+    "odesilatel_firma": "Leadora Technologies s.r.o. (SiteSpot)",
+    "odesilatel_adresa": "sídlo odesílatele",
+    "zdroj_kontaktu": "adresa stránky, kde je kontakt veřejně uveden",
+    "odhlasit_link": "odkaz pro odhlášení jedním kliknutím"
+  },
+  "steps": [
+    {
+      "id": "email1",
+      "day": 0,
+      "subjects": {
+        "A": "Termíny kontrol u {{firma}} bez Excelu",
+        "B": "Tři minuty o termínech u {{firma}}",
+        "C": "Zákazník, kterému propadl termín"
+      },
+      "body": "Dobrý den, {{osloveni}},\n\n{{pozorovani}}. U firem s pravidelnými kontrolami bývá největší ztráta ta, že zákazníkovi propadne termín a nikdo se neozve, a že protokoly se píšou dvakrát.\n\nUkážu vám za 3 minuty, co byste u sebe zautomatizovali a kolik hodin měsíčně to ušetří. Připravím to ze zveřejněných informací o vaší firmě, bez závazku.\n\nMám vám video poslat? Termín na rozhovor najdete na {{cal_link}}.\n\n{{odesilatel}}"
+    },
+    {
+      "id": "email2",
+      "day": 3,
+      "subjects": {
+        "A": "Příklad: 120 úkonů měsíčně, 90 hodin administrativy",
+        "B": "Kolik stojí domlouvání termínů",
+        "C": "Výpočet hodin pro {{firma}}"
+      },
+      "body": "Dobrý den, {{osloveni}},\n\njednoduchý příklad: 120 kontrol a servisů měsíčně, 45 minut administrativy na jeden, to je 90 hodin. Termíny, protokoly i fakturaci lze z velké části propojit.\n\nKalkulaci udělám s vašimi čísly a ukážu ji ve 3 minutách. Kolik kontrol a servisů měsíčně zhruba provedete? Stačí odpovědět jedním řádkem, nebo vybrat termín na {{cal_link}}.\n\n{{odesilatel}}"
+    },
+    {
+      "id": "email3",
+      "day": 7,
+      "subjects": {
+        "A": "Co se u vás nemusí měnit",
+        "B": "Termíny zákazníkům bez telefonování",
+        "C": "Protokol z mobilu na místě"
+      },
+      "body": "Dobrý den, {{osloveni}},\n\nobava bývá, že technici nebudou nic nového používat. Používat budou jen mobil, který mají, a protokol se vyplní na místě z hotové šablony. Zákazník dostane PDF a vy podklad pro fakturu.\n\nVe 3 minutách ukážu, jak by to u vás vypadalo. Co vás dnes zdrží nejvíc: domlouvání termínů, protokoly, nebo fakturace? Termín je na {{cal_link}}.\n\n{{odesilatel}}"
+    },
+    {
+      "id": "email4",
+      "day": 14,
+      "subjects": {
+        "A": "Poslední zpráva k termínům kontrol",
+        "B": "Uzavírám téma, {{firma}}",
+        "C": "Naposledy k servisu u {{firma}}"
+      },
+      "body": "Dobrý den, {{osloveni}},\n\nvíc vám psát nebudu. Pokud se téma termínů a protokolů teď nehodí, rozumím tomu.\n\nKdyby se to změnilo, ukázka na 3 minuty s odhadem hodin měsíčně pořád platí, termín je na {{cal_link}}. Mám vám za půl roku napsat znovu? Do té doby vám nic posílat nebudu.\n\n{{odesilatel}}"
+    }
+  ],
+  "footer": "Posílám vám to na firemní adresu uvedenou na {{zdroj_kontaktu}}. Pokud další zprávy nechcete, odhlásíte se tady: {{odhlasit_link}}\n{{odesilatel_firma}}, {{odesilatel_adresa}}",
+  "rules": {
+    "max_words_body": 90,
+    "questions_per_email": 1,
+    "tracking_pixels": false,
+    "stop_on_reply": true,
+    "stop_on_unsubscribe": true,
+    "check_suppression_before_send": true
+  }
+}

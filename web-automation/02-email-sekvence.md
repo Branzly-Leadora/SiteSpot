@@ -1,6 +1,6 @@
 # Krok 2: emailová sekvence
 
-Čtyři maily, dny 0, 3, 7 a 14. Strojová verze je v souboru `sequence.json`, tenhle soubor je pro lidské čtení a kontrola `validate.mjs` hlídá, že se oba shodují.
+Čtyři maily, dny 0, 3, 7 a 14. Strojová verze je v souboru `sequences/velkoobchody-vyrobci.json`, tenhle soubor je pro lidské čtení a kontrola `validate.mjs` hlídá, že se oba shodují.
 
 Pravidla pro všechny maily: maximálně 90 slov (včetně doplněného `{{pozorovani}}`), právě jedna otázka, odkaz na Cal.com, žádné pomlčky, žádné sledovací pixely. Sekvence se zastaví při první odpovědi, při odhlášení a po čtvrtém mailu.
 

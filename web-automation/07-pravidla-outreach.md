@@ -55,7 +55,7 @@ Při prvním kontaktu, nejpozději do jednoho měsíce od získání údajů, mu
 * že může namítat a odhlásit se jedním kliknutím,
 * kde jsou zásady zpracování (stránka s ochranou soukromí na sitespot.cz).
 
-Pozn.: jestli je potřeba pro každou zprávu i delší text, rozhodne právník. Minimum je patička z `sequence.json`.
+Pozn.: jestli je potřeba pro každou zprávu i delší text, rozhodne právník. Minimum je patička z `sequences/velkoobchody-vyrobci.json`.
 
 ## Odhlášení a seznam odhlášených
 
