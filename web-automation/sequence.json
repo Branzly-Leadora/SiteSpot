@@ -1,0 +1,68 @@
+{
+  "name": "Objednavkovy portal: velkoobchody a vyrobci",
+  "version": 1,
+  "language": "cs",
+  "status": "nenapojeno na odesilac",
+  "variables": {
+    "osloveni": "oslovení v 5. pádě, doplní člověk (např. pane Nováku)",
+    "firma": "název firmy tak, jak ho firma sama používá",
+    "pozorovani": "jedna ověřená věc z veřejných zdrojů firmy, max 15 slov, bez ní se neodesílá",
+    "cal_link": "odkaz na rezervaci termínu v Cal.com",
+    "odesilatel": "jméno odesílatele",
+    "odesilatel_firma": "Leadora Technologies s.r.o. (SiteSpot)",
+    "odesilatel_adresa": "sídlo odesílatele",
+    "zdroj_kontaktu": "adresa stránky, kde je kontakt veřejně uveden",
+    "odhlasit_link": "odkaz pro odhlášení jedním kliknutím"
+  },
+  "steps": [
+    {
+      "id": "email1",
+      "day": 0,
+      "subjects": {
+        "A": "Objednávky v mailu a Excelu u {{firma}}",
+        "B": "Tři minuty o objednávkách u {{firma}}",
+        "C": "Krátká ukázka: objednávky bez přepisování"
+      },
+      "body": "Dobrý den, {{osloveni}},\n\n{{pozorovani}}. U firem vaší velikosti to často znamená, že někdo několik hodin týdně přepisuje objednávky z mailu a Excelu do systému.\n\nUkážu vám za 3 minuty, co byste u sebe zautomatizovali a kolik hodin měsíčně to ušetří. Připravím to ze zveřejněných informací o vaší firmě, bez závazku.\n\nMám vám video poslat? Pokud je jednodušší si o tom popovídat, termín si vyberete na {{cal_link}}.\n\n{{odesilatel}}"
+    },
+    {
+      "id": "email2",
+      "day": 3,
+      "subjects": {
+        "A": "Příklad: 600 objednávek měsíčně, 60 hodin práce",
+        "B": "Kolik stojí přepisování objednávek",
+        "C": "Výpočet hodin pro {{firma}}"
+      },
+      "body": "Dobrý den, {{osloveni}},\n\nnavazuji na minulý mail. Jednoduchý příklad z velkoobchodu: 600 objednávek měsíčně, 6 minut na zpracování jedné, to je 60 hodin práce. Část z nich může odbavit portál napojený na fakturaci, bez přepisování.\n\nTuhle kalkulaci udělám s vašimi čísly a ukážu ji ve 3 minutách. Kolik objednávek měsíčně zhruba zpracováváte? Stačí odpovědět jedním řádkem, nebo vybrat termín na {{cal_link}}.\n\n{{odesilatel}}"
+    },
+    {
+      "id": "email3",
+      "day": 7,
+      "subjects": {
+        "A": "Co se u vás nemusí měnit",
+        "B": "Portál bez výměny účetního systému",
+        "C": "Odběratel objedná sám, vy jen schválíte"
+      },
+      "body": "Dobrý den, {{osloveni}},\n\nobava bývá, že automatizace znamená vyměnit účetní systém nebo učit odběratele něco nového. Nemusí. Portál se napojí na vaši fakturaci (Pohoda, Money, ABRA Flexi nebo Fakturoid), odběratel vybere zboží a odešle objednávku, vy ji schválíte.\n\nVe 3 minutách ukážu, jak by to u vás vypadalo a kolik hodin měsíčně to ušetří. Co je u vás dnes největší zdržení: mail, Excel, nebo telefon? Termín najdete na {{cal_link}}.\n\n{{odesilatel}}"
+    },
+    {
+      "id": "email4",
+      "day": 14,
+      "subjects": {
+        "A": "Poslední zpráva k objednávkám",
+        "B": "Uzavírám téma, {{firma}}",
+        "C": "Naposledy k objednávkám u {{firma}}"
+      },
+      "body": "Dobrý den, {{osloveni}},\n\nvíc vám psát nebudu. Pokud se téma objednávek teď nehodí, rozumím tomu.\n\nKdyby se to změnilo, ukázka na 3 minuty s odhadem hodin měsíčně pořád platí, termín je na {{cal_link}}. Mám vám za půl roku napsat znovu? Do té doby vám nic posílat nebudu.\n\n{{odesilatel}}"
+    }
+  ],
+  "footer": "Posílám vám to na firemní adresu uvedenou na {{zdroj_kontaktu}}. Pokud další zprávy nechcete, odhlásíte se tady: {{odhlasit_link}}\n{{odesilatel_firma}}, {{odesilatel_adresa}}",
+  "rules": {
+    "max_words_body": 90,
+    "questions_per_email": 1,
+    "tracking_pixels": false,
+    "stop_on_reply": true,
+    "stop_on_unsubscribe": true,
+    "check_suppression_before_send": true
+  }
+}
