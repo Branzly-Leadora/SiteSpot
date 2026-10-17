@@ -1,7 +1,7 @@
 {
   "functions": {
     "api/interni.js": { "includeFiles": "private/**" },
-    "api/b2b.js": { "includeFiles": "private/b2b.html" }
+    "api/b2b.js": { "includeFiles": "private/b2b.html", "maxDuration": 30 }
   },
   "rewrites": [
     { "source": "/rostlinka", "destination": "/rostlinka.html" },

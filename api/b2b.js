@@ -16,7 +16,7 @@ const SEGMENT_RE = /^[a-z0-9][a-z0-9-]{0,39}$/;
 const ICO_RE = /^\d{8}$/;
 const FP_RE = /^[0-9a-f]{64}$/;
 const ACTIONS = ['approve', 'unapprove', 'reject', 'pause'];
-const MAX_BATCH = 30;
+const MAX_BATCH = 20; // zapisuje se po jedne polozce, funkce ma na to 30 s (vercel.json)
 
 const safeEqual = (a, b) => {
   const x = crypto.createHash('sha256').update(String(a)).digest();

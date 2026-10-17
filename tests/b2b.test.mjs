@@ -150,7 +150,7 @@ test('akce: neplatne vstupy se odmitnou drive, nez se pri GitHubu cokoli stane',
     { segment: 'doprava', action: 'approve', ico: '1234', fingerprint: FP },
     { segment: 'doprava', action: 'approve', ico: '12345678', fingerprint: 'kratky' },
     { segment: 'doprava', action: 'approve', items: [] },
-    { segment: 'doprava', action: 'approve', items: Array.from({ length: 31 }, () => ({ ico: '12345678', fingerprint: FP })) },
+    { segment: 'doprava', action: 'approve', items: Array.from({ length: 21 }, () => ({ ico: '12345678', fingerprint: FP })) },
   ];
   for (const b of bad) assert.equal((await writeActions(env, gh.fetchImpl, 'max', b)).status, 400, JSON.stringify(b).slice(0, 80));
   assert.equal((await writeActions(env, gh.fetchImpl, 'max', { segment: 'neexistuje', action: 'pause' })).status, 404);
