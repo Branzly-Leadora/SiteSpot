@@ -1,12 +1,15 @@
 {
   "functions": {
-    "api/interni.js": { "includeFiles": "private/**" }
+    "api/interni.js": { "includeFiles": "private/**" },
+    "api/b2b.js": { "includeFiles": "private/b2b.html" }
   },
   "rewrites": [
     { "source": "/rostlinka", "destination": "/rostlinka.html" },
     { "source": "/revenue-os", "destination": "/revenue-os.html" },
     { "source": "/obchodni-podminky", "destination": "/obchodni-podminky.html" },
-    { "source": "/interni", "destination": "/api/interni" }
+    { "source": "/interni", "destination": "/api/interni" },
+    { "source": "/b2b", "destination": "/api/b2b" },
+    { "source": "/b2b/", "destination": "/api/b2b" }
   ],
   "headers": [
     {

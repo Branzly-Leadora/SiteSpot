@@ -1,0 +1,709 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <title>SiteSpot B2B</title>
+  <link rel="icon" href="/favicon.svg">
+  <link rel="stylesheet" href="/fonts/fonts.css">
+  <style>
+    :root {
+      --bg: #07101d; --panel: #0d1828; --panel-2: #111f33; --panel-3: #172842; --line: rgba(255,255,255,.1); --line-2: rgba(255,255,255,.18);
+      --text: #f3f6fb; --muted: #97a6bc; --blue: #4e8cff; --cyan: #42d9ff; --green: #43d7a3; --yellow: #ffc75a; --red: #ff7b82; --purple: #a88cff;
+      --on-accent: #06101d; --shadow: 0 18px 60px rgba(0,0,0,.28); --radius: 16px;
+      --green-bg: rgba(67,215,163,.12); --yellow-bg: rgba(255,199,90,.12); --red-bg: rgba(255,123,130,.12); --blue-bg: rgba(78,140,255,.14);
+      --mail-bg: #0a1423;
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f3f6fb; --panel: #ffffff; --panel-2: #f6f8fc; --panel-3: #e9eef7; --line: rgba(10,25,50,.12); --line-2: rgba(10,25,50,.22);
+        --text: #0e1a2e; --muted: #57667d; --blue: #1f5fe0; --cyan: #0a86ad; --green: #0b8a64; --yellow: #8a5a00; --red: #c4313c; --purple: #6b4bd0;
+        --on-accent: #ffffff; --shadow: 0 12px 40px rgba(20,40,80,.1);
+        --green-bg: rgba(11,138,100,.1); --yellow-bg: rgba(200,140,0,.13); --red-bg: rgba(196,49,60,.09); --blue-bg: rgba(31,95,224,.09);
+        --mail-bg: #fbfcfe;
+      }
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; min-width: 320px; background: var(--bg); color: var(--text); font: 15px/1.5 Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; -webkit-font-smoothing: antialiased; }
+    button, input, select, textarea { font: inherit; color: inherit; }
+    a { color: var(--cyan); text-underline-offset: 2px; }
+    h1, h2, h3, p { margin: 0; }
+    .shell { width: min(1280px, calc(100% - 32px)); margin: 0 auto; padding: 0 0 80px; }
+
+    /* horní lišta */
+    .top { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+    .top-in { width: min(1280px, calc(100% - 32px)); margin: 0 auto; display: flex; align-items: center; gap: 14px; height: 58px; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: -.02em; color: var(--text); text-decoration: none; }
+    .mark { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 9px; background: linear-gradient(135deg, var(--blue), var(--cyan)); color: var(--on-accent); font-weight: 900; font-size: 14px; }
+    .crumbs { color: var(--muted); display: flex; gap: 8px; align-items: center; min-width: 0; font-size: 14px; }
+    .crumbs a { color: var(--muted); text-decoration: none; } .crumbs a:hover { color: var(--text); }
+    .crumbs b { color: var(--text); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .grow { flex: 1; }
+    .meta { color: var(--muted); font-size: 13px; display: flex; align-items: center; gap: 10px; white-space: nowrap; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 4px var(--green-bg); }
+    .dot.stale { background: var(--yellow); box-shadow: 0 0 0 4px var(--yellow-bg); } .dot.err { background: var(--red); box-shadow: 0 0 0 4px var(--red-bg); }
+
+    /* tlačítka */
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 7px; border: 1px solid var(--line-2); background: var(--panel-2); border-radius: 10px; padding: 8px 14px; cursor: pointer; font-weight: 600; font-size: 14px; line-height: 1.2; min-height: 38px; transition: background .15s, border-color .15s, transform .05s; }
+    .btn:hover { background: var(--panel-3); } .btn:active { transform: translateY(1px); }
+    .btn:focus-visible, .tab:focus-visible, .card-link:focus-visible, summary:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+    .btn.primary { background: var(--green); border-color: transparent; color: var(--on-accent); } .btn.primary:hover { filter: brightness(1.08); }
+    .btn.blue { background: var(--blue); border-color: transparent; color: var(--on-accent); }
+    .btn.danger { color: var(--red); } .btn.ghost { background: transparent; }
+    .btn.sm { padding: 5px 10px; min-height: 30px; font-size: 13px; border-radius: 8px; }
+    .btn[disabled] { opacity: .5; cursor: not-allowed; }
+
+    /* odznaky */
+    .badge { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; border: 1px solid var(--line); background: var(--panel-2); color: var(--muted); white-space: nowrap; }
+    .badge.green { background: var(--green-bg); color: var(--green); border-color: transparent; } .badge.yellow { background: var(--yellow-bg); color: var(--yellow); border-color: transparent; }
+    .badge.red { background: var(--red-bg); color: var(--red); border-color: transparent; } .badge.blue { background: var(--blue-bg); color: var(--blue); border-color: transparent; }
+    .badge.test { background: var(--yellow-bg); color: var(--yellow); border-color: transparent; letter-spacing: .06em; text-transform: uppercase; font-size: 11px; }
+
+    /* přehled */
+    .hero { padding: 34px 0 10px; display: flex; gap: 20px; align-items: flex-end; flex-wrap: wrap; }
+    .hero h1 { font-size: clamp(1.7rem, 3.6vw, 2.5rem); letter-spacing: -.01em; line-height: 1.05; font-family: "Clash Display", Inter, sans-serif; }
+    .hero p { color: var(--muted); margin-top: 8px; max-width: 640px; }
+    .panel { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); }
+    .attn { margin: 22px 0; padding: 6px; }
+    .attn h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); padding: 12px 14px 6px; font-weight: 700; }
+    .attn a.row { display: flex; gap: 12px; align-items: center; padding: 12px 14px; border-radius: 10px; text-decoration: none; color: var(--text); }
+    .attn a.row:hover { background: var(--panel-2); }
+    .attn .ico { width: 28px; height: 28px; border-radius: 8px; display: grid; place-items: center; font-weight: 800; font-size: 14px; flex: none; }
+    .attn .ico.green { background: var(--green-bg); color: var(--green); } .attn .ico.red { background: var(--red-bg); color: var(--red); } .attn .ico.yellow { background: var(--yellow-bg); color: var(--yellow); } .attn .ico.blue { background: var(--blue-bg); color: var(--blue); }
+    .attn .sub { color: var(--muted); font-size: 13px; } .attn .go { margin-left: auto; color: var(--muted); }
+    .attn .empty { padding: 14px; color: var(--muted); display: flex; gap: 10px; align-items: center; }
+    .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 0 0 22px; }
+    .kpis.four { grid-template-columns: repeat(4, 1fr); } @media (max-width: 760px) { .kpis.four { grid-template-columns: repeat(2, 1fr); } }
+    .kpi { padding: 14px 16px; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; }
+    .kpi .n { font-size: 28px; font-weight: 800; letter-spacing: -.03em; line-height: 1.1; font-variant-numeric: tabular-nums; }
+    .kpi .l { color: var(--muted); font-size: 13px; margin-top: 2px; }
+    .kpi.hot { border-color: color-mix(in srgb, var(--green) 55%, transparent); background: linear-gradient(180deg, var(--green-bg), var(--panel)); } .kpi.hot .n { color: var(--green); }
+    .kpi.warn .n { color: var(--red); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; }
+    .card { position: relative; padding: 20px; display: flex; flex-direction: column; gap: 14px; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); transition: border-color .15s, transform .15s, box-shadow .15s; }
+    .card:hover { border-color: var(--line-2); transform: translateY(-2px); box-shadow: var(--shadow); }
+    .card-link { position: absolute; inset: 0; border-radius: var(--radius); z-index: 1; }
+    .card h3 { font-size: 18px; letter-spacing: -.02em; line-height: 1.25; }
+    .card .sub { color: var(--muted); font-size: 13px; }
+    .card .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .stat { background: var(--panel-2); border-radius: 10px; padding: 9px 10px; }
+    .stat .n { font-weight: 800; font-size: 20px; line-height: 1.1; font-variant-numeric: tabular-nums; } .stat .l { color: var(--muted); font-size: 11.5px; margin-top: 1px; }
+    .stat.hot { background: var(--green-bg); } .stat.hot .n { color: var(--green); }
+    .bar { height: 6px; background: var(--panel-3); border-radius: 99px; overflow: hidden; } .bar > i { display: block; height: 100%; background: linear-gradient(90deg, var(--blue), var(--cyan)); border-radius: 99px; }
+    .foot { display: flex; justify-content: space-between; color: var(--muted); font-size: 12.5px; gap: 8px; flex-wrap: wrap; }
+
+    /* detail segmentu */
+    .seg-head { padding: 28px 0 8px; } .seg-head h1 { font-size: clamp(1.5rem, 3vw, 2.1rem); letter-spacing: -.01em; font-family: "Clash Display", Inter, sans-serif; line-height: 1.1; }
+    .seg-head .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 12px; }
+    .notice { margin: 16px 0 0; padding: 12px 16px; border-radius: 12px; font-size: 14px; display: flex; gap: 10px; align-items: flex-start; border: 1px solid var(--line); background: var(--panel); }
+    .notice.red { background: var(--red-bg); border-color: transparent; } .notice.yellow { background: var(--yellow-bg); border-color: transparent; } .notice.blue { background: var(--blue-bg); border-color: transparent; } .notice.green { background: var(--green-bg); border-color: transparent; }
+    .tabs { display: flex; gap: 4px; overflow-x: auto; border-bottom: 1px solid var(--line); margin: 22px 0 20px; scrollbar-width: none; }
+    .tab { appearance: none; border: 0; background: none; color: var(--muted); padding: 11px 14px; cursor: pointer; font-weight: 600; font-size: 14px; border-bottom: 2px solid transparent; white-space: nowrap; display: flex; gap: 8px; align-items: center; margin-bottom: -1px; }
+    .tab:hover { color: var(--text); } .tab[aria-selected="true"] { color: var(--text); border-bottom-color: var(--cyan); }
+    .tab .c { background: var(--panel-3); color: var(--muted); padding: 0 7px; border-radius: 99px; font-size: 12px; min-width: 20px; text-align: center; }
+    .tab .c.hot { background: var(--green); color: var(--on-accent); }
+
+    /* balíčky */
+    .toolbar { display: flex; gap: 10px; align-items: center; margin-bottom: 14px; flex-wrap: wrap; }
+    .toolbar .sp { flex: 1; }
+    .sel-bar { position: sticky; bottom: 14px; z-index: 15; margin-top: 16px; padding: 12px 16px; display: flex; gap: 12px; align-items: center; background: var(--panel-3); border: 1px solid var(--line-2); border-radius: 14px; box-shadow: var(--shadow); }
+    .pkg { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); margin-bottom: 16px; overflow: hidden; }
+    .pkg.sel { border-color: var(--green); }
+    .pkg-head { display: flex; gap: 14px; align-items: flex-start; padding: 16px 18px; flex-wrap: wrap; }
+    .pkg-head .t { flex: 1; min-width: 220px; } .pkg-head h3 { font-size: 17px; letter-spacing: -.015em; line-height: 1.25; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .pkg-head .sub { color: var(--muted); font-size: 13px; margin-top: 3px; }
+    .pkg-head .acts { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .chk { width: 20px; height: 20px; accent-color: var(--green); margin-top: 3px; flex: none; cursor: pointer; }
+    .score { display: inline-grid; place-items: center; min-width: 44px; padding: 3px 9px; border-radius: 9px; font-weight: 800; font-variant-numeric: tabular-nums; background: var(--blue-bg); color: var(--blue); }
+    .score.A { background: var(--green-bg); color: var(--green); }
+    .pkg-body { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 0; border-top: 1px solid var(--line); }
+    @media (max-width: 860px) { .pkg-body { grid-template-columns: 1fr; } .stat-row { grid-template-columns: repeat(2, 1fr); } }
+    .mail-col { padding: 16px 18px; border-right: 1px solid var(--line); min-width: 0; } @media (max-width: 860px) { .mail-col { border-right: 0; border-bottom: 1px solid var(--line); } }
+    .side-col { padding: 16px 18px; display: flex; flex-direction: column; gap: 16px; min-width: 0; background: var(--panel-2); }
+    .lbl { font-size: 11.5px; text-transform: uppercase; letter-spacing: .09em; color: var(--muted); font-weight: 700; margin-bottom: 6px; }
+    .mail { background: var(--mail-bg); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+    .mail-h { padding: 10px 14px; border-bottom: 1px solid var(--line); font-size: 13px; color: var(--muted); display: grid; grid-template-columns: auto 1fr; gap: 2px 10px; }
+    .mail-h b { color: var(--text); font-weight: 600; word-break: break-word; }
+    .mail-b { padding: 14px 16px; white-space: pre-wrap; word-break: break-word; font-size: 14.5px; line-height: 1.6; }
+    .mail-f { padding: 10px 16px 14px; white-space: pre-wrap; word-break: break-word; color: var(--muted); font-size: 12.5px; border-top: 1px dashed var(--line); }
+    .steps { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
+    .step { border: 1px solid var(--line); background: var(--panel-2); color: var(--muted); border-radius: 8px; padding: 4px 10px; cursor: pointer; font-size: 12.5px; font-weight: 600; }
+    .step[aria-pressed="true"] { background: var(--blue-bg); color: var(--blue); border-color: transparent; }
+    .quote { border-left: 3px solid var(--cyan); padding: 6px 12px; background: var(--panel); border-radius: 0 8px 8px 0; font-size: 14px; word-break: break-word; }
+    .kv { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; font-size: 13.5px; } .kv dt { color: var(--muted); } .kv dd { margin: 0; word-break: break-word; }
+    .check { display: flex; gap: 8px; align-items: flex-start; font-size: 13.5px; } .check .m { flex: none; width: 18px; height: 18px; border-radius: 50%; display: grid; place-items: center; font-size: 11px; font-weight: 900; margin-top: 2px; }
+    .check .m.ok { background: var(--green-bg); color: var(--green); } .check .m.bad { background: var(--red-bg); color: var(--red); } .check .m.na { background: var(--panel-3); color: var(--muted); }
+    .warn { color: var(--yellow); font-size: 13px; }
+    details.more > summary { cursor: pointer; color: var(--muted); font-size: 13px; padding: 4px 0; list-style: none; } details.more > summary::-webkit-details-marker { display: none; }
+    details.more > summary::before { content: "▸ "; } details.more[open] > summary::before { content: "▾ "; }
+
+    /* tabulky */
+    .tbl { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .tbl th { text-align: left; color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; padding: 10px 14px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+    .tbl td { padding: 12px 14px; border-bottom: 1px solid var(--line); vertical-align: top; } .tbl tr:last-child td { border-bottom: 0; } .tbl tr.click { cursor: pointer; } .tbl tr.click:hover td { background: var(--panel-2); }
+    .tbl-wrap { overflow-x: auto; }
+    .muted { color: var(--muted); } .nowrap { white-space: nowrap; } .right { text-align: right; }
+    .empty { padding: 44px 20px; text-align: center; color: var(--muted); } .empty b { display: block; color: var(--text); font-size: 16px; margin-bottom: 4px; }
+    .list { padding: 6px; } .li { display: flex; gap: 12px; padding: 10px 12px; border-radius: 10px; align-items: baseline; } .li + .li { border-top: 1px solid var(--line); border-radius: 0; }
+    .li .when { color: var(--muted); font-size: 12.5px; white-space: nowrap; min-width: 92px; font-variant-numeric: tabular-nums; }
+    pre.cmd { margin: 6px 0 0; padding: 10px 12px; background: var(--mail-bg); border: 1px solid var(--line); border-radius: 10px; overflow-x: auto; font: 12.5px/1.5 "JetBrains Mono", ui-monospace, Menlo, monospace; white-space: pre-wrap; word-break: break-all; }
+    .steps-list { counter-reset: s; display: grid; gap: 14px; padding: 0; margin: 0; list-style: none; } .steps-list > li { counter-increment: s; display: grid; grid-template-columns: 28px 1fr; gap: 12px; }
+    .steps-list > li::before { content: counter(s); width: 26px; height: 26px; border-radius: 50%; background: var(--blue-bg); color: var(--blue); font-weight: 800; font-size: 13px; display: grid; place-items: center; }
+    .two { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px; align-items: start; } .pad { padding: 18px 20px; } .pad h3 { font-size: 15px; margin-bottom: 12px; }
+
+    /* okna a oznámení */
+    .overlay { position: fixed; inset: 0; background: rgba(2,8,16,.6); z-index: 50; display: grid; place-items: center; padding: 16px; }
+    .modal { width: min(480px, 100%); background: var(--panel); border: 1px solid var(--line-2); border-radius: 16px; padding: 22px; box-shadow: var(--shadow); }
+    .modal h3 { font-size: 18px; margin-bottom: 8px; } .modal p { color: var(--muted); margin-bottom: 14px; } .modal .acts { display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px; }
+    .modal textarea, .modal select { width: 100%; background: var(--panel-2); border: 1px solid var(--line-2); border-radius: 10px; padding: 9px 12px; margin-top: 8px; } .modal textarea { min-height: 80px; resize: vertical; }
+    #toasts { position: fixed; right: 16px; bottom: 16px; z-index: 60; display: grid; gap: 8px; max-width: min(420px, calc(100% - 32px)); }
+    .toast { padding: 12px 16px; border-radius: 12px; background: var(--panel-3); border: 1px solid var(--line-2); box-shadow: var(--shadow); font-size: 14px; animation: in .2s ease-out; }
+    .toast.ok { border-color: var(--green); } .toast.bad { border-color: var(--red); }
+    @keyframes in { from { opacity: 0; transform: translateY(8px); } }
+    .demo-banner { background: var(--yellow-bg); color: var(--yellow); text-align: center; font-size: 13px; font-weight: 600; padding: 6px 12px; }
+    .setup { max-width: 760px; margin: 40px auto; padding: 26px; } .setup h2 { margin-bottom: 10px; } .setup ol { padding-left: 20px; display: grid; gap: 10px; }
+    @media (max-width: 560px) { .kpi { padding: 10px 12px; } .kpi .n { font-size: 22px; } .kpis { gap: 8px; } .hero { padding-top: 22px; } .pkg-head { padding: 14px; } .mail-col, .side-col { padding: 14px; } .tbl th, .tbl td { padding: 10px; } }
+    @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+  </style>
+</head>
+<body>
+  <div id="banner"></div>
+  <header class="top"><div class="top-in" id="top"></div></header>
+  <main class="shell" id="app"></main>
+  <div id="overlay"></div>
+  <div id="toasts" aria-live="polite"></div>
+
+<script>
+(() => {
+'use strict';
+
+/* ---------- pomocné funkce ---------- */
+const SEG_URL = '/b2b';
+const safeUrl = (u) => (/^(https?:\/\/|#|\?)/i.test(String(u ?? '')) ? String(u) : '#');
+function add(el, kids) { for (const k of kids.flat(Infinity)) { if (k == null || k === false) continue; el.append(k.nodeType ? k : document.createTextNode(String(k))); } }
+function h(tag, attrs, ...kids) {
+  const el = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs ?? {})) {
+    if (v == null || v === false) continue;
+    if (k === 'class') el.className = v;
+    else if (k.startsWith('on')) el.addEventListener(k.slice(2), v);
+    else if (k === 'href') { el.setAttribute('href', safeUrl(v)); if (/^https?:/i.test(v) && !attrs.nolink) { el.target = '_blank'; el.rel = 'noopener noreferrer'; } }
+    else if (k === 'nolink') continue;
+    else el.setAttribute(k, v === true ? '' : String(v));
+  }
+  add(el, kids);
+  return el;
+}
+const TZ = 'Europe/Prague';
+const fmtDT = (iso) => (iso ? new Intl.DateTimeFormat('cs-CZ', { timeZone: TZ, day: 'numeric', month: 'numeric', hour: '2-digit', minute: '2-digit' }).format(new Date(iso)) : '');
+const fmtD = (iso) => (iso ? new Intl.DateTimeFormat('cs-CZ', { timeZone: TZ, weekday: 'short', day: 'numeric', month: 'numeric' }).format(new Date(iso)) : '');
+function ago(iso) {
+  if (!iso) return 'nikdy';
+  const m = Math.round((Date.now() - new Date(iso).getTime()) / 60000);
+  if (m < 1) return 'právě teď';
+  if (m < 60) return `před ${m} min`;
+  const hr = Math.round(m / 60);
+  if (hr < 48) return `před ${hr} h`;
+  return `před ${Math.round(hr / 24)} dny`;
+}
+const num = (n) => new Intl.NumberFormat('cs-CZ').format(n ?? 0);
+const plural = (n, one, few, many) => (n === 1 ? one : n >= 2 && n <= 4 ? few : many);
+const MODE = {
+  'dry-run': { label: 'Zkušební režim', tone: '', text: 'Nic se neodesílá. Zprávy se jen připravují a ukazují se tady.' },
+  'test-send': { label: 'Test na vlastní adresu', tone: 'yellow', text: 'Zprávy chodí jen na testovací adresu majitele, žádná firma nic nedostane.' },
+  live: { label: 'Ostrý provoz', tone: 'green', text: 'Zprávy odcházejí firmám.' },
+};
+const STATUS_LABEL = { draft: 'Rozpracováno', ready: 'Připraveno', uncertain: 'K ověření', sent: 'Osloveno', replied: 'Odpověděli', stopped: 'Odhlášeno', bounced: 'Nedoručeno', closed: 'Uzavřeno', failed: 'Chyba odeslání', rejected: 'Vyřazeno', odlozeno: 'Odloženo' };
+const MAILS = { mail1: 'Mail 1', mail2: 'Mail 2', mail3: 'Mail 3', mail4: 'Mail 4' };
+const copy = async (text) => { try { await navigator.clipboard.writeText(text); toast('Zkopírováno.', 'ok'); } catch { toast('Kopírování se nepovedlo, označte text ručně.', 'bad'); } };
+
+/* ---------- stav ---------- */
+const DEMO = new URLSearchParams(location.search).has('demo');
+const ui = { data: null, error: null, loading: false, sel: new Set(), open: new Set(), step: {}, local: {}, fired: {}, lastOk: null };
+const route = () => {
+  const p = location.hash.replace(/^#\/?/, '').split('/').filter(Boolean);
+  if (p[0] === 's' && p[1]) return { view: 'seg', id: p[1], tab: p[2] || 'schvaleni' };
+  return { view: 'home' };
+};
+const segs = () => (ui.data?.segments ?? []).filter((s) => s.snapshot).sort((a, b) => Number(Boolean(a.snapshot.segment.test)) - Number(Boolean(b.snapshot.segment.test)) || a.id.localeCompare(b.id));
+const segById = (id) => (ui.data?.segments ?? []).find((s) => s.id === id);
+
+// čekající žádosti = ty, které už jsou v repu (pending), plus ty, které jsme právě odeslali a data se ještě nenačetla
+const pendingOf = (s) => [...(s.pending ?? []), ...(ui.local[s.id] ?? [])];
+function effective(seg, p) {
+  let st = p.review;
+  for (const q of pendingOf(seg)) {
+    if (q.ico !== p.ico) continue;
+    if (q.action === 'approve' && st === 'awaiting') st = 'pending-approve';
+    else if (q.action === 'unapprove' && (st === 'approved' || st === 'pending-approve')) st = 'pending-unapprove';
+    else if (q.action === 'reject') st = 'pending-reject';
+  }
+  return st;
+}
+function pkgsOf(seg) {
+  return seg.snapshot.packages.map((p) => ({ ...p, eff: effective(seg, p) }));
+}
+const isPaused = (seg) => seg.pending?.some((q) => q.action === 'pause') || ui.local[seg.id]?.some((q) => q.action === 'pause');
+
+/* ---------- načtení dat ---------- */
+async function load(manual) {
+  if (ui.loading) return;
+  ui.loading = true;
+  try {
+    if (DEMO) { ui.data = ui.data ?? demoData(); ui.error = null; ui.lastOk = Date.now(); }
+    else {
+      const r = await fetch(`${SEG_URL}?op=data`, { headers: { Accept: 'application/json' }, cache: 'no-store' });
+      if (r.status === 401) { location.reload(); return; }
+      const j = await r.json();
+      if (!r.ok) throw new Error(j.error || `Chyba ${r.status}`);
+      ui.data = j; ui.error = null; ui.lastOk = Date.now(); ui.local = {};
+    }
+    if (manual) toast('Přehled obnoven.', 'ok');
+  } catch (e) {
+    ui.error = String(e.message ?? e);
+    if (manual) toast(`Obnovení se nepovedlo: ${ui.error}`, 'bad');
+  } finally { ui.loading = false; render(); }
+}
+
+async function send(segment, action, items, note) {
+  if (DEMO) {
+    ui.local[segment] = [...(ui.local[segment] ?? []), ...(items?.length ? items : [{ ico: null }]).map((i) => ({ action, ico: i.ico }))];
+    return { ok: true, fire: { fired: false } };
+  }
+  const r = await fetch(`${SEG_URL}?op=action`, { method: 'POST', headers: { 'content-type': 'application/json', 'x-b2b': '1' }, body: JSON.stringify({ segment, action, items, note }) });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(j.error || `Chyba ${r.status}`);
+  const okItems = (j.results ?? []).filter((x) => x.ok);
+  if (okItems.length) ui.local[segment] = [...(ui.local[segment] ?? []), ...okItems.map((x) => ({ action, ico: x.ico }))];
+  const failed = (j.results ?? []).filter((x) => !x.ok).length;
+  if (failed) throw new Error(`${failed} z ${(j.results ?? []).length} žádostí se nezapsalo, zkuste to znovu.`);
+  return { ok: true, fire: j.fire ?? {} };
+}
+
+async function doApprove(seg, list) {
+  const items = list.map((p) => ({ ico: p.ico, fingerprint: p.fingerprint }));
+  try {
+    const r = await send(seg.id, 'approve', items);
+    ui.sel.clear();
+    if (r.fire?.fired) { ui.fired[seg.id] = Date.now(); toast(`Schváleno (${items.length}). Rutina odesílání je spuštěná a zprávy zaregistruje během minuty.`, 'ok'); }
+    else toast(`Schváleno (${items.length}). Zaregistruje se při nejbližším běhu rutiny${seg.snapshot.sending ? ' a odešle s odstupem v okně odesílání' : ''}.`, 'ok');
+  } catch (e) { toast(String(e.message ?? e), 'bad'); }
+  render();
+}
+function approve(seg, list) {
+  if (!list.length) return;
+  const live = seg.snapshot.config.mode === 'live';
+  if (list.length === 1 && !live) return doApprove(seg, list);
+  confirmBox({
+    title: list.length === 1 ? `Schválit odeslání pro ${list[0].firma}?` : `Schválit ${list.length} ${plural(list.length, 'zprávu', 'zprávy', 'zpráv')}?`,
+    text: live ? 'Segment je v ostrém provozu. Po zaregistraci rutinou zprávy odejdou firmám, s odstupem několika minut mezi nimi.' : seg.snapshot.config.mode === 'test-send' ? 'Zprávy odejdou jen na testovací adresu majitele.' : 'Segment je ve zkušebním režimu, nic se fyzicky neodešle. Schválení se jen zaeviduje.',
+    ok: 'Schválit', cls: 'primary', onOk: () => doApprove(seg, list),
+  });
+}
+function reject(seg, p) {
+  const sel = h('select', { id: 'rsn' }, ...['Nepatří do oboru', 'Pozorování není pravdivé nebo je zavádějící', 'Špatný nebo neověřený kontakt', 'Text se mi nelíbí, upravit šablonu', 'Jiný důvod'].map((t) => h('option', { value: t }, t)));
+  const note = h('textarea', { placeholder: 'Poznámka (volitelné). Hodí se pro ladění textů a hledání.', maxlength: 250 });
+  modal(h('div', { class: 'modal', role: 'dialog', 'aria-modal': 'true' },
+    h('h3', null, `Vyřadit ${p.firma}?`),
+    h('p', null, 'Firma se už nebude oslovovat. Důvod se uloží.'),
+    sel, note,
+    h('div', { class: 'acts' },
+      h('button', { class: 'btn ghost', onclick: closeModal }, 'Zrušit'),
+      h('button', { class: 'btn danger', onclick: async () => {
+        const text = `${sel.value}${note.value.trim() ? ': ' + note.value.trim() : ''}`;
+        closeModal();
+        try { await send(seg.id, 'reject', [{ ico: p.ico }], text); toast('Vyřazení zaevidováno.', 'ok'); } catch (e) { toast(String(e.message ?? e), 'bad'); }
+        render();
+      } }, 'Vyřadit'))));
+}
+async function unapprove(seg, p) {
+  try { await send(seg.id, 'unapprove', [{ ico: p.ico }]); toast('Schválení vzato zpět.', 'ok'); } catch (e) { toast(String(e.message ?? e), 'bad'); }
+  render();
+}
+function pause(seg) {
+  confirmBox({ title: `Pozastavit segment ${seg.snapshot.segment.label}?`, text: 'Rutina při nejbližším běhu zastaví další odesílání. Obnovit ho může majitel v příkazové řádce.', ok: 'Pozastavit', cls: 'danger', onOk: async () => {
+    try { await send(seg.id, 'pause', []); toast('Pozastavení zaevidováno.', 'ok'); } catch (e) { toast(String(e.message ?? e), 'bad'); }
+    render();
+  } });
+}
+
+/* ---------- okna a oznámení ---------- */
+function modal(node) { const o = $('#overlay'); o.replaceChildren(h('div', { class: 'overlay', onclick: (e) => { if (e.target.classList.contains('overlay')) closeModal(); } }, node)); const f = o.querySelector('button.primary, button.danger, select, textarea'); f?.focus(); }
+function closeModal() { $('#overlay').replaceChildren(); }
+function confirmBox({ title, text, ok, cls, onOk }) {
+  modal(h('div', { class: 'modal', role: 'dialog', 'aria-modal': 'true' }, h('h3', null, title), h('p', null, text),
+    h('div', { class: 'acts' }, h('button', { class: 'btn ghost', onclick: closeModal }, 'Zrušit'), h('button', { class: `btn ${cls ?? ''}`, onclick: () => { closeModal(); onOk(); } }, ok))));
+}
+function toast(text, kind) { const t = h('div', { class: `toast ${kind ?? ''}`, role: 'status' }, text); $('#toasts').append(t); setTimeout(() => t.remove(), 6500); }
+function $(s) { return document.querySelector(s); }
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+/* ---------- drobné komponenty ---------- */
+const badge = (text, tone) => h('span', { class: `badge ${tone ?? ''}` }, text);
+const modeBadge = (seg) => { const m = MODE[seg.snapshot.config.mode] ?? MODE['dry-run']; return badge(m.label, m.tone); };
+function kpi(n, l, cls) { return h('div', { class: `kpi ${cls ?? ''}` }, h('div', { class: 'n' }, num(n)), h('div', { class: 'l' }, l)); }
+function stat(n, l, cls) { return h('div', { class: `stat ${cls ?? ''}` }, h('div', { class: 'n' }, num(n)), h('div', { class: 'l' }, l)); }
+const empty = (title, text) => h('div', { class: 'panel empty' }, h('b', null, title), text);
+
+/* ---------- lišta ---------- */
+function renderTop() {
+  const r = route();
+  const crumbs = [h('a', { href: '#/', nolink: true }, 'B2B')];
+  if (r.view === 'seg') {
+    const s = segById(r.id);
+    crumbs.push('/', h('b', null, s?.snapshot?.segment?.label ?? r.id));
+  }
+  const age = ui.lastOk ? Date.now() - ui.lastOk : null;
+  const dotCls = ui.error ? 'err' : age && age > 180000 ? 'stale' : '';
+  $('#top').replaceChildren(
+    h('a', { class: 'brand', href: '#/', nolink: true }, h('span', { class: 'mark' }, 'S'), 'SiteSpot B2B'),
+    h('nav', { class: 'crumbs', 'aria-label': 'Navigace' }, ...crumbs.map((c, i) => (c === '/' ? h('span', { 'aria-hidden': 'true' }, '›') : c))),
+    h('div', { class: 'grow' }),
+    h('div', { class: 'meta' }, h('span', { class: `dot ${dotCls}`, title: ui.error ?? 'Spojení v pořádku' }), h('span', null, ui.data?.user ? `${ui.data.user}` : ''),
+      h('button', { class: 'btn sm', onclick: () => load(true), disabled: ui.loading }, ui.loading ? 'Načítám' : 'Obnovit')));
+  $('#banner').replaceChildren(...(DEMO ? [h('div', { class: 'demo-banner' }, 'Ukázková data. Nic z toho není skutečná firma a žádná akce nic nezapisuje.')] : []));
+}
+
+/* ---------- přehled ---------- */
+function attention(list) {
+  const items = [];
+  for (const s of list) {
+    const sn = s.snapshot; const c = sn.counts; const nm = sn.segment.label;
+    const pend = pkgsOf(s).filter((p) => p.eff === 'awaiting').length;
+    if (sn.config.paused || isPaused(s)) items.push({ tone: 'red', mark: '!', t: `${nm}: odesílání je pozastavené`, sub: sn.config.pausedReason || 'Čeká na kontrolu majitele.', href: `#/s/${s.id}/prehled` });
+    if (pend > 0) items.push({ tone: 'green', mark: String(pend), t: `${nm}: ${pend} ${plural(pend, 'zpráva čeká', 'zprávy čekají', 'zpráv čeká')} na schválení`, sub: 'Projděte texty a klikněte na Schválit.', href: `#/s/${s.id}/schvaleni` });
+    if (c.byStatus?.replied > 0) items.push({ tone: 'blue', mark: String(c.byStatus.replied), t: `${nm}: ${c.byStatus.replied} ${plural(c.byStatus.replied, 'odpověď', 'odpovědi', 'odpovědí')}`, sub: 'Odpovězte ručně ze své schránky.', href: `#/s/${s.id}/odpovedi` });
+    if (c.uncertain > 0) items.push({ tone: 'yellow', mark: String(c.uncertain), t: `${nm}: ${c.uncertain} ${plural(c.uncertain, 'balíček', 'balíčky', 'balíčků')} k ověření`, sub: 'Druhá kontrola si nebyla jistá, zkontrolujte důvody.', href: `#/s/${s.id}/overit` });
+    if (c.complaints > 0) items.push({ tone: 'red', mark: '!', t: `${nm}: stížnost nebo zmínka o spamu`, sub: 'Odesílání se mělo samo zastavit. Zkontrolujte poštu.', href: `#/s/${s.id}/odpovedi` });
+    if (!sn.config.owner && !sn.segment.test) items.push({ tone: 'yellow', mark: '?', t: `${nm}: segment nemá majitele`, sub: 'Nikdo ho zatím nepřevzal.', href: `#/s/${s.id}/prehled` });
+    const ageH = (Date.now() - new Date(sn.generatedAt).getTime()) / 3600000;
+    if (sn.config.owner && !sn.segment.test && sn.counts.packages > 0 && ageH > 30) items.push({ tone: 'yellow', mark: '⏱', t: `${nm}: poslední běh rutiny ${ago(sn.generatedAt)}`, sub: 'Zkontrolujte, že rutiny běží.', href: `#/s/${s.id}/prehled` });
+  }
+  return items;
+}
+function renderHome() {
+  const list = segs();
+  if (!list.length) return setup();
+  const sum = (f) => list.reduce((a, s) => a + f(s), 0);
+  const real = list.filter((s) => !s.snapshot.segment.test);
+  const scope = real.length ? real : list;
+  const awaiting = scope.reduce((a, s) => a + pkgsOf(s).filter((p) => p.eff === 'awaiting').length, 0);
+  const items = attention(list);
+  const el = h('div', null,
+    h('section', { class: 'hero' }, h('div', null, h('h1', null, 'B2B outreach'), h('p', null, 'Přehled segmentů, zprávy ke schválení a stav odesílání. Co vidíte, to engine opravdu odešle.'))),
+    h('section', { class: 'panel attn', 'aria-label': 'Co čeká na vás' }, h('h2', null, 'Co čeká na vás'),
+      items.length ? items.map((i) => h('a', { class: 'row', href: i.href, nolink: true }, h('span', { class: `ico ${i.tone}` }, i.mark), h('span', null, h('div', null, i.t), h('div', { class: 'sub' }, i.sub)), h('span', { class: 'go' }, '›')))
+        : h('div', { class: 'empty', style: 'padding:14px;text-align:left' }, h('span', { class: 'ico green', style: 'width:28px;height:28px;border-radius:8px;display:grid;place-items:center;font-weight:800;background:var(--green-bg);color:var(--green)' }, '✓'), 'Vše vyřízeno. Nic nečeká na schválení.')),
+    h('section', { class: 'kpis' },
+      kpi(awaiting, 'Ke schválení', awaiting ? 'hot' : ''),
+      kpi(scope.reduce((a, s) => a + s.snapshot.counts.approved, 0), 'Schváleno, čeká na odeslání'),
+      kpi(scope.reduce((a, s) => a + s.snapshot.counts.sentToday, 0), 'Odesláno dnes'),
+      kpi(scope.reduce((a, s) => a + s.snapshot.counts.totalSent, 0), 'Odesláno celkem'),
+      kpi(scope.reduce((a, s) => a + (s.snapshot.counts.byStatus.replied ?? 0), 0), 'Odpovědi'),
+      kpi(scope.reduce((a, s) => a + s.snapshot.counts.stops, 0), 'Odhlášení'),
+      kpi(scope.reduce((a, s) => a + s.snapshot.counts.bounces, 0), 'Nedoručené', scope.reduce((a, s) => a + s.snapshot.counts.bounces, 0) ? 'warn' : '')),
+    h('section', { class: 'grid' }, ...list.map(segCard)));
+  return el;
+}
+function segCard(s) {
+  const sn = s.snapshot; const c = sn.counts;
+  const aw = pkgsOf(s).filter((p) => p.eff === 'awaiting').length;
+  const paused = sn.config.paused || isPaused(s);
+  return h('article', { class: 'card' },
+    h('a', { class: 'card-link', href: `#/s/${s.id}`, nolink: true, 'aria-label': `Otevřít segment ${sn.segment.label}` }),
+    h('div', { class: 'row' }, sn.segment.test ? h('span', { class: 'badge test' }, 'Test') : null, paused ? badge('Pozastaveno', 'red') : modeBadge(s), sn.config.owner ? badge(sn.config.owner) : badge('Bez majitele', 'yellow')),
+    h('div', null, h('h3', null, sn.segment.label), h('div', { class: 'sub' }, MODE[sn.config.mode]?.text ?? '')),
+    h('div', { class: 'stat-row' }, stat(aw, 'Ke schválení', aw ? 'hot' : ''), stat(c.approved, 'Ve frontě'), stat(c.totalSent, 'Odesláno'), stat(c.byStatus.replied ?? 0, 'Odpovědi')),
+    h('div', null, h('div', { class: 'foot' }, h('span', null, `Dnes ${c.sentToday} z ${c.dailyLimit}`), h('span', null, `${num(c.candidates)} kandidátů`)), h('div', { class: 'bar', style: 'margin-top:6px' }, h('i', { style: `width:${Math.min(100, Math.round(100 * c.sentToday / Math.max(1, c.dailyLimit)))}%` }))),
+    h('div', { class: 'foot' }, h('span', null, `Aktualizováno ${ago(sn.generatedAt)}`), h('span', null, `${c.packages} ${plural(c.packages, 'balíček', 'balíčky', 'balíčků')}`)));
+}
+function setup() {
+  const cfg = ui.data && ui.data.configured === false;
+  return h('div', { class: 'panel setup' },
+    h('h2', null, cfg ? 'Dashboard zatím není napojený na data' : ui.error ? 'Data se nepodařilo načíst' : 'Zatím tu nejsou žádné segmenty'),
+    cfg ? h('div', null, h('p', { class: 'muted' }, 'Stránka je zabezpečená a funguje, chybí jen napojení na soukromé repo. Postup je v souboru docs/dashboard.md v soukromém repu:'),
+      h('ol', null, h('li', null, 'Ve Vercelu přidejte proměnnou B2B_REPO (vlastník/název soukromého repa).'), h('li', null, 'Přidejte B2B_GITHUB_TOKEN: fine grained token jen pro to jedno repo, oprávnění Contents: Read and write.'), h('li', null, 'Volitelně B2B_USERS (jména a hesla pro každého z týmu) a B2B_FIRE (okamžité spuštění rutiny po schválení).'), h('li', null, 'Redeploy a obnovte stránku.')),
+      h('p', { style: 'margin-top:16px' }, h('a', { href: '?demo=1', nolink: true }, 'Zobrazit ukázková data'), ' (vymyšlené firmy, nic se nezapisuje).'))
+      : h('p', { class: 'muted' }, ui.error ?? 'Spusťte v soukromém repu příkaz snapshot --all, nebo počkejte na první běh rutiny.'));
+}
+
+/* ---------- segment ---------- */
+const TABS = [['schvaleni', 'Ke schválení'], ['fronta', 'Fronta a sled'], ['odeslano', 'Odesláno'], ['odpovedi', 'Odpovědi'], ['overit', 'K ověření'], ['ukoly', 'Ruční úkoly'], ['aktivita', 'Aktivita'], ['prehled', 'Přehled a nastavení']];
+function renderSeg(id) {
+  const s = segById(id);
+  if (!s) return empty('Segment nenalezen', 'Zkuste se vrátit na přehled.');
+  if (!s.snapshot) return empty('Segment zatím nemá data', 'Přehled se vytvoří při prvním běhu rutiny nebo příkazem snapshot.');
+  const r = route(); const sn = s.snapshot; const c = sn.counts;
+  const all = pkgsOf(s);
+  const counts = {
+    schvaleni: all.filter((p) => p.eff === 'awaiting' || p.eff === 'pending-unapprove').length,
+    fronta: all.filter((p) => ['approved', 'pending-approve'].includes(p.eff) || p.status === 'sent').length,
+    odeslano: sn.sentLog.length,
+    odpovedi: all.filter((p) => ['replied', 'stopped', 'bounced'].includes(p.status)).length,
+    overit: all.filter((p) => ['uncertain', 'draft'].includes(p.status)).length,
+    ukoly: sn.tasks.length,
+  };
+  const paused = sn.config.paused || isPaused(s);
+  const mode = MODE[sn.config.mode] ?? MODE['dry-run'];
+  const status = paused ? h('div', { class: 'notice red' }, h('b', null, 'Pozastaveno.'), ' ', sn.config.pausedReason || 'Odesílání čeká na kontrolu majitele.')
+    : sn.config.mode === 'live' && !sn.gate.go ? h('div', { class: 'notice yellow' }, h('b', null, 'Teď se neodesílá.'), ' ', sn.gate.reasons.join('; '), sn.nextWindow ? ` Nejbližší okno: ${fmtD(sn.nextWindow)}, od ${new Intl.DateTimeFormat('cs-CZ', { timeZone: TZ, hour: '2-digit', minute: '2-digit' }).format(new Date(sn.nextWindow))}.` : '')
+    : h('div', { class: `notice ${mode.tone || 'blue'}` }, h('b', null, `${mode.label}.`), ' ', mode.text, sn.config.mode !== 'dry-run' && !sn.gate.windowOpen ? ` Mimo okno odesílání${sn.nextWindow ? ', další okno ' + fmtD(sn.nextWindow) : ''}.` : '');
+  const tab = TABS.find((t) => t[0] === r.tab) ? r.tab : 'schvaleni';
+  const body = { schvaleni: tabApprove, fronta: tabQueue, odeslano: tabSent, odpovedi: tabReplies, overit: tabCheck, ukoly: tabTasks, aktivita: tabActivity, prehled: tabOverview }[tab](s, all);
+  return h('div', null,
+    h('section', { class: 'seg-head' },
+      h('h1', null, sn.segment.label),
+      sn.segment.popis ? h('p', { class: 'muted', style: 'margin-top:6px;max-width:760px' }, sn.segment.popis) : null,
+      h('div', { class: 'row' }, sn.segment.test ? h('span', { class: 'badge test' }, 'Test') : null, modeBadge(s), badge(sn.config.owner ? `Majitel: ${sn.config.owner}` : 'Bez majitele', sn.config.owner ? '' : 'yellow'), badge(`Aktualizováno ${ago(sn.generatedAt)}`))),
+    status,
+    h('section', { class: 'kpis four', style: 'margin-top:18px' },
+      kpi(counts.schvaleni, 'Ke schválení', counts.schvaleni ? 'hot' : ''), kpi(c.approved, 'Schváleno ve frontě'), kpi(c.sentToday, `Odesláno dnes z ${c.dailyLimit}`), kpi(c.totalSent, 'Odesláno celkem'),
+      kpi(c.byStatus.replied ?? 0, 'Odpovědi'), kpi(c.stops, 'Odhlášení'), kpi(c.bounces, 'Nedoručené', c.bounces ? 'warn' : ''), kpi(c.candidates, 'Kandidátů v seznamu')),
+    h('div', { class: 'tabs', role: 'tablist' }, ...TABS.map(([k, label]) => h('button', { class: 'tab', role: 'tab', 'aria-selected': k === tab ? 'true' : 'false', onclick: () => { location.hash = `#/s/${s.id}/${k}`; } }, label, counts[k] ? h('span', { class: `c ${k === 'schvaleni' ? 'hot' : ''}` }, counts[k]) : null))),
+    body);
+}
+
+/* ---- karta balíčku ---- */
+function mailBox(seg, p, kind) {
+  const m = p.mails.find((x) => x.id === kind) ?? p.mails[0];
+  if (!m) return h('div', { class: 'muted' }, 'Texty nejsou k dispozici.');
+  const cfg = seg.snapshot.config;
+  const test = cfg.mode === 'test-send';
+  const to = test ? `${cfg.testRecipient ?? ''} (test, firmě nic nepůjde)` : (p.kontakt ?? '');
+  return h('div', { class: 'mail' },
+    h('div', { class: 'mail-h' }, h('span', null, 'Od'), h('b', null, `${cfg.senderName ?? ''} <${cfg.senderEmail ?? ''}>`), h('span', null, 'Komu'), h('b', null, to), h('span', null, 'Předmět'), h('b', null, `${test ? '[TEST] ' : ''}${m.subject}`), h('span', null, 'Kdy'), h('b', null, m.day === 0 ? 'Hned po schválení' : `${m.day}. den po prvním mailu, jen když firma neodpoví`)),
+    m.body ? h('div', { class: 'mail-b' }, m.body) : null, m.footer ? h('div', { class: 'mail-f' }, m.footer) : null);
+}
+function sideInfo(seg, p) {
+  const ev = p.evidence;
+  const checks = [
+    ['Citace a mail ověřeny na živých stránkách firmy', ev ? (ev.ok ? (ev.current ? 'ok' : 'bad') : 'bad') : 'na', ev ? (ev.ok ? (ev.current ? `ověřeno ${fmtDT(ev.at)}` : 'ověření je starší než balíček') : (ev.problems ?? []).join('; ')) : 'zatím neověřeno'],
+    ['Druhá kontrola', p.verdict ? (p.verdict.verdict === 'ok' ? 'ok' : 'bad') : 'na', p.verdict ? (p.verdict.verdict === 'ok' ? 'v pořádku' : (p.verdict.reasons ?? []).join('; ')) : 'zatím neproběhla'],
+  ];
+  return h('div', { class: 'side-col' },
+    h('div', null, h('div', { class: 'lbl' }, 'Pozorování o firmě'),
+      p.pozorovani ? h('div', null, h('p', { style: 'font-weight:600;margin-bottom:8px' }, p.pozorovani.text), h('div', { class: 'quote' }, `„${p.pozorovani.citace}“`),
+        h('div', { class: 'muted', style: 'font-size:13px;margin-top:6px' }, h('a', { href: p.pozorovani.url }, 'Otevřít stránku s pozorováním'), ` · ověřeno ${p.pozorovani.datum}`)) : h('span', { class: 'muted' }, 'Bez pozorování.')),
+    h('div', null, h('div', { class: 'lbl' }, 'Kontroly'), h('div', { style: 'display:grid;gap:8px' }, ...checks.map(([t, k, d]) => h('div', { class: 'check' }, h('span', { class: `m ${k}` }, k === 'ok' ? '✓' : k === 'bad' ? '!' : '·'), h('span', null, h('div', null, t), h('div', { class: 'muted', style: 'font-size:12.5px' }, d)))))),
+    h('div', null, h('div', { class: 'lbl' }, 'Firma'), h('dl', { class: 'kv', style: 'margin:0' },
+      h('dt', null, 'IČO'), h('dd', null, p.ico), h('dt', null, 'Web'), h('dd', null, p.web ? h('a', { href: p.web }, p.web.replace(/^https?:\/\//, '').replace(/\/$/, '')) : '–'),
+      h('dt', null, 'Kontakt'), h('dd', null, p.kontakt ?? '–', p.kontaktZdroj ? h('div', { style: 'font-size:12.5px' }, h('a', { href: p.kontaktZdroj }, 'kde je uveden')) : null),
+      h('dt', null, 'Velikost'), h('dd', null, p.velikost ? `${p.velikost} zaměstnanců` : 'neznámá'), h('dt', null, 'Oslovení'), h('dd', null, p.osloveni ?? 'neutrální'),
+      h('dt', null, 'Skóre'), h('dd', null, p.score ? p.score.parts.map((x) => `${x.name.replaceAll('_', ' ')} ${x.pts}`).join(', ') : '–')),
+      p.flags?.freemail ? h('div', { class: 'warn', style: 'margin-top:6px' }, 'Mail je na bezplatné schránce.') : null,
+      p.flags?.email_domena_se_lisi ? h('div', { class: 'warn', style: 'margin-top:6px' }, 'Doména mailu se liší od domény webu.') : null,
+      p.segmentFit ? h('div', { class: 'muted', style: 'font-size:12.5px;margin-top:6px' }, `Proč do segmentu: ${p.segmentFit}`) : null));
+}
+function pkgCard(seg, p, { actions = 'approve', selectable = false, openByDefault = true } = {}) {
+  const key = `${seg.id}:${p.ico}`;
+  const open = openByDefault || ui.open.has(key);
+  const kind = ui.step[key] ?? 'mail1';
+  const head = h('div', { class: 'pkg-head' },
+    selectable ? h('input', { class: 'chk', type: 'checkbox', 'aria-label': `Označit ${p.firma}`, checked: ui.sel.has(p.ico), onchange: (e) => { e.target.checked ? ui.sel.add(p.ico) : ui.sel.delete(p.ico); render(); } }) : null,
+    h('div', { class: 't' }, h('h3', null, p.firma, p.tier ? h('span', { class: `score ${p.tier}` }, p.score?.total ?? '') : null, p.tier ? badge(`Tier ${p.tier}`, p.tier === 'A' ? 'green' : '') : null, statusBadge(p)),
+      h('div', { class: 'sub' }, [p.obec, p.velikost ? `${p.velikost} zaměstnanců` : null, p.ico].filter(Boolean).join(' · '))),
+    h('div', { class: 'acts' },
+      actions === 'approve' ? [h('button', { class: 'btn primary', onclick: () => approve(seg, [p]) }, 'Schválit'), h('button', { class: 'btn danger ghost', onclick: () => reject(seg, p) }, 'Vyřadit')] : null,
+      actions === 'unapprove' ? [h('button', { class: 'btn', onclick: () => unapprove(seg, p) }, 'Vzít schválení zpět')] : null,
+      actions === 'reject' ? [h('button', { class: 'btn danger ghost', onclick: () => reject(seg, p) }, 'Vyřadit')] : null,
+      !openByDefault ? h('button', { class: 'btn ghost sm', 'aria-expanded': String(open), onclick: () => { open ? ui.open.delete(key) : ui.open.add(key); render(); } }, open ? 'Skrýt' : 'Detail') : null));
+  const body = open ? h('div', { class: 'pkg-body' },
+    h('div', { class: 'mail-col' },
+      h('div', { class: 'lbl' }, 'Zpráva, jak odejde'),
+      p.mails.length > 1 ? h('div', { class: 'steps' }, ...p.mails.map((m) => h('button', { class: 'step', 'aria-pressed': String(m.id === kind), onclick: () => { ui.step[key] = m.id; render(); } }, `${MAILS[m.id] ?? m.id}${m.day ? ` · den ${m.day}` : ''}`))) : null,
+      mailBox(seg, p, kind),
+      Object.keys(p.sends ?? {}).length ? h('div', { class: 'muted', style: 'font-size:13px;margin-top:10px' }, Object.entries(p.sends).map(([k, v]) => `${MAILS[k] ?? k}: ${v.state === 'sent' ? 'odesláno ' + fmtDT(v.sentAt) : v.state}`).join(' · ')) : null,
+      p.next ? h('div', { class: 'muted', style: 'font-size:13px;margin-top:6px' }, `Další krok: ${MAILS[p.next.kind]} dne ${fmtD(p.next.dueAt)}, pokud firma neodpoví.`) : null),
+    sideInfo(seg, p)) : null;
+  return h('article', { class: `pkg ${ui.sel.has(p.ico) ? 'sel' : ''}` }, head, body);
+}
+function statusBadge(p) {
+  const e = p.eff ?? p.status;
+  if (e === 'pending-approve') return badge('Schváleno, čeká na zaregistrování', 'green');
+  if (e === 'pending-unapprove') return badge('Vrácení čeká na zpracování', 'yellow');
+  if (e === 'pending-reject') return badge('Vyřazení čeká na zpracování', 'red');
+  if (e === 'approved') return badge('Schváleno', 'green');
+  if (e === 'awaiting') return badge('Čeká na schválení', 'blue');
+  if (e === 'stale') return badge('Změněno po kontrole', 'yellow');
+  return badge(STATUS_LABEL[p.status] ?? p.status, p.status === 'replied' ? 'blue' : ['stopped', 'bounced', 'failed'].includes(p.status) ? 'red' : '');
+}
+
+/* ---- záložky ---- */
+function tabApprove(seg, all) {
+  const list = all.filter((p) => p.eff === 'awaiting' || p.eff === 'pending-unapprove').sort((a, b) => (b.score?.total ?? 0) - (a.score?.total ?? 0));
+  const waiting = all.filter((p) => ['pending-approve', 'pending-reject'].includes(p.eff));
+  const sel = list.filter((p) => ui.sel.has(p.ico));
+  const wrap = h('div', null);
+  if (waiting.length) wrap.append(h('div', { class: 'notice green', style: 'margin:0 0 16px' }, h('span', null, h('b', null, `${waiting.length} ${plural(waiting.length, 'žádost je zapsaná', 'žádosti jsou zapsané', 'žádostí je zapsaných')}`), ' a rutina je zaregistruje při nejbližším běhu. ', ui.fired[seg.id] ? 'Rutina odesílání byla právě spuštěna. ' : '', waiting.map((p) => p.firma).join(', '))));
+  if (!list.length) { wrap.append(empty('Nic ke schválení', seg.snapshot.counts.candidates ? 'Nové balíčky vzniknou při dalším běhu přípravy. Rutina je připraví a zkontroluje, tady je jen odkliknete.' : 'Segment zatím nemá kandidáty.')); return wrap; }
+  wrap.append(h('div', { class: 'toolbar' },
+    h('label', { style: 'display:flex;gap:8px;align-items:center;cursor:pointer' }, h('input', { class: 'chk', style: 'margin:0', type: 'checkbox', checked: sel.length === list.length, onchange: (e) => { list.forEach((p) => (e.target.checked ? ui.sel.add(p.ico) : ui.sel.delete(p.ico))); render(); } }), 'Označit vše'),
+    h('span', { class: 'muted' }, `${list.length} ${plural(list.length, 'zpráva', 'zprávy', 'zpráv')} k projití, seřazeno podle skóre`),
+    h('div', { class: 'sp' })));
+  list.forEach((p) => wrap.append(pkgCard(seg, p, { actions: 'approve', selectable: true })));
+  if (sel.length) wrap.append(h('div', { class: 'sel-bar' }, h('b', null, `Označeno ${sel.length}`), h('div', { class: 'grow', style: 'flex:1' }), h('button', { class: 'btn ghost', onclick: () => { ui.sel.clear(); render(); } }, 'Zrušit výběr'), h('button', { class: 'btn primary', onclick: () => approve(seg, sel) }, `Schválit označené (${sel.length})`)));
+  return wrap;
+}
+function tabQueue(seg, all) {
+  const q = all.filter((p) => ['approved', 'pending-approve'].includes(p.eff));
+  const act = all.filter((p) => p.status === 'sent');
+  const wrap = h('div', null);
+  const cfg = seg.snapshot.config;
+  wrap.append(h('div', { class: 'notice blue', style: 'margin:0 0 16px' }, h('span', null, h('b', null, 'Jak se odesílá. '), `Rutina běží každou hodinu v pracovní dny. Odesílá nejvýš ${cfg.maxSendsPerRun} zpráv za běh a ${cfg.dailySendLimit} za den, s odstupem ${cfg.gapMinMinutes} až ${cfg.gapMaxMinutes} minut mezi zprávami, jen v okně ${cfg.window.startHour} až ${cfg.window.endHour} hodin. Připomenutí jdou ve stejném vlákně 3., 7. a 14. den, pokud firma neodpoví.`)));
+  wrap.append(h('h3', { style: 'margin:0 0 10px;font-size:15px' }, `Schváleno a čeká na odeslání (${q.length})`));
+  wrap.append(q.length ? h('div', { class: 'panel tbl-wrap' }, h('table', { class: 'tbl' }, h('thead', null, h('tr', null, h('th', null, 'Firma'), h('th', null, 'Skóre'), h('th', null, 'Kontakt'), h('th', null, 'Stav'), h('th', null, ''))),
+    h('tbody', null, ...q.sort((a, b) => (b.score?.total ?? 0) - (a.score?.total ?? 0)).map((p) => queueRow(seg, p, p.eff === 'approved' ? 'unapprove' : null))))) : empty('Fronta je prázdná', 'Schválené zprávy se tu objeví a odejdou při nejbližším okně odesílání.'));
+  wrap.append(h('h3', { style: 'margin:26px 0 10px;font-size:15px' }, `Osloveno, běží sled připomenutí (${act.length})`));
+  wrap.append(act.length ? h('div', { class: 'panel tbl-wrap' }, h('table', { class: 'tbl' }, h('thead', null, h('tr', null, h('th', null, 'Firma'), h('th', null, 'První mail'), h('th', null, 'Odesláno'), h('th', null, 'Další krok'), h('th', null, ''))),
+    h('tbody', null, ...act.map((p) => h('tr', { class: 'click', onclick: () => { const k = `${seg.id}:${p.ico}`; ui.open.has(k) ? ui.open.delete(k) : ui.open.add(k); render(); } },
+      h('td', null, h('b', null, p.firma), h('div', { class: 'muted' }, p.obec)), h('td', { class: 'nowrap' }, fmtDT(p.sends?.mail1?.sentAt)), h('td', null, Object.entries(p.sends).filter(([, v]) => v.state === 'sent').map(([k]) => MAILS[k]).join(', ')),
+      h('td', { class: 'nowrap' }, p.next ? `${MAILS[p.next.kind]} · ${fmtD(p.next.dueAt)}` : 'poslední krok odeslán'), h('td', { class: 'right' }, ui.open.has(`${seg.id}:${p.ico}`) ? '▾' : '▸')))))) : empty('Zatím nikdo osloven', 'Po prvním odeslání tu uvidíte stav sledu u každé firmy.'));
+  act.filter((p) => ui.open.has(`${seg.id}:${p.ico}`)).forEach((p) => { wrap.append(h('div', { style: 'margin-top:14px' }, pkgCard(seg, p, { actions: null }))); });
+  return wrap;
+}
+function queueRow(seg, p, act) {
+  return h('tr', null, h('td', null, h('b', null, p.firma), h('div', { class: 'muted' }, [p.obec, p.ico].join(' · '))), h('td', null, h('span', { class: `score ${p.tier ?? ''}` }, p.score?.total ?? '–')), h('td', null, p.kontakt ?? '–'), h('td', null, statusBadge(p)),
+    h('td', { class: 'right' }, act ? h('button', { class: 'btn sm', onclick: () => unapprove(seg, p) }, 'Zpět') : null));
+}
+function tabSent(seg) {
+  const log = seg.snapshot.sentLog;
+  if (!log.length) return empty('Zatím nic neodešlo', seg.snapshot.config.mode === 'dry-run' ? 'Segment je ve zkušebním režimu, nic se fyzicky neodesílá.' : 'Odeslané zprávy se tu objeví s odkazem do vlákna v Gmailu.');
+  return h('div', { class: 'panel tbl-wrap' }, h('table', { class: 'tbl' }, h('thead', null, h('tr', null, h('th', null, 'Kdy'), h('th', null, 'Firma'), h('th', null, 'Krok'), h('th', null, 'Stav'), h('th', null, 'Předmět'), h('th', null, ''))),
+    h('tbody', null, ...log.map((s) => h('tr', null, h('td', { class: 'nowrap' }, fmtDT(s.at)), h('td', null, s.firma ?? s.ico), h('td', { class: 'nowrap' }, MAILS[s.kind] ?? s.kind), h('td', null, badge(s.state === 'sent' ? 'Odesláno' : s.state === 'uncertain' ? 'Nejisté, ověřit' : 'Chyba', s.state === 'sent' ? 'green' : 'red')), h('td', null, s.subject ?? ''),
+      h('td', { class: 'right' }, s.threadId && /^[0-9a-f]+$/i.test(s.threadId) ? h('a', { href: `https://mail.google.com/mail/u/0/#all/${s.threadId}` }, 'Gmail') : null))))));
+}
+function tabReplies(seg, all) {
+  const list = all.filter((p) => ['replied', 'stopped', 'bounced'].includes(p.status));
+  if (!list.length) return empty('Zatím žádné odpovědi', 'Odpovědi, odhlášení (STOP) a nedoručené zprávy engine zpracuje sám při každém běhu a ukáže je tady.');
+  return h('div', null, h('div', { class: 'notice blue', style: 'margin:0 0 16px' }, 'Na odpovědi nereaguje automat. Odpovězte ručně ze své schránky. Odhlášené a nedoručené adresy už engine nikdy neosloví.'),
+    ...list.map((p) => pkgCard(seg, p, { actions: null, openByDefault: false })));
+}
+function tabCheck(seg, all) {
+  const list = all.filter((p) => ['uncertain', 'draft'].includes(p.status));
+  if (!list.length) return empty('Nic k ověření', 'Sem padají balíčky, u kterých si druhá kontrola nebyla jistá. Zatím žádné nejsou.');
+  return h('div', null, h('div', { class: 'notice yellow', style: 'margin:0 0 16px' }, 'Tyto balíčky se neodešlou, dokud je příprava neopraví a druhá kontrola je nepustí. Vyřadit je můžete hned.'),
+    ...list.map((p) => pkgCard(seg, p, { actions: 'reject', openByDefault: false })));
+}
+function tabTasks(seg) {
+  const t = seg.snapshot.tasks;
+  if (!t.length) return empty('Žádné ruční úkoly', 'U nejlepších firem (tier A) tu najdete připravené texty pro LinkedIn, dopis a telefon.');
+  const names = { linkedin_pozvanka: 'LinkedIn pozvánka', linkedin_zprava: 'LinkedIn zpráva po přijetí', linkedin_pripomenuti: 'LinkedIn připomenutí', dopis: 'Dopis', telefon: 'Telefonát' };
+  return h('div', { style: 'display:grid;gap:16px' }, ...t.map((x) => h('article', { class: 'panel pad' }, h('h3', null, x.firma, x.web ? h('span', { style: 'font-weight:400;margin-left:8px;font-size:13px' }, h('a', { href: x.web }, 'web')) : null),
+    h('div', { style: 'display:grid;gap:14px' }, ...Object.entries(x.tasks).map(([k, v]) => h('div', null, h('div', { class: 'lbl', style: 'display:flex;justify-content:space-between;align-items:center' }, names[k] ?? k, h('button', { class: 'btn sm ghost', onclick: () => copy(v) }, 'Kopírovat')), h('div', { class: 'mail' }, h('div', { class: 'mail-b', style: 'font-size:14px' }, v))))))));
+}
+const EV = {
+  package_saved: (e) => `Připraven balíček${e.tier ? `, tier ${e.tier}, skóre ${e.score}` : ''}`, package_rejected: (e) => `Vyřazeno: ${e.reason ?? ''}`, evidence_checked: (e) => (e.ok ? 'Důkazy ověřeny na živých stránkách' : `Ověření důkazů selhalo: ${(e.problems ?? []).join('; ')}`),
+  verdict: (e) => (e.verdict === 'ok' ? 'Druhá kontrola: v pořádku' : `Druhá kontrola: nejisté (${(e.reasons ?? []).join('; ')})`), approved: (e) => `Schváleno (${e.by ?? ''})`, unapproved: (e) => `Schválení vzato zpět (${e.by ?? ''})`,
+  dashboard_action: (e) => (e.ok ? `Žádost z dashboardu zpracována: ${e.action}` : `Žádost z dashboardu odmítnuta: ${e.note ?? ''}`), dry_send: () => 'Zkušební režim: zpráva by odešla, ale nic se neodeslalo', sent: (e) => `Odesláno (${MAILS[e.step] ?? e.step})`,
+  reply: () => 'Přišla odpověď', stop: () => 'Firma se odhlásila (STOP)', bounced: () => 'Zpráva se nedoručila', complaint: () => 'Stížnost nebo zmínka o spamu', auto_pause: (e) => `Odesílání se samo pozastavilo: ${e.reason ?? ''}`,
+  send_failed: (e) => `Odeslání selhalo: ${e.error ?? ''}`, send_uncertain: () => 'Odeslání je nejisté, ověří se ručně', send_released: () => 'Rezervace odeslání uvolněna, nic neodešlo', closed: () => 'Sled uzavřen', send_deviation: () => 'Odeslané se lišilo od plánu, segment pozastaven', inbound: () => 'Přijatá zpráva zpracována',
+};
+function tabActivity(seg) {
+  const a = seg.snapshot.activity.filter((e) => e.kind !== 'inbound');
+  if (!a.length) return empty('Zatím žádná aktivita', 'Tady uvidíte, co rutiny dělají.');
+  return h('div', { class: 'panel list' }, ...a.slice(0, 100).map((e) => h('div', { class: 'li' }, h('span', { class: 'when' }, fmtDT(e.at)), h('span', null, (EV[e.kind] ?? (() => e.kind))(e), e.firma ? h('span', { class: 'muted' }, ` · ${e.firma}`) : null))));
+}
+function tabOverview(seg) {
+  const sn = seg.snapshot; const c = sn.config; const k = sn.counts;
+  const cmd = (text) => h('div', null, h('pre', { class: 'cmd' }, text), h('button', { class: 'btn sm ghost', style: 'margin-top:6px', onclick: () => copy(text) }, 'Kopírovat'));
+  const id = seg.id;
+  return h('div', { class: 'two' },
+    h('div', { style: 'display:grid;gap:16px' },
+      h('section', { class: 'panel pad' }, h('h3', null, 'Připravenost k ostrému provozu'),
+        h('div', { style: 'display:grid;gap:10px' }, ...sn.readiness.map((r) => h('div', { class: 'check' }, h('span', { class: `m ${r.ok === true ? 'ok' : r.ok === false ? 'bad' : 'na'}` }, r.ok === true ? '✓' : r.ok === false ? '!' : '?'), h('span', null, h('div', null, r.text), r.ok !== true ? h('div', { class: 'muted', style: 'font-size:12.5px' }, r.hint) : null))))),
+      h('section', { class: 'panel pad' }, h('h3', null, 'Nastavení segmentu'),
+        h('dl', { class: 'kv', style: 'margin:0' }, h('dt', null, 'Odesílatel'), h('dd', null, `${c.senderName ?? '–'} <${c.senderEmail ?? '–'}>`),
+          c.mode === 'test-send' ? [h('dt', null, 'Testovací adresa'), h('dd', null, c.testRecipient ?? '–')] : null,
+          h('dt', null, 'Schvalování'), h('dd', null, c.requireApproval ? 'Každou zprávu schvaluje člověk' : 'Vypnuto'), h('dt', null, 'Právní rozhodnutí'), h('dd', null, c.legalDecision ? `${c.legalDecision.by}, ${c.legalDecision.date}` : 'zatím nezapsáno'),
+          h('dt', null, 'Okno odesílání'), h('dd', null, `Pracovní dny, ${c.window.startHour} až ${c.window.endHour} hodin`), h('dt', null, 'Limity'), h('dd', null, `${c.dailySendLimit} za den, ${c.maxSendsPerRun} za běh, odstup ${c.gapMinMinutes} až ${c.gapMaxMinutes} min`),
+          h('dt', null, 'Příprava'), h('dd', null, `${c.prepPerRun} firem za běh`), h('dt', null, 'Sekvence'), h('dd', null, c.sequence))),
+      h('section', { class: 'panel pad' }, h('h3', null, 'Čísla'),
+        h('dl', { class: 'kv', style: 'margin:0' }, h('dt', null, 'Kandidátů'), h('dd', null, `${num(k.candidates)} (a ${num(k.candidatesUnknown)} s neznámou velikostí)`), h('dt', null, 'Balíčků celkem'), h('dd', null, num(k.packages)), h('dt', null, 'Vyřazeno'), h('dd', null, num(k.rejected)), h('dt', null, 'Odloženo (bez webu apod.)'), h('dd', null, num(k.deferred)),
+          h('dt', null, 'Firmy bez nalezeného webu'), h('dd', null, `${num(k.noWeb)} (soubor bez-webu.csv v repu)`), h('dt', null, 'Odesláno připomenutí'), h('dd', null, num(k.followupsSent)), h('dt', null, 'Odhlášených adres celkem'), h('dd', null, num(sn.suppressionTotal)),
+          h('dt', null, 'Zdraví za 7 dní'), h('dd', null, `${sn.health.sent} odesláno, ${sn.health.bounces} nedoručeno, ${sn.health.complaints} stížností`)))),
+    h('div', { style: 'display:grid;gap:16px' },
+      h('section', { class: 'panel pad' }, h('h3', null, 'Jak přejít na ostrý provoz'),
+        h('p', { class: 'muted', style: 'margin-bottom:14px;font-size:13.5px' }, 'Režim a právní rozhodnutí z dashboardu měnit nejde, schválně. Dělá to jen majitel segmentu v příkazové řádce v soukromém repu.'),
+        h('ol', { class: 'steps-list' },
+          h('li', null, h('div', null, 'Týden ve zkušebním režimu. Projděte 20 až 30 balíčků a vyřazujte, co se vám nelíbí.')),
+          h('li', null, h('div', null, 'Test na vlastní adresu: ověří celý řetěz včetně odesílání a odhlášení, firmy nic nedostanou.', cmd(`node engine/cli.mjs set-mode --segment ${id} --mode test-send`))),
+          h('li', null, h('div', null, 'Majitel zapíše rozhodnutí o právním základu.', cmd(`node engine/cli.mjs set-legal --segment ${id} --by "Jméno" --text "znění rozhodnutí"`))),
+          h('li', null, h('div', null, 'Přepnutí na ostrý provoz (příkaz selže, dokud něco chybí).', cmd(`node engine/cli.mjs set-mode --segment ${id} --mode live`)))),),
+      h('section', { class: 'panel pad' }, h('h3', null, 'Pojistky, které platí vždy'),
+        h('ul', { style: 'margin:0;padding-left:18px;display:grid;gap:6px;color:var(--muted);font-size:13.5px' },
+          ['Odešle se jen zpráva, kterou jste viděli: schválení platí pro konkrétní text. Při jakékoli změně textu se musí schválit znovu.', 'Okno odesílání, denní limit, odstup mezi zprávami a seznam odhlášených hlídá kód, ne model.', 'Odpověď STOP firmu navždy vyřadí. Stížnost nebo víc nedoručených zprávy samo pozastaví segment.', 'Po odeslání kód porovná skutečně odeslané zprávy s plánem. Při odchylce se segment pozastaví.', 'Dashboard umí jen schválit, vzít schválení zpět, vyřadit firmu a pozastavit segment.'].map((t) => h('li', null, t)))),
+      h('section', { class: 'panel pad' }, h('h3', null, 'Pozastavit segment'),
+        h('p', { class: 'muted', style: 'margin-bottom:12px;font-size:13.5px' }, 'Nouzová brzda. Rutina při nejbližším běhu přestane odesílat.'),
+        h('button', { class: 'btn danger', onclick: () => pause(seg), disabled: c.paused || isPaused(seg) }, c.paused || isPaused(seg) ? 'Už je pozastaveno' : 'Pozastavit odesílání'))));
+}
+
+/* ---------- vykreslení ---------- */
+function render() {
+  const y = window.scrollY;
+  renderTop();
+  const r = route();
+  let view;
+  if (!ui.data) view = ui.error ? setup() : h('div', { class: 'empty' }, 'Načítám…');
+  else if (ui.data.configured === false && !DEMO) view = setup();
+  else view = r.view === 'seg' ? renderSeg(r.id) : renderHome();
+  $('#app').replaceChildren(view);
+  document.title = r.view === 'seg' && segById(r.id)?.snapshot ? `${segById(r.id).snapshot.segment.label} · SiteSpot B2B` : 'SiteSpot B2B';
+  window.scrollTo(0, y);
+}
+window.addEventListener('hashchange', () => { ui.sel.clear(); render(); window.scrollTo(0, 0); });
+
+/* ---------- ukázková data ---------- */
+function demoData() {
+  const mk = (i, over = {}) => {
+    const names = ['Strojírna Novotný', 'Kovovýroba Dvořák', 'Obrábění Svoboda', 'Plasty Horák', 'Svařování Kolář', 'Zámečnictví Procházka', 'Lisovna Marek', 'CNC Beneš'];
+    const towns = ['Brno', 'Ostrava', 'Plzeň', 'Olomouc', 'Zlín', 'Liberec', 'Pardubice', 'Jihlava'];
+    const fp = String(i).repeat(64).slice(0, 64).replace(/[^0-9a-f]/g, 'a');
+    return Object.assign({
+      ico: String(10000000 + i * 111), firma: `${names[i % names.length]} s.r.o.`, obec: towns[i % towns.length], velikost: ['10-19', '20-24', '25-49', '50-99'][i % 4], vznik: '2008-03-01',
+      web: `https://www.ukazka${i}.example`, kontakt: `info@ukazka${i}.example`, kontaktZdroj: `https://www.ukazka${i}.example/kontakt`, osloveni: null, segmentFit: 'Na webu nabízejí obrábění a výrobu na zakázku',
+      pozorovani: { text: 'Na stránce Kontakt je pro poptávky uvedený jen telefon a mail', url: `https://www.ukazka${i}.example/kontakt`, citace: `Zavolejte nám nebo napište na info@ukazka${i}.example`, datum: new Date().toISOString().slice(0, 10) },
+      signaly: {}, flags: { freemail: false, email_domena_se_lisi: false }, score: { total: 82 - i * 3, parts: [{ name: 'velikost', pts: 10 }, { name: 'bez_formulare_poptavky', pts: 20 }, { name: 'doložené_pozorování', pts: 15 }] }, tier: i % 3 === 0 ? 'A' : 'B',
+      status: 'ready', review: 'awaiting', verdict: { verdict: 'ok', reasons: [], at: new Date().toISOString() }, evidence: { ok: true, problems: [], at: new Date().toISOString(), current: true }, approval: null, fingerprint: fp,
+      mails: [
+        { id: 'mail1', day: 0, subject: `Tři minuty o poptávkách u ${names[i % names.length]}`, body: `Dobrý den,\n\nNa stránce Kontakt je pro poptávky uvedený jen telefon a mail. U zakázkových výrobců často platí, že kdo na poptávku odpoví první a srozumitelně, získá zakázku.\n\nUkážu vám za 3 minuty, co byste u sebe zautomatizovali a kolik hodin měsíčně to ušetří. Připravím to ze zveřejněných informací o vaší firmě, bez závazku.\n\nMám vám video poslat?\n\nMax Hrubý`, footer: `Posílám vám to na firemní adresu uvedenou na https://www.ukazka${i}.example/kontakt. Pokud další zprávy nechcete, odpovězte slovem STOP a už se neozvu.\nSiteSpot, Ukázková 1, Praha` },
+        { id: 'mail2', day: 3, subject: 'Kolik stojí příprava jedné nabídky', body: 'Dobrý den,\n\njednoduchý příklad: 80 poptávek měsíčně, 45 minut na jednu nabídku, to je 60 hodin práce.\n\nKolik poptávek měsíčně zhruba dostáváte?\n\nMax Hrubý', footer: 'Pokud další zprávy nechcete, odpovězte slovem STOP.' },
+        { id: 'mail3', day: 7, subject: 'Poptávky bez změny systému', body: 'Dobrý den,\n\n…\n\nMax Hrubý', footer: '' }, { id: 'mail4', day: 14, subject: 'Uzavírám téma', body: 'Dobrý den,\n\nvíc vám psát nebudu.\n\nMax Hrubý', footer: '' }],
+      sends: {}, next: null, rejectReason: null, retryAfter: null, replyAt: null, updatedAt: new Date().toISOString(),
+    }, over);
+  };
+  const now = new Date().toISOString();
+  const base = (id, label, over = {}, pk = []) => ({
+    id, pending: [], ref: `claude/state-${id}`, snapshot: {
+      version: 1, generatedAt: new Date(Date.now() - 25 * 60000).toISOString(), segment: { id, label, popis: 'Ukázkový segment s vymyšlenými firmami.', test: false },
+      config: Object.assign({ owner: 'Max', mode: 'dry-run', paused: false, pausedReason: '', requireApproval: true, legalDecision: null, senderName: 'Max Hrubý', senderEmail: 'max@example.test', testRecipient: null, dailySendLimit: 10, maxSendsPerRun: 6, gapMinMinutes: 2, gapMaxMinutes: 6, prepPerRun: 10, window: { startHour: 8, endHour: 16, weekdaysOnly: true }, sequence: id }, over.config ?? {}),
+      gate: { go: true, reasons: [], windowOpen: true }, nextWindow: null, sending: false,
+      readiness: [{ ok: true, text: 'Segment má majitele' }, { ok: true, text: 'Vyplněný odesílatel (jméno a e-mail)' }, { ok: false, text: 'Zapsané rozhodnutí o právním základu (jen majitel)', hint: 'set-legal' }, { ok: null, text: 'Odesílací doména má SPF, DKIM a DMARC a schránka je zahřátá', hint: 'ověří člověk', manual: true }],
+      counts: Object.assign({ candidates: 2524, candidatesUnknown: 6918, packages: pk.length + 14, byStatus: { replied: 0 }, awaiting: 0, approved: 0, uncertain: 0, sentToday: 0, dailyLimit: 10, totalSent: 0, active: 0, replies: 0, stops: 0, bounces: 0, complaints: 0, rejected: 9, deferred: 5, noWeb: 31, followupsSent: 0, dryRuns: 0 }, over.counts ?? {}),
+      health: { sent: 0, bounces: 0, complaints: 0 }, suppressionTotal: 3, packages: pk, rejected: [], tasks: over.tasks ?? [], activity: [
+        { at: now, kind: 'package_saved', ico: '1', tier: 'A', score: 82, firma: 'Strojírna Novotný s.r.o.' }, { at: now, kind: 'evidence_checked', ok: true, ico: '1', firma: 'Strojírna Novotný s.r.o.' }, { at: now, kind: 'verdict', verdict: 'ok', ico: '1', firma: 'Strojírna Novotný s.r.o.' }], sentLog: over.sentLog ?? [],
+    },
+  });
+  const p1 = [mk(0), mk(1), mk(2), mk(3, { status: 'ready', review: 'approved', approval: { by: 'max (dashboard)', at: now, valid: true } })];
+  const act = mk(4, { status: 'sent', review: 'sent', approval: { by: 'Max', at: now, valid: true }, sends: { mail1: { state: 'sent', sentAt: new Date(Date.now() - 2 * 86400000).toISOString(), threadId: '18f2a1b2c3d4e5f6' } }, next: { kind: 'mail2', dueAt: new Date(Date.now() + 86400000).toISOString() } });
+  const rep = mk(5, { status: 'replied', review: 'replied', replyAt: now, sends: { mail1: { state: 'sent', sentAt: new Date(Date.now() - 3 * 86400000).toISOString(), threadId: '18f2a1b2c3d4e5f7' } } });
+  const unc = mk(6, { status: 'uncertain', review: 'uncertain', verdict: { verdict: 'uncertain', reasons: ['Citace se na stránce nenašla doslova'], at: now }, evidence: { ok: false, problems: ['citace nenalezena na stránce'], at: now, current: true } });
+  return { configured: true, user: 'demo', fire: [], fetchedAt: now, segments: [
+    base('doprava', 'Doprava a spedice', { counts: { awaiting: 4, approved: 1 } }, [...p1, unc]),
+    base('zakazkovi-vyrobci', 'Zakázkoví výrobci a dílny', { config: { mode: 'test-send', testRecipient: 'max@example.test' }, counts: { totalSent: 12, sentToday: 3, replies: 1, byStatus: { replied: 1 }, approved: 2, active: 7 }, sentLog: [{ sendId: 'x:mail1', ico: act.ico, firma: act.firma, kind: 'mail1', state: 'sent', at: act.sends.mail1.sentAt, subject: '[TEST] Tři minuty o poptávkách', threadId: '18f2a1b2c3d4e5f6' }] }, [act, rep]),
+    base('servisni-firmy', 'Revizní a servisní firmy', { config: { owner: '', mode: 'dry-run' } }, []),
+  ] };
+}
+
+/* ---------- start ---------- */
+render();
+load(false);
+setInterval(() => { if (!document.hidden) load(false); }, 45000);
+document.addEventListener('visibilitychange', () => { if (!document.hidden && ui.lastOk && Date.now() - ui.lastOk > 30000) load(false); });
+})();
+</script>
+</body>
+</html>
