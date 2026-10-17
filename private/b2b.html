@@ -224,6 +224,7 @@ const ui = { data: null, error: null, loading: false, sel: new Set(), open: new 
 const route = () => {
   const p = location.hash.replace(/^#\/?/, '').split('/').filter(Boolean);
   if (p[0] === 's' && p[1]) return { view: 'seg', id: p[1], tab: p[2] || 'schvaleni' };
+  if (p[0] === 'bez-webu') return { view: 'noweb' };
   return { view: 'home' };
 };
 const segs = () => (ui.data?.segments ?? []).filter((s) => s.snapshot).sort((a, b) => Number(Boolean(a.snapshot.segment.test)) - Number(Boolean(b.snapshot.segment.test)) || a.id.localeCompare(b.id));
@@ -349,6 +350,7 @@ function renderTop() {
     const s = segById(r.id);
     crumbs.push('/', h('b', null, s?.snapshot?.segment?.label ?? r.id));
   }
+  if (r.view === 'noweb') crumbs.push('/', h('b', null, 'Firmy bez webu'));
   const age = ui.lastOk ? Date.now() - ui.lastOk : null;
   const dotCls = ui.error ? 'err' : age && age > 180000 ? 'stale' : '';
   $('#top').replaceChildren(
@@ -397,7 +399,7 @@ function renderHome() {
       kpi(scope.reduce((a, s) => a + (s.snapshot.counts.byStatus.replied ?? 0), 0), 'Odpovědi'),
       kpi(scope.reduce((a, s) => a + s.snapshot.counts.stops, 0), 'Odhlášení'),
       kpi(scope.reduce((a, s) => a + s.snapshot.counts.bounces, 0), 'Nedoručené', scope.reduce((a, s) => a + s.snapshot.counts.bounces, 0) ? 'warn' : '')),
-    h('section', { class: 'grid' }, ...list.map(segCard)));
+    h('section', { class: 'grid' }, ...list.map(segCard), noWebCard(list)));
   return el;
 }
 function segCard(s) {
@@ -409,8 +411,40 @@ function segCard(s) {
     h('div', { class: 'row' }, sn.segment.test ? h('span', { class: 'badge test' }, 'Test') : null, paused ? badge('Pozastaveno', 'red') : modeBadge(s), sn.config.owner ? badge(sn.config.owner) : badge('Bez majitele', 'yellow')),
     h('div', null, h('h3', null, sn.segment.label), h('div', { class: 'sub' }, MODE[sn.config.mode]?.text ?? '')),
     h('div', { class: 'stat-row' }, stat(aw, 'Ke schválení', aw ? 'hot' : ''), stat(c.approved, 'Ve frontě'), stat(c.totalSent, 'Odesláno'), stat(c.byStatus.replied ?? 0, 'Odpovědi')),
-    h('div', null, h('div', { class: 'foot' }, h('span', null, `Dnes ${c.sentToday} z ${c.dailyLimit}`), h('span', null, `${num(c.candidates)} kandidátů`)), h('div', { class: 'bar', style: 'margin-top:6px' }, h('i', { style: `width:${Math.min(100, Math.round(100 * c.sentToday / Math.max(1, c.dailyLimit)))}%` }))),
+    h('div', null, h('div', { class: 'foot' }, h('span', null, c.dailyLimit == null ? `Dnes odesláno ${c.sentToday}` : `Dnes ${c.sentToday} z ${c.dailyLimit}`), h('span', null, `${num(c.candidates)} kandidátů`)), c.dailyLimit == null ? null : h('div', { class: 'bar', style: 'margin-top:6px' }, h('i', { style: `width:${Math.min(100, Math.round(100 * c.sentToday / Math.max(1, c.dailyLimit)))}%` }))),
     h('div', { class: 'foot' }, h('span', null, `Aktualizováno ${ago(sn.generatedAt)}`), h('span', null, `${c.packages} ${plural(c.packages, 'balíček', 'balíčky', 'balíčků')}`)));
+}
+function noWebCard(list) {
+  const rows = list.filter((s) => !s.snapshot.segment.test).flatMap((s) => s.snapshot.noWeb ?? []);
+  const noWeb = rows.filter((x) => x.typ === 'bez_webu').length;
+  const noMail = rows.filter((x) => x.typ === 'bez_kontaktu').length;
+  return h('article', { class: 'card' },
+    h('a', { class: 'card-link', href: '#/bez-webu', nolink: true, 'aria-label': 'Otevřít firmy bez webu' }),
+    h('div', { class: 'row' }, badge('Ruční projití', 'yellow')),
+    h('div', null, h('h3', null, 'Firmy bez webu'), h('div', { class: 'sub' }, 'Firmy, u kterých se nepodařilo potvrdit web. Projdete je sami a rozhodnete, jestli jim nabídnout web.')),
+    h('div', { class: 'stat-row', style: 'grid-template-columns:repeat(2,1fr)' }, stat(noWeb, 'Chybí web', noWeb ? 'hot' : ''), stat(noMail, 'Web je, chybí mail')),
+    h('div', { class: 'foot' }, h('span', null, 'Napříč všemi segmenty'), h('span', null, `${rows.length} celkem`)));
+}
+const linkQ = (x) => encodeURIComponent(`${x.firma} ${x.obec ?? ''}`.trim());
+function noWebTable(rows, withSeg) {
+  if (!rows.length) return empty('Nic na projití', 'Firmy, u kterých se nepodaří potvrdit web nebo veřejný mail, se objeví tady.');
+  return h('div', null,
+    h('div', { class: 'notice yellow', style: 'margin:0 0 16px' }, h('span', null, h('b', null, 'Projděte ručně. '), '„Chybí web“ znamená jen, že jsme web s IČO firmy nenašli. Firma ho mít může, třeba bez IČO na stránkách. Větu „nemáte web“ nikdy nepoužívejte, dokud si to neověříte. Odkazy v posledním sloupci vám to usnadní.')),
+    h('div', { class: 'panel tbl-wrap' }, h('table', { class: 'tbl' },
+      h('thead', null, h('tr', null, h('th', null, 'Firma'), withSeg ? h('th', null, 'Segment') : null, h('th', null, 'Co chybí'), h('th', null, 'Velikost'), h('th', null, 'Odloženo do'), h('th', null, 'Ověřit'))),
+      h('tbody', null, ...rows.map((x) => h('tr', null,
+        h('td', null, h('b', null, x.firma), h('div', { class: 'muted' }, [x.obec, x.ico].filter(Boolean).join(' · '))),
+        withSeg ? h('td', null, x.seg) : null,
+        h('td', null, x.typ === 'bez_webu' ? badge('Chybí web', 'red') : [badge('Web je, chybí mail', 'blue'), x.web ? h('div', { style: 'margin-top:4px;font-size:13px' }, h('a', { href: x.web }, x.web.replace(/^https?:\/\//, '').replace(/\/$/, ''))) : null]),
+        h('td', { class: 'nowrap' }, x.velikost ? `${x.velikost}` : '–'), h('td', { class: 'nowrap' }, x.retryAfter ?? '–'),
+        h('td', { class: 'nowrap' }, h('a', { href: `https://www.google.com/search?q=${linkQ(x)}` }, 'Google'), ' · ', h('a', { href: `https://mapy.cz/zakladni?q=${linkQ(x)}` }, 'Mapy'), ' · ', h('a', { href: `https://www.firmy.cz/?q=${x.ico}` }, 'Firmy.cz'), ' · ', h('a', { href: `https://ares.gov.cz/ekonomicke-subjekty?ico=${x.ico}` }, 'ARES'))))))));
+}
+function renderNoWeb() {
+  const list = segs();
+  const rows = list.flatMap((s) => (s.snapshot.noWeb ?? []).map((x) => ({ ...x, seg: s.snapshot.segment.label + (s.snapshot.segment.test ? ' (test)' : '') })));
+  return h('div', null,
+    h('section', { class: 'seg-head' }, h('h1', null, 'Firmy bez webu'), h('p', { class: 'muted', style: 'margin-top:6px;max-width:760px' }, 'Seznam napříč segmenty. Tyhle firmy rutina přeskočila, protože se u nich nepodařilo potvrdit web nebo veřejný mail. Projděte je ručně a rozhodněte, jestli jim nabídnout web.')),
+    h('div', { style: 'margin-top:20px' }, noWebTable(rows, true)));
 }
 function setup() {
   const cfg = ui.data && ui.data.configured === false;
@@ -423,7 +457,7 @@ function setup() {
 }
 
 /* ---------- segment ---------- */
-const TABS = [['schvaleni', 'Ke schválení'], ['fronta', 'Fronta a sled'], ['odeslano', 'Odesláno'], ['odpovedi', 'Odpovědi'], ['overit', 'K ověření'], ['ukoly', 'Ruční úkoly'], ['aktivita', 'Aktivita'], ['prehled', 'Přehled a nastavení']];
+const TABS = [['schvaleni', 'Ke schválení'], ['fronta', 'Fronta a sled'], ['odeslano', 'Odesláno'], ['odpovedi', 'Odpovědi'], ['overit', 'K ověření'], ['ukoly', 'Ruční úkoly'], ['bezwebu', 'Bez webu'], ['aktivita', 'Aktivita'], ['prehled', 'Přehled a nastavení']];
 function renderSeg(id) {
   const s = segById(id);
   if (!s) return empty('Segment nenalezen', 'Zkuste se vrátit na přehled.');
@@ -437,6 +471,7 @@ function renderSeg(id) {
     odpovedi: all.filter((p) => ['replied', 'stopped', 'bounced'].includes(p.status)).length,
     overit: all.filter((p) => ['uncertain', 'draft'].includes(p.status)).length,
     ukoly: sn.tasks.length,
+    bezwebu: (sn.noWeb ?? []).length,
   };
   const paused = sn.config.paused || isPaused(s);
   const mode = MODE[sn.config.mode] ?? MODE['dry-run'];
@@ -444,7 +479,7 @@ function renderSeg(id) {
     : sn.config.mode === 'live' && !sn.gate.go ? h('div', { class: 'notice yellow' }, h('b', null, 'Teď se neodesílá.'), ' ', sn.gate.reasons.join('; '), sn.nextWindow ? ` Nejbližší okno: ${fmtD(sn.nextWindow)}, od ${new Intl.DateTimeFormat('cs-CZ', { timeZone: TZ, hour: '2-digit', minute: '2-digit' }).format(new Date(sn.nextWindow))}.` : '')
     : h('div', { class: `notice ${mode.tone || 'blue'}` }, h('b', null, `${mode.label}.`), ' ', mode.text, sn.config.mode !== 'dry-run' && !sn.gate.windowOpen ? ` Mimo okno odesílání${sn.nextWindow ? ', další okno ' + fmtD(sn.nextWindow) : ''}.` : '');
   const tab = TABS.find((t) => t[0] === r.tab) ? r.tab : 'schvaleni';
-  const body = { schvaleni: tabApprove, fronta: tabQueue, odeslano: tabSent, odpovedi: tabReplies, overit: tabCheck, ukoly: tabTasks, aktivita: tabActivity, prehled: tabOverview }[tab](s, all);
+  const body = { schvaleni: tabApprove, fronta: tabQueue, odeslano: tabSent, odpovedi: tabReplies, overit: tabCheck, ukoly: tabTasks, bezwebu: (seg) => noWebTable((seg.snapshot.noWeb ?? []).map((x) => ({ ...x, seg: seg.snapshot.segment.label })), false), aktivita: tabActivity, prehled: tabOverview }[tab](s, all);
   return h('div', null,
     h('section', { class: 'seg-head' },
       h('h1', null, sn.segment.label),
@@ -452,7 +487,7 @@ function renderSeg(id) {
       h('div', { class: 'row' }, sn.segment.test ? h('span', { class: 'badge test' }, 'Test') : null, modeBadge(s), badge(sn.config.owner ? `Majitel: ${sn.config.owner}` : 'Bez majitele', sn.config.owner ? '' : 'yellow'), badge(`Aktualizováno ${ago(sn.generatedAt)}`))),
     status,
     h('section', { class: 'kpis four', style: 'margin-top:18px' },
-      kpi(counts.schvaleni, 'Ke schválení', counts.schvaleni ? 'hot' : ''), kpi(c.approved, 'Schváleno ve frontě'), kpi(c.sentToday, `Odesláno dnes z ${c.dailyLimit}`), kpi(c.totalSent, 'Odesláno celkem'),
+      kpi(counts.schvaleni, 'Ke schválení', counts.schvaleni ? 'hot' : ''), kpi(c.approved, 'Schváleno ve frontě'), kpi(c.sentToday, c.dailyLimit == null ? 'Odesláno dnes' : `Odesláno dnes z ${c.dailyLimit}`), kpi(c.totalSent, 'Odesláno celkem'),
       kpi(c.byStatus.replied ?? 0, 'Odpovědi'), kpi(c.stops, 'Odhlášení'), kpi(c.bounces, 'Nedoručené', c.bounces ? 'warn' : ''), kpi(c.candidates, 'Kandidátů v seznamu')),
     h('div', { class: 'tabs', role: 'tablist' }, ...TABS.map(([k, label]) => h('button', { class: 'tab', role: 'tab', 'aria-selected': k === tab ? 'true' : 'false', onclick: () => { location.hash = `#/s/${s.id}/${k}`; } }, label, counts[k] ? h('span', { class: `c ${k === 'schvaleni' ? 'hot' : ''}` }, counts[k]) : null))),
     body);
@@ -544,7 +579,7 @@ function tabQueue(seg, all) {
   const act = all.filter((p) => p.status === 'sent');
   const wrap = h('div', null);
   const cfg = seg.snapshot.config;
-  wrap.append(h('div', { class: 'notice blue', style: 'margin:0 0 16px' }, h('span', null, h('b', null, 'Jak se odesílá. '), `Rutina běží každou hodinu v pracovní dny. Odesílá nejvýš ${cfg.maxSendsPerRun} zpráv za běh a ${cfg.dailySendLimit} za den, s odstupem ${cfg.gapMinMinutes} až ${cfg.gapMaxMinutes} minut mezi zprávami, jen v okně ${cfg.window.startHour} až ${cfg.window.endHour} hodin. Připomenutí jdou ve stejném vlákně 3., 7. a 14. den, pokud firma neodpoví.`)));
+  wrap.append(h('div', { class: 'notice blue', style: 'margin:0 0 16px' }, h('span', null, h('b', null, 'Jak se odesílá. '), `Rutina běží každou hodinu v pracovní dny. Odesílá s odstupem ${cfg.gapMinMinutes} až ${cfg.gapMaxMinutes} minut mezi zprávami (nejvýš ${cfg.maxSendsPerRun} za jeden běh), ${cfg.dailySendLimit == null ? 'bez denního limitu' : `nejvýš ${cfg.dailySendLimit} za den`}, jen v okně ${cfg.window.startHour} až ${cfg.window.endHour} hodin. Připomenutí jdou ve stejném vlákně 3., 7. a 14. den, pokud firma neodpoví.`)));
   wrap.append(h('h3', { style: 'margin:0 0 10px;font-size:15px' }, `Schváleno a čeká na odeslání (${q.length})`));
   wrap.append(q.length ? h('div', { class: 'panel tbl-wrap' }, h('table', { class: 'tbl' }, h('thead', null, h('tr', null, h('th', null, 'Firma'), h('th', null, 'Skóre'), h('th', null, 'Kontakt'), h('th', null, 'Stav'), h('th', null, ''))),
     h('tbody', null, ...q.sort((a, b) => (b.score?.total ?? 0) - (a.score?.total ?? 0)).map((p) => queueRow(seg, p, p.eff === 'approved' ? 'unapprove' : null))))) : empty('Fronta je prázdná', 'Schválené zprávy se tu objeví a odejdou při nejbližším okně odesílání.'));
@@ -610,7 +645,7 @@ function tabOverview(seg) {
         h('dl', { class: 'kv', style: 'margin:0' }, h('dt', null, 'Odesílatel'), h('dd', null, `${c.senderName ?? '–'} <${c.senderEmail ?? '–'}>`),
           c.mode === 'test-send' ? [h('dt', null, 'Testovací adresa'), h('dd', null, c.testRecipient ?? '–')] : null,
           h('dt', null, 'Schvalování'), h('dd', null, c.requireApproval ? 'Každou zprávu schvaluje člověk' : 'Vypnuto'), h('dt', null, 'Právní rozhodnutí'), h('dd', null, c.legalDecision ? `${c.legalDecision.by}, ${c.legalDecision.date}` : 'zatím nezapsáno'),
-          h('dt', null, 'Okno odesílání'), h('dd', null, `Pracovní dny, ${c.window.startHour} až ${c.window.endHour} hodin`), h('dt', null, 'Limity'), h('dd', null, `${c.dailySendLimit} za den, ${c.maxSendsPerRun} za běh, odstup ${c.gapMinMinutes} až ${c.gapMaxMinutes} min`),
+          h('dt', null, 'Okno odesílání'), h('dd', null, `Pracovní dny, ${c.window.startHour} až ${c.window.endHour} hodin`), h('dt', null, 'Limity'), h('dd', null, `${c.dailySendLimit == null ? 'bez denního limitu' : c.dailySendLimit + ' za den'}, nejvýš ${c.maxSendsPerRun} za běh, odstup ${c.gapMinMinutes} až ${c.gapMaxMinutes} min`),
           h('dt', null, 'Příprava'), h('dd', null, `${c.prepPerRun} firem za běh`), h('dt', null, 'Sekvence'), h('dd', null, c.sequence))),
       h('section', { class: 'panel pad' }, h('h3', null, 'Čísla'),
         h('dl', { class: 'kv', style: 'margin:0' }, h('dt', null, 'Kandidátů'), h('dd', null, `${num(k.candidates)} (a ${num(k.candidatesUnknown)} s neznámou velikostí)`), h('dt', null, 'Balíčků celkem'), h('dd', null, num(k.packages)), h('dt', null, 'Vyřazeno'), h('dd', null, num(k.rejected)), h('dt', null, 'Odloženo (bez webu apod.)'), h('dd', null, num(k.deferred)),
@@ -626,7 +661,7 @@ function tabOverview(seg) {
           h('li', null, h('div', null, 'Přepnutí na ostrý provoz (příkaz selže, dokud něco chybí).', cmd(`node engine/cli.mjs set-mode --segment ${id} --mode live`)))),),
       h('section', { class: 'panel pad' }, h('h3', null, 'Pojistky, které platí vždy'),
         h('ul', { style: 'margin:0;padding-left:18px;display:grid;gap:6px;color:var(--muted);font-size:13.5px' },
-          ['Odešle se jen zpráva, kterou jste viděli: schválení platí pro konkrétní text. Při jakékoli změně textu se musí schválit znovu.', 'Okno odesílání, denní limit, odstup mezi zprávami a seznam odhlášených hlídá kód, ne model.', 'Odpověď STOP firmu navždy vyřadí. Stížnost nebo víc nedoručených zprávy samo pozastaví segment.', 'Po odeslání kód porovná skutečně odeslané zprávy s plánem. Při odchylce se segment pozastaví.', 'Dashboard umí jen schválit, vzít schválení zpět, vyřadit firmu a pozastavit segment.'].map((t) => h('li', null, t)))),
+          ['Odešle se jen zpráva, kterou jste viděli: schválení platí pro konkrétní text. Při jakékoli změně textu se musí schválit znovu.', 'Okno odesílání, odstup mezi zprávami, případný limit a seznam odhlášených hlídá kód, ne model.', 'Odpověď STOP firmu navždy vyřadí. Stížnost nebo víc nedoručených zprávy samo pozastaví segment.', 'Po odeslání kód porovná skutečně odeslané zprávy s plánem. Při odchylce se segment pozastaví.', 'Dashboard umí jen schválit, vzít schválení zpět, vyřadit firmu a pozastavit segment.'].map((t) => h('li', null, t)))),
       h('section', { class: 'panel pad' }, h('h3', null, 'Pozastavit segment'),
         h('p', { class: 'muted', style: 'margin-bottom:12px;font-size:13.5px' }, 'Nouzová brzda. Rutina při nejbližším běhu přestane odesílat.'),
         h('button', { class: 'btn danger', onclick: () => pause(seg), disabled: c.paused || isPaused(seg) }, c.paused || isPaused(seg) ? 'Už je pozastaveno' : 'Pozastavit odesílání'))));
@@ -640,7 +675,7 @@ function render() {
   let view;
   if (!ui.data) view = ui.error ? setup() : h('div', { class: 'empty' }, 'Načítám…');
   else if (ui.data.configured === false) view = setup();
-  else view = r.view === 'seg' ? renderSeg(r.id) : renderHome();
+  else view = r.view === 'seg' ? renderSeg(r.id) : r.view === 'noweb' ? renderNoWeb() : renderHome();
   $('#app').replaceChildren(view);
   document.title = r.view === 'seg' && segById(r.id)?.snapshot ? `${segById(r.id).snapshot.segment.label} · SiteSpot B2B` : 'SiteSpot B2B';
   window.scrollTo(0, y);
