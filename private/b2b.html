@@ -164,14 +164,12 @@
     .toast { padding: 12px 16px; border-radius: 12px; background: var(--panel-3); border: 1px solid var(--line-2); box-shadow: var(--shadow); font-size: 14px; animation: in .2s ease-out; }
     .toast.ok { border-color: var(--green); } .toast.bad { border-color: var(--red); }
     @keyframes in { from { opacity: 0; transform: translateY(8px); } }
-    .demo-banner { background: var(--yellow-bg); color: var(--yellow); text-align: center; font-size: 13px; font-weight: 600; padding: 6px 12px; }
     .setup { max-width: 760px; margin: 40px auto; padding: 26px; } .setup h2 { margin-bottom: 10px; } .setup ol { padding-left: 20px; display: grid; gap: 10px; }
     @media (max-width: 560px) { .kpi { padding: 10px 12px; } .kpi .n { font-size: 22px; } .kpis { gap: 8px; } .hero { padding-top: 22px; } .pkg-head { padding: 14px; } .mail-col, .side-col { padding: 14px; } .tbl th, .tbl td { padding: 10px; } }
     @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
   </style>
 </head>
 <body>
-  <div id="banner"></div>
   <header class="top"><div class="top-in" id="top"></div></header>
   <main class="shell" id="app"></main>
   <div id="overlay"></div>
@@ -222,7 +220,6 @@ const MAILS = { mail1: 'Mail 1', mail2: 'Mail 2', mail3: 'Mail 3', mail4: 'Mail 
 const copy = async (text) => { try { await navigator.clipboard.writeText(text); toast('Zkopírováno.', 'ok'); } catch { toast('Kopírování se nepovedlo, označte text ručně.', 'bad'); } };
 
 /* ---------- stav ---------- */
-const DEMO = new URLSearchParams(location.search).has('demo');
 const ui = { data: null, error: null, loading: false, sel: new Set(), open: new Set(), step: {}, local: {}, fired: {}, lastOk: null };
 const route = () => {
   const p = location.hash.replace(/^#\/?/, '').split('/').filter(Boolean);
@@ -254,8 +251,7 @@ async function load(manual) {
   if (ui.loading) return;
   ui.loading = true;
   try {
-    if (DEMO) { ui.data = ui.data ?? demoData(); ui.error = null; ui.lastOk = Date.now(); }
-    else {
+    {
       const r = await fetch(`${SEG_URL}?op=data`, { headers: { Accept: 'application/json' }, cache: 'no-store' });
       if (r.status === 401) { location.reload(); return; }
       const j = await r.json();
@@ -270,10 +266,6 @@ async function load(manual) {
 }
 
 async function send(segment, action, items, note) {
-  if (DEMO) {
-    ui.local[segment] = [...(ui.local[segment] ?? []), ...(items?.length ? items : [{ ico: null }]).map((i) => ({ action, ico: i.ico }))];
-    return { ok: true, fire: { fired: false } };
-  }
   const r = await fetch(`${SEG_URL}?op=action`, { method: 'POST', headers: { 'content-type': 'application/json', 'x-b2b': '1' }, body: JSON.stringify({ segment, action, items, note }) });
   const j = await r.json().catch(() => ({}));
   if (!r.ok) throw new Error(j.error || `Chyba ${r.status}`);
@@ -365,7 +357,6 @@ function renderTop() {
     h('div', { class: 'grow' }),
     h('div', { class: 'meta' }, h('span', { class: `dot ${dotCls}`, title: ui.error ?? 'Spojení v pořádku' }), h('span', null, ui.data?.user ? `${ui.data.user}` : ''),
       h('button', { class: 'btn sm', onclick: () => load(true), disabled: ui.loading }, ui.loading ? 'Načítám' : 'Obnovit')));
-  $('#banner').replaceChildren(...(DEMO ? [h('div', { class: 'demo-banner' }, 'Ukázková data. Nic z toho není skutečná firma a žádná akce nic nezapisuje.')] : []));
 }
 
 /* ---------- přehled ---------- */
@@ -427,7 +418,7 @@ function setup() {
     h('h2', null, cfg ? 'Dashboard zatím není napojený na data' : ui.error ? 'Data se nepodařilo načíst' : 'Zatím tu nejsou žádné segmenty'),
     cfg ? h('div', null, h('p', { class: 'muted' }, 'Stránka je zabezpečená a funguje, chybí jen napojení na soukromé repo. Postup je v souboru docs/dashboard.md v soukromém repu:'),
       h('ol', null, h('li', null, 'Ve Vercelu přidejte proměnnou B2B_REPO (vlastník/název soukromého repa).'), h('li', null, 'Přidejte B2B_GITHUB_TOKEN: fine grained token jen pro to jedno repo, oprávnění Contents: Read and write.'), h('li', null, 'Volitelně B2B_USERS (jména a hesla pro každého z týmu) a B2B_FIRE (okamžité spuštění rutiny po schválení).'), h('li', null, 'Redeploy a obnovte stránku.')),
-      h('p', { style: 'margin-top:16px' }, h('a', { href: '?demo=1', nolink: true }, 'Zobrazit ukázková data'), ' (vymyšlené firmy, nic se nezapisuje).'))
+      h('p', { class: 'muted', style: 'margin-top:16px' }, 'Dokud není napojení hotové, stránka záměrně neukazuje žádná data.'))
       : h('p', { class: 'muted' }, ui.error ?? 'Spusťte v soukromém repu příkaz snapshot --all, nebo počkejte na první běh rutiny.'));
 }
 
@@ -648,55 +639,13 @@ function render() {
   const r = route();
   let view;
   if (!ui.data) view = ui.error ? setup() : h('div', { class: 'empty' }, 'Načítám…');
-  else if (ui.data.configured === false && !DEMO) view = setup();
+  else if (ui.data.configured === false) view = setup();
   else view = r.view === 'seg' ? renderSeg(r.id) : renderHome();
   $('#app').replaceChildren(view);
   document.title = r.view === 'seg' && segById(r.id)?.snapshot ? `${segById(r.id).snapshot.segment.label} · SiteSpot B2B` : 'SiteSpot B2B';
   window.scrollTo(0, y);
 }
 window.addEventListener('hashchange', () => { ui.sel.clear(); render(); window.scrollTo(0, 0); });
-
-/* ---------- ukázková data ---------- */
-function demoData() {
-  const mk = (i, over = {}) => {
-    const names = ['Strojírna Novotný', 'Kovovýroba Dvořák', 'Obrábění Svoboda', 'Plasty Horák', 'Svařování Kolář', 'Zámečnictví Procházka', 'Lisovna Marek', 'CNC Beneš'];
-    const towns = ['Brno', 'Ostrava', 'Plzeň', 'Olomouc', 'Zlín', 'Liberec', 'Pardubice', 'Jihlava'];
-    const fp = String(i).repeat(64).slice(0, 64).replace(/[^0-9a-f]/g, 'a');
-    return Object.assign({
-      ico: String(10000000 + i * 111), firma: `${names[i % names.length]} s.r.o.`, obec: towns[i % towns.length], velikost: ['10-19', '20-24', '25-49', '50-99'][i % 4], vznik: '2008-03-01',
-      web: `https://www.ukazka${i}.example`, kontakt: `info@ukazka${i}.example`, kontaktZdroj: `https://www.ukazka${i}.example/kontakt`, osloveni: null, segmentFit: 'Na webu nabízejí obrábění a výrobu na zakázku',
-      pozorovani: { text: 'Na stránce Kontakt je pro poptávky uvedený jen telefon a mail', url: `https://www.ukazka${i}.example/kontakt`, citace: `Zavolejte nám nebo napište na info@ukazka${i}.example`, datum: new Date().toISOString().slice(0, 10) },
-      signaly: {}, flags: { freemail: false, email_domena_se_lisi: false }, score: { total: 82 - i * 3, parts: [{ name: 'velikost', pts: 10 }, { name: 'bez_formulare_poptavky', pts: 20 }, { name: 'doložené_pozorování', pts: 15 }] }, tier: i % 3 === 0 ? 'A' : 'B',
-      status: 'ready', review: 'awaiting', verdict: { verdict: 'ok', reasons: [], at: new Date().toISOString() }, evidence: { ok: true, problems: [], at: new Date().toISOString(), current: true }, approval: null, fingerprint: fp,
-      mails: [
-        { id: 'mail1', day: 0, subject: `Tři minuty o poptávkách u ${names[i % names.length]}`, body: `Dobrý den,\n\nNa stránce Kontakt je pro poptávky uvedený jen telefon a mail. U zakázkových výrobců často platí, že kdo na poptávku odpoví první a srozumitelně, získá zakázku.\n\nUkážu vám za 3 minuty, co byste u sebe zautomatizovali a kolik hodin měsíčně to ušetří. Připravím to ze zveřejněných informací o vaší firmě, bez závazku.\n\nMám vám video poslat?\n\nMax Hrubý`, footer: `Posílám vám to na firemní adresu uvedenou na https://www.ukazka${i}.example/kontakt. Pokud další zprávy nechcete, odpovězte slovem STOP a už se neozvu.\nSiteSpot, Ukázková 1, Praha` },
-        { id: 'mail2', day: 3, subject: 'Kolik stojí příprava jedné nabídky', body: 'Dobrý den,\n\njednoduchý příklad: 80 poptávek měsíčně, 45 minut na jednu nabídku, to je 60 hodin práce.\n\nKolik poptávek měsíčně zhruba dostáváte?\n\nMax Hrubý', footer: 'Pokud další zprávy nechcete, odpovězte slovem STOP.' },
-        { id: 'mail3', day: 7, subject: 'Poptávky bez změny systému', body: 'Dobrý den,\n\n…\n\nMax Hrubý', footer: '' }, { id: 'mail4', day: 14, subject: 'Uzavírám téma', body: 'Dobrý den,\n\nvíc vám psát nebudu.\n\nMax Hrubý', footer: '' }],
-      sends: {}, next: null, rejectReason: null, retryAfter: null, replyAt: null, updatedAt: new Date().toISOString(),
-    }, over);
-  };
-  const now = new Date().toISOString();
-  const base = (id, label, over = {}, pk = []) => ({
-    id, pending: [], ref: `claude/state-${id}`, snapshot: {
-      version: 1, generatedAt: new Date(Date.now() - 25 * 60000).toISOString(), segment: { id, label, popis: 'Ukázkový segment s vymyšlenými firmami.', test: false },
-      config: Object.assign({ owner: 'Max', mode: 'dry-run', paused: false, pausedReason: '', requireApproval: true, legalDecision: null, senderName: 'Max Hrubý', senderEmail: 'max@example.test', testRecipient: null, dailySendLimit: 10, maxSendsPerRun: 6, gapMinMinutes: 2, gapMaxMinutes: 6, prepPerRun: 10, window: { startHour: 8, endHour: 16, weekdaysOnly: true }, sequence: id }, over.config ?? {}),
-      gate: { go: true, reasons: [], windowOpen: true }, nextWindow: null, sending: false,
-      readiness: [{ ok: true, text: 'Segment má majitele' }, { ok: true, text: 'Vyplněný odesílatel (jméno a e-mail)' }, { ok: false, text: 'Zapsané rozhodnutí o právním základu (jen majitel)', hint: 'set-legal' }, { ok: null, text: 'Odesílací doména má SPF, DKIM a DMARC a schránka je zahřátá', hint: 'ověří člověk', manual: true }],
-      counts: Object.assign({ candidates: 2524, candidatesUnknown: 6918, packages: pk.length + 14, byStatus: { replied: 0 }, awaiting: 0, approved: 0, uncertain: 0, sentToday: 0, dailyLimit: 10, totalSent: 0, active: 0, replies: 0, stops: 0, bounces: 0, complaints: 0, rejected: 9, deferred: 5, noWeb: 31, followupsSent: 0, dryRuns: 0 }, over.counts ?? {}),
-      health: { sent: 0, bounces: 0, complaints: 0 }, suppressionTotal: 3, packages: pk, rejected: [], tasks: over.tasks ?? [], activity: [
-        { at: now, kind: 'package_saved', ico: '1', tier: 'A', score: 82, firma: 'Strojírna Novotný s.r.o.' }, { at: now, kind: 'evidence_checked', ok: true, ico: '1', firma: 'Strojírna Novotný s.r.o.' }, { at: now, kind: 'verdict', verdict: 'ok', ico: '1', firma: 'Strojírna Novotný s.r.o.' }], sentLog: over.sentLog ?? [],
-    },
-  });
-  const p1 = [mk(0), mk(1), mk(2), mk(3, { status: 'ready', review: 'approved', approval: { by: 'max (dashboard)', at: now, valid: true } })];
-  const act = mk(4, { status: 'sent', review: 'sent', approval: { by: 'Max', at: now, valid: true }, sends: { mail1: { state: 'sent', sentAt: new Date(Date.now() - 2 * 86400000).toISOString(), threadId: '18f2a1b2c3d4e5f6' } }, next: { kind: 'mail2', dueAt: new Date(Date.now() + 86400000).toISOString() } });
-  const rep = mk(5, { status: 'replied', review: 'replied', replyAt: now, sends: { mail1: { state: 'sent', sentAt: new Date(Date.now() - 3 * 86400000).toISOString(), threadId: '18f2a1b2c3d4e5f7' } } });
-  const unc = mk(6, { status: 'uncertain', review: 'uncertain', verdict: { verdict: 'uncertain', reasons: ['Citace se na stránce nenašla doslova'], at: now }, evidence: { ok: false, problems: ['citace nenalezena na stránce'], at: now, current: true } });
-  return { configured: true, user: 'demo', fire: [], fetchedAt: now, segments: [
-    base('doprava', 'Doprava a spedice', { counts: { awaiting: 4, approved: 1 } }, [...p1, unc]),
-    base('zakazkovi-vyrobci', 'Zakázkoví výrobci a dílny', { config: { mode: 'test-send', testRecipient: 'max@example.test' }, counts: { totalSent: 12, sentToday: 3, replies: 1, byStatus: { replied: 1 }, approved: 2, active: 7 }, sentLog: [{ sendId: 'x:mail1', ico: act.ico, firma: act.firma, kind: 'mail1', state: 'sent', at: act.sends.mail1.sentAt, subject: '[TEST] Tři minuty o poptávkách', threadId: '18f2a1b2c3d4e5f6' }] }, [act, rep]),
-    base('servisni-firmy', 'Revizní a servisní firmy', { config: { owner: '', mode: 'dry-run' } }, []),
-  ] };
-}
 
 /* ---------- start ---------- */
 render();
