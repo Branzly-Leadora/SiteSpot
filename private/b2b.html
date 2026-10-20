@@ -224,7 +224,7 @@ const MAILS = { mail1: 'Mail 1', mail2: 'Mail 2', mail3: 'Mail 3', mail4: 'Mail 
 const copy = async (text) => { try { await navigator.clipboard.writeText(text); toast('Zkopírováno.', 'ok'); } catch { toast('Kopírování se nepovedlo, označte text ručně.', 'bad'); } };
 
 /* ---------- stav ---------- */
-const ui = { eshopy: null, eshopyError: null, data: null, error: null, loading: false, sel: new Set(), open: new Set(), step: {}, local: {}, fired: {}, lastOk: null };
+const ui = { eshopy: null, eshopyError: null, esSel: new Set(), esLocal: new Map(), data: null, error: null, loading: false, sel: new Set(), open: new Set(), step: {}, local: {}, fired: {}, lastOk: null };
 const route = () => {
   const p = location.hash.replace(/^#\/?/, '').split('/').filter(Boolean);
   if (p[0] === 's' && p[1]) return { view: 'seg', id: p[1], tab: p[2] || 'schvaleni' };
@@ -278,7 +278,7 @@ async function loadEshopy() {
     if (r.status === 401) return;
     const j = await r.json();
     if (!r.ok) throw new Error(j.error || `Chyba ${r.status}`);
-    ui.eshopy = j; ui.eshopyError = null;
+    ui.eshopy = j; ui.eshopyError = null; ui.esLocal = new Map();
   } catch (e) {
     ui.eshopyError = String(e.message ?? e);
   }
@@ -552,7 +552,7 @@ function pkgCard(seg, p, { actions = 'approve', selectable = false, openByDefaul
   const kind = ui.step[key] ?? 'mail1';
   const head = h('div', { class: 'pkg-head' },
     selectable ? h('input', { class: 'chk', type: 'checkbox', 'aria-label': `Označit ${p.firma}`, checked: ui.sel.has(p.ico), onchange: (e) => { e.target.checked ? ui.sel.add(p.ico) : ui.sel.delete(p.ico); render(); } }) : null,
-    h('div', { class: 't' }, h('h3', null, p.firma, p.tier ? h('span', { class: `score ${p.tier}` }, p.score?.total ?? '') : null, p.tier ? badge(`Tier ${p.tier}`, p.tier === 'A' ? 'green' : '') : null, statusBadge(p)),
+    h('div', { class: 't' }, h('h3', null, p.firma, ui.eshopy?.overlap?.[`${seg.id}:${p.ico}`] ? h('span', { 'data-new': true }, badge(`Je i v e-shopech: ${ui.eshopy.overlap[`${seg.id}:${p.ico}`]}`, 'yellow')) : null, p.tier ? h('span', { class: `score ${p.tier}` }, p.score?.total ?? '') : null, p.tier ? badge(`Tier ${p.tier}`, p.tier === 'A' ? 'green' : '') : null, statusBadge(p)),
       h('div', { class: 'sub' }, [p.obec, p.velikost ? `${p.velikost} zaměstnanců` : null, p.ico].filter(Boolean).join(' · '))),
     h('div', { class: 'acts' },
       actions === 'approve' ? [h('button', { class: 'btn primary', onclick: () => approve(seg, [p]) }, 'Schválit'), h('button', { class: 'btn danger ghost', onclick: () => reject(seg, p) }, 'Vyřadit')] : null,
@@ -735,6 +735,68 @@ function eshopyCard(v) {
     h('div', { class: 'foot' }, h('span', null, `${c.withIco} z ${c.total} s IČO`), h('span', null, `${num(c.total)} leadů`)));
 }
 
+async function esPost(action, items, reason) {
+  const r = await fetch(`${SEG_URL}?op=eshopy-action`, { method: 'POST', headers: { 'content-type': 'application/json', 'x-b2b': '1' }, body: JSON.stringify({ action, items, reason }) });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(j.error || `Chyba ${r.status}`);
+  return j.results ?? [];
+}
+function esReport(results, okText) {
+  const ok = results.filter((x) => x.ok);
+  const bad = results.filter((x) => !x.ok);
+  for (const x of ok) if (x.id) ui.esLocal.set(x.id, okText);
+  if (ok.length) toast(`${okText} (${ok.length}).`, 'ok');
+  for (const x of bad.slice(0, 3)) toast(x.error || `Chyba ${x.status}`, 'bad');
+  if (bad.length > 3) toast(`A dalších ${bad.length - 3} se nepovedlo.`, 'bad');
+}
+function esApprove(list) {
+  const v = ui.eshopy;
+  if (!list.length) return;
+  const window = v.settings?.startHour != null ? `${v.settings.startHour} až ${v.settings.endHour} hodin` : 'okně odesílání';
+  confirmBox({
+    title: list.length === 1 ? `Schválit a odeslat: ${list[0].shopName}?` : `Schválit a odeslat ${list.length} ${plural(list.length, 'e-shop', 'e-shopy', 'e-shopů')}?`,
+    text: `Stejné jako tlačítko na /eshopy. E-mail odešle ${v.autopilot && !v.autopilot.paused && v.autopilot.mode === 'live' ? 'autopilot' : 'autopilot nebo notebook'} podle pravidel e-shopů: v okně (${window}), do denního limitu, s rozestupy a po nové kontrole živého webu. Firmy, které už oslovil B2B segment, se neschválí.`,
+    ok: 'Schválit a odeslat', cls: 'primary',
+    onOk: async () => {
+      try { esReport(await esPost('approve_send', list.map((l) => ({ id: l.id, revision: l.revision, packageHash: l.packageHash }))), 'Schváleno, čeká na odeslání'); ui.esSel.clear(); }
+      catch (e) { toast(String(e.message ?? e), 'bad'); }
+      render(); setTimeout(loadEshopy, 1500);
+    },
+  });
+}
+function esReject(l) {
+  const sel = h('select', null, ...['Nepatří do cílovky', 'Pozorování nesedí', 'Špatný kontakt', 'Už s nimi jednáme', 'Jiný důvod'].map((t) => h('option', { value: t }, t)));
+  const note = h('textarea', { placeholder: 'Poznámka (volitelné).', maxlength: 150 });
+  modal(h('div', { class: 'modal', role: 'dialog', 'aria-modal': 'true' },
+    h('h3', null, `Trvale vyřadit ${l.shopName}?`),
+    h('p', null, 'Na tuhle adresu už e-shop pipeline nikdy nic nepošle (stejné jako odhlášení). Vrátit to jde jen ručně v e-shop nástrojích.'),
+    sel, note,
+    h('div', { class: 'acts' }, h('button', { class: 'btn ghost', onclick: closeModal }, 'Zrušit'),
+      h('button', { class: 'btn danger', onclick: async () => {
+        const reason = `${sel.value}${note.value.trim() ? ': ' + note.value.trim() : ''}`;
+        closeModal();
+        try { esReport(await esPost('suppress', [{ id: l.id, revision: l.revision }], reason), 'Vyřazení zařazeno'); } catch (e) { toast(String(e.message ?? e), 'bad'); }
+        render(); setTimeout(loadEshopy, 1500);
+      } }, 'Trvale vyřadit'))));
+}
+function esPause() {
+  confirmBox({ title: 'Pozastavit odesílání e-shopů?', text: 'Stejné jako „Požádat o vypnutí rozesílání“ na /eshopy. Čekající schválená odeslání se zruší. Zapnout znovu se dá jen v e-shop nástrojích.', ok: 'Pozastavit', cls: 'danger', onOk: async () => {
+    try { const r = await esPost('pause'); if (r[0]?.ok) toast('Pozastavení zařazeno.', 'ok'); else toast(r[0]?.error || 'Nepovedlo se.', 'bad'); } catch (e) { toast(String(e.message ?? e), 'bad'); }
+    setTimeout(loadEshopy, 1500);
+  } });
+}
+const ES_REQ = { approve_send: 'Schválení a odeslání', send_one: 'Odeslání', approve: 'Schválení', suppress: 'Vyřazení' };
+function esRequestBadge(l) {
+  const local = ui.esLocal.get(l.id);
+  if (local) return badge(local, 'green');
+  const r = l.request;
+  if (!r) return null;
+  if (r.state === 'pending') return badge(r.action === 'suppress' ? 'Vyřazení čeká' : 'Schváleno, čeká na odeslání', r.action === 'suppress' ? 'red' : 'green');
+  if (r.state === 'rejected') return badge(`${ES_REQ[r.action] ?? 'Požadavek'} se nepovedlo`, 'red');
+  return null;
+}
+const esBlocked = (l) => Boolean(l.conflict) || ui.esLocal.has(l.id) || l.request?.state === 'pending';
+
 function esMail(l) {
   return h('div', { class: 'mail' },
     h('div', { class: 'mail-h' }, h('span', null, 'Komu'), h('b', null, l.email ?? '–'), h('span', null, 'Předmět'), h('b', null, l.subject ?? '–'), h('span', null, 'Oslovení'), h('b', null, l.greeting ?? 'neutrální')),
@@ -759,11 +821,19 @@ function esDetail(v, l) {
 function esCard(v, l, open) {
   const k = `eshopy:${l.id}`;
   const isOpen = open || ui.open.has(k);
-  return h('article', { class: 'pkg' },
+  const actable = v.canAct && l.bucket === 'review';
+  const blocked = esBlocked(l) || !v.b2bChecked;
+  return h('article', { class: `pkg ${ui.esSel.has(l.id) ? 'sel' : ''}` },
     h('div', { class: 'pkg-head' },
-      h('div', { class: 't' }, h('h3', null, l.shopName, badge(ES_STATUS[l.status] ?? l.status, l.bucket === 'replied' ? 'blue' : l.bucket === 'stopped' ? 'red' : l.bucket === 'approved' ? 'green' : ''), l.offer ? badge(OFFER[l.offer] ?? l.offer) : null, l.ico ? badge(`IČO ${l.ico}`) : badge('bez IČO', 'yellow')),
-        h('div', { class: 'sub' }, [l.email, l.url ? l.url.replace(/^https?:\/\//, '').replace(/\/$/, '') : null].filter(Boolean).join(' · '))),
-      h('div', { class: 'acts' }, l.auditUrl ? h('a', { class: 'btn sm', href: l.auditUrl }, 'Audit') : null, h('a', { class: 'btn sm', href: l.link }, 'Otevřít v /eshopy'),
+      actable ? h('input', { class: 'chk', type: 'checkbox', 'aria-label': `Označit ${l.shopName}`, checked: ui.esSel.has(l.id), disabled: blocked, onchange: (e) => { e.target.checked ? ui.esSel.add(l.id) : ui.esSel.delete(l.id); render(); } }) : null,
+      h('div', { class: 't' }, h('h3', null, l.shopName, esRequestBadge(l), l.conflict ? badge(l.conflict.reason === 'stop' ? 'Odhlášen v B2B' : 'Už v B2B', 'red') : null, badge(ES_STATUS[l.status] ?? l.status, l.bucket === 'replied' ? 'blue' : l.bucket === 'stopped' ? 'red' : l.bucket === 'approved' ? 'green' : ''), l.offer ? badge(OFFER[l.offer] ?? l.offer) : null, l.ico ? badge(`IČO ${l.ico}`) : badge('bez IČO', 'yellow')),
+        h('div', { class: 'sub' }, [l.email, l.url ? l.url.replace(/^https?:\/\//, '').replace(/\/$/, '') : null].filter(Boolean).join(' · ')),
+        l.conflict ? h('div', { class: 'warn', style: 'margin-top:4px' }, l.conflict.text) : null,
+        l.request?.state === 'rejected' && l.request.message ? h('div', { class: 'warn', style: 'margin-top:4px' }, l.request.message) : null),
+      h('div', { class: 'acts' },
+        actable ? h('button', { class: 'btn primary', disabled: blocked, title: l.conflict ? l.conflict.text : !v.b2bChecked ? 'Nelze ověřit duplicity s B2B' : '', onclick: () => esApprove([l]) }, 'Schválit a odeslat') : null,
+        v.canAct && ['review', 'approved', 'check'].includes(l.bucket) ? h('button', { class: 'btn danger ghost', disabled: ui.esLocal.has(l.id) || l.request?.state === 'pending', onclick: () => esReject(l) }, 'Vyřadit') : null,
+        l.auditUrl ? h('a', { class: 'btn sm', href: l.auditUrl }, 'Audit') : null, h('a', { class: 'btn sm', href: l.link }, 'Otevřít v /eshopy'),
         !open ? h('button', { class: 'btn ghost sm', 'aria-expanded': String(isOpen), onclick: () => { isOpen ? ui.open.delete(k) : ui.open.add(k); render(); } }, isOpen ? 'Skrýt' : 'Detail') : null)),
     isOpen ? esDetail(v, l) : null);
 }
@@ -784,8 +854,17 @@ function esTab(v, tab) {
   if (!rows.length) return empty(`Nic v části „${t[1]}“`, key === 'review' ? 'Žádný balíček nečeká na schválení.' : 'Zatím tu nic není.');
   const note = key === 'other' && v.counts.other > rows.length ? h('div', { class: 'notice blue', style: 'margin:0 0 14px' }, `Zobrazeno ${rows.length} z ${num(v.counts.other)} leadů. Celý seznam je v /eshopy.`) : null;
   if (key === 'other' || key === 'stopped') return h('div', null, note, esLightTable(rows));
-  return h('div', null, ['review', 'approved'].includes(key) ? h('div', { class: 'notice blue', style: 'margin:0 0 14px' }, h('span', null, h('b', null, 'Jen přehled. '), 'Schválení a odeslání e-shopu zůstává v ', h('a', { href: `${v.base}/eshopy` }, 'mhruby.eu/eshopy'), '. Tady se nic nezapisuje.')) : null,
-    ...rows.map((l) => esCard(v, l, key === 'review')));
+  const intro = !['review', 'approved'].includes(key) ? null
+    : !v.canAct ? h('div', { class: 'notice blue', style: 'margin:0 0 14px' }, h('span', null, h('b', null, 'Jen přehled. '), 'Akce s e-shopy nejsou zapnuté (ESHOPY_WRITE_TOKEN). Schválit jde na ', h('a', { href: `${v.base}/eshopy` }, 'mhruby.eu/eshopy'), '.'))
+    : !v.b2bChecked ? h('div', { class: 'notice red', style: 'margin:0 0 14px' }, h('b', null, 'Schvalování je teď vypnuté. '), `Nejde ověřit, jestli firmu neoslovil B2B segment (${v.b2bError ?? 'chybí B2B data'}).`)
+    : key === 'review' ? h('div', { class: 'notice blue', style: 'margin:0 0 14px' }, h('span', null, h('b', null, 'Schválit a odeslat '), 'zařadí stejný požadavek jako tlačítko na /eshopy. Odesílá autopilot nebo notebook podle pravidel e-shopů (okno, limit, rozestup, nová kontrola webu). Firmy, které už oslovil nebo schválil B2B segment, nejde schválit.'))
+    : null;
+  const selectable = key === 'review' && v.canAct && v.b2bChecked ? rows.filter((l) => !esBlocked(l)) : [];
+  const sel = selectable.filter((l) => ui.esSel.has(l.id));
+  return h('div', null, intro,
+    selectable.length > 1 ? h('div', { class: 'toolbar' }, h('label', { style: 'display:flex;gap:8px;align-items:center;cursor:pointer' }, h('input', { class: 'chk', style: 'margin:0', type: 'checkbox', checked: sel.length === selectable.length, onchange: (e) => { selectable.forEach((l) => (e.target.checked ? ui.esSel.add(l.id) : ui.esSel.delete(l.id))); render(); } }), 'Označit vše'), h('span', { class: 'muted' }, `${selectable.length} lze schválit`)) : null,
+    ...rows.map((l) => esCard(v, l, key === 'review')),
+    sel.length ? h('div', { class: 'sel-bar' }, h('b', null, `Označeno ${sel.length}`), h('div', { style: 'flex:1' }), h('button', { class: 'btn ghost', onclick: () => { ui.esSel.clear(); render(); } }, 'Zrušit výběr'), h('button', { class: 'btn primary', onclick: () => esApprove(sel.slice(0, 20)) }, `Schválit a odeslat označené (${Math.min(sel.length, 20)})`)) : null);
 }
 function esOverview(v) {
   const sc = v.selfCheck; const c = v.counts; const ap = v.autopilot; const st = v.settings ?? {}; const wf = v.workflow ?? {};
@@ -806,8 +885,13 @@ function esOverview(v) {
         ...kv('Odesílání', v.sendingEnabled ? 'zapnuté' : 'vypnuté'), ...kv('Denní limit', v.dailySendLimit == null ? '–' : String(v.dailySendLimit)), ...kv('Okno', st.startHour != null ? `${st.startHour} až ${st.endHour} hodin${st.weekdaysOnly ? ', jen pracovní dny' : ''}` : '–'),
         ...kv('Rozestup', st.minSendMinutes != null ? `nejméně ${st.minSendMinutes} minut` : '–'), ...kv('Připomenutí', st.followupDays != null ? `po ${st.followupDays} dnech` : '–'), ...kv('Režim doručení', wf.deliveryMode ?? '–'),
         ...kv('Autopilot', ap ? `${ap.paused ? 'pozastavený' : ap.mode ?? '?'}, schvaluje ${ap.approval ?? '?'}, hlášení ${ap.at ? ago(ap.at) : '–'}` : 'neběží'), ...kv('Gmail', v.gmailConnected ? 'připojený' : 'nepřipojený'))),
-      h('section', { class: 'panel pad' }, h('h3', null, 'Co dashboard neumí'), h('ul', { style: 'margin:0;padding-left:18px;display:grid;gap:6px;color:var(--muted);font-size:13.5px' },
-        ['Nic nezapisuje: neschvaluje, neodesílá, neřadí příkazy ani nemění nastavení e-shopů.', 'Pravidla odesílání, limity, okno a režim zůstávají v e-shop pipeline.', 'Token ke čtení je jen na serveru, do prohlížeče se nedostane.'].map((x) => h('li', null, x)))),
+      h('section', { class: 'panel pad' }, h('h3', null, v.canAct ? 'Co CRM s e-shopy umí' : 'Co dashboard neumí'), h('ul', { style: 'margin:0;padding-left:18px;display:grid;gap:6px;color:var(--muted);font-size:13.5px' },
+        (v.canAct ? ['Schválit a odeslat přesně ten balíček, který vidíte (stejně jako /eshopy). Změní-li se, schválení se odmítne.', 'Trvale vyřadit adresu a pozastavit odesílání.', 'Neumí měnit nastavení, limity, okno, režim ani podklad pro oslovení (basis).', 'Firmy z B2B segmentů a odhlášené v B2B nejde schválit. E-shop leady se zapisují do seznamu, který B2B segmenty vyřazuje.', 'Tokeny jsou jen na serveru, do prohlížeče se nedostanou.']
+          : ['Nic nezapisuje: neschvaluje, neodesílá, neřadí příkazy ani nemění nastavení e-shopů.', 'Pravidla odesílání, limity, okno a režim zůstávají v e-shop pipeline.', 'Token ke čtení je jen na serveru, do prohlížeče se nedostane.']).map((x) => h('li', null, x)))),
+      h('section', { class: 'panel pad' }, h('h3', null, 'Ochrana proti dvojímu oslovení'), h('dl', { class: 'kv', style: 'margin:0' },
+        ...kv('Kontrola s B2B', v.b2bChecked ? 'běží' : `nejde ověřit (${v.b2bError ?? 'chybí B2B data'})`), ...kv('Blokováno kvůli B2B', String(c.conflicts ?? 0)),
+        ...kv('Seznam e-shopů pro B2B', v.exclusions ? (v.exclusions.ok ? `aktuální${v.exclusions.total != null ? `, ${v.exclusions.total} firem` : ''}${v.exclusions.added ? `, nově ${v.exclusions.added}` : ''}` : `nepodařilo se zapsat (${v.exclusions.error ?? '?'})`) : 'nezapisuje se'))),
+      v.canAct ? h('section', { class: 'panel pad' }, h('h3', null, 'Pozastavit odesílání e-shopů'), h('p', { class: 'muted', style: 'margin-bottom:12px;font-size:13.5px' }, v.pausePending ? 'Pozastavení už čeká na zpracování.' : 'Nouzová brzda. Čekající schválená odeslání se zruší.'), h('button', { class: 'btn danger', disabled: v.pausePending, onclick: esPause }, v.pausePending ? 'Už čeká' : 'Pozastavit odesílání')) : null,
       h('section', { class: 'panel pad' }, h('h3', null, 'Otevřít e-shopy'), h('a', { class: 'btn blue', href: `${v.base}/eshopy` }, 'mhruby.eu/eshopy'))));
 }
 function renderEshopy() {
@@ -818,9 +902,10 @@ function renderEshopy() {
   const tab = ES_TABS.some((t) => t[0] === r.tab) ? r.tab : 'schvaleni';
   const c = v.counts;
   return h('div', null,
-    h('section', { class: 'seg-head' }, h('h1', null, 'E-shopy'), h('p', { class: 'muted', style: 'margin-top:6px;max-width:760px' }, 'Leady z e-shop pipeline. Samostatná oblast, kterou vlastní majitel e-shopů. Tahle stránka jen zobrazuje, schvalování a odesílání zůstává v /eshopy.'),
-      h('div', { class: 'row' }, badge('Jen čtení', 'blue'), v.autopilot ? badge(v.autopilot.paused ? 'Autopilot pozastaven' : `Autopilot: ${v.autopilot.mode ?? '?'}`, v.autopilot.paused ? 'red' : '') : badge('Autopilot neběží'), badge(`Synchronizace ${v.updatedAt ? ago(v.updatedAt) : 'neznámá'}`, v.stale ? 'red' : ''))),
+    h('section', { class: 'seg-head' }, h('h1', null, 'E-shopy'), h('p', { class: 'muted', style: 'margin-top:6px;max-width:760px' }, v.canAct ? 'Leady z e-shop pipeline. Samostatná oblast, kterou vlastní majitel e-shopů. Schválení odtud jde stejnou cestou jako na /eshopy, odesílá e-shop pipeline podle svých pravidel.' : 'Leady z e-shop pipeline. Samostatná oblast, kterou vlastní majitel e-shopů. Tahle stránka jen zobrazuje, schvalování a odesílání zůstává v /eshopy.'),
+      h('div', { class: 'row' }, badge(v.canAct ? 'Schvalování zapnuté' : 'Jen čtení', v.canAct ? 'green' : 'blue'), v.autopilot ? badge(v.autopilot.paused ? 'Autopilot pozastaven' : `Autopilot: ${v.autopilot.mode ?? '?'}`, v.autopilot.paused ? 'red' : '') : badge('Autopilot neběží'), badge(`Synchronizace ${v.updatedAt ? ago(v.updatedAt) : 'neznámá'}`, v.stale ? 'red' : ''))),
     v.stale ? h('div', { class: 'notice red' }, h('b', null, 'Data nejsou čerstvá. '), `Poslední synchronizace ${v.updatedAt ? fmtDT(v.updatedAt) + ' (' + ago(v.updatedAt) + ')' : 'neznámá'}. Notebook nebo cloud neposlal přehled víc než ${v.staleAfterMinutes} minut.`) : null,
+    v.pausePending ? h('div', { class: 'notice yellow' }, h('b', null, 'Pozastavení čeká na zpracování. '), 'Další e-maily neodejdou.') : null,
     h('section', { class: 'kpis four', style: 'margin-top:18px' }, kpi(c.review, 'Ke schválení', c.review ? 'hot' : ''), kpi(c.approved, 'Schváleno, čeká na odeslání'), kpi(c.sent, 'Odesláno celkem'), kpi(c.replied, 'Odpovědi'), kpi(c.stopped, 'STOP a nedoručené'), kpi(c.check, 'K ověření'), kpi(c.other, 'Ostatní leady'), kpi(c.total, 'Leadů celkem')),
     h('div', { class: 'tabs', role: 'tablist' }, ...ES_TABS.map(([k, label, b]) => h('button', { class: 'tab', role: 'tab', 'aria-selected': k === tab ? 'true' : 'false', onclick: () => { location.hash = `#/eshopy/${k}`; } }, label, b && c[b] ? h('span', { class: `c ${k === 'schvaleni' ? 'hot' : ''}` }, c[b]) : null))),
     esTab(v, tab));

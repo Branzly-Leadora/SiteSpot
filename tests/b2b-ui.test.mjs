@@ -8,6 +8,7 @@ import http from 'node:http';
 import { createRequire } from 'node:module';
 
 import { buildEshopyView } from '../api/b2b.js';
+import { b2bIndex } from '../api/_eshopy.js';
 
 const html = fs.readFileSync(new URL('../private/b2b.html', import.meta.url));
 const fixture = JSON.parse(fs.readFileSync(new URL('./fixtures/b2b-synthetic.json', import.meta.url), 'utf8'));
@@ -177,4 +178,67 @@ test('E-shopy: text z cizího e-shopu se nikdy nevykoná', { skip: pw ? false : 
     assert.equal(await page.evaluate(() => window.__xss ?? 'ne'), 'ne');
     assert.match(await page.locator('#app').innerText(), /<img src=x/);
   });
+});
+
+test('E-shopy: Schválit a odeslat, Vyřadit a Pozastavit pošlou správný požadavek, firmu z B2B schválit nejde', { skip: pw ? false : 'Playwright není k dispozici' }, async () => {
+  // e-shop 6 má IČO firmy, kterou už oslovil B2B segment
+  const b2b = b2bIndex([{ id: 'segment-x', snapshot: { segment: { label: 'Vymyšlený B2B' }, packages: [{ ico: '12345678', firma: 'Šestka s.r.o.', status: 'sent' }, { ico: '11111111', firma: 'Firma 1 s.r.o.', web: 'https://obchod1.example/' }] } }]);
+  const view = buildEshopyView(eshopFeed(), { base: 'https://mhruby.eu', now: FROZEN_NOW, b2b, canAct: true });
+  view.overlap = { 'segment-a:11111111': 'Vymyšlený obchod 1' };
+  const posts = [];
+  const server = http.createServer((req, res) => {
+    const u = new URL(req.url, 'http://x');
+    res.setHeader('content-type', 'application/json');
+    if (u.pathname === '/b2b' && u.searchParams.get('op') === 'data') return res.end(JSON.stringify(fixture));
+    if (u.pathname === '/b2b' && u.searchParams.get('op') === 'eshopy') return res.end(JSON.stringify(view));
+    if (u.pathname === '/b2b' && u.searchParams.get('op') === 'eshopy-action') {
+      let b = ''; req.on('data', (c) => (b += c)); req.on('end', () => {
+        const body = JSON.parse(b); posts.push({ body, csrf: req.headers['x-b2b'] });
+        res.end(JSON.stringify({ results: body.action === 'pause' ? [{ id: null, ok: true }] : body.items.map((i) => ({ id: i.id, ok: true, status: 200 })) }));
+      }); return;
+    }
+    if (u.pathname === '/b2b') { res.setHeader('content-type', 'text/html; charset=utf-8'); return res.end(html); }
+    res.statusCode = 404; res.end();
+  }).listen(0);
+  const base = `http://localhost:${server.address().port}/b2b`;
+  const browser = await pw.chromium.launch();
+  try {
+    const ctx = await browser.newContext({ viewport: { width: 1360, height: 900 } });
+    const page = await ctx.newPage();
+    const errors = [];
+    page.on('pageerror', (e) => errors.push(String(e)));
+    await settle(page, base, '#/eshopy/schvaleni');
+    const card = (n) => page.locator('article.pkg', { hasText: `Vymyšlený obchod ${n}` });
+    const blocked = card(6).getByRole('button', { name: 'Schválit a odeslat' });
+    assert.equal(await blocked.isDisabled(), true, 'firmu z B2B nejde schválit');
+    assert.match(await card(6).innerText(), /Už v B2B[\s\S]*Vymyšlený B2B/);
+    assert.equal(await card(6).locator('input.chk').isDisabled(), true);
+
+    await card(1).getByRole('button', { name: 'Schválit a odeslat' }).click();
+    assert.match(await page.locator('.modal').innerText(), /9 až 17 hodin/);
+    await page.locator('.modal .btn.primary').click();
+    await page.waitForFunction(() => document.body.innerText.includes('Schváleno, čeká na odeslání'));
+    assert.deepEqual(posts.at(-1), { csrf: '1', body: { action: 'approve_send', items: [{ id: UID(1), revision: 'r'.repeat(64), packageHash: 'p'.repeat(64) }] } });
+    assert.equal(await card(1).getByRole('button', { name: 'Schválit a odeslat' }).isDisabled(), true, 'podruhé to nejde');
+
+    await card(6).getByRole('button', { name: 'Vyřadit' }).click();
+    await page.locator('.modal select').selectOption('Už s nimi jednáme');
+    await page.locator('.modal textarea').fill('volal Jan');
+    await page.locator('.modal .btn.danger').click();
+    await page.waitForFunction((n) => n === 2, posts.length).catch(() => {});
+    await page.waitForTimeout(200);
+    assert.deepEqual(posts.at(-1).body, { action: 'suppress', items: [{ id: UID(6), revision: 'r'.repeat(64) }], reason: 'Už s nimi jednáme: volal Jan' });
+
+    await settle(page, base, '#/eshopy/prehled');
+    await page.getByRole('button', { name: 'Pozastavit odesílání' }).click();
+    await page.locator('.modal .btn.danger').click();
+    await page.waitForTimeout(300);
+    assert.equal(posts.at(-1).body.action, 'pause');
+    assert.match(await page.locator('#app').innerText(), /Blokováno kvůli B2B\s*1/);
+
+    await settle(page, base, '#/s/segment-a/schvaleni');
+    assert.match(await page.locator('#app').innerText(), /Je i v e-shopech: Vymyšlený obchod 1/);
+    assert.equal(posts.length, 3, 'nic dalšího se neposlalo');
+    assert.deepEqual(errors, []);
+  } finally { await browser.close(); server.close(); }
 });

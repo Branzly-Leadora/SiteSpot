@@ -220,13 +220,15 @@ test('e-shopy: stranka bez konfigurace nic nenacita a nehlasi chybu, bez prihlas
   assert.equal(eshopyConfig({ ESHOPY_URL: 'http://mhruby.eu', ESHOPY_READ_TOKEN: 'x' }), null, 'jen https');
   assert.equal(eshopyConfig({ ESHOPY_URL: 'neco', ESHOPY_READ_TOKEN: 'x' }), null);
   assert.equal(eshopyConfig({ ESHOPY_URL: 'https://mhruby.eu/eshopy/', ESHOPY_READ_TOKEN: '' }), null);
-  assert.deepEqual(eshopyConfig({ ESHOPY_URL: 'https://mhruby.eu/eshopy/', ESHOPY_READ_TOKEN: 't' }), { base: 'https://mhruby.eu', token: 't' });
+  assert.deepEqual(eshopyConfig({ ESHOPY_URL: 'https://mhruby.eu/eshopy/', ESHOPY_READ_TOKEN: 't' }), { base: 'https://mhruby.eu', token: 't', writeToken: null });
+  assert.equal(eshopyConfig({ ESHOPY_URL: 'https://mhruby.eu', ESHOPY_READ_TOKEN: 't', ESHOPY_WRITE_TOKEN: 't' }).writeToken, null, 'zapisovy token se nesmi rovnat cteciemu');
+  assert.equal(eshopyConfig({ ESHOPY_URL: 'https://mhruby.eu', ESHOPY_READ_TOKEN: 't', ESHOPY_WRITE_TOKEN: 'w' }).writeToken, 'w');
 });
 
 test('e-shopy: dotaz jde na CRM cestu s Bearer tokenem, token se vrati jen jako hlavicka a nikdy v odpovedi', async () => {
   _internals.resetCache();
   const calls = [];
-  const f = async (url, o) => { calls.push({ url, o }); return { ok: true, status: 200, text: async () => JSON.stringify(feed(sample(), { stats: { total: 8, ready: 3, sent: 3, replied: 2 } })) }; };
+  const f = async (url, o) => { if (String(url).startsWith('https://mhruby.eu')) calls.push({ url, o }); return { ok: true, status: 200, json: async () => [], text: async () => JSON.stringify(feed(sample(), { stats: { total: 8, ready: 3, sent: 3, replied: 2 } })) }; };
   const e = { ...env, ESHOPY_URL: 'https://mhruby.eu', ESHOPY_READ_TOKEN: 'crm-token-ABCDEFGHIJKLMNOPQRSTUVWXYZ123456' };
   const r = await call(handler, { query: { op: 'eshopy' }, headers: { authorization: auth('max', 'tajne') } }, { env: e, fetch: f });
   assert.equal(r.code, 200);
@@ -242,7 +244,7 @@ test('e-shopy: dotaz jde na CRM cestu s Bearer tokenem, token se vrati jen jako 
 
 test('e-shopy: rozdeleni do skupin, klic eshopy:<uuid>, ICO jen kdyz je a soucty sedi s tim, co ukazuje /eshopy', () => {
   const v = buildEshopyView(feed(sample(), { stats: { total: 8, ready: 3, sent: 3, replied: 2 } }), { base: 'https://mhruby.eu', now: NOW });
-  assert.deepEqual(v.counts, { total: 8, review: 2, approved: 1, sent: 3, replied: 2, stopped: 1, check: 1, other: 1, withIco: 1, withoutIco: 7 });
+  assert.deepEqual(v.counts, { total: 8, review: 2, approved: 1, sent: 3, replied: 2, stopped: 1, check: 1, other: 1, withIco: 1, withoutIco: 7, conflicts: 0 });
   assert.deepEqual(v.buckets.review.map((l) => l.key), [`eshopy:${ID(1)}`, `eshopy:${ID(8)}`]);
   assert.equal(v.buckets.review[1].ico, '12345678');
   assert.equal(v.buckets.review[0].ico, null);
