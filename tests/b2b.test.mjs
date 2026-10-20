@@ -1,7 +1,7 @@
 // node --test tests/b2b.test.mjs
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import handler, { loadUsers, authenticate, loadData, writeActions, fireRoutine, _internals } from '../api/b2b.js';
+import handler, { loadUsers, authenticate, loadData, writeActions, fireRoutine, loadEshopy, buildEshopyView, eshopyConfig, _internals } from '../api/b2b.js';
 
 const auth = (u, p) => 'Basic ' + Buffer.from(`${u}:${p}`).toString('base64');
 const FP = 'a'.repeat(64);
@@ -181,4 +181,143 @@ test('spusteni rutiny: jen s nastavenym odkazem, jen na api.anthropic.com a nejv
   assert.equal((await fireRoutine(fire, f, 'doprava', 1_130_000)).fired, true);
   assert.equal(calls[0].o.headers['anthropic-beta'], 'experimental-cc-routine-2026-04-01');
   assert.equal(calls[0].o.headers.Authorization, 'Bearer sk-x');
+});
+
+
+// ---------- E-shopy (jen cteni) ----------
+
+const ID = (n) => `00000000-0000-4000-8000-${String(n).padStart(12, '0')}`;
+const full = (n, over = {}, detail = {}) => ({
+  id: ID(n), shopName: `Obchod ${n}`, url: `https://obchod${n}.example/`, email: `info@obchod${n}.example`, status: 'draft', offer: 'profit_control',
+  auditUrl: `https://mhruby.eu/audit-${'a'.repeat(64)}`,
+  detail: { revision: 'r'.repeat(64), greeting: 'Dobrý den', contactSource: `https://obchod${n}.example/kontakt`, day: '2026-10-16', evidenceVerified: true, screenshotHash: 's'.repeat(64),
+    auditHash: 'h'.repeat(64), emailSubject: 'Předmět', emailBody: 'Tělo', packageHash: 'p'.repeat(64), observation: 'Pozorování', quote: 'Citace', ...detail },
+  ...over,
+});
+const NOW = Date.parse('2026-10-17T12:00:00.000Z');
+const feed = (leads, over = {}) => ({
+  version: 1, updatedAt: '2026-10-17T11:50:00.000Z', source: 'notebook', lastRun: null, gmailConnected: true, sendingEnabled: false, dailySendLimit: 4,
+  settings: { startHour: 9 }, workflow: { deliveryMode: 'manual' }, events: [{ at: '2026-10-17T11:00:00.000Z', kind: 'sent', leadId: ID(3) }], autopilot: null, sentReceipts: [], leads, ...over,
+});
+const sample = () => [
+  full(1),                                                                                   // ke schvaleni
+  full(2, { status: 'approved' }, { approvedHash: 'p'.repeat(64) }),                         // schvaleno
+  full(3, { status: 'sent', sentAt: '2026-10-16T09:00:00.000Z' }),                           // odeslano
+  full(4, { status: 'replied', sentAt: '2026-10-15T09:00:00.000Z', replyAt: '2026-10-16T09:00:00.000Z' }),
+  full(5, { status: 'suppressed', sentAt: '2026-10-15T09:00:00.000Z', replyAt: '2026-10-16T10:00:00.000Z' }),
+  full(6, { status: 'evidence_review' }, { evidenceVerified: false }),                       // k overeni
+  { id: ID(7), shopName: 'Jen importovany', url: 'https://i.example/', status: 'imported' },  // ostatni
+  full(8, {}, { company: { name: 'Osm s.r.o.', ico: '12345678' } }),                        // ke schvaleni s ICO
+];
+
+test('e-shopy: stranka bez konfigurace nic nenacita a nehlasi chybu, bez prihlaseni se nedostane nikdo', async () => {
+  _internals.resetCache();
+  const r1 = await call(handler, { query: { op: 'eshopy' } }, { env });
+  assert.equal(r1.code, 401);
+  const r2 = await call(handler, { query: { op: 'eshopy' }, headers: { authorization: auth('max', 'tajne') } }, { env, fetch: () => { throw new Error('nesmi se volat'); } });
+  assert.equal(r2.code, 200);
+  assert.deepEqual(r2.body, { configured: false });
+  assert.equal(eshopyConfig({ ESHOPY_URL: 'http://mhruby.eu', ESHOPY_READ_TOKEN: 'x' }), null, 'jen https');
+  assert.equal(eshopyConfig({ ESHOPY_URL: 'neco', ESHOPY_READ_TOKEN: 'x' }), null);
+  assert.equal(eshopyConfig({ ESHOPY_URL: 'https://mhruby.eu/eshopy/', ESHOPY_READ_TOKEN: '' }), null);
+  assert.deepEqual(eshopyConfig({ ESHOPY_URL: 'https://mhruby.eu/eshopy/', ESHOPY_READ_TOKEN: 't' }), { base: 'https://mhruby.eu', token: 't', writeToken: null });
+  assert.equal(eshopyConfig({ ESHOPY_URL: 'https://mhruby.eu', ESHOPY_READ_TOKEN: 't', ESHOPY_WRITE_TOKEN: 't' }).writeToken, null, 'zapisovy token se nesmi rovnat cteciemu');
+  assert.equal(eshopyConfig({ ESHOPY_URL: 'https://mhruby.eu', ESHOPY_READ_TOKEN: 't', ESHOPY_WRITE_TOKEN: 'w' }).writeToken, 'w');
+});
+
+test('e-shopy: dotaz jde na CRM cestu s Bearer tokenem, token se vrati jen jako hlavicka a nikdy v odpovedi', async () => {
+  _internals.resetCache();
+  const calls = [];
+  const f = async (url, o) => { if (String(url).startsWith('https://mhruby.eu')) calls.push({ url, o }); return { ok: true, status: 200, json: async () => [], text: async () => JSON.stringify(feed(sample(), { stats: { total: 8, ready: 3, sent: 3, replied: 2 } })) }; };
+  const e = { ...env, ESHOPY_URL: 'https://mhruby.eu', ESHOPY_READ_TOKEN: 'crm-token-ABCDEFGHIJKLMNOPQRSTUVWXYZ123456' };
+  const r = await call(handler, { query: { op: 'eshopy' }, headers: { authorization: auth('max', 'tajne') } }, { env: e, fetch: f });
+  assert.equal(r.code, 200);
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0].url, 'https://mhruby.eu/eshopy/api/crm/overview');
+  assert.equal(calls[0].o.headers.Authorization, 'Bearer crm-token-ABCDEFGHIJKLMNOPQRSTUVWXYZ123456');
+  assert.ok(!JSON.stringify(r.body).includes('crm-token'), 'token neni v odpovedi');
+  assert.equal(calls[0].o.method, undefined, 'jen GET');
+  // druhe volani do 20 s jde z pameti
+  await call(handler, { query: { op: 'eshopy' }, headers: { authorization: auth('max', 'tajne') } }, { env: e, fetch: f });
+  assert.equal(calls.length, 1);
+});
+
+test('e-shopy: rozdeleni do skupin, klic eshopy:<uuid>, ICO jen kdyz je a soucty sedi s tim, co ukazuje /eshopy', () => {
+  const v = buildEshopyView(feed(sample(), { stats: { total: 8, ready: 3, sent: 3, replied: 2 } }), { base: 'https://mhruby.eu', now: NOW });
+  assert.deepEqual(v.counts, { total: 8, review: 2, approved: 1, sent: 3, replied: 2, stopped: 1, check: 1, other: 1, withIco: 1, withoutIco: 7, conflicts: 0 });
+  assert.deepEqual(v.buckets.review.map((l) => l.key), [`eshopy:${ID(1)}`, `eshopy:${ID(8)}`]);
+  assert.equal(v.buckets.review[1].ico, '12345678');
+  assert.equal(v.buckets.review[0].ico, null);
+  assert.deepEqual(v.buckets.approved.map((l) => l.id), [ID(2)]);
+  assert.deepEqual(v.buckets.sent.map((l) => l.id), [ID(3)]);
+  assert.deepEqual(v.buckets.replied.map((l) => l.id), [ID(4)]);
+  assert.deepEqual(v.buckets.stopped.map((l) => l.id), [ID(5)], 'STOP je mezi odhlasenymi, i kdyz odpovedel');
+  assert.deepEqual(v.buckets.check.map((l) => l.id), [ID(6)]);
+  assert.equal(v.buckets.review[0].link, `https://mhruby.eu/eshopy/lead/${ID(1)}`);
+  assert.equal(v.buckets.review[0].body, 'Tělo');
+  assert.equal(v.buckets.other[0].body, undefined, 'v ostatnich jsou jen lehke radky');
+  assert.equal(v.selfCheck.ok, true);
+  assert.equal(v.events[0].shopName, 'Obchod 3');
+});
+
+test('e-shopy: potvrzene odeslani z dashboardu e-shopu se pocita jako odeslano, kontrolni soucet to pozna', () => {
+  const leads = [full(1), full(2)];
+  const v = buildEshopyView(feed(leads, { sentReceipts: [{ leadId: ID(1), at: '2026-10-17T10:00:00.000Z' }], stats: { total: 2, ready: 1, sent: 1, replied: 0 } }), { base: 'https://mhruby.eu', now: NOW });
+  assert.deepEqual(v.buckets.sent.map((l) => l.id), [ID(1)]);
+  assert.equal(v.buckets.sent[0].sentAt, '2026-10-17T10:00:00.000Z');
+  assert.deepEqual(v.buckets.review.map((l) => l.id), [ID(2)]);
+  assert.equal(v.selfCheck.ok, true);
+  const bad = buildEshopyView(feed(leads, { stats: { total: 2, ready: 2, sent: 0, replied: 0 } }), { base: 'https://mhruby.eu', now: NOW });
+  assert.equal(bad.selfCheck.ok, true, 'bez potvrzeni jsou oba ke schvaleni');
+  const off = buildEshopyView(feed(leads, { stats: { total: 3, ready: 2, sent: 0, replied: 0 } }), { base: 'https://mhruby.eu', now: NOW });
+  assert.equal(off.selfCheck.ok, false);
+  assert.deepEqual(off.selfCheck.computed, { total: 2, ready: 2, sent: 0, replied: 0 });
+  assert.equal(buildEshopyView(feed(leads), { base: 'https://mhruby.eu', now: NOW }).selfCheck.ok, false, 'bez cisel od Workeru se nedá potvrdit');
+});
+
+test('e-shopy: po 30 minutach bez synchronizace je pohled zastaraly, autopilot nese stari posledniho hlaseni', () => {
+  const fresh = buildEshopyView(feed([full(1)], { updatedAt: '2026-10-17T11:40:00.000Z' }), { base: 'https://mhruby.eu', now: NOW });
+  assert.equal(fresh.ageMinutes, 20);
+  assert.equal(fresh.stale, false);
+  const old = buildEshopyView(feed([full(1)], { updatedAt: '2026-10-17T11:29:00.000Z', autopilot: { mode: 'dry-run', paused: false, approval: 'human', at: '2026-10-17T09:00:00.000Z' } }), { base: 'https://mhruby.eu', now: NOW });
+  assert.equal(old.ageMinutes, 31);
+  assert.equal(old.stale, true);
+  assert.equal(old.autopilot.ageMinutes, 180);
+  assert.equal(buildEshopyView({ version: 1, leads: [] }, { base: 'https://mhruby.eu', now: NOW }).stale, true, 'bez casu se nikdy nepovazuje za cerstve');
+});
+
+test('e-shopy: chyba dashboardu e-shopu se hlasi jen stavovym kodem, text odpovedi ani token ven nejdou', async () => {
+  const e = { ESHOPY_URL: 'https://mhruby.eu', ESHOPY_READ_TOKEN: 'crm-token-ABCDEFGHIJKLMNOPQRSTUVWXYZ123456' };
+  const bad = async () => ({ ok: false, status: 401, text: async () => 'Bearer crm-token-ABCDEFGHIJKLMNOPQRSTUVWXYZ123456 odmitnut' });
+  await assert.rejects(() => loadEshopy(e, bad), (err) => /401/.test(err.message) && !/crm-token/.test(err.message));
+  await assert.rejects(() => loadEshopy(e, async () => { throw new Error('ECONNRESET s tokenem crm-token'); }), (err) => !/crm-token/.test(err.message));
+  await assert.rejects(() => loadEshopy(e, async () => ({ ok: true, status: 200, text: async () => '{"version":2}' })), /format/);
+  await assert.rejects(() => loadEshopy(e, async () => ({ ok: true, status: 200, text: async () => 'ne json' })), /neplatna/);
+  _internals.resetCache();
+  const r = await call(handler, { query: { op: 'eshopy' }, headers: { authorization: auth('max', 'tajne') } }, { env: { ...env, ...e }, fetch: bad });
+  assert.equal(r.code, 502);
+  assert.ok(!JSON.stringify(r.body).includes('crm-token'));
+});
+
+test('B2B zustava beze zmeny: op=data, op=action a neznama op se po pridani e-shopu chovaji stejne', async () => {
+  _internals.resetCache();
+  const gh = fakeGithub({ 'claude/state-doprava': { 'segments/doprava/snapshot.json': JSON.stringify({ segment: { id: 'doprava' } }) } });
+  gh.state.files.main['segments/vyrobci/snapshot.json'] = JSON.stringify({ segment: { id: 'vyrobci' } });
+  const withEshopy = { ...env, ESHOPY_URL: 'https://mhruby.eu', ESHOPY_READ_TOKEN: 'crm-token-ABCDEFGHIJKLMNOPQRSTUVWXYZ123456' };
+  const a = { authorization: auth('max', 'tajne') };
+  const data1 = await call(handler, { query: { op: 'data' }, headers: a }, { env, fetch: gh.fetchImpl });
+  _internals.resetCache();
+  const data2 = await call(handler, { query: { op: 'data' }, headers: a }, { env: withEshopy, fetch: gh.fetchImpl });
+  const strip = (b) => ({ ...b, fetchedAt: undefined });
+  assert.deepEqual(strip(data2.body), strip(data1.body), 'op=data nezavisi na nastaveni e-shopu');
+  assert.deepEqual(Object.keys(data1.body).sort(), ['configured', 'fetchedAt', 'fire', 'segments', 'user']);
+  assert.deepEqual(data1.body.segments.map((s) => s.id), ['doprava', 'vyrobci']);
+  assert.equal(data1.body.segments[0].ref, 'claude/state-doprava');
+  assert.equal(data1.body.segments[1].ref, 'main');
+  // akce: ICO musi mit osm cislic, UUID e-shopu se do B2B inboxu dostat nesmi
+  const act = (body) => call(handler, { method: 'POST', query: { op: 'action' }, headers: { ...a, host: 'sitespot.cz', 'content-type': 'application/json', 'x-b2b': '1' }, body }, { env: withEshopy, fetch: gh.fetchImpl });
+  assert.equal((await act({ segment: 'doprava', action: 'approve', ico: ID(1), fingerprint: FP })).code, 400);
+  assert.equal((await act({ segment: 'eshopy', action: 'pause' })).code, 404, 'zadny segment eshopy v B2B nevznika');
+  assert.equal((await call(handler, { query: { op: 'cokoliv' }, headers: a }, { env })).code, 404);
+  assert.equal((await call(handler, { method: 'POST', query: { op: 'eshopy' }, headers: { ...a, 'x-b2b': '1', 'content-type': 'application/json' }, body: {} }, { env: withEshopy, fetch: gh.fetchImpl })).code, 404, 'e-shopy se nedaji zapisovat');
 });
